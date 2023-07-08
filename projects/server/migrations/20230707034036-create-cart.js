@@ -18,6 +18,9 @@ module.exports = {
       qty: {
         type: Sequelize.INTEGER
       },
+      confirmation: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

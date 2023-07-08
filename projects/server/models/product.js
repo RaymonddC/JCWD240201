@@ -24,8 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     dosing: DataTypes.STRING,
     BPOM_id: DataTypes.INTEGER,
     require__prescription: DataTypes.BOOLEAN,
-    price: DataTypes.INTEGER,
-    discount: DataTypes.INTEGER
+    price: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'product',
