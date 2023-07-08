@@ -2,30 +2,30 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('transaction_details', {
+    await queryInterface.createTable('stock_histories', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      cart_id: {
+      product_id: {
         type: Sequelize.INTEGER
       },
-      price: {
+      unit: {
+        type: Sequelize.BOOLEAN
+      },
+      type_id: {
         type: Sequelize.INTEGER
       },
-      product_name: {
+      qty: {
+        type: Sequelize.INTEGER
+      },
+      action: {
         type: Sequelize.STRING
       },
-      address: {
+      notes: {
         type: Sequelize.STRING
-      },
-      transaction_id: {
-        type: Sequelize.INTEGER
-      },
-      promotion_id: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +38,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('transaction_details');
+    await queryInterface.dropTable('stock_histories');
   }
 };
