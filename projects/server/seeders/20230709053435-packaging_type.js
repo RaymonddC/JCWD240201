@@ -34,7 +34,11 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      
+      {
+        type_name: 'can/ kaleng',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
