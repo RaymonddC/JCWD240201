@@ -10,8 +10,7 @@ module.exports = {
         packaging_type_id: null,
         product_type_id: null,
         net_content: null,
-        description:
-          'Obat Racik/Resep',
+        description: 'Obat Racik/Resep',
         dosing: null,
         BPOM_id: null,
         require_prescription: true,
@@ -922,5 +921,8 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0', options);
+    await sequelize.query('TRUNCATE TABLE products', options);
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1', options);
   },
 };

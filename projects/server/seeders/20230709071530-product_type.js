@@ -38,5 +38,8 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0', options);
+    await sequelize.query('TRUNCATE TABLE product_types', options);
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1', options);
   },
 };
