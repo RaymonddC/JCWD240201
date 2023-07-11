@@ -6,6 +6,20 @@ module.exports = {
     await queryInterface.bulkInsert('products', [
       // obat mata-------------------------------------------------------------------------------------
       {
+        name: 'Obat Racik/Resep',
+        packaging_type_id: null,
+        product_type_id: null,
+        net_content: null,
+        description:
+          'Obat Racik/Resep',
+        dosing: null,
+        BPOM_id: null,
+        require_prescription: true,
+        price: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
         name: 'Blecidex Tetes Mata/Telinga 5 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -437,8 +451,8 @@ module.exports = {
       },
       {
         name: 'Inzana 4 Tablet',
-        packaging_type_id: 0,
-        product_type_id: 0,
+        packaging_type_id: 2,
+        product_type_id: 1,
         net_content: 4,
         description:
           'Inzana Tablet Kunyah bermanfaat untuk mengurangi rasa sakit dan menurunkan demam pada anak.\nObat ini bekerja dengan cara menghambat enzim alami dan mengencerkan darah di dalam tubuh. Dengan begitu, rasa sakit dapat berkurang dan penggumpalan darah dapat dicegah.',
