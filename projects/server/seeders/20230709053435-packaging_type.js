@@ -25,17 +25,17 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        type_name: 'ampul',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
         type_name: 'blister',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
         type_name: 'can/ kaleng',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        type_name: 'ampul',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

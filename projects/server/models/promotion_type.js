@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     promotion: DataTypes.STRING
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'promotion_type',
   });
   return promotion_type;

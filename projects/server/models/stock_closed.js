@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     total_stock: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'stock_closed',
   });
   return stock_closed;

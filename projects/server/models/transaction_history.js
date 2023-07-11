@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     transaction_status_id: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'transaction_history',
   });
   return transaction_history;

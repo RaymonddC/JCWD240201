@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'answer',
   });
   return answer;

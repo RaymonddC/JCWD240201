@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     type_name: DataTypes.STRING
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'packaging_type',
   });
   return packaging_type;
