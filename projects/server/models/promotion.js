@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     date_end: DataTypes.DATEONLY
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'promotion',
   });
   return promotion;

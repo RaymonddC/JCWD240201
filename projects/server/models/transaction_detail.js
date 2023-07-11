@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     promotion_id: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'transaction_detail',
   });
   return transaction_detail;

@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     verified: DataTypes.BOOLEAN
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'user',
   });
   return user;

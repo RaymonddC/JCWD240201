@@ -28,15 +28,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000)
       },
       dosing: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(1000)
       },
       BPOM_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
-      require__prescription: {
+      require_prescription: {
         type: Sequelize.BOOLEAN
       },
       price: {

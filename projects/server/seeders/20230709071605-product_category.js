@@ -12,7 +12,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await queryInterface.bulkInsert('product_types', [
+    await queryInterface.bulkInsert('product_categories', [
       {
         category_name: 'Vitamin',
         createdAt: new Date(),

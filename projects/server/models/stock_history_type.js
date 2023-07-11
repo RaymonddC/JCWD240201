@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.STRING
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'stock_history_type',
   });
   return stock_history_type;

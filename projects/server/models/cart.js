@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     confirmation: DataTypes.BOOLEAN
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'cart',
   });
   return cart;

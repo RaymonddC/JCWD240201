@@ -20,13 +20,14 @@ module.exports = (sequelize, DataTypes) => {
     product_category_id: DataTypes.INTEGER,
     net_content: DataTypes.INTEGER,
     image: DataTypes.STRING,
-    description: DataTypes.STRING,
-    dosing: DataTypes.STRING,
-    BPOM_id: DataTypes.INTEGER,
-    require__prescription: DataTypes.BOOLEAN,
+    description: DataTypes.STRING(1000),
+    dosing: DataTypes.STRING(1000),
+    BPOM_id: DataTypes.STRING,
+    require_prescription: DataTypes.BOOLEAN,
     price: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid: true,
     modelName: 'product',
   });
   return product;
