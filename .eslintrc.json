@@ -4,9 +4,9 @@
   "rules": {
     "prettier/prettier": "error",
     "no-unused-vars": "warn",
-    "no-console": "off",
+    "no-console": "warn",
     "func-names": "off",
-    "no-process-exit": "off",
+    "no-process-exit": "warn",
     "object-shorthand": "off",
     "class-methods-use-this": "off"
   }
