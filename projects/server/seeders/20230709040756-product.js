@@ -678,7 +678,7 @@ module.exports = {
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
-        desrcription:
+        description:
           'Kandungan acetylcysteine dalam Acetin Kapsul bekerja sebagai mukolitik atau pengencer dahak, sehingga dahak bisa lebih mudah dikeluarkan melalui batuk. Obat ini dapat diberikan pada beberapa kondisi, seperti bronkitis, bronkiektasis, atau penyakit paru obstruktif kronik (PPOK).',
         dosing:
           'Dewasa dan anak usia >14 tahun: 1 kapsul, 2-3 kali sehari.\nAnak usia 6-14 tahun: 1 kapsul, 2 kali sehari.',
@@ -693,7 +693,7 @@ module.exports = {
         packaging_type_id: 1,
         product_type_id: 2,
         net_content: 50,
-        desrcription:
+        description:
           'Benadryl Batuk Berdahak Sirup merupakan obat yang digunakan untuk mengurangi dan mengencerkan dahak pada saluran pernapasan. Benadryl Batuk Berdahak mengandung dual zat aktif Bromhexin HCl dan Guaifenesin yang bekerja sebagai iritan pada saluran pernafasan di mana saat batuk, volume mukus ditingkatkan pada saluran napas serta menurunkan viskositasnya (menjadi lebih encer) sehingga dahak/lendir lebih mudah dikeluarkan dari saluran pernapasan. Fungsi kedua zat tersebut adalah ekspektoran yang dapat mengencerkan dahak atau lendir pada saluran pernafasan sehingga lebih mudah dikeluarkan bersamaan dengan batuk.',
         dosing:
           'Dewasa dan anak diatas 12 tahun: 10 ml, diberikan 3 kali per hari Anak 6-12 tahun: 5 ml, diberikan 3 kali per hari Anak 2-6 tahun: 2.5 ml, diberikan 3 kali per hari Anak di bawah 2 tahun sesuai dengan rekomendasi dokter',
@@ -708,7 +708,7 @@ module.exports = {
         packaging_type_id: 5,
         product_type_id: 1,
         net_content: 10,
-        desrcription:
+        description:
           'Bisolvon 100 Tablet 8 Mg berfungsi mengencerkan dahak di saluran pernapasan dengan cara menghambat kerja sel yang memprodusi dahak. Dengan begitu, dahak menjadi encer dan mudah untuk dikeluarkan.',
         dosing:
           'Dewasa dan anak usia >10 tahun: 1 tablet, 3 kali sehari\nAnak-anak usia 6-10 tahun: ½ tablet, 3 kali sehari\nAnak-anak usia 2-5 tahun: ½ tablet, 2 kali sehari',
@@ -723,7 +723,7 @@ module.exports = {
         packaging_type_id: 1,
         product_type_id: 2,
         net_content: 60,
-        desrcription:
+        description:
           'Cohistan Expectoran mengandung guaifenesin dan chlorpheniramine. Guaifenesin bekerja dengan mengencerkan dahak, sehingga dahak bisa lebih mudah dikeluarkan dari saluran pernapasan. Sementara itu, chlorpheniramine bekerja dengan menghambat kerja histamin, yaitu senyawa yang menyebabkan munculnya gejala alergi.',
         dosing:
           'Dewasa: 1 sendok makan (15 ml), 3-4 kali sehari.\nAnak usia 2-6 tahun: 1 sendok teh (5 ml), 3-4 kali sehari.\nAnak usia 7-12 tahun: ½ sendok makan (7,5 ml), 3-4 kali sehari.',
@@ -738,7 +738,7 @@ module.exports = {
         packaging_type_id: 1,
         product_type_id: 2,
         net_content: 20,
-        desrcription:
+        description:
           'Epexol Drops mengandung ambroxol yang merupakan pengencer dahak (mukolitik). Ambroxol bekerja dengan cara memecah serat asam mukopolisakarida di dalam dahak, sehingga dahak menjadi lebih encer dan mudah dikeluarkan saat batuk.',
         dosing:
           'Anak usia 1–2 tahun: 7,5 mg (0,5 ml), 2 kali sehari.\nAnak usia 2–5 tahun: 7,5 mg (0,5 ml), 3 kali sehari.\nAnak usia 6–11 tahun: 15 mg (1 ml), 2–3 kali sehari.\nDewasa: 30 mg (2 ml), 2–3 kali sehari. Dosis dapat ditingkatkan hingga 60 mg (4 ml), 2 kali sehari.',
@@ -754,7 +754,7 @@ module.exports = {
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
-        desrcription:
+        description:
           'Tablet untuk membantu mengurangi rasa nyeri, terutama nyeri pasca operasi',
         dosing:
           'Dewasa : 1 tablet jika sakit timbul, berikutnya 1 tablet tiap 6-8 jam, maksimum 4 tablet sehari.',
@@ -769,7 +769,7 @@ module.exports = {
         packaging_type_id: 5,
         product_type_id: 1,
         net_content: 4,
-        desrcription:
+        description:
           'Biogesic 500 Mg 4 Tablet bekerja dengan cara mengurangi produksi zat penyebab peradangan, yaitu prostaglandin. Penurunan kadar prostaglandin di dalam tubuh akan membuat tanda peradangan seperti demam dan nyeri berkurang.',
         dosing:
           'Dewasa dan anak-anak usia12 tahun ke atas: 1-2 tablet, 3-4 kali sehari.\nAnak-anak usia 6-12 tahun: ½-1 tablet, 3-4 kali sehari.',
@@ -784,7 +784,7 @@ module.exports = {
         packaging_type_id: 5,
         product_type_id: 1,
         net_content: 4,
-        desrcription:
+        description:
           'Kandungan ibuprofen, paracetamol, dan kafein yang terkandung di dalam Bodrex Extra Kaplet bekerja secara sinergis meredakan nyeri akibat sakit kepala.',
         dosing: 'Dosis Bodrex Extra Kaplet adalah 1-2 tablet, 3-4 kali sehari',
         BPOM_id: 'DTL0622719204A1',
@@ -798,7 +798,7 @@ module.exports = {
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
-        desrcription:
+        description:
           'Cargesik Kaplet mengandung asam mefenamat (mefenamic acid) yang bekerja dengan menghambat enzim yang berperan dalam pembentukan prostaglandin. Berkurangnya kadar prostaglandin dapat meredakan gejala radang, seperti nyeri, kemerahan, atau bengkak.',
         dosing:
           'Dosis umum Cargesik Kaplet untuk meredakan nyeri akibat sakit gigi, haid, atau radang sendi, seperti osteoarthritis dan rheumatoid arthritis, untuk dewasa dan anak usia 14 tahun ke atas adalah 500 mg, 3 kali sehari. ',
@@ -813,7 +813,7 @@ module.exports = {
         packaging_type_id: 5,
         product_type_id: 1,
         net_content: 10,
-        desrcription:
+        description:
           'Exedra Rema 10 Kaplet mengandung ibuprofen dan paracetamol. Ibuprofen dan paracetamol merupakan obat dengan efek analgetik dan antipiretik, sehingga bisa meredakan demam dan nyeri. ',
         dosing: 'Dosis 1 kaplet, 3–4 kali sehari. ',
         BPOM_id: 'DTL1840403204A1',
@@ -828,7 +828,7 @@ module.exports = {
         packaging_type_id: 1,
         product_type_id: 2,
         net_content: 15,
-        desrcription:
+        description:
           'Coolling 5 Antiseptik Mouth and Throat Spray Cappuccino 15 Ml juga bisa digunakan untuk meredakan sariawan dan mengurangi bau mulut yang tidak sedap. ',
         dosing:
           'Semprotkan 2-3 kali ke arah tenggorokan atau area mulut. Semprotan dapat diulang tiap 2 jam sampai gejala reda.',
@@ -843,7 +843,7 @@ module.exports = {
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
-        desrcription:
+        description:
           'Degirol 0,25 mg Tablet mengandung bahan aktif dequalinium chloride. Dequalinium chloride memiliki sifat antiseptik yang bekerja dengan cara membunuh bakteri dan jamur penyebab infeksi ringan pada mulut dan tenggorokan. ',
         dosing:
           '1 tablet isap, 3–4 kali sehari atau sesuai petunjuk dokter. Dosis maksimal 8 tablet per hari.',
@@ -858,7 +858,7 @@ module.exports = {
         packaging_type_id: 1,
         product_type_id: 2,
         net_content: 200,
-        desrcription:
+        description:
           'Larutan Penyegar Cap Badak Botol mengandung gypsum fibrosum. Bahan ini dipercaya dapat mengurangi gejala panas dalam, seperti rasa tidak nyaman di tenggorokan, sakit ketika menelan, bibir pecah-pecah, sariawan, dan bau mulut.',
         dosing:
           'Dewasa: Untuk pengobatan, minum 100–200 ml, 3 kali sehari. Untuk pencegahan, minum 200 ml 1 kali sehari.\nAnak-anak: Untuk pengobatan, minum 50–100 ml, 3 kali sehari. Untuk pencegahan, minum 100 ml, 1 kali sehari.',
@@ -873,7 +873,7 @@ module.exports = {
         packaging_type_id: 1,
         product_type_id: 3,
         net_content: 1.2,
-        desrcription:
+        description:
           'Obat Sakit Tenggorokan Cheng Sie Lung Hau Feng Yao San terbuat dari bahan herbal yang memiliki efek antiradang. Berkat efek dari bahan herbal tersebut, obat ini dipercaya dapat mengurangi nyeri akibat sariawan, serta meredakan radang tenggorokan atau sakit gigi. ',
         dosing:
           'Taburkan Obat Sakit Tenggorokan Cheng Sie Lung Hau Feng Yao San sedikit ke dalam mulut atau langsung pada sariawan, 2-3 kali tiap jam.',
@@ -888,7 +888,7 @@ module.exports = {
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 6,
-        desrcription:
+        description:
           'Tantum Lozenge merupakan tablet hisap rasa mint yang mengandung benzydamine hydrochloride. Benzydamine bekerja dengan cara mengurangi produksi zat yang menyebabkan peradangan dan nyeri.',
         dosing:
           'Dosis untuk dewasa dan anak usia 6 tahun ke atas: 1 tablet isap, 3 kali sehari.',
