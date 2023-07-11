@@ -6,7 +6,9 @@ import toast from 'react-hot-toast';
 // import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 // const provider = new GoogleAuthProvider();
 
-const token = localStorage.getItem('token') ? localStorage?.getItem('token') : '';
+const token = localStorage.getItem('token')
+  ? localStorage?.getItem('token')
+  : '';
 
 const initialState = {
   user: {},
