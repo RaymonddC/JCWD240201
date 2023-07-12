@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       qty: DataTypes.INTEGER,
       prescription_image: DataTypes.INTEGER,
       confirmation: DataTypes.BOOLEAN,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'cart',
     },
   );

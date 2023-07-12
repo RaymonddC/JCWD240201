@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     notes: DataTypes.STRING,
     address: DataTypes.STRING,
     phone_number: DataTypes.STRING,
-    reciever: DataTypes.STRING
+    reciever: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'address',
   });
   return address;

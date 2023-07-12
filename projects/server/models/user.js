@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       birthdate: DataTypes.DATEONLY,
       gender: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'user',
     },
   );

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       type_name: DataTypes.STRING,
       unit: DataTypes.STRING,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'product_type',
     },
   );
