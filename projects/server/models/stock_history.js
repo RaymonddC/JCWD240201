@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       qty: DataTypes.INTEGER,
       action: DataTypes.STRING,
       notes: DataTypes.STRING,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'stock_history',
     },
   );

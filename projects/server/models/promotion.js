@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     minimum_transaction: DataTypes.INTEGER,
     maximum_discount_amount: DataTypes.INTEGER,
     date_start: DataTypes.DATEONLY,
-    date_end: DataTypes.DATEONLY
+    date_end: DataTypes.DATEONLY,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'promotion',
   });
   return promotion;

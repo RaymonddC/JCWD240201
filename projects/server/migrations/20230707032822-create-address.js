@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      user_id: {
+        type: Sequelize.INTEGER
+      },
       city_id: {
         type: Sequelize.INTEGER
       },
@@ -23,6 +26,12 @@ module.exports = {
       },
       reciever: {
         type: Sequelize.STRING
+      },
+      is_main: {
+        type: Sequelize.BOOLEAN
+      },
+      deletedAt: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,

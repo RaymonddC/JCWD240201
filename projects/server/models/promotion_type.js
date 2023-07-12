@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   promotion_type.init({
-    promotion: DataTypes.STRING
+    promotion: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'promotion_type',
   });
   return promotion_type;

@@ -54,11 +54,14 @@ module.exports = {
 
       if (!verifiedUser) throw { message: 'Unauthorized request' };
 
-      const result = await User.update({verified: true}, {
-        where: {
-            email: verifiedUser.email
-        }
-      })
+      const result = await User.update(
+        { verified: true },
+        {
+          where: {
+            email: verifiedUser.email,
+          },
+        },
+      );
 
       return res.send({
         success: true,
@@ -74,5 +77,5 @@ module.exports = {
         data: null,
       });
     }
-  }
+  },
 };
