@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   opened_stock.init({
     product_id: DataTypes.INTEGER,
     exp_date: DataTypes.DATEONLY,
-    qty: DataTypes.INTEGER
+    qty: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'opened_stock',
   });
   return opened_stock;

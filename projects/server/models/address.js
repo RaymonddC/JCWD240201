@@ -14,14 +14,16 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   address.init({
+    user_id: DataTypes.INTEGER,
     city_id: DataTypes.INTEGER,
     notes: DataTypes.STRING,
     address: DataTypes.STRING,
     phone_number: DataTypes.STRING,
-    reciever: DataTypes.STRING
+    reciever: DataTypes.STRING,
+    is_main: DataTypes.BOOLEAN,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'address',
   });
   return address;

@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   transaction_status.init({
-    status: DataTypes.STRING
+    status: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'transaction_status',
   });
   return transaction_status;

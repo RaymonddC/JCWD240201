@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       transaction_id: DataTypes.INTEGER,
       transaction_status_id: DataTypes.INTEGER,
       is_active: DataTypes.BOOLEAN,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'transaction_history',
     },
   );

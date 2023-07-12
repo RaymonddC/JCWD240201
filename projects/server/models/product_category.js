@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   product_category.init({
-    category_name: DataTypes.STRING
+    category_name: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'product_category',
   });
   return product_category;
