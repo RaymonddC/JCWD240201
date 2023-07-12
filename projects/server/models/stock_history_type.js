@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   stock_history_type.init({
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'stock_history_type',
   });
   return stock_history_type;

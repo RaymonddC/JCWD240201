@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   question.init({
     question: DataTypes.STRING,
-    user_id: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'question',
   });
   return question;

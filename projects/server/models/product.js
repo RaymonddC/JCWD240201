@@ -22,10 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       BPOM_id: DataTypes.STRING,
       require_prescription: DataTypes.BOOLEAN,
       price: DataTypes.INTEGER,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'product',
     },
   );

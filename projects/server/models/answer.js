@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   answer.init({
     answer: DataTypes.STRING,
     question_id: DataTypes.INTEGER,
-    user_id: DataTypes.INTEGER
+    user_id: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'answer',
   });
   return answer;

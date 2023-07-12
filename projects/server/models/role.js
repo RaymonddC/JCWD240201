@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   role.init({
-    role_name: DataTypes.STRING
+    role_name: DataTypes.STRING,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'role',
   });
   return role;

@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   label.init({
     product_id: DataTypes.INTEGER,
-    category_id: DataTypes.INTEGER
+    category_id: DataTypes.INTEGER,
+    deletedAt: DataTypes.DATE
   }, {
     sequelize,
-    paranoid: true,
     modelName: 'label',
   });
   return label;
