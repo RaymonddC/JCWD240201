@@ -4,12 +4,7 @@ const auth = require('../middleware/auth');
 
 const { authController } = require('./../controllers');
 
-// router.post('/register', authController.userCreate, authController.sendVerifLink);
-// router.get('/sendVerifLink/:username', authController.sendVerifLink);
-// router.post('/login', authController.userLogin);
-// router.post('/verify', auth.verifyToken, authController.verifyUser);
-
-// //keepLogin (byToken)
-// router.get('/getUser', auth.verifyToken, authController.getUserById);
+router.post('/sendVerify', authController.sendVerifyEmail)
+router.post('/verifyEmail', authController.verifyAccount)
 
 module.exports = router;
