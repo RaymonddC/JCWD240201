@@ -1,5 +1,3 @@
-import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -7,7 +5,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import SignIn from './Pages/test';
+import VerifyEmail from './Pages/VerifyEmail';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -23,7 +21,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/verification" element={<VerifyEmail />} />
       </Routes>
     </>
   );
