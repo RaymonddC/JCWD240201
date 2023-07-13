@@ -3,11 +3,15 @@ import { createTheme } from '@mui/material/styles';
 const defaultTheme = createTheme({
   palette: {
     primary: {
-      main: '#007680',
-      button: '#000000',
+      main: '#f0f0f0',
+      button: '#00A8B5',
     },
     secondary: {
       main: '#00A8B5',
+    },
+    button: {
+      main: '#00A8B5',
+      hover: '#dddddd',
     },
   },
 });

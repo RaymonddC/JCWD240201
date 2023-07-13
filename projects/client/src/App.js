@@ -8,6 +8,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import SignIn from './Pages/test';
+import Profile from './Pages/Profile';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -24,6 +25,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<SignIn />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </>
   );
