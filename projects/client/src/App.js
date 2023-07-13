@@ -7,7 +7,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import SignIn from './Pages/test';
+import { Login } from './Pages/Login/Login';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -23,7 +23,9 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<SignIn />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Login />} />
       </Routes>
     </>
   );
