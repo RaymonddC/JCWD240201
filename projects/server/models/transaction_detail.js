@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       transaction_id: DataTypes.INTEGER,
       price: DataTypes.INTEGER,
       product_name: DataTypes.STRING,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'transaction_detail',
     },
   );

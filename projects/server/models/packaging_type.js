@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   packaging_type.init(
     {
       type_name: DataTypes.STRING,
+      deletedAt: DataTypes.DATE
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'packaging_type',
     },
   );
