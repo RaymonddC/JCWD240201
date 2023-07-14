@@ -8,5 +8,5 @@ module.exports = {
       lg: { min: '1024px' },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
 };

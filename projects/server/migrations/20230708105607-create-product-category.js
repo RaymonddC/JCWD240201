@@ -12,6 +12,9 @@ module.exports = {
       category_name: {
         type: Sequelize.STRING
       },
+      image: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },
