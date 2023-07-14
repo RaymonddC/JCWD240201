@@ -48,7 +48,6 @@ module.exports = {
 
   verifyAccount: async (req, res) => {
     try {
-      console.log('masuk');
       let token = req.headers.authorization;
       token = token.split(' ')[1];
       let verifiedUser = jwt.verify(token, 'verification-account');
