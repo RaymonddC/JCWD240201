@@ -4,21 +4,23 @@ import React from 'react';
 export const Input = (props) => {
   return (
     <>
-      <TextField
-        margin="normal"
-        required
-        fullWidth
-        id="email"
-        label="Email Address"
-        name="email"
-        autoComplete="email"
-        type="email"
-        variant="outlined"
-        value={props.value}
-        onBlur={props.onBlur}
-        onChange={props.onChange}
-        className="pl-[20px] pr-[15px] py-[20px] bg-[#EEEEEE]  rounded-l w-full "
-      />
+      <div className={`form-control w-full ${props.hidden} `}>
+        <label className="label">
+          <span className="label-text">{props.label}</span>
+        </label>
+        <input
+          name={props.name}
+          type={props.type}
+          placeholder={props.label}
+          className="input input-bordered w-full h-[3em]"
+          value={props.value}
+          onBlur={props.onBlur}
+          onChange={props.onChanged}
+        />
+        {props.errors && props.touched ? (
+          <div className="error text-right">{props.errors}</div>
+        ) : null}
+      </div>
     </>
   );
 };

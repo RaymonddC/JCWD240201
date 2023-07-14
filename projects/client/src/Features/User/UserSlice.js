@@ -142,7 +142,7 @@ export const onRegister = (values) => async (dispatch) => {
     // if (!username) return toast.error(`Fill All Data!`);
 
     const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/auth/register`,
+      `${process.env.REACT_APP_API_BASE_URL}/auth/register`,
       {
         username: usernameOrEmail,
         email: email,

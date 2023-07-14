@@ -2,161 +2,121 @@ import { Formik } from 'formik';
 import React, { useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
 import { onLoginAsync, onRegister } from '../../Features/User/UserSlice';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
-import { Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { TextField, Paper, Box, Grid, InputAdornment } from '@mui/material';
-import { FcGoogle } from 'react-icons/fc';
 
-export const AuthForm = (props) => {
+import { Link, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { FcGoogle } from 'react-icons/fc';
+import { Input } from './Input/Input';
+import { InputPassword } from './Input/InputPassword';
+
+export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const isSubmit = useSelector((state) => state?.user?.isSubmitting);
-  const [showPass, setShowPass] = React.useState(false);
-  const [showCPass, setShowCPass] = useState(false);
   return (
     <Formik
       initialValues={{
+        fullName: '',
         usernameOrEmail: '',
         password: '',
         email: '',
         confirmPassword: '',
         phoneNumber: '',
       }}
-      validationSchema={props.isRegis ? SignupSchema : LoginSchema}
+      validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
       onSubmit={(values, { resetForm }) => {
-        dispatch(props.isRegis ? onRegister(values) : onLoginAsync(values));
-        if (!props.isRegis) resetForm();
+        dispatch(propss.isRegis ? onRegister(values) : onLoginAsync(values));
+        if (!propss.isRegis) resetForm();
         else {
           return <Navigate to={'/login'} />;
         }
       }}
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        resetForm,
-
-        /* and other goodies */
-      }) => (
-        <form onSubmit={handleSubmit} className="min-w-[290px]">
+      {(props) => (
+        <form onSubmit={props.handleSubmit} className="min-w-[290px]">
           <div
-            className={`inputEmail my-[20px] ${props.isRegis ? '' : 'hidden'}`}
+            className={propss.isRegis ? 'grid grid-cols-2 gap-x-5 gap-y-1' : ''}
           >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
+            <Input
+              hidden={propss.isRegis ? '' : 'hidden'}
+              label="Full Name"
+              type="text"
+              name="fullName"
+              errors={props.errors.fullName}
+              touched={props.touched.fullName}
+              value={props.values.fullName}
+              onBlur={props.handleBlur}
+              onChanged={props.handleChange}
+            />
+            <Input
+              hidden={propss.isRegis ? '' : 'hidden'}
               label="Email Address"
-              name="email"
-              autoComplete="email"
               type="email"
-              variant="outlined"
-              value={props.value}
-              onBlur={props.onBlur}
-              onChange={props.onChange}
+              name="email"
+              errors={props.errors.email}
+              touched={props.touched.email}
+              value={props.values.email}
+              onBlur={props.handleBlur}
+              onChanged={props.handleChange}
             />
-            {errors.email && touched.email ? (
-              <div className="error">{errors.email}</div>
-            ) : null}
-          </div>
-          <div className={`inputUsernameOrEmail my-[20px] `}>
-            <TextField
-              id="outlined-basic"
-              label={`Username ${props.isRegis ? '' : 'or Email'} `}
-              variant="outlined"
+            <Input
+              label={`Username ${propss.isRegis ? '' : 'or Email'} `}
+              type="text"
               name="usernameOrEmail"
-              value={values.usernameOrEmail}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              className="w-full "
+              errors={props.errors.usernameOrEmail}
+              touched={props.touched.usernameOrEmail}
+              value={props.values.usernameOrEmail}
+              onBlur={props.handleBlur}
+              onChanged={props.handleChange}
             />
-            {errors.usernameOrEmail && touched.usernameOrEmail ? (
-              <div className="error">{errors.usernameOrEmail}</div>
-            ) : null}
-          </div>
-          <div className="inputPass relative my-[20px]">
-            <div className="icon" onClick={() => setShowPass(!showPass)}>
-              {showPass ? (
-                <VisibilityOutlinedIcon className="absolute right-[20px] top-[20px] z-30" />
-              ) : (
-                <VisibilityOffOutlinedIcon className="absolute right-[20px] top-[20px] z-30" />
-              )}
-            </div>
-            <TextField
-              id="outlined-basic"
-              label="Password"
-              variant="outlined"
-              name="password"
-              type={showPass ? 'text' : 'password'}
-              value={values.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              className="w-full pr-[50px] pl-5"
-            />
-            {errors.password && touched.password ? (
-              <div className="error">{errors.password}</div>
-            ) : null}
-          </div>
-          <div
-            className={`inputCPass relative my-[20px] ${
-              props.isRegis ? '' : 'hidden'
-            }`}
-          >
-            <div className="icon" onClick={() => setShowCPass(!showCPass)}>
-              {showCPass ? (
-                <VisibilityOutlinedIcon className="absolute right-[20px] top-[20px] z-30" />
-              ) : (
-                <VisibilityOffOutlinedIcon className="absolute right-[20px] top-[20px] z-30" />
-              )}
-            </div>
-            <TextField
-              id="outlined-basic"
-              label="Confirm Password"
-              variant="outlined"
-              name="confirmPassword"
-              type={showCPass ? 'text' : 'password'}
-              value={values.confirmPassword}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              className="w-full"
-            />
-            {errors.confirmPassword && touched.confirmPassword ? (
-              <div className="error">{errors.confirmPassword}</div>
-            ) : null}
-          </div>
-          <div className={`phoneNumber my-[20px] `}>
-            <TextField
-              id="phoneNumber"
+            <Input
+              hidden={propss.isRegis ? '' : 'hidden'}
               label={'Phone Number'}
-              variant="outlined"
-              name="phoneNumber"
-              value={values.phoneNumber}
-              onBlur={handleBlur}
-              onChange={handleChange}
               type="number"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">+62</InputAdornment>
-                ),
-              }}
-              className="w-full "
+              name="phoneNumber"
+              errors={props.errors.phoneNumber}
+              touched={props.touched.phoneNumber}
+              value={props.values.phoneNumber}
+              onBlur={props.handleBlur}
+              onChanged={props.handleChange}
             />
-            {errors.phoneNumber && touched.phoneNumber ? (
-              <div className="error">{errors.phoneNumber}</div>
-            ) : null}
+            <InputPassword
+              label={`Password`}
+              name="password"
+              errors={props.errors.password}
+              touched={props.touched.password}
+              value={props.values.password}
+              onBlur={props.handleBlur}
+              onChanged={props.handleChange}
+            />
+            <InputPassword
+              hidden={propss.isRegis ? '' : 'hidden'}
+              label="Confirm Password"
+              name="confirmPassword"
+              errors={props.errors.confirmPassword}
+              touched={props.touched.confirmPassword}
+              value={props.values.confirmPassword}
+              onBlur={props.handleBlur}
+              onChanged={props.handleChange}
+            />
           </div>
+          {propss.isRegis ? (
+            ''
+          ) : (
+            <>
+              <Link
+                to={propss.isRegis ? '/login' : '/register'}
+                className="text-blue-500"
+              >
+                Forgot Password?
+              </Link>
+            </>
+          )}
           <button
             type="submit"
             className="bg-[#007680]  text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px]"
             disabled={isSubmit}
           >
-            {props.isRegis ? 'Register' : 'Login'}
+            {propss.isRegis ? 'Register' : 'Login'}
           </button>
           <div className="btnOther w-full text-[13px] font-bold ">
             <div className="font-bold rounded-xl py-[8px] w-full  border border-[#898989]  my-[10px] flex items-center">
@@ -168,7 +128,7 @@ export const AuthForm = (props) => {
               >
                 <FcGoogle size={'24px'} />
                 <p>
-                  {props.isRegis ? 'Sign up with ' : 'Sign in with  '}
+                  {propss.isRegis ? 'Sign up with ' : 'Sign in with  '}
                   Google
                 </p>
               </div>
