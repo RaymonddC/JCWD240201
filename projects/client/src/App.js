@@ -1,12 +1,12 @@
-import axios from 'axios';
-import logo from './logo.svg';
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
 import './App.css';
-import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import LandingPage from './Pages/LandingPage';
+import Landing from './Pages/Landing';
+import QnA from './Pages/QnA';
 
 function App() {
-  const [message, setMessage] = useState('');
+  // const [message, setMessage] = useState('');
 
   // useEffect(() => {
   //   (async () => {
@@ -19,7 +19,8 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/qna" element={<QnA />} />
       </Routes>
     </>
   );
