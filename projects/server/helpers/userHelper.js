@@ -2,9 +2,20 @@ const db = require('./../models');
 const User = db.user;
 const { Op } = require('sequelize');
 
-const getUser = async (email = '', username = '') => {
+const getUser = async (email = '', username = '', excludes) => {
   try {
     return await User.findOne({
+      where: {
+        [Op.or]: [{ email: email }, { username: username }],
+      },
+      attributes: { exclude: [excludes] },
+    });
+  } catch (error) {}
+};
+
+const getByUserWithPassword = async (usernameOrEmail = '', password = '') => {
+  try {
+    const isUserExists = await User.findOne({
       where: {
         [Op.or]: [{ email: email }, { username: username }],
       },

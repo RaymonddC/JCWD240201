@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 
 const { authController } = require('./../controllers');
 
-router.post('/register', authController.userCreate, authController.userCreate);
+router.post('/register', authController.userCreate);
 
 // router.get('/sendVerifLink/:username', authController.sendVerifLink);
 // router.post('/login', authController.userLogin);

@@ -34,7 +34,7 @@ const userCreate = async (req, res, next) => {
       throw { message: 'Fill all data', code: 400 };
 
     const isEmailExist = await getUser(email, username);
-
+    // process.exit();
     if (isEmailExist)
       throw { message: 'username or email is already exists', code: 400 };
 
@@ -53,7 +53,7 @@ const userCreate = async (req, res, next) => {
       role_id: role ? role : 2,
     });
 
-    const result = await getUser(newUser.email, newUser.username);
+    const result = await getUser(newUser.email, newUser.username, 'password');
 
     req.params.username = result.username;
 
