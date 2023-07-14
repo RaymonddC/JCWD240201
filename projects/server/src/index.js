@@ -26,13 +26,14 @@ app.use(cors());
 const { authRoute } = require('../routers');
 
 app.use('/auth', authRoute);
+
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
 });
 
-app.get("/api/greetings", (req, res, next) => {
+app.get('/api/greetings', (req, res, next) => {
   res.status(200).json({
-    message: "Hello, Student !",
+    message: 'Hello, Student !',
   });
 });
 
@@ -57,6 +58,17 @@ app.get("/api/greetings", (req, res, next) => {
 //   }
 // });
 
+app.use((err, req, res, next) => {
+  const errStatus = err.code || 500;
+  const errMessage = err.message || 'Something went wrong';
+  return res.status(errStatus).json({
+    success: false,
+    status: errStatus,
+    message: errMessage,
+    stack: err.stack,
+    data: null,
+  });
+});
 //#endregion
 
 //#region CLIENT
