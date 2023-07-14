@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import { Login } from './Pages/Login';
 import LandingPage from './Pages/LandingPage';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -20,6 +21,7 @@ function App() {
   // }, []);
   return (
     <>
+      <Toaster />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Login />} />

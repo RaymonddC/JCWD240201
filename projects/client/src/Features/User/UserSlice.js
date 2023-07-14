@@ -37,13 +37,14 @@ const getUser = (user_id) => (dispatch) => {
     console.log(error);
   }
 };
+
 export const keepLoginAsync = () => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
     // if (token == null) throw { message: 'No User' };
     if (token) {
       let response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/auth/getUser`,
+        `${process.env.REACT_APP_API_BASE_URL}/auth/getUser`,
         {
           headers: {
             Authorization: `bearer ${token}`,
@@ -80,7 +81,7 @@ export const checkCredentialAsync =
     try {
       console.log(usernameOrEmail, password);
       let response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
+        `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
         {
           usernameOrEmail: usernameOrEmail,
           password: password,
