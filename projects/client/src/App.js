@@ -2,6 +2,7 @@
 // import { useEffect, useState } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
+import VerifyEmail from './Pages/VerifyEmail';
 import Landing from './Pages/Landing';
 import QnA from './Pages/QnA';
 
@@ -21,6 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/qna" element={<QnA />} />
+        <Route path="/verification" element={<VerifyEmail />} />
       </Routes>
     </>
   );
