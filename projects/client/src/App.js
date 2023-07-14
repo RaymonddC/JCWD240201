@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
+import LandingPage from './Pages/LandingPage';
 
 function App() {
   const [message, setMessage] = useState('');
@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route path="/" element={<SignIn />} /> */}
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </>
   );
