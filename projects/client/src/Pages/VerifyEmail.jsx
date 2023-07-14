@@ -31,7 +31,7 @@ export default function VerifyEmail() {
               You have successfully verified account.
             </div>
             <div className="flex content-center justify-center">
-              <button className="btn btn-accent w-fit text-white">Button</button>
+              <button className="btn btn-accent w-4/12 text-white">Ok</button>
             </div>
           </div>
         </div>
