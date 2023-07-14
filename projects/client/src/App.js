@@ -20,9 +20,9 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/verification" element={<VerifyEmail />} />
         <Route path="/" element={<Landing />} />
         <Route path="/qna" element={<QnA />} />
+        <Route path="/verification" element={<VerifyEmail />} />
       </Routes>
     </>
   );
