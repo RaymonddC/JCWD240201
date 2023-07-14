@@ -52,7 +52,13 @@ module.exports = {
       token = token.split(' ')[1];
       let verifiedUser = jwt.verify(token, 'verification-account');
 
-      if (!verifiedUser) throw { message: 'Unauthorized request' };
+      if (!verifiedUser) throw { message: 'Unauthorized request', status: 401 };
+
+      const isVerified = await User.findOne({
+        where: { email: verifiedUser.email },
+      });
+
+      if (isVerified.verified) throw { message: 'Account is already verified' };
 
       const result = await User.update(
         { verified: true },
