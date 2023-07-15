@@ -1,12 +1,5 @@
-import PersonIcon from '@mui/icons-material/Person';
-// import TextField from '@mui/material/TextField';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import { useFormik } from 'formik';
-import Button from '@mui/material/Button';
-import defaultTheme from '../utils/theme';
-import { ThemeProvider } from '@mui/material/styles';
+import { MdPerson } from 'react-icons/md';
 
 export default function Profile() {
   const formik = useFormik({
@@ -21,24 +14,22 @@ export default function Profile() {
       alert(JSON.stringify(values, null, 2));
     },
   });
+  console.log(formik.values);
   return (
-    <div className="flex sm:flex-col justify-center sm:items-center px-4">
+    <div className="flex sm:flex-col justify-center sm:items-center px-4 gap-4">
       <div className="flex flex-col items-center">
-        <PersonIcon
-          className="sm:!w-[100px] sm:!h-[100px] lg:!w-[200px] lg:!h-[200px]"
-          sx={{
-            background: 'grey',
-            color: 'white',
-            borderRadius: '100%',
-          }}
-        />
+        <MdPerson className="sm:!w-[100px] sm:!h-[100px] lg:!w-[200px] lg:!h-[200px]" />
         <button className="text-[#00A8B5] font-bold">Change Profile</button>
         <p className="text-[14px]">File max size 1 MB</p>
         <p className="text-[14px]">
           File must be in .JPG, .PNG and .GIF format
         </p>
       </div>
-      <form className="sm:w-full" onSubmit={formik.handleSubmit} noValidate>
+      <form
+        className="sm:w-full max-w-[770px] porse"
+        onSubmit={formik.handleSubmit}
+        noValidate
+      >
         <label htmlFor="" className="text-[14px]">
           Full Name
         </label>
@@ -69,51 +60,39 @@ export default function Profile() {
           id="email"
           className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
           type="email"
+          disabled
           onChange={formik.handleChange}
           value={formik.values.email}
         />
         <label htmlFor="" className="text-[14px]">
           Gender
         </label>
-        <RadioGroup
-          row
-          aria-labelledby="demo-row-radio-buttons-group-label"
-          name="gender"
-          id="gender"
-          defaultValue="male"
-          onChange={formik.handleChange}
-          value={formik.values.gender}
-        >
-          <FormControlLabel
-            color="secondary"
-            value="male"
-            control={
-              <Radio
-                sx={{
-                  color: '#00A8B5',
-                  '&.Mui-checked': {
-                    color: '#00A8B5',
-                  },
-                }}
-              />
-            }
-            label="Male"
-          />
-          <FormControlLabel
-            value="female"
-            control={
-              <Radio
-                sx={{
-                  color: '#00A8B5',
-                  '&.Mui-checked': {
-                    color: '#00A8B5',
-                  },
-                }}
-              />
-            }
-            label="Female"
-          />
-        </RadioGroup>
+        <div className="flex gap-4">
+          <div className="flex items-center gap-2">
+            <input
+              id="gender"
+              type="radio"
+              name="gender"
+              className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
+              checked={formik.values.gender === 'male'}
+              onChange={formik.handleChange}
+              value="male"
+            />
+            <span>Male</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              id="gender"
+              type="radio"
+              name="gender"
+              className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
+              checked={formik.values.gender === 'female'}
+              onChange={formik.handleChange}
+              value="female"
+            />
+            <span>Female</span>
+          </div>
+        </div>
         <label htmlFor="" className="text-[14px]">
           Date of Birth
         </label>
@@ -125,20 +104,10 @@ export default function Profile() {
           onChange={formik.handleChange}
           value={formik.values.birthdate}
         />
-        <ThemeProvider theme={defaultTheme}>
-          <Button
-            fullWidth
-            variant="contained"
-            color="button"
-            sx={{ color: '#ffffff' }}
-            type="submit"
-          >
-            SAVE
-          </Button>
-          <Button fullWidth sx={{ color: '#00A8B5' }}>
-            BACK
-          </Button>
-        </ThemeProvider>
+        <button type="submit" className="btn w-full bg-[#00A8B5] text-white">
+          SAVE
+        </button>
+        <button className="btn btn-ghost w-full text-[#00A8B5]">BACK</button>
       </form>
     </div>
   );
