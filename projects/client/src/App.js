@@ -8,6 +8,9 @@ import { Toaster } from 'react-hot-toast';
 import VerifyEmail from './Pages/VerifyEmail';
 import Landing from './Pages/Landing';
 import QnA from './Pages/QnA';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { keepLoginAsync } from './Features/User/UserSlice';
 
 function App() {
   // const [message, setMessage] = useState('');
@@ -20,6 +23,10 @@ function App() {
   //     setMessage(data?.message || "");
   //   })();
   // }, []);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(keepLoginAsync());
+  }, []);
   return (
     <>
       <Toaster />

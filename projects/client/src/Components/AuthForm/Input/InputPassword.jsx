@@ -1,8 +1,6 @@
-import { TextField } from '@mui/material';
 import React from 'react';
 
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 export const InputPassword = (props) => {
   const [showPass, setShowPass] = React.useState(false);
@@ -11,9 +9,9 @@ export const InputPassword = (props) => {
       <div className={`form-control w-full relative ${props.hidden} `}>
         <div className="icon" onClick={() => setShowPass(!showPass)}>
           {showPass ? (
-            <VisibilityOutlinedIcon className="absolute right-[20px] top-[50px] z-30" />
+            <MdOutlineVisibility className="absolute right-[20px] top-[50px] z-30 " />
           ) : (
-            <VisibilityOffOutlinedIcon className="absolute right-[20px] top-[50px] z-30" />
+            <MdOutlineVisibilityOff className="absolute right-[10px] xl:right-[15px] top-[55px] xl:top-[50px] z-30 text-[1em] xl:text-[1.5em]" />
           )}
         </div>
         <label className="label">

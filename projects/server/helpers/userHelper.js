@@ -11,7 +11,7 @@ const generateToken = async (result) => {
       role_id: result?.role_id,
     };
 
-    return jwt.sign(payload, 'tweensta', {
+    return jwt.sign(payload, 'pharmacy', {
       expiresIn: '1h',
     });
   } catch (error) {
@@ -27,18 +27,19 @@ const getUser = async (email = '', username = '', excludes) => {
       },
       attributes: { exclude: [excludes] },
     });
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
 
-const getByUserWithPassword = async (usernameOrEmail = '', password = '') => {
+const getUserByPk = async (primaryKey, excludes) => {
   try {
-    const isUserExists = await User.findOne({
-      where: {
-        [Op.or]: [{ email: email }, { username: username }],
-      },
-      attributes: { exclude: ['password'] },
+    return await User.findByPk(primaryKey, {
+      attributes: { exclude: excludes },
     });
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
 
 const validatePassword = async (password = '', confirmPassword = '') => {
@@ -67,4 +68,4 @@ const validatePassword = async (password = '', confirmPassword = '') => {
   }
 };
 
-module.exports = { getUser, validatePassword, generateToken };
+module.exports = { getUser, validatePassword, getUserByPk, generateToken };

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { getDataUser } from '../../API/user';
+import { checkCredentialApi } from '../../API/auth';
 
 // import { auth } from './../../firebase';
 // import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
@@ -12,7 +13,7 @@ const token = localStorage.getItem('token')
   : '';
 
 const initialState = {
-  user: null,
+  user: {},
   isSubmitting: false,
 };
 
@@ -22,6 +23,7 @@ export const UserSlice = createSlice({
   reducers: {
     onSaveUser: (initialState, action) => {
       initialState.user = action.payload;
+      console.log(initialState.user, action.payload);
     },
     toggleBtn: (initialState, action) => {
       initialState.isSubmitting = !initialState.isSubmitting;
@@ -44,7 +46,7 @@ export const keepLoginAsync = () => async (dispatch) => {
     // if (token == null) throw { message: 'No User' };
     if (token) {
       let response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/auth/getUser`,
+        `${process.env.REACT_APP_API_BASE_URL}auth/getUser`,
         {
           headers: {
             Authorization: `bearer ${token}`,
@@ -79,22 +81,12 @@ export const logoutAsync = () => async (dispatch) => {
 export const checkCredentialAsync =
   (usernameOrEmail, password) => async (dispatch) => {
     try {
-      console.log(usernameOrEmail, password);
-      let response = await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/auth/login`,
-        {
-          usernameOrEmail: usernameOrEmail,
-          password: password,
-        },
-      );
-      console.log(response);
-
+      let response = await checkCredentialApi(usernameOrEmail, password);
       return response.data;
     } catch (error) {
-      console.log(error);
-      // throw new Error({
-      //   message: error?.response?.data?.message || error?.message,
-      // });
+      throw {
+        message: error?.response?.data?.message || error?.message,
+      };
     }
   };
 
@@ -104,31 +96,19 @@ export const onLoginAsync = (values) => async (dispatch) => {
     const { usernameOrEmail, password } = values;
     if (!usernameOrEmail || !password) return toast.error(`Fill All Data!`);
 
-    // dispatch(toggleBtn());
-
-    console.log(values);
     let result = await dispatch(
       checkCredentialAsync(usernameOrEmail, password),
     );
-    console.log(values);
-
-    // if (result.length === 0) throw { message: 'Account Not Found' };
 
     localStorage.removeItem('token');
 
-    // console.log(result);
     localStorage.setItem('token', result.token);
-    // localStorage.setItem('auth', JSON.stringify({ token: result.token, authorization: result.data.Role.type }));
 
-    // localStorage.setItem('userId', result.data.id);
-
-    console.log(result);
-
+    console.log(result.data);
     dispatch(onSaveUser(result.data));
 
     toast.success('Login Success!');
   } catch (error) {
-    console.log('error');
     toast.error(error.message);
   } finally {
     dispatch(toggleBtn());
@@ -143,7 +123,7 @@ export const onRegister = (values) => async (dispatch) => {
     // if (!username) return toast.error(`Fill All Data!`);
 
     const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}/auth/register`,
+      `${process.env.REACT_APP_API_BASE_URL}auth/register`,
       {
         username: usernameOrEmail,
         email: email,

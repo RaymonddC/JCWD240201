@@ -12,6 +12,7 @@ const {
   getUser,
   validatePassword,
   generateToken,
+  getUserByPk,
 } = require('../helpers/userHelper');
 
 const sendVerifyEmail = async (req, res, next) => {
@@ -193,4 +194,30 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { sendVerifyEmail, verifyAccount, userCreate, userLogin };
+const getUserById = async (req, res, next) => {
+  try {
+    console.log('test');
+    const user = await getUserByPk(req.user.id, [
+      'password',
+      'createdAt',
+      'updatedAt',
+    ]);
+
+    if (!user) throw { message: 'user not found!', code: 400 };
+    return res.status(200).send({
+      success: true,
+      message: 'get user success',
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  sendVerifyEmail,
+  verifyAccount,
+  userCreate,
+  userLogin,
+  getUserById,
+};
