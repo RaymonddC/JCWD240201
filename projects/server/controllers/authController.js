@@ -196,7 +196,6 @@ const userLogin = async (req, res, next) => {
 
 const getUserById = async (req, res, next) => {
   try {
-    console.log('test');
     const user = await getUserByPk(req.user.id, [
       'password',
       'createdAt',

@@ -33,17 +33,25 @@ export function sendVerificationEmail(email) {
   );
 }
 
-export function checkCredentialApi(usernameOrEmail, password) {
+export function postAPI(path, data, headerData) {
   return axios.post(
-    `${process.env.REACT_APP_API_BASE_URL}auth/login`,
+    `${process.env.REACT_APP_API_BASE_URL}${path}`,
     {
-      usernameOrEmail: usernameOrEmail,
-      password: password,
+      ...data,
     },
     {
       headers: {
         apiKey: APIKey,
+        ...headerData,
       },
     },
   );
+}
+export function getAPI(path, headerData) {
+  return axios.get(`${process.env.REACT_APP_API_BASE_URL}${path}`, {
+    headers: {
+      apiKey: APIKey,
+      ...headerData,
+    },
+  });
 }

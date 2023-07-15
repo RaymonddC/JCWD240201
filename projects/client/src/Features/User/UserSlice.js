@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { getDataUser } from '../../API/user';
-import { checkCredentialApi } from '../../API/auth';
+import { getAPI, postAPI } from '../../API/auth';
 
 // import { auth } from './../../firebase';
 // import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
@@ -45,14 +45,10 @@ export const keepLoginAsync = () => async (dispatch) => {
     let token = localStorage.getItem('token');
     // if (token == null) throw { message: 'No User' };
     if (token) {
-      let response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}auth/getUser`,
-        {
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
-        },
-      );
+      let response = await getAPI('auth/getUser', {
+        Authorization: `bearer ${token}`,
+      });
+
       if (
         response?.data?.message == 'jwt expired' ||
         !response?.data ||
@@ -81,7 +77,11 @@ export const logoutAsync = () => async (dispatch) => {
 export const checkCredentialAsync =
   (usernameOrEmail, password) => async (dispatch) => {
     try {
-      let response = await checkCredentialApi(usernameOrEmail, password);
+      let response = await postAPI('auth/login', {
+        usernameOrEmail,
+        password,
+      });
+
       return response.data;
     } catch (error) {
       throw {
