@@ -6,8 +6,12 @@ import Profile from './Pages/Profile';
 import VerifyEmail from './Pages/VerifyEmail';
 import Landing from './Pages/Landing';
 import QnA from './Pages/QnA';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { RequestGetDataUser } from './Features/User/UserSlice';
 
 function App() {
+  const dispatch = useDispatch();
   // const [message, setMessage] = useState('');
 
   // useEffect(() => {
@@ -18,10 +22,14 @@ function App() {
   //     setMessage(data?.message || "");
   //   })();
   // }, []);
+
+  useEffect(() => {
+    dispatch(RequestGetDataUser());
+  }, []);
   return (
     <>
       <Routes>
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/user/profile" element={<Profile />} />
         <Route path="/" element={<Landing />} />
         <Route path="/qna" element={<QnA />} />
         <Route path="/verification" element={<VerifyEmail />} />

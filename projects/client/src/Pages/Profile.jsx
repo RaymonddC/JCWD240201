@@ -1,114 +1,60 @@
-import { useFormik } from 'formik';
 import { MdPerson } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import UserEditModal from '../Components/User/UserEditModal';
+import { useSelector } from 'react-redux';
+import { convertDate } from '../Helper/userHelper';
 
 export default function Profile() {
-  const formik = useFormik({
-    initialValues: {
-      full_name: '',
-      phone_number: '',
-      email: '',
-      gender: '',
-      birthdate: '',
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  });
-  console.log(formik.values);
+  // console.log(window.location.pathname);
+  const { user } = useSelector((state) => state.user);
+  console.log(user);
   return (
-    <div className="flex sm:flex-col justify-center sm:items-center px-4 gap-4">
-      <div className="flex flex-col items-center">
-        <MdPerson className="sm:!w-[100px] sm:!h-[100px] lg:!w-[200px] lg:!h-[200px]" />
-        <button className="text-[#00A8B5] font-bold">Change Profile</button>
-        <p className="text-[14px]">File max size 1 MB</p>
-        <p className="text-[14px]">
-          File must be in .JPG, .PNG and .GIF format
-        </p>
+    <div className="flex sm:flex-col justify-center sm:items-center px-4 gap-4 pt-2">
+      <div className="p-4 w-full lg:max-w-[255px]">
+        <div className="h-full flex flex-col sm:flex-row shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg">
+          <Link
+            to="/user/profile"
+            className={
+              window.location.pathname === '/user/profile'
+                ? 'p-3 text-[#00A8B5] font-bold'
+                : 'p-3'
+            }
+          >
+            Profile
+          </Link>
+          <Link to="/user/address" className="p-3">
+            Address
+          </Link>
+        </div>
       </div>
-      <form
-        className="sm:w-full max-w-[770px] porse"
-        onSubmit={formik.handleSubmit}
-        noValidate
-      >
-        <label htmlFor="" className="text-[14px]">
-          Full Name
-        </label>
-        <input
-          name="full_name"
-          id="full_name"
-          className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.first_name}
-        />
-        <label htmlFor="" className="text-[14px]">
-          Phone Number
-        </label>
-        <input
-          name="phone_number"
-          id="phone_number"
-          className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.phone_number}
-        />
-        <label htmlFor="" className="text-[14px]">
-          Email
-        </label>
-        <input
-          name="email"
-          id="email"
-          className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
-          type="email"
-          disabled
-          onChange={formik.handleChange}
-          value={formik.values.email}
-        />
-        <label htmlFor="" className="text-[14px]">
-          Gender
-        </label>
-        <div className="flex gap-4">
-          <div className="flex items-center gap-2">
-            <input
-              id="gender"
-              type="radio"
-              name="gender"
-              className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
-              checked={formik.values.gender === 'male'}
-              onChange={formik.handleChange}
-              value="male"
-            />
-            <span>Male</span>
+      <div className="w-full max-w-[772px] p-4 rounded-lg">
+        <div className="flex justify-between pl-4 mb-4">
+          <h3 className="text-[23px] font-bold">Profile</h3>
+          <UserEditModal data={user} />
+        </div>
+        <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
+          <div className="flex">
+            {user?.profile_image ? (
+              <img></img>
+            ) : (
+              <MdPerson className="w-[100px] h-[100px]" />
+            )}
+            <div>
+              <p className="font-bold text-[18px]">{user?.full_name}</p>
+              <p className="text-[16px]">{user?.phone_number}</p>
+              <p className="text-[16px]">{user?.email}</p>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              id="gender"
-              type="radio"
-              name="gender"
-              className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
-              checked={formik.values.gender === 'female'}
-              onChange={formik.handleChange}
-              value="female"
-            />
-            <span>Female</span>
+          <div className="flex justify-between py-4 border-b-2 border-[#eeeeee;]">
+            <p>Birth of date</p>
+            <p>{convertDate(user?.birthdate)}</p>
+          </div>
+          <div className="flex justify-between pt-4">
+            <p>Gender</p>
+            <p>{user?.gender}</p>
           </div>
         </div>
-        <label htmlFor="" className="text-[14px]">
-          Date of Birth
-        </label>
-        <input
-          name="birthdate"
-          id="birthdate"
-          className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
-          type="date"
-          onChange={formik.handleChange}
-          value={formik.values.birthdate}
-        />
-        <button type="submit" className="btn w-full bg-[#00A8B5] text-white">
-          SAVE
-        </button>
-        <button className="btn btn-ghost w-full text-[#00A8B5]">BACK</button>
-      </form>
+      </div>
     </div>
   );
 }
