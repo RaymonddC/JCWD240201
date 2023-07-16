@@ -1,13 +1,21 @@
 import { MdPerson } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import UserEditModal from '../Components/User/UserEditModal';
 import { useSelector } from 'react-redux';
 import { convertDate } from '../Helper/userHelper';
 
 export default function Profile() {
   // console.log(window.location.pathname);
+  // if (!localStorage.getItem('token')) {
+  //   <Navigate to="/login" />;
+  // }
+  let token = localStorage.getItem('token');
+
   const { user } = useSelector((state) => state.user);
-  console.log(user);
+  console.log(token);
+  // console.log(localStorage.getItem('token'));
+  if (!token) return <Navigate to={'/login'} />;
+  // console.log(user);
   return (
     <div className="flex sm:flex-col justify-center sm:items-center px-4 gap-4 pt-2">
       <div className="p-4 w-full lg:max-w-[255px]">

@@ -17,7 +17,7 @@ import QnA from './Pages/QnA';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
-import { RequestGetDataUser } from './Features/User/UserSlice';
+// import { RequestGetDataUser } from './Features/User/UserSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ function App() {
   // }, []);
 
   useEffect(() => {
-    dispatch(RequestGetDataUser());
+    // dispatch(RequestGetDataUser());
     // const dispatch = useDispatch();
     dispatch(keepLoginAsync());
   }, []);

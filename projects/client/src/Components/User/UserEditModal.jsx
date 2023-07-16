@@ -1,14 +1,21 @@
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { MdPerson } from 'react-icons/md';
+import { MdCalendarMonth } from 'react-icons/md';
+import { updateProfile } from '../../API/user';
+import { useDispatch } from 'react-redux';
+import { keepLoginAsync } from '../../Features/User/UserSlice';
+import { toast } from 'react-hot-toast';
+import { convertDate } from '../../Helper/userHelper';
 
 export default function UserEditModal({ data }) {
-  const [change, setchange] = useState();
+  const [disabled, setdisabled] = useState(true);
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       full_name: '',
       phone_number: '',
-      email: '',
+      // email: '',
       gender: '',
       birthdate: '',
     },
@@ -20,9 +27,9 @@ export default function UserEditModal({ data }) {
       if (!values.phone_number) {
         errors.phone_number = 'Phone number is required';
       }
-      if (!values.email) {
-        errors.email = 'Email is required';
-      }
+      // if (!values.email) {
+      //   errors.email = 'Email is required';
+      // }
       if (!values.gender) {
         errors.gender = 'Gender is required';
       }
@@ -31,21 +38,33 @@ export default function UserEditModal({ data }) {
       }
       return errors;
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      window.my_modal_3.close();
+    onSubmit: async (values) => {
+      // alert(JSON.stringify(values, null, 2));
+      // window.my_modal_3.close();
+      try {
+        const result = await updateProfile(values);
+        console.log(result);
+        if (result.status === 200) {
+          toast.success(result.data.message);
+          dispatch(keepLoginAsync());
+          window.my_modal_3.close();
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
-  console.log(formik.values);
+  // console.log(disabled);
   if (
-    change === false &&
+    disabled === true &&
     (formik.values.full_name !== data?.full_name ||
       formik.values.phone_number !== data?.phone_number ||
       formik.values.gender !== data?.gender ||
       formik.values.birthdate !== data.birthdate)
   ) {
-    setchange(true);
+    setdisabled(false);
   }
+  // console.log(Object.keys(formik.errors).length === 0);
 
   const closebtn = (e) => {
     e.preventDefault();
@@ -57,11 +76,11 @@ export default function UserEditModal({ data }) {
       formik.setValues({
         full_name: data.full_name,
         phone_number: data.phone_number,
-        email: data.email,
+        // email: data.email,
         gender: data.gender,
         birthdate: data.birthdate,
       });
-      setchange(false);
+      setdisabled(true);
     }
   }, [data]);
   return (
@@ -87,35 +106,47 @@ export default function UserEditModal({ data }) {
               File must be in .JPG, .PNG and .GIF format
             </p>
           </div>
-          <label htmlFor="" className="text-[14px]">
+          <label htmlFor="full_name" className="text-[14px]">
             Full Name
           </label>
           <input
             name="full_name"
             id="full_name"
-            className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
+            className={
+              formik.errors.full_name
+                ? 'input input-error w-full px-3 mb-2 border rounded-md select-none focus:outline-none text-[14px]'
+                : 'input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]'
+            }
             type="text"
             onChange={formik.handleChange}
             value={formik.values.full_name}
           />
+          <p className="text-error text-[14px]">{formik?.errors?.full_name}</p>
           <label htmlFor="" className="text-[14px]">
             Phone Number
           </label>
           <input
             name="phone_number"
             id="phone_number"
-            className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
+            className={
+              formik.errors.phone_number
+                ? 'input input-error w-full px-3 mb-2 border rounded-md select-none focus:outline-none text-[14px]'
+                : 'input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]'
+            }
             type="text"
             onChange={formik.handleChange}
             value={formik.values.phone_number}
           />
+          <p className="text-error text-[14px]">
+            {formik?.errors?.phone_number}
+          </p>
           {/* <label htmlFor="" className="text-[14px]">
             Email
           </label>
           <input
             name="email"
             id="email"
-            className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
+            className="input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
             type="email"
             disabled
             onChange={formik.handleChange}
@@ -150,19 +181,26 @@ export default function UserEditModal({ data }) {
               <span>Female</span>
             </div>
           </div>
+          <p className="text-error text-[14px]">{formik?.errors?.gender}</p>
           <label htmlFor="" className="text-[14px]">
             Date of Birth
           </label>
           <input
+            className={
+              formik.errors.birthdate
+                ? 'input input-error w-full px-3 mb-2 border rounded-md select-none focus:outline-none text-[14px]'
+                : 'input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]'
+            }
             name="birthdate"
             id="birthdate"
-            className="h-[40px] w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]"
+            placeholder="Date of Birth"
             type="date"
             onChange={formik.handleChange}
             value={formik.values.birthdate}
           />
+          <p className="text-error text-[14px]">{formik?.errors?.birthdate}</p>
           <button
-            disabled={change === false}
+            disabled={disabled || !formik.isValid}
             type="submit"
             className="btn w-full bg-[#00A8B5] text-white"
           >
