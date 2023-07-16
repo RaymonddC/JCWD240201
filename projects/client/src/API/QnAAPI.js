@@ -17,11 +17,11 @@ export function createQuestionAPI(data) {
   );
 }
 
-export function getQuestionsAPI() {
+export function getQuestionsAPI(data) {
   // console.log(URL);
-  return axios.get(`${URL}QnA/questions`,{
-    headers: {
-      apiKey: APIKey,
-    },
-  },);
+  return axios.get(
+    `${URL}QnA/questions`,
+    { params: { page: data.page, limit: data.limit } },
+    { headers: { apiKey: APIKey } },
+  );
 }

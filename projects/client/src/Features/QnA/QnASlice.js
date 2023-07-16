@@ -47,11 +47,11 @@ export const submitQuestion = (question) => async (dispatch) => {
   }
 };
 
-export const getQuestions = () => async (dispatch) => {
+export const getQuestions = (data) => async (dispatch) => {
   try {
     // console.log("getQuestions")
-    let response = await getQuestionsAPI();
-    console.log(response);
+    let response = await getQuestionsAPI({page: data.page, limit: data.limit});
+    console.log(response.data.data);
     dispatch(questions(response?.data));
   } catch (error) {
     console.log(error);

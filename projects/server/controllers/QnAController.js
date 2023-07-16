@@ -10,11 +10,16 @@ const transporter = require('../helpers/transporter');
 
 const getQuestions = async (req, res) => {
   try {
-    console.log('getquestions');
+    const { page, search, sort, limit } = req.query;
+    const pageLimit = Number(limit);
+    const offset = (page - 1) * pageLimit;
     let response = await questionDB.findAll({
+      limit: pageLimit,
+      offset: offset,
       order: [['updatedAt', 'DESC']],
     });
-    // console.log(response);
+    const totalPage = response.length;
+    console.log(totalPage);
     return res.status(200).send({
       success: true,
       message: 'get questions success',

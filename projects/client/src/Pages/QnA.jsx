@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import NavBar from '../Components/Layout/Navbar';
 import { getQuestions, submitQuestion } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,11 +9,17 @@ export default function QnA() {
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
+  const [page, setPage] = useState(1);
+  const next = () => {
+    setPage(page + 1);
+  };
+  const prev = () => {
+    setPage(page - 1);
+  };
 
   useEffect(() => {
-    dispatch(getQuestions());
-    console.log('got questions', QnA);
-  }, []);
+    dispatch(getQuestions({ page, limit: 2 }));
+  }, [page, dispatch]);
 
   return (
     <>
@@ -48,20 +54,37 @@ export default function QnA() {
                 </button>
               </div>
               <div>
-          <article className="prose">
-            <h2>QnA</h2>
-          </article>
-          <div>
-            {QnAStore?.questions?.data.map((value, index) => {
-              // console.log(value)
-              return <QuestionCard data={value} key={`question${index}`} />;
-            })}
-          </div>
-        </div>
+                <article className="prose">
+                  <h2>QnA</h2>
+                </article>
+                <div>
+                  {QnAStore?.questions?.data.map((value, index) => {
+                    // console.log(value)
+                    return (
+                      <QuestionCard data={value} key={`question${index}`} />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <div className="join w-64 grid grid-cols-2">
+                <button
+                  onClick={() => prev()}
+                  className="join-item btn btn-outline"
+                >
+                  {'<< Previous'}
+                </button>
+                <button
+                  onClick={() => next()}
+                  className="join-item btn btn-outline"
+                >
+                  {'Next >>'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        
       </div>
     </>
   );
