@@ -1,7 +1,7 @@
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 
 export default function NavBar() {
@@ -55,14 +55,6 @@ export default function NavBar() {
                 <Link to="/QnA">QNA</Link>
               </li>
             </ul>
-          </div>
-        </div>
-        <div className='w-full flex justify-end'>
-          <div className="flex gap-3 ">
-            <button className="btn btn-sm btn-accent">Login</button>
-            <button className="btn btn-sm btn-outline btn-accent">
-              <Link to="/QnA">Register</Link>
-            </button>
           </div>
         </div>
       </div>
