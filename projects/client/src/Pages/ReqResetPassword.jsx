@@ -51,7 +51,7 @@ export default function ReqResetPassword() {
         </div>
       </div>
       <div className="flex flex-col gap-4 p-4">
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Enter your email</span>
           </label>
@@ -60,8 +60,8 @@ export default function ReqResetPassword() {
             placeholder="Email"
             className={
               emailValidation
-                ? 'input input-bordered w-full max-w-xs'
-                : 'input input-bordered input-error w-full max-w-xs'
+                ? 'input input-bordered w-full'
+                : 'input input-bordered input-error w-full'
             }
             ref={_email}
             onChange={() => onEmail(_email.current.value)}
