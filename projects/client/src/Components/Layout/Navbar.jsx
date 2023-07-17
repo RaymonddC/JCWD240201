@@ -32,9 +32,14 @@ export default function NavBar() {
                   <Link to={'/login'}>logout</Link>
                 </button>
               ) : (
-                <button className="btn btn-ghost">
-                  <Link to="/login">Login</Link>
-                </button>
+                <div className='flex gap-3'>
+                  <button className="btn btn-primary">
+                    <Link to="/login">Login</Link>
+                  </button>
+                  <button className="btn btn-outline btn-primary">
+                    <Link to="/register">Register</Link>
+                  </button>
+                </div>
               )}
             </div>
           </div>
