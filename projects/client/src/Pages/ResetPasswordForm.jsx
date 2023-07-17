@@ -71,7 +71,7 @@ export default function ResetPasswordForm() {
         <div className="flex items-center font-semibold">Reset Password</div>
       </div>
       <div className="flex flex-col p-4">
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Enter your new password</span>
           </label>
@@ -81,8 +81,8 @@ export default function ResetPasswordForm() {
             ref={_newPassword}
             className={
               passwordValidation
-                ? 'input input-bordered w-full max-w-xs'
-                : 'input input-bordered input-error w-full max-w-xs'
+                ? 'input input-bordered w-full'
+                : 'input input-bordered input-error w-full'
             }
             onChange={() => onPassword(_newPassword.current.value)}
           />
@@ -93,7 +93,7 @@ export default function ResetPasswordForm() {
             </span>
           </label>
         </div>
-        <div className="form-control w-full max-w-xs">
+        <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Confirm your new password</span>
           </label>
@@ -103,8 +103,8 @@ export default function ResetPasswordForm() {
             ref={_confirmNewPassword}
             className={
               passwordConfirmation
-                ? 'input input-bordered w-full max-w-xs'
-                : 'input input-bordered input-error w-full max-w-xs'
+                ? 'input input-bordered w-full'
+                : 'input input-bordered input-error w-full'
             }
             onChange={() =>
               onConfirmPassword(
