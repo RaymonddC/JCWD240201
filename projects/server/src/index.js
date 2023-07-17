@@ -6,14 +6,14 @@ const { join } = require('path');
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-app.use(
-  cors({
-    origin: [
-      process.env.WHITELISTED_DOMAIN &&
-        process.env.WHITELISTED_DOMAIN.split(','),
-    ],
-  }),
-);
+// app.use(
+//   cors({
+//     origin: [
+//       process.env.WHITELISTED_DOMAIN &&
+//         process.env.WHITELISTED_DOMAIN.split(','),
+//     ],
+//   }),
+// );
 
 app.use(express.json());
 app.use(cors());
@@ -80,6 +80,17 @@ app.get('*', (req, res) => {
   res.sendFile(join(__dirname, clientPath, 'index.html'));
 });
 
+app.use((err, req, res, next) => {
+  const errStatus = err.code || 500;
+  const errMessage = err.message || 'Something went wrong';
+  return res.status(errStatus).json({
+    success: false,
+    status: errStatus,
+    message: errMessage,
+    stack: err.stack,
+    data: null,
+  });
+});
 //#endregion
 
 app.listen(PORT, (err) => {

@@ -2,6 +2,23 @@ const db = require('./../models');
 const User = db.user;
 const { Op } = require('sequelize');
 
+const jwt = require('jsonwebtoken');
+
+const generateToken = async (result) => {
+  try {
+    let payload = {
+      id: result?.id,
+      role_id: result?.role_id,
+    };
+
+    return jwt.sign(payload, 'pharmacy', {
+      expiresIn: '1h',
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
 const getUser = async (email = '', username = '', excludes) => {
   try {
     return await User.findOne({
@@ -10,18 +27,19 @@ const getUser = async (email = '', username = '', excludes) => {
       },
       attributes: { exclude: [excludes] },
     });
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
 
-const getByUserWithPassword = async (usernameOrEmail = '', password = '') => {
+const getUserByPk = async (primaryKey, excludes) => {
   try {
-    const isUserExists = await User.findOne({
-      where: {
-        [Op.or]: [{ email: email }, { username: username }],
-      },
-      attributes: { exclude: ['password'] },
+    return await User.findByPk(primaryKey, {
+      attributes: { exclude: excludes },
     });
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
 
 const validatePassword = async (password = '', confirmPassword = '') => {
@@ -46,9 +64,8 @@ const validatePassword = async (password = '', confirmPassword = '') => {
 
     return null;
   } catch (error) {
-    console.log('error validation');
     return error;
   }
 };
 
-module.exports = { getUser, validatePassword };
+module.exports = { getUser, validatePassword, getUserByPk, generateToken };
