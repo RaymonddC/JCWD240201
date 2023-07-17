@@ -7,7 +7,7 @@ const APIKey =
 export function userVerification(token) {
   console.log(URL);
   return axios.post(
-    `${URL}auth/verifyEmail`,
+    `${URL}/auth/verifyEmail`,
     {},
     {
       headers: {
@@ -21,7 +21,7 @@ export function userVerification(token) {
 export function sendVerificationEmail(email) {
   console.log(URL);
   return axios.post(
-    `${URL}auth/sendVerify`,
+    `${URL}/auth/sendVerify`,
     {
       email: email,
     },

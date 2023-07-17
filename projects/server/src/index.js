@@ -23,9 +23,11 @@ app.use(cors());
 // ===========================
 // NOTE : Add your routes here
 
-const { authRoute, userRoute } = require('../routers');
+const { authRoute, userRoute, QnARouter } = require('../routers');
+
 
 app.use('/auth', authRoute);
+app.use('/qna', QnARouter);
 app.use('/users', userRoute);
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
