@@ -8,9 +8,9 @@ import { getAPI, postAPI } from '../../API/auth';
 // import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 // const provider = new GoogleAuthProvider();
 
-const token = localStorage.getItem('token')
-  ? localStorage?.getItem('token')
-  : '';
+// const token = localStorage.getItem('token')
+//   ? localStorage?.getItem('token')
+//   : '';
 
 const initialState = {
   user: {},
@@ -28,13 +28,18 @@ export const UserSlice = createSlice({
     toggleBtn: (initialState, action) => {
       initialState.isSubmitting = !initialState.isSubmitting;
     },
+    setUser: (initialState, action) => {
+      initialState.user = action.payload;
+    },
   },
 });
 
 // example get another user data
-const getUser = (user_id) => (dispatch) => {
+export const RequestGetDataUser = (user_id) => async (dispatch) => {
   try {
-    let data = getDataUser(user_id);
+    let response = await getDataUser();
+    console.log(response);
+    dispatch(setUser(response.data));
   } catch (error) {
     console.log(error);
   }
@@ -145,6 +150,7 @@ export const onRegister = (values) => async (dispatch) => {
     dispatch(toggleBtn());
   }
 };
+export const { onSaveUser, toggleBtn, setUser } = UserSlice.actions;
 
-export const { onSaveUser, toggleBtn } = UserSlice.actions;
+// export const { onSaveUser, toggleBtn } = UserSlice.actions;
 export default UserSlice.reducer;
