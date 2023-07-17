@@ -28,7 +28,6 @@ const { authRoute, userRoute, QnARouter } = require('../routers');
 
 app.use('/auth', authRoute);
 app.use('/QnA', QnARouter);
-
 app.use('/users', userRoute);
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

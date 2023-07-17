@@ -5,4 +5,5 @@ const QnARouter = require('./QnARouter');
 module.exports = {
   authRoute,
   userRoute,
+  QnARouter
 };
