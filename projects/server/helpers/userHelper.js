@@ -19,6 +19,17 @@ const generateToken = async (result) => {
   }
 };
 
+const validateEmail = async (email = '') => {
+  try {
+    var re = /\S+@\S+\.\S+/;
+    if (!re.test(email)) {
+      throw { message: 'Invalid Email', code: 400 };
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
 const getUser = async (email = '', username = '', excludes) => {
   try {
     return await User.findOne({
@@ -68,4 +79,10 @@ const validatePassword = async (password = '', confirmPassword = '') => {
   }
 };
 
-module.exports = { getUser, validatePassword, getUserByPk, generateToken };
+module.exports = {
+  getUser,
+  validatePassword,
+  getUserByPk,
+  generateToken,
+  validateEmail,
+};

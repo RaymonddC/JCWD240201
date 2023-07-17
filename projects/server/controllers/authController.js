@@ -13,6 +13,7 @@ const {
   validatePassword,
   generateToken,
   getUserByPk,
+  validateEmail,
 } = require('../helpers/userHelper');
 
 const sendVerifyEmail = async (req, res, next) => {
@@ -101,7 +102,6 @@ const userCreate = async (req, res, next) => {
       phoneNumber,
       role,
     } = req.body;
-    console.log(req.body.username);
 
     if (
       !fullName ||
@@ -113,8 +113,10 @@ const userCreate = async (req, res, next) => {
     )
       throw { message: 'Fill all data', code: 400 };
 
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
+
     const isEmailExist = await getUser(email, username);
-    // process.exit();
     if (isEmailExist)
       throw { message: 'username or email is already exists', code: 400 };
 
@@ -145,11 +147,6 @@ const userCreate = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    // res.status(error.code || 500).send({
-    //   success: false,
-    //   message: error.message,
-    //   data: null,
-    // });
   }
 };
 

@@ -118,26 +118,28 @@ export const onLoginAsync = (values) => async (dispatch) => {
 export const onRegister = (values) => async (dispatch) => {
   try {
     dispatch(toggleBtn());
-    const { email, usernameOrEmail, password, confirmPassword } = values;
-    console.log(values);
-    // if (!username) return toast.error(`Fill All Data!`);
+    const {
+      fullName,
+      email,
+      usernameOrEmail,
+      password,
+      confirmPassword,
+      phoneNumber,
+    } = values;
 
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}auth/register`,
-      {
-        username: usernameOrEmail,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-      },
-    );
+    const response = await postAPI(`auth/register`, {
+      fullName,
+      username: usernameOrEmail,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+      phoneNumber: phoneNumber,
+    });
 
     // if (!response.data) throw { response };
 
     toast.success('Register Success!');
-    // dispatch(getCashiersAsync());
   } catch (error) {
-    console.log(error);
     toast.error(error?.response?.data?.message);
   } finally {
     dispatch(toggleBtn());
