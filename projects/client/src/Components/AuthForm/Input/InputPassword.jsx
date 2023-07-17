@@ -9,7 +9,7 @@ export const InputPassword = (props) => {
       <div className={`form-control w-full relative ${props.hidden} `}>
         <div className="icon" onClick={() => setShowPass(!showPass)}>
           {showPass ? (
-            <MdOutlineVisibility className="absolute right-[20px] top-[50px] z-30 " />
+            <MdOutlineVisibility className="absolute right-[10px] xl:right-[15px] top-[55px] xl:top-[50px] z-30 text-[1em] xl:text-[1.5em]" />
           ) : (
             <MdOutlineVisibilityOff className="absolute right-[10px] xl:right-[15px] top-[55px] xl:top-[50px] z-30 text-[1em] xl:text-[1.5em]" />
           )}

@@ -36,7 +36,9 @@ export const AuthForm = (propss) => {
       {(props) => (
         <form onSubmit={props.handleSubmit} className="min-w-[290px]">
           <div
-            className={propss.isRegis ? 'grid grid-cols-2 gap-x-5 gap-y-1' : ''}
+            className={
+              propss.isRegis ? 'grid lg:grid-cols-2 gap-x-5 gap-y-1' : ''
+            }
           >
             <Input
               hidden={propss.isRegis ? '' : 'hidden'}
@@ -128,7 +130,7 @@ export const AuthForm = (propss) => {
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
-          <div className="btnOther w-full text-[13px] font-bold ">
+          {/* <div className="btnOther w-full text-[13px] font-bold ">
             <div className="font-bold rounded-xl py-[8px] w-full  border border-[#898989]  my-[10px] flex items-center">
               <div
                 // onClick={() => {
@@ -143,7 +145,7 @@ export const AuthForm = (propss) => {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </form>
       )}
     </Formik>

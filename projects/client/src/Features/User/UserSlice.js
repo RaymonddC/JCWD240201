@@ -144,7 +144,7 @@ export const onRegister = (values) => async (dispatch) => {
 
     // if (!response.data) throw { response };
 
-    toast.success('Register Success! Check Email for verifaction');
+    toast.success('Register Success! Check Email for verification');
   } catch (error) {
     toast.error(error?.response?.data?.message);
   } finally {

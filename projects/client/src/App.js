@@ -14,14 +14,16 @@ import { Toaster } from 'react-hot-toast';
 import VerifyEmail from './Pages/VerifyEmail';
 import Landing from './Pages/Landing';
 import QnA from './Pages/QnA';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
+import AdminRoute from './utils/routes/adminRoute';
+import PublicRoute from './utils/routes/publicRoutes';
 // import { RequestGetDataUser } from './Features/User/UserSlice';
 
 function App() {
   const dispatch = useDispatch();
-  // const [message, setMessage] = useState('');
+  const { user } = useSelector((state) => state.user);
 
   // useEffect(() => {
   //   (async () => {
@@ -37,17 +39,11 @@ function App() {
     // const dispatch = useDispatch();
     dispatch(keepLoginAsync());
   }, []);
+
   return (
     <>
       <Toaster />
-      <Routes>
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/qna" element={<QnA />} />
-        <Route path="/verification" element={<VerifyEmail />} />
-      </Routes>
+      {user.role_id === 1 ? <AdminRoute /> : <PublicRoute />}
     </>
   );
 }

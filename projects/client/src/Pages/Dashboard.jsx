@@ -8,7 +8,7 @@ import { AuthForm } from '../Components/AuthForm/AuthForm';
 import LoginImage from '../utils/images/Frame.svg';
 import Logo from '../utils/images/logoHealthyMed.svg';
 
-export const Login = () => {
+export const Dashboard = () => {
   const { user } = useSelector((state) => state?.user);
 
   const [isRegis, setIsRegis] = useState(
