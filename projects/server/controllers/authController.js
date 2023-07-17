@@ -26,30 +26,25 @@ const sendVerifyEmail = async (req, res, next) => {
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 
-    if (isEmail.test(email)) {
-      await transporter.sendMail({
-        from: 'pharmacy.jcwd2402@gmail.com',
-        to: email,
-        subject: 'Account Verification',
-        html: tempResult,
-      });
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
 
-      return res.send({
-        success: true,
-        status: 200,
-        message: 'Send Verification Email Success',
-        data: null,
-      });
-    } else {
-      throw { status: 400, message: 'email is not valid' };
-    }
-  } catch (error) {
+    await transporter.sendMail({
+      from: 'pharmacy.jcwd2402@gmail.com',
+      to: email,
+      subject: 'Account Verification',
+      html: tempResult,
+    });
+
     return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
+      success: true,
+      status: 200,
+      message: 'Send Verification Email Success',
       data: null,
     });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 };
 const verifyAccount = async (req, res, next) => {
@@ -139,12 +134,12 @@ const userCreate = async (req, res, next) => {
 
     req.params.username = result.username;
 
-    // next();
-    return res.status(201).send({
-      success: true,
-      message: 'Register Success',
-      data: result,
-    });
+    next();
+    // return res.status(201).send({
+    //   success: true,
+    //   message: 'Register Success',
+    //   data: result,
+    // });
   } catch (error) {
     next(error);
   }
