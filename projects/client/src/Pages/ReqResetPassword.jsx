@@ -50,42 +50,44 @@ export default function ReqResetPassword() {
           Request Reset Password
         </div>
       </div>
-      <div className="flex flex-col gap-4 p-4">
-        <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text">Enter your email</span>
-          </label>
-          <input
-            type="text"
-            placeholder="Email"
-            className={
-              emailValidation
-                ? 'input input-bordered w-full'
-                : 'input input-bordered input-error w-full'
-            }
-            ref={_email}
-            onChange={() => onEmail(_email.current.value)}
-          />
-          {emailValidation ? null : (
-            <div className="label-text">Invalid email</div>
+      <div className='lg:flex lg:justify-center lg:py-12'>
+        <div className="flex flex-col gap-4 p-4 lg:w-full lg:max-w-lg">
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Enter your email</span>
+            </label>
+            <input
+              type="text"
+              placeholder="Email"
+              className={
+                emailValidation
+                  ? 'input input-bordered w-full'
+                  : 'input input-bordered input-error w-full'
+              }
+              ref={_email}
+              onChange={() => onEmail(_email.current.value)}
+            />
+            {emailValidation ? null : (
+              <div className="label-text">Invalid email</div>
+            )}
+          </div>
+          {disable ? (
+            <button
+              onClick={() => onSendRequest()}
+              className="btn btn-accent w-full text-white"
+              disabled
+            >
+              Send Request
+            </button>
+          ) : (
+            <button
+              onClick={() => onSendRequest()}
+              className="btn btn-accent w-full text-white"
+            >
+              Send Request
+            </button>
           )}
         </div>
-        {disable ? (
-          <button
-            onClick={() => onSendRequest()}
-            className="btn btn-accent w-full text-white"
-            disabled
-          >
-            Send Request
-          </button>
-        ) : (
-          <button
-            onClick={() => onSendRequest()}
-            className="btn btn-accent w-full text-white"
-          >
-            Send Request
-          </button>
-        )}
       </div>
     </>
   );

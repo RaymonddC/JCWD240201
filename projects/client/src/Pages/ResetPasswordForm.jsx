@@ -70,66 +70,68 @@ export default function ResetPasswordForm() {
         </div>
         <div className="flex items-center font-semibold">Reset Password</div>
       </div>
-      <div className="flex flex-col p-4">
-        <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text">Enter your new password</span>
-          </label>
-          <input
-            type="password"
-            placeholder="New Password"
-            ref={_newPassword}
-            className={
-              passwordValidation
-                ? 'input input-bordered w-full'
-                : 'input input-bordered input-error w-full'
-            }
-            onChange={() => onPassword(_newPassword.current.value)}
-          />
-          <label className="label">
-            <span className="label-text-alt px-3">
-              Passwords should contain at least 8 characters including an
-              uppercase letter, a symbol, and a number.
-            </span>
-          </label>
+      <div className='lg:flex lg:justify-center lg:p-4'>
+        <div className="flex flex-col p-4 lg:max-w-lg">
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Enter your new password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="New Password"
+              ref={_newPassword}
+              className={
+                passwordValidation
+                  ? 'input input-bordered w-full'
+                  : 'input input-bordered input-error w-full'
+              }
+              onChange={() => onPassword(_newPassword.current.value)}
+            />
+            <label className="label">
+              <span className="label-text-alt px-3">
+                Passwords should contain at least 8 characters including an
+                uppercase letter, a symbol, and a number.
+              </span>
+            </label>
+          </div>
+          <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Confirm your new password</span>
+            </label>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              ref={_confirmNewPassword}
+              className={
+                passwordConfirmation
+                  ? 'input input-bordered w-full'
+                  : 'input input-bordered input-error w-full'
+              }
+              onChange={() =>
+                onConfirmPassword(
+                  _newPassword.current.value,
+                  _confirmNewPassword.current.value,
+                )
+              }
+            />
+          </div>
+          {disable ? (
+            <button
+              onClick={() => onResetPassword()}
+              className="btn btn-accent w-full text-white my-4"
+              disabled
+            >
+              Reset Password
+            </button>
+          ) : (
+            <button
+              onClick={() => onResetPassword()}
+              className="btn btn-accent w-full text-white my-4"
+            >
+              Reset Password
+            </button>
+          )}
         </div>
-        <div className="form-control w-full">
-          <label className="label">
-            <span className="label-text">Confirm your new password</span>
-          </label>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            ref={_confirmNewPassword}
-            className={
-              passwordConfirmation
-                ? 'input input-bordered w-full'
-                : 'input input-bordered input-error w-full'
-            }
-            onChange={() =>
-              onConfirmPassword(
-                _newPassword.current.value,
-                _confirmNewPassword.current.value,
-              )
-            }
-          />
-        </div>
-        {disable ? (
-          <button
-            onClick={() => onResetPassword()}
-            className="btn btn-accent w-full text-white my-4"
-            disabled
-          >
-            Reset Password
-          </button>
-        ) : (
-          <button
-            onClick={() => onResetPassword()}
-            className="btn btn-accent w-full text-white my-4"
-          >
-            Reset Password
-          </button>
-        )}
       </div>
     </>
   );
