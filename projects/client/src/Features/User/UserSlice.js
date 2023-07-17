@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import { getDataUser } from '../../API/user';
 import { getAPI, postAPI } from '../../API/auth';
@@ -55,7 +54,7 @@ export const keepLoginAsync = () => async (dispatch) => {
       });
 
       if (
-        response?.data?.message == 'jwt expired' ||
+        response?.data?.message === 'jwt expired' ||
         !response?.data ||
         response?.message
       )
@@ -63,7 +62,7 @@ export const keepLoginAsync = () => async (dispatch) => {
       dispatch(onSaveUser(response.data.data));
     }
   } catch (error) {
-    if (error?.response?.data?.message == 'jwt expired')
+    if (error?.response?.data?.message === 'jwt expired')
       localStorage.removeItem('token');
   }
 };
@@ -89,9 +88,11 @@ export const checkCredentialAsync =
 
       return response.data;
     } catch (error) {
-      throw {
-        message: error?.response?.data?.message || error?.message,
-      };
+      error.message = error?.response?.data?.message || error?.message;
+      throw error;
+      // throw {
+      //   message: error?.response?.data?.message || error?.message,
+      // };
     }
   };
 
@@ -123,26 +124,28 @@ export const onLoginAsync = (values) => async (dispatch) => {
 export const onRegister = (values) => async (dispatch) => {
   try {
     dispatch(toggleBtn());
-    const { email, usernameOrEmail, password, confirmPassword } = values;
-    console.log(values);
-    // if (!username) return toast.error(`Fill All Data!`);
+    const {
+      fullName,
+      email,
+      usernameOrEmail,
+      password,
+      confirmPassword,
+      phoneNumber,
+    } = values;
 
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}auth/register`,
-      {
-        username: usernameOrEmail,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-      },
-    );
+    await postAPI(`auth/register`, {
+      fullName,
+      username: usernameOrEmail,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+      phoneNumber: '0' + phoneNumber,
+    });
 
     // if (!response.data) throw { response };
 
-    toast.success('Register Success!');
-    // dispatch(getCashiersAsync());
+    toast.success('Register Success! Check Email for verifaction');
   } catch (error) {
-    console.log(error);
     toast.error(error?.response?.data?.message);
   } finally {
     dispatch(toggleBtn());

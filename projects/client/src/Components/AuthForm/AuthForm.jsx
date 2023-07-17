@@ -9,6 +9,8 @@ import { FcGoogle } from 'react-icons/fc';
 import { Input } from './Input/Input';
 import { InputPassword } from './Input/InputPassword';
 
+// import { PhoneInput } from 'react-contact-number-input';
+
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const isSubmit = useSelector((state) => state?.user?.isSubmitting);
@@ -79,6 +81,14 @@ export const AuthForm = (propss) => {
               onBlur={props.handleBlur}
               onChanged={props.handleChange}
             />
+            {/* <PhoneInput
+              disabled={disabled}
+              containerClass={containerClass}
+              countryCode={currentCountryCode}
+              onChange={handleOnChange}
+              placeholder={placeholder}
+            /> */}
+
             <InputPassword
               label={`Password`}
               name="password"
