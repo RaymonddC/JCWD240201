@@ -8,7 +8,7 @@ const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const apikey = `${process.env.REACT_APP_API_KEY}`;
 
 export const getDataUser = (params) => {
-  return axios.get(URL + 'users/', {
+  return axios.get(URL + '/users/', {
     headers: {
       authorization: `Bearer ${token}`,
       apikey: apikey,
@@ -18,7 +18,7 @@ export const getDataUser = (params) => {
 
 export const updateProfile = (data) => {
   return axios.put(
-    URL + 'users/',
+    URL + '/users/',
     {
       ...data,
     },
