@@ -10,7 +10,7 @@ module.exports = {
   sendVerifyEmail: async (req, res) => {
     try {
       const { email } = req.body;
-      const isEmail = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+      const isEmail = new RegExp(/\S+@\S+.\S+/);
       let payload = { email: email };
       const token = jwt.sign(payload, 'verification-account');
       const data = fs.readFileSync(
@@ -90,7 +90,7 @@ module.exports = {
     try {
       // create email token
       const { email } = req.body;
-      const isEmail = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+      const isEmail = new RegExp(/\S+@\S+.\S+/);
       let payload = { email: email };
       const token = jwt.sign(payload, 'reset-password');
       if (!isEmail.test(email))

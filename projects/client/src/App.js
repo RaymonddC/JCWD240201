@@ -5,6 +5,8 @@ import { Route, Routes } from 'react-router-dom';
 import VerifyEmail from './Pages/VerifyEmail';
 import Landing from './Pages/Landing';
 import QnA from './Pages/QnA';
+import ReqResetPassword from './Pages/ReqResetPassword';
+import ResetPasswordForm from './Pages/ResetPasswordForm';
 
 function App() {
   // const [message, setMessage] = useState('');
@@ -23,6 +25,8 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/qna" element={<QnA />} />
         <Route path="/verification" element={<VerifyEmail />} />
+        <Route path="/resetPassword" element={<ReqResetPassword />} />
+        <Route path="/resetPasswordForm" element={<ResetPasswordForm />} />
       </Routes>
     </>
   );
