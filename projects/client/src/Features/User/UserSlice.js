@@ -138,7 +138,7 @@ export const onRegister = (values) => async (dispatch) => {
       email: email,
       password: password,
       confirmPassword: confirmPassword,
-      phoneNumber: phoneNumber,
+      phoneNumber: '0' + phoneNumber,
     });
 
     // if (!response.data) throw { response };

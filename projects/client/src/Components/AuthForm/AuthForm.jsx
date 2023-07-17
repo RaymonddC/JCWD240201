@@ -73,7 +73,7 @@ export const AuthForm = (propss) => {
             <Input
               hidden={propss.isRegis ? '' : 'hidden'}
               label={'Phone Number'}
-              type="text"
+              type="number"
               name="phoneNumber"
               errors={props.errors.phoneNumber}
               touched={props.touched.phoneNumber}

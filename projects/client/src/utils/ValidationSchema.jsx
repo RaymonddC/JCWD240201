@@ -17,7 +17,10 @@ const SignupSchema = Yup.object().shape({
     [Yup.ref('password'), null],
     'Passwords must match',
   ),
-  email: Yup.string().email('Invalid email').required('Required'),
+  email: Yup.string()
+    .email('Invalid email')
+    .matches(/\S+@\S+\.\S+/, 'Invalid Email')
+    .required('Required'),
   phoneNumber: Yup.number()
     .typeError("That doesn't look like a phone number")
     .positive("A phone number can't start with a minus")
