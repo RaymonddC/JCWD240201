@@ -8,28 +8,34 @@ const db = require('../models');
 const questionDB = db.question;
 const transporter = require('../helpers/transporter');
 
-const getQuestions = async (req, res) => {
+const getQuestions = async (req, res, next) => {
   try {
     const { page, search, sort, limit } = req.query;
+    console.log(req.query);
     const pageLimit = Number(limit);
-    const offset = (page - 1) * pageLimit;
-    let response = await questionDB.findAll({
+    console.log(pageLimit, '<<');
+    const offset = (Number(page) - 1) * pageLimit;
+    console.log(offset);
+    let response = await questionDB.findAndCountAll({
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
     });
-    const totalPage = response.length;
+    console.log(response)
+    const totalPage = Math.ceil(response.count / pageLimit);
     console.log(totalPage);
     return res.status(200).send({
       success: true,
       message: 'get questions success',
+      totalPage: totalPage,
       data: response,
     });
   } catch (error) {
-    return res.status(400).send({
-      success: false,
-      message: error.message,
-    });
+    next(error);
+    // return res.send({
+    //   success: false,
+    //   message: error.message,
+    // });
   }
 };
 

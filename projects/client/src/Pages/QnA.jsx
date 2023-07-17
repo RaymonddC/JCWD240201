@@ -9,17 +9,23 @@ export default function QnA() {
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
+  console.log('QnAStore', QnAStore.questions?.data?.rows);
+  const totalPages = QnAStore?.questions?.totalPage;
   const [page, setPage] = useState(1);
   const next = () => {
-    setPage(page + 1);
+    const nextPage = page >= totalPages ? totalPages : (page + 1);
+    console.log(nextPage);
+    setPage(nextPage);
   };
   const prev = () => {
-    setPage(page - 1);
+    const prevPage = page <= 1 ? 1 : (page - 1);
+    console.log(prevPage)
+    setPage(prevPage);
   };
 
   useEffect(() => {
     dispatch(getQuestions({ page, limit: 2 }));
-  }, [page, dispatch]);
+  }, [page]);
 
   return (
     <>
@@ -58,7 +64,7 @@ export default function QnA() {
                   <h2>QnA</h2>
                 </article>
                 <div>
-                  {QnAStore?.questions?.data.map((value, index) => {
+                  {QnAStore?.questions?.data?.rows.map((value, index) => {
                     // console.log(value)
                     return (
                       <QuestionCard data={value} key={`question${index}`} />

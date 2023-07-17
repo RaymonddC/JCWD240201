@@ -6,7 +6,7 @@ const APIKey =
 export function createQuestionAPI(data) {
   console.log('datapost', data);
   return axios.post(
-    `${URL}QnA/questions`,
+    `${URL}/qna/questions`,
     { question: data.question, id: data.id },
     {
       headers: {
@@ -20,7 +20,7 @@ export function createQuestionAPI(data) {
 export function getQuestionsAPI(data) {
   // console.log(URL);
   return axios.get(
-    `${URL}QnA/questions`,
+    `${URL}/qna/questions`,
     { params: { page: data.page, limit: data.limit } },
     { headers: { apiKey: APIKey } },
   );
