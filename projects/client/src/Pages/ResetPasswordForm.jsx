@@ -70,8 +70,8 @@ export default function ResetPasswordForm() {
         </div>
         <div className="flex items-center font-semibold">Reset Password</div>
       </div>
-      <div className='lg:flex lg:justify-center lg:p-4'>
-        <div className="flex flex-col p-4 lg:max-w-lg">
+      <div className='lg:flex lg:justify-center lg:p-4 md:flex md:justify-center md:p-4'>
+        <div className="flex flex-col p-4 lg:max-w-lg md:max-w-lg">
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Enter your new password</span>

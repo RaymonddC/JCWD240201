@@ -50,8 +50,8 @@ export default function ReqResetPassword() {
           Request Reset Password
         </div>
       </div>
-      <div className='lg:flex lg:justify-center lg:py-12'>
-        <div className="flex flex-col gap-4 p-4 lg:w-full lg:max-w-lg">
+      <div className='lg:flex lg:justify-center lg:py-12 md:flex md:justify-center md:py-12'>
+        <div className="flex flex-col gap-4 p-4 lg:w-full lg:max-w-lg md:w-full md:max-w-lg">
           <div className="form-control w-full">
             <label className="label">
               <span className="label-text">Enter your email</span>
