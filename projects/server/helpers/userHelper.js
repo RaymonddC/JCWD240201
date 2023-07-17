@@ -7,8 +7,8 @@ const jwt = require('jsonwebtoken');
 const generateToken = async (result) => {
   try {
     let payload = {
-      id: result?.id,
-      role_id: result?.role_id,
+      id: result.id,
+      role_id: result.role_id,
     };
 
     return jwt.sign(payload, 'pharmacy', {
