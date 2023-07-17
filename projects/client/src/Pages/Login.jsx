@@ -26,11 +26,13 @@ export const Login = () => {
     <div className="flex h-[100vh] relative">
       <div className={'image flex-1 bg-cover hidden lg:block'}>
         <div className=" min-w-[full] relative">
-          <img
-            className="absolute w-full h-[100vh] object-cover"
-            src={LoginImage}
-            alt=""
-          />
+          <Link to={'/'}>
+            <img
+              className="absolute w-full h-[100vh] object-cover"
+              src={LoginImage}
+              alt=""
+            />
+          </Link>
         </div>
       </div>
 
