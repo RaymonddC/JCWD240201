@@ -17,7 +17,16 @@ const SignupSchema = Yup.object().shape({
     [Yup.ref('password'), null],
     'Passwords must match',
   ),
-  email: Yup.string().email('Invalid email').required('Required'),
+  email: Yup.string()
+    .email('Invalid email')
+    .matches(/\S+@\S+\.\S+/, 'Invalid Email')
+    .required('Required'),
+  phoneNumber: Yup.number()
+    .typeError("That doesn't look like a phone number")
+    .positive("A phone number can't start with a minus")
+    .integer("A phone number can't include a decimal point")
+    .min(1000000, 'Phone Number at least 8 digit')
+    .required('A phone number is required'),
 });
 
 export { LoginSchema, SignupSchema };

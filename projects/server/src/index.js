@@ -58,6 +58,17 @@ app.get('/api/greetings', (req, res, next) => {
 //   }
 // });
 
+app.use((err, req, res, next) => {
+  const errStatus = err.code || 500;
+  const errMessage = err.message || 'Something went wrong';
+  return res.status(errStatus).json({
+    success: false,
+    status: errStatus,
+    message: errMessage,
+    stack: err.stack,
+    data: null,
+  });
+});
 //#endregion
 
 //#region CLIENT

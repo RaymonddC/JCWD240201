@@ -13,6 +13,7 @@ const {
   validatePassword,
   generateToken,
   getUserByPk,
+  validateEmail,
 } = require('../helpers/userHelper');
 
 const sendVerifyEmail = async (req, res, next) => {
@@ -25,30 +26,25 @@ const sendVerifyEmail = async (req, res, next) => {
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 
-    if (isEmail.test(email)) {
-      await transporter.sendMail({
-        from: 'pharmacy.jcwd2402@gmail.com',
-        to: email,
-        subject: 'Account Verification',
-        html: tempResult,
-      });
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
 
-      return res.send({
-        success: true,
-        status: 200,
-        message: 'Send Verification Email Success',
-        data: null,
-      });
-    } else {
-      throw { status: 400, message: 'email is not valid' };
-    }
-  } catch (error) {
+    await transporter.sendMail({
+      from: 'pharmacy.jcwd2402@gmail.com',
+      to: email,
+      subject: 'Account Verification',
+      html: tempResult,
+    });
+
     return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
+      success: true,
+      status: 200,
+      message: 'Send Verification Email Success',
       data: null,
     });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 };
 const verifyAccount = async (req, res, next) => {
@@ -89,6 +85,7 @@ const verifyAccount = async (req, res, next) => {
     });
   }
 };
+
 const userCreate = async (req, res, next) => {
   try {
     const {
@@ -100,7 +97,6 @@ const userCreate = async (req, res, next) => {
       phoneNumber,
       role,
     } = req.body;
-    console.log(req.body.username);
 
     if (
       !fullName ||
@@ -112,8 +108,10 @@ const userCreate = async (req, res, next) => {
     )
       throw { message: 'Fill all data', code: 400 };
 
-    const isEmailExist = await getUser(email, username);
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
 
+    const isEmailExist = await getUser(email, username);
     if (isEmailExist)
       throw { message: 'username or email is already exists', code: 400 };
 
@@ -132,23 +130,18 @@ const userCreate = async (req, res, next) => {
       role_id: role ? role : 2,
     });
 
-    const result = await getUser(newUser.email, newUser.username);
+    const result = await getUser(newUser.email, newUser.username, 'password');
 
     req.params.username = result.username;
 
-    // next();
-    return res.status(201).send({
-      success: true,
-      message: 'Register Success',
-      data: result,
-    });
+    next();
+    // return res.status(201).send({
+    //   success: true,
+    //   message: 'Register Success',
+    //   data: result,
+    // });
   } catch (error) {
     next(error);
-    // res.status(error.code || 500).send({
-    //   success: false,
-    //   message: error.message,
-    //   data: null,
-    // });
   }
 };
 
@@ -201,6 +194,8 @@ const getUserById = async (req, res, next) => {
       'createdAt',
       'updatedAt',
     ]);
+    const User = db.user;
+    const { getUser, validatePassword } = require('../helpers/userHelper');
 
     if (!user) throw { message: 'user not found!', code: 400 };
     return res.status(200).send({

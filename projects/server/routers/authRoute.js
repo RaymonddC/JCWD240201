@@ -5,17 +5,18 @@ const auth = require('../middleware/auth');
 const { authController } = require('./../controllers');
 const APIKey = require('../middleware/APIKey');
 
-// router.post('/register', authController.userCreate, authController.sendVerifLink);
 router.post(
-  '/login',
-  // APIKey.APIKey,
-  authController.userLogin,
+  '/register',
+  authController.userCreate,
+  authController.sendVerifyEmail,
 );
+
+router.post('/login', APIKey.APIKey, authController.userLogin);
 
 // //keepLogin (byToken)
 router.get(
   '/getUser',
-  // APIKey.APIKey,
+  APIKey.APIKey,
   auth.verifyToken,
   authController.getUserById,
 );
