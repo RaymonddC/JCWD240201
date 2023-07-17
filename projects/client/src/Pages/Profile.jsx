@@ -17,9 +17,9 @@ export default function Profile() {
   if (!token) return <Navigate to={'/login'} />;
   // console.log(user);
   return (
-    <div className="flex sm:flex-col justify-center sm:items-center px-4 gap-4 pt-2">
+    <div className="flex flex-col lg:flex-row justify-center px-4 gap-4 pt-2">
       <div className="p-4 w-full lg:max-w-[255px]">
-        <div className="h-full flex flex-col sm:flex-row shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg">
+        <div className="h-full flex lg:flex-col flex-row shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg">
           <Link
             to="/user/profile"
             className={
