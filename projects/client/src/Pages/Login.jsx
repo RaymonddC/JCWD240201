@@ -12,11 +12,11 @@ export const Login = () => {
   const { user } = useSelector((state) => state?.user);
 
   const [isRegis, setIsRegis] = useState(
-    window.location.pathname == '/register',
+    window.location.pathname === '/register',
   );
 
   useEffect(() => {
-    setIsRegis(window.location.pathname == '/register');
+    setIsRegis(window.location.pathname === '/register');
   }, [window.location.pathname]);
 
   // console.log(user);
@@ -26,22 +26,22 @@ export const Login = () => {
     <div className="flex h-[100vh] relative">
       <div className={'image flex-1 bg-cover hidden lg:block'}>
         <div className=" min-w-[full] relative">
-          <Link to={'/'}>
-            <img
-              className="absolute w-full h-[100vh] object-cover"
-              src={LoginImage}
-              alt=""
-            />
-          </Link>
+          <img
+            className="absolute w-full h-[100vh] object-cover"
+            src={LoginImage}
+            alt=""
+          />
         </div>
       </div>
 
       <div className="formSide flex-1 flex flex-col h-[100vh] justify-center">
-        <img
-          className="absolute h-[2em] sm:h-[2.5em] xl:h-[4em] top-5 left-5 "
-          src={Logo}
-          alt=""
-        />
+        <Link to={'/'}>
+          <img
+            className="absolute h-[2em] sm:h-[2.5em] xl:h-[4em] top-5 left-5 "
+            src={Logo}
+            alt=""
+          />
+        </Link>
         <div className="px-[2%] sm:px-[10%] max-h-[100vh] py-[20%] md:py-[10%] lg:py-0">
           <div className="header px-[5%]">
             <p className="text-[30px] ">
