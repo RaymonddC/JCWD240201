@@ -21,7 +21,7 @@ export const InputPassword = (props) => {
           name={props.name}
           type={showPass ? 'text' : 'password'}
           placeholder={props.label}
-          className="input input-bordered w-full h-[3em]"
+          className={`input input-bordered w-full h-[3em] ${props.className}`}
           value={props.value}
           onBlur={props.onBlur}
           onChange={props.onChanged}

@@ -2,7 +2,7 @@ import { MdPerson } from 'react-icons/md';
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { InputPassword } from '../Components/AuthForm/Input/InputPassword';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { changePassword } from '../API/auth';
 import toast from 'react-hot-toast';
 
@@ -11,13 +11,37 @@ export default function ChangePassword() {
   const { user } = useSelector((state) => state.user);
   const _oldPassword = useRef();
   const _newPassword = useRef();
-  const _confirmNPassword = useRef();
+  const _confirmNewPassword = useRef();
+
+  // password validation
+  const [passwordValidation, setPasswordValidation] = useState(true);
+  const onPassword = (password) => {
+    const isPassword = new RegExp(
+      '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})',
+    );
+
+    if (isPassword.test(password)) {
+      setPasswordValidation(true);
+    } else {
+      setPasswordValidation(false);
+    }
+  };
+
+  //password confirmation
+  const [passwordConfirmation, setPasswordConfirmation] = useState(true);
+  const onConfirmPassword = (password, confirmPassword) => {
+    if (password === confirmPassword) {
+      setPasswordConfirmation(true);
+    } else {
+      setPasswordConfirmation(false);
+    }
+  };
 
   const onChangePassword = async () => {
     try {
       const oldPassword = _oldPassword.current.value;
       const newPassword = _newPassword.current.value;
-      const confirmNewPassword = _confirmNPassword.current.value;
+      const confirmNewPassword = _confirmNewPassword.current.value;
       const passwordNotMatch = { message: 'Password does not match' };
       console.log(oldPassword);
       if (newPassword !== confirmNewPassword) throw passwordNotMatch;
@@ -33,7 +57,7 @@ export default function ChangePassword() {
 
       _oldPassword.current.value = '';
       _newPassword.current.value = '';
-      _confirmNPassword.current.value = '';
+      _confirmNewPassword.current.value = '';
     } catch (error) {
       toast.error(error.message);
     }
@@ -67,10 +91,10 @@ export default function ChangePassword() {
           <h3 className="text-[23px] font-bold">Change Password</h3>
         </div>
         <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
-          <div className='hidden md:block'>
+          <div className="hidden md:block">
             <div className="flex">
               {user?.profile_image ? (
-                <img alt=''></img>
+                <img alt=""></img>
               ) : (
                 <MdPerson className="w-[100px] h-[100px]" />
               )}
@@ -91,14 +115,27 @@ export default function ChangePassword() {
               label={`New Password`}
               name="password"
               defineRef={_newPassword}
+              className={passwordValidation ? '' : 'input-error'}
+              onChanged={() => onPassword(_newPassword.current.value)}
             />
             <InputPassword
               label={`Confirm New Password`}
               name="password"
-              defineRef={_confirmNPassword}
+              defineRef={_confirmNewPassword}
+              className={
+                passwordConfirmation
+                  ? ''
+                  : 'input-error'
+              }
+              onChanged={() =>
+                onConfirmPassword(
+                  _newPassword.current.value,
+                  _confirmNewPassword.current.value,
+                )
+              }
             />
             <button
-              className="btn btn-primary w-6/12 text-white my-4"
+              className="btn btn-primary w-full lg:w-6/12 md:w-6/12 text-white my-4"
               onClick={() => onChangePassword()}
             >
               Save
