@@ -31,22 +31,7 @@ export function sendVerificationEmail(email) {
   );
 }
 
-export function postAPI(path, data, headerData) {
-  return axios.post(
-    `${process.env.REACT_APP_API_BASE_URL}${path}`,
-    {
-      ...data,
-    },
-    {
-      headers: {
-        apiKey: APIKey,
-        ...headerData,
-      },
-    },
-  );
-}
-
-export function resetPassword(password, token){
+export function resetPassword(password, token) {
   return axios.patch(
     `${URL}/auth/resetPassword`,
     {
@@ -61,16 +46,44 @@ export function resetPassword(password, token){
   );
 }
 
-export function getAPI(path, headerData) {
-  return axios.get(`${process.env.REACT_APP_API_BASE_URL}${path}`, {
+export function keepLogin(token) {
+  return axios.get(`${URL}/auth/getUser`, {
     headers: {
+      Authorization: `Bearer ${token}`,
       apiKey: APIKey,
-      ...headerData,
     },
   });
 }
 
-export function sendResetForm(email){
+export function register(data) {
+  return axios.post(
+    `${URL}/auth/register`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
+
+export function checkCredential(data) {
+  return axios.post(
+    `${URL}/auth/login`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
+
+export function sendResetForm(email) {
   return axios.post(
     `${URL}/auth/sendReset`,
     {

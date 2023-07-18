@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
 import { onLoginAsync, onRegister } from '../../Features/User/UserSlice';
 
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FcGoogle } from 'react-icons/fc';
 import { Input } from './Input/Input';
@@ -13,7 +13,7 @@ import { InputPassword } from './Input/InputPassword';
 
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
-  const isSubmit = useSelector((state) => state?.user?.isSubmitting);
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -25,12 +25,19 @@ export const AuthForm = (propss) => {
         phoneNumber: '',
       }}
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
-      onSubmit={(values, { resetForm }) => {
-        dispatch(propss.isRegis ? onRegister(values) : onLoginAsync(values));
-        if (!propss.isRegis) resetForm();
-        else {
-          return <Navigate to={'/login'} />;
-        }
+      onSubmit={async (values, { resetForm }) => {
+        try {
+          const isSuccess = await dispatch(
+            propss.isRegis ? onRegister(values) : onLoginAsync(values),
+          );
+
+          if (!propss.isRegis) {
+            if (isSuccess) return navigate('/');
+            resetForm();
+          } else {
+            if (isSuccess) return navigate('/login');
+          }
+        } catch (error) {}
       }}
     >
       {(props) => (
@@ -115,10 +122,7 @@ export const AuthForm = (propss) => {
             ''
           ) : (
             <>
-              <Link
-                to={propss.isRegis ? '/login' : '/register'}
-                className="text-blue-500"
-              >
+              <Link to={'/resetPassword'} className="text-blue-500">
                 Forgot Password?
               </Link>
             </>
@@ -126,9 +130,9 @@ export const AuthForm = (propss) => {
           <button
             type="submit"
             className={`btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
-              isSubmit ? 'btn-disabled' : 'btn-primary '
+              props.isSubmitting ? 'btn-disabled' : 'btn-primary '
             } `}
-            disabled={isSubmit}
+            disabled={props.isSubmitting}
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
