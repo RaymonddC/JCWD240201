@@ -54,9 +54,12 @@ export default function ResetPasswordForm() {
       setDisable(false);
       let token = searchParams.get('token');
       const password = _newPassword.current.value;
+      const confirmPassword = _confirmNewPassword.current.value;
       const result = await resetPassword(password, token);
-      console.log(result);
       const errorMessage = { message: result.data?.message };
+      const passwordNotMatch = { message: 'Password Does not Match' };
+
+      if (confirmPassword !== password) throw passwordNotMatch;
 
       if (result.data?.success) {
         toast.success(result.data?.message);
