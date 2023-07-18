@@ -1,8 +1,6 @@
 import { MdPerson } from 'react-icons/md';
 import { Link, Navigate } from 'react-router-dom';
-import UserEditModal from '../Components/User/UserEditModal';
 import { useSelector } from 'react-redux';
-import { convertDate } from '../Helper/userHelper';
 import { InputPassword } from '../Components/AuthForm/Input/InputPassword';
 
 export default function ChangePassword() {
@@ -49,7 +47,6 @@ export default function ChangePassword() {
       <div className="w-full max-w-[772px] p-4 rounded-lg">
         <div className="flex justify-between pl-4 mb-4">
           <h3 className="text-[23px] font-bold">Change Password</h3>
-          <UserEditModal data={user} />
         </div>
         <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
           <div className="flex">
@@ -65,6 +62,8 @@ export default function ChangePassword() {
             </div>
           </div>
           <InputPassword label={`Old Password`} name="password" />
+          <InputPassword label={`New Password`} name="password" />
+          <InputPassword label={`Confirm New Password`} name="password" />
         </div>
       </div>
     </div>
