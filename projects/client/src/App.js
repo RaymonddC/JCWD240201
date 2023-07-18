@@ -18,6 +18,8 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
 // import { RequestGetDataUser } from './Features/User/UserSlice';
+import ReqResetPassword from './Pages/ReqResetPassword';
+import ResetPasswordForm from './Pages/ResetPasswordForm';
 
 function App() {
   const dispatch = useDispatch();
@@ -47,6 +49,8 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/qna" element={<QnAUser />} />
         <Route path="/verification" element={<VerifyEmail />} />
+        <Route path="/resetPassword" element={<ReqResetPassword />} />
+        <Route path="/resetPasswordForm" element={<ResetPasswordForm />} />
       </Routes>
     </>
   );
