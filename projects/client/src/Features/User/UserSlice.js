@@ -81,7 +81,7 @@ export const logoutAsync = () => async (dispatch) => {
 export const checkCredentialAsync =
   (usernameOrEmail, password) => async (dispatch) => {
     try {
-      let response = await postAPI('auth/login', {
+      let response = await postAPI('/auth/login', {
         usernameOrEmail,
         password,
       });
@@ -133,7 +133,7 @@ export const onRegister = (values) => async (dispatch) => {
       phoneNumber,
     } = values;
 
-    await postAPI(`auth/register`, {
+    await postAPI(`/auth/register`, {
       fullName,
       username: usernameOrEmail,
       email: email,
