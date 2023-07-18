@@ -38,9 +38,10 @@ const getQuestionDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
     let response = await questionDB.findOne({
+      include: answerDB,
       where: { id: id },
     });
-    const totalPage = Math.ceil(response.count / pageLimit);
+    // const totalPage = Math.ceil(response.count / pageLimit);
     return res.status(200).send({
       success: true,
       message: 'get question details success',

@@ -5,7 +5,8 @@ const { QnAController } = require('../controllers');
 const { APIKey } = require('../middleware/APIKey');
 
 router.post('/questions', APIKey, QnAController.createQuestion);
+router.get('/questions/:id', APIKey, QnAController.getQuestionDetails);
 router.get('/questions', APIKey, QnAController.getQuestions);
-router.get('/answers', QnAController.getAnswers);
+router.get('/answers', APIKey, QnAController.getAnswers);
 
 module.exports = router;

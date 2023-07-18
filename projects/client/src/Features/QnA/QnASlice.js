@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { createQuestionAPI, getQuestionsAPI, getAnswersAPI } from '../../API/QnAAPI';
+import {
+  createQuestionAPI,
+  getQuestionsAPI,
+  getAnswersAPI,
+  getQuestionDetailsAPI
+} from '../../API/QnAAPI';
 
 const initialState = {
   questions: null,
@@ -52,12 +57,11 @@ export const getQuestions = (data) => async (dispatch) => {
 export const getQuestionDetail = (data) => async (dispatch) => {
   try {
     console.log('getQuestions');
-    let response = await getQuestionsAPI({
-      page: data.page,
-      limit: data.limit,
+    let response = await getQuestionDetailsAPI({
+      id: data.id,
     });
-    console.log(response.data.data);
-    dispatch(questions(response?.data));
+    // console.log(response.data.data);
+    dispatch(questions(response?.data.data));
   } catch (error) {
     console.log(error);
   }

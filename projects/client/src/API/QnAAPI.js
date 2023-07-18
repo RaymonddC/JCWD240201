@@ -16,6 +16,11 @@ export function getQuestionsAPI(data) {
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
 }
+export function getQuestionDetailsAPI(data) {
+  return axios.get(`${URL}/dicussions/questions/${data.id}`, {
+    headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
+  });
+}
 export function getAnswersAPI(data) {
   return axios.get(`${URL}/dicussions/answers`, {
     params: { page: data.page, limit: data.limit },

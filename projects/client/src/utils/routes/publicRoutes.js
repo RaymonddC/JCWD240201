@@ -52,12 +52,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/resetPasswordForm',
-    element: <ResetPasswordForm />,
-  },
-  {
-    index: true,
-    path: '/qna/details',
+    path: '/qna/details/:id',
     element: <QuestionDetails />,
   },
 
