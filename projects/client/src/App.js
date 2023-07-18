@@ -20,6 +20,7 @@ import { keepLoginAsync } from './Features/User/UserSlice';
 // import { RequestGetDataUser } from './Features/User/UserSlice';
 import ReqResetPassword from './Pages/ReqResetPassword';
 import ResetPasswordForm from './Pages/ResetPasswordForm';
+import ChangePassword from './Pages/ChangePassword.jsx';
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function App() {
         <Route path="/verification" element={<VerifyEmail />} />
         <Route path="/resetPassword" element={<ReqResetPassword />} />
         <Route path="/resetPasswordForm" element={<ResetPasswordForm />} />
+        <Route path="/user/change-password" element={<ChangePassword />} />
       </Routes>
     </>
   );
