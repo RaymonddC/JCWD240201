@@ -50,7 +50,7 @@ export default function ReqResetPassword() {
           Request Reset Password
         </div>
       </div>
-      <div className='lg:flex lg:justify-center lg:py-12 md:flex md:justify-center md:py-12'>
+      <div className="lg:flex lg:justify-center lg:py-12 md:flex md:justify-center md:py-12">
         <div className="flex flex-col gap-4 p-4 lg:w-full lg:max-w-lg md:w-full md:max-w-lg">
           <div className="form-control w-full">
             <label className="label">
@@ -71,22 +71,13 @@ export default function ReqResetPassword() {
               <div className="label-text">Invalid email</div>
             )}
           </div>
-          {disable ? (
-            <button
-              onClick={() => onSendRequest()}
-              className="btn btn-accent w-full text-white"
-              disabled
-            >
-              Send Request
-            </button>
-          ) : (
-            <button
-              onClick={() => onSendRequest()}
-              className="btn btn-accent w-full text-white"
-            >
-              Send Request
-            </button>
-          )}
+          <button
+            onClick={() => onSendRequest()}
+            className="btn btn-primary w-full text-white"
+            disabled={disable ? true : false}
+          >
+            Send Request
+          </button>
         </div>
       </div>
     </>

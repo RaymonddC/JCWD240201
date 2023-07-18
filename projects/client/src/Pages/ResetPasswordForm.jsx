@@ -70,7 +70,7 @@ export default function ResetPasswordForm() {
         </div>
         <div className="flex items-center font-semibold">Reset Password</div>
       </div>
-      <div className='lg:flex lg:justify-center lg:p-4 md:flex md:justify-center md:p-4'>
+      <div className="lg:flex lg:justify-center lg:p-4 md:flex md:justify-center md:p-4">
         <div className="flex flex-col p-4 lg:max-w-lg md:max-w-lg">
           <div className="form-control w-full">
             <label className="label">
@@ -115,22 +115,13 @@ export default function ResetPasswordForm() {
               }
             />
           </div>
-          {disable ? (
-            <button
-              onClick={() => onResetPassword()}
-              className="btn btn-accent w-full text-white my-4"
-              disabled
-            >
-              Reset Password
-            </button>
-          ) : (
-            <button
-              onClick={() => onResetPassword()}
-              className="btn btn-accent w-full text-white my-4"
-            >
-              Reset Password
-            </button>
-          )}
+          <button
+            onClick={() => onResetPassword()}
+            className="btn btn-primary w-full text-white my-4"
+            disabled={disable ? true : false}
+          >
+            Reset Password
+          </button>
         </div>
       </div>
     </>

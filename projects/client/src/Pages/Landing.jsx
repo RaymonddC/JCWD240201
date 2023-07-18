@@ -5,7 +5,7 @@ import jumbotronImage from '../utils/images/jumbotronImage.png';
 import prescriptionImage from '../utils/images/prescription.svg';
 import { Link } from 'react-router-dom';
 
-export default function LandingPage() {
+export default function Landing() {
   return (
     <>
       <NavBar />
