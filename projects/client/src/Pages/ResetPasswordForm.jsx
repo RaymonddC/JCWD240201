@@ -4,15 +4,27 @@ import { MdKeyboardBackspace } from 'react-icons/md';
 import toast, { Toaster } from 'react-hot-toast';
 import { resetPassword } from '../API/auth';
 import { useSearchParams } from 'react-router-dom';
+import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 
 export default function ResetPasswordForm() {
   const [disable, setDisable] = useState(false);
   const _newPassword = useRef();
   const _confirmNewPassword = useRef();
 
+  //show password
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const onShowPassword = () => {
+    if (showPassword) setShowPassword(false);
+    if (!showPassword) setShowPassword(true);
+  };
+
+  const onShowConfirmPassword = () => {
+    if (showConfirmPassword) setShowConfirmPassword(false);
+    if (!showConfirmPassword) setShowConfirmPassword(true);
+  };
   // password validation
   const [passwordValidation, setPasswordValidation] = useState(true);
-
   const onPassword = (password) => {
     const isPassword = new RegExp(
       '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})',
@@ -27,7 +39,6 @@ export default function ResetPasswordForm() {
 
   //password confirmation
   const [passwordConfirmation, setPasswordConfirmation] = useState(true);
-
   const onConfirmPassword = (password, confirmPassword) => {
     if (password === confirmPassword) {
       setPasswordConfirmation(true);
@@ -38,7 +49,6 @@ export default function ResetPasswordForm() {
 
   //reset password
   const [searchParams] = useSearchParams();
-
   const onResetPassword = async () => {
     try {
       setDisable(false);
@@ -76,17 +86,30 @@ export default function ResetPasswordForm() {
             <label className="label">
               <span className="label-text">Enter your new password</span>
             </label>
-            <input
-              type="password"
-              placeholder="New Password"
-              ref={_newPassword}
-              className={
-                passwordValidation
-                  ? 'input input-bordered w-full'
-                  : 'input input-bordered input-error w-full'
-              }
-              onChange={() => onPassword(_newPassword.current.value)}
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="New Password"
+                ref={_newPassword}
+                className={
+                  passwordValidation
+                    ? 'input input-bordered w-full pr-8'
+                    : 'input input-bordered input-error w-full pr-8'
+                }
+                onChange={() => onPassword(_newPassword.current.value)}
+              />
+              {showPassword ? (
+                <MdOutlineVisibilityOff
+                  onClick={() => onShowPassword()}
+                  className="absolute bottom-3.5 right-3"
+                />
+              ) : (
+                <MdOutlineVisibility
+                  onClick={() => onShowPassword()}
+                  className="absolute bottom-3.5 right-3"
+                />
+              )}
+            </div>
             <label className="label">
               <span className="label-text-alt px-3">
                 Passwords should contain at least 8 characters including an
@@ -94,18 +117,18 @@ export default function ResetPasswordForm() {
               </span>
             </label>
           </div>
-          <div className="form-control w-full">
+          <div className="form-control w-full relative">
             <label className="label">
               <span className="label-text">Confirm your new password</span>
             </label>
             <input
-              type="password"
+              type={showConfirmPassword ? 'text' : 'password'}
               placeholder="Confirm Password"
               ref={_confirmNewPassword}
               className={
                 passwordConfirmation
-                  ? 'input input-bordered w-full'
-                  : 'input input-bordered input-error w-full'
+                  ? 'input input-bordered w-full pr-8'
+                  : 'input input-bordered input-error w-full pr-8'
               }
               onChange={() =>
                 onConfirmPassword(
@@ -114,6 +137,17 @@ export default function ResetPasswordForm() {
                 )
               }
             />
+            {showPassword ? (
+              <MdOutlineVisibilityOff
+                onClick={() => onShowConfirmPassword()}
+                className="absolute bottom-3.5 right-3"
+              />
+            ) : (
+              <MdOutlineVisibility
+                onClick={() => onShowConfirmPassword()}
+                className="absolute bottom-3.5 right-3"
+              />
+            )}
           </div>
           <button
             onClick={() => onResetPassword()}
