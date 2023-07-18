@@ -10,14 +10,16 @@ export default function NavBar() {
   return (
     <>
       <div className="flex relative gap-2 items-center p-3 ">
-        <Link to="/">
-          <img className="h-10 px-2" src={Logo} alt="" />
-        </Link>
+        <div className='w-72'>
+          <Link to="/">
+            <img className="px-2" src={Logo} alt="" />
+          </Link>
+        </div>
         <div className="hidden sm:block w-full">
           <div className="flex justify-between pr-2">
             <div className="flex">
-              <button className="btn btn-ghost">Shop</button>
-              <button className="btn btn-ghost">
+              <button className="btn btn-sm btn-ghost">Shop</button>
+              <button className="btn btn-sm btn-ghost">
                 <Link to="/QnA">QnA</Link>
               </button>
             </div>
@@ -32,11 +34,11 @@ export default function NavBar() {
                   <Link to={'/login'}>logout</Link>
                 </button>
               ) : (
-                <div className='flex gap-3'>
-                  <button className="btn btn-primary">
+                <div className="flex gap-3">
+                  <button className="btn btn-sm btn-primary">
                     <Link to="/login">Login</Link>
                   </button>
-                  <button className="btn btn-outline btn-primary">
+                  <button className="btn btn-sm btn-outline btn-primary">
                     <Link to="/register">Register</Link>
                   </button>
                 </div>

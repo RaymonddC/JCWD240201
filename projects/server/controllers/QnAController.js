@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
@@ -36,23 +35,23 @@ const getQuestions = async (req, res, next) => {
   }
 };
 
-const getAnswer = async (req, res, next) => {
+const getAnswers = async (req, res, next) => {
   try {
-    const { question_id } = req.body;
+    const { page, search, sort, limit } = req.query;
     console.log(req.body);
-    let response = await questionDB.findAndCountAll({
-      included: answerDB,
-      limit: pageLimit,
-      offset: offset,
+    let response = await answerDB.findAll({
+      included: db.question,
+      // limit: pageLimit,
+      // offset: offset,
       order: [['updatedAt', 'DESC']],
     });
-    console.log(response);
-    const totalPage = Math.ceil(response.count / pageLimit);
-    console.log(totalPage);
+    // console.log(response);
+    // const totalPage = Math.ceil(response.count / pageLimit);
+    // console.log(totalPage);
     return res.status(200).send({
       success: true,
       message: 'get questions success',
-      totalPage: totalPage,
+      // totalPage: totalPage,
       data: response,
     });
   } catch (error) {
@@ -83,4 +82,4 @@ const createQuestion = async (req, res) => {
   }
 };
 
-module.exports = { createQuestion, getQuestions };
+module.exports = { createQuestion, getQuestions, getAnswers };

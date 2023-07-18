@@ -6,8 +6,8 @@ import QuestionCard from '../Components/QnA/QuestionCard';
 
 export default function QnAUSer() {
   const user = useSelector((state) => state?.user?.user);
-  const disabled = user?false:true
-  const placeholder = user?'Type your question here...': 'Please login to ask a question'
+  const disabled = Object.keys(user).length?false:true
+  const placeholder = disabled?'Please login to ask a question': 'Type your question here...'
   console.log(user)
   const question = useRef();
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ export default function QnAUSer() {
                       }),
                     );
                   }}
-                  className="btn btn-accent"
+                  className={`btn ${disabled?'btn-disabled':'btn-accent'}`}
                 >
                   SUBMIT
                 </button>
