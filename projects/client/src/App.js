@@ -45,16 +45,6 @@ function App() {
   return (
     <>
       <Toaster />
-      <Routes>
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/qna" element={<QnA />} />
-        <Route path="/verification" element={<VerifyEmail />} />
-        <Route path="/resetPassword" element={<ReqResetPassword />} />
-        <Route path="/resetPasswordForm" element={<ResetPasswordForm />} />
-      </Routes>
       {user.role_id === 1 ? <AdminRoute /> : <PublicRoute />}
     </>
   );
