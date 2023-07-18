@@ -9,7 +9,7 @@ import LoginImage from '../utils/images/Frame.svg';
 import Logo from '../utils/images/logoHealthyMed.svg';
 
 export const Login = () => {
-  const user = useSelector((state) => state?.user?.user);
+  const { user } = useSelector((state) => state?.user);
 
   const [isRegis, setIsRegis] = useState(
     window.location.pathname == '/register',
@@ -24,13 +24,15 @@ export const Login = () => {
 
   return (
     <div className="flex h-[100vh] relative">
-      <div className={'image flex-1 bg-cover hidden md:block'}>
+      <div className={'image flex-1 bg-cover hidden lg:block'}>
         <div className=" min-w-[full] relative">
-          <img
-            className="absolute w-full h-[100vh] object-cover"
-            src={LoginImage}
-            alt=""
-          />
+          <Link to={'/'}>
+            <img
+              className="absolute w-full h-[100vh] object-cover"
+              src={LoginImage}
+              alt=""
+            />
+          </Link>
         </div>
       </div>
 
@@ -40,7 +42,7 @@ export const Login = () => {
           src={Logo}
           alt=""
         />
-        <div className="px-[2%] sm:px-[10%] max-h-[100vh] ">
+        <div className="px-[2%] sm:px-[10%] max-h-[100vh] py-[20%] md:py-[10%] lg:py-0">
           <div className="header px-[5%]">
             <p className="text-[30px] ">
               Welcome {isRegis ? 'to  HealthyMed' : 'Back'}!
@@ -53,7 +55,7 @@ export const Login = () => {
           <AuthForm isRegis={isRegis} />
 
           <Link to={'/'}>
-            <span className="text-[#808080] text-left">
+            <span className="text-[#808080] text-left pb-3">
               {isRegis ? 'Already have account?' : "Don't have an account?"}{' '}
             </span>
             <Link
