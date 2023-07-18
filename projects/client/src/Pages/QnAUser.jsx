@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import NavBar from '../Components/Layout/Navbar';
-import { getQuestions, submitQuestion } from '../Features/QnA/QnASlice';
+import { getAnswers, getQuestions, submitQuestion } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 
@@ -12,7 +12,7 @@ export default function QnAUSer() {
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
-  console.log('QnAStore', QnAStore.questions?.data?.rows);
+  // console.log('QnAStore', QnAStore.questions?.data?.rows);
   const totalPages = QnAStore?.questions?.totalPage;
   const [page, setPage] = useState(1);
   const next = () => {
@@ -27,7 +27,7 @@ export default function QnAUSer() {
   };
 
   useEffect(() => {
-    dispatch(getQuestions({ page, limit: 2 }));
+    dispatch(getAnswers({ page, limit: 2 }));
   }, [page]);
 
   return (

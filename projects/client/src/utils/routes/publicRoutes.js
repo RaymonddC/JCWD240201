@@ -7,6 +7,7 @@ import QnAUser from '../../Pages/QnAUser';
 import VerifyEmail from '../../Pages/VerifyEmail';
 import ReqResetPassword from '../../Pages/ReqResetPassword';
 import ResetPasswordForm from '../../Pages/ResetPasswordForm';
+import QuestionDetails from '../../Pages/QuestionDetails';
 
 const routerSource = (props) => [
   {
@@ -48,6 +49,16 @@ const routerSource = (props) => [
     index: true,
     path: '/resetPasswordForm',
     element: <ResetPasswordForm {...props} />,
+  },
+  {
+    index: true,
+    path: '/resetPasswordForm',
+    element: <ResetPasswordForm {...props} />,
+  },
+  {
+    index: true,
+    path: '/qna/details',
+    element: <QuestionDetails />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },

@@ -34,32 +34,46 @@ const getQuestions = async (req, res, next) => {
     // });
   }
 };
-
-const getAnswers = async (req, res, next) => {
+const getQuestionDetails = async (req, res, next) => {
   try {
-    const { page, search, sort, limit } = req.query;
-    console.log(req.body);
-    let response = await answerDB.findAll({
-      include: db.question,
-      // limit: pageLimit,
-      // offset: offset,
-      order: [['updatedAt', 'DESC']],
+    const { id } = req.params;
+    let response = await questionDB.findOne({
+      where: { id: id },
     });
-    // console.log(response);
-    // const totalPage = Math.ceil(response.count / pageLimit);
-    // console.log(totalPage);
+    const totalPage = Math.ceil(response.count / pageLimit);
     return res.status(200).send({
       success: true,
-      message: 'get questions success',
-      // totalPage: totalPage,
+      message: 'get question details success',
       data: response,
     });
   } catch (error) {
     next(error);
-    // return res.send({
-    //   success: false,
-    //   message: error.message,
-    // });
+  }
+};
+
+const getAnswers = async (req, res, next) => {
+  try {
+    const { page, search, sort, limit } = req.query;
+    const pageLimit = Number(limit);
+    const offset = (Number(page) - 1) * pageLimit;
+    console.log(req.body);
+    let response = await answerDB.findAndCountAll({
+      include: db.question,
+      limit: pageLimit,
+      offset: offset,
+      order: [['updatedAt', 'DESC']],
+    });
+    // console.log(response);
+    const totalPage = Math.ceil(response.count / pageLimit);
+    console.log(totalPage);
+    return res.status(200).send({
+      success: true,
+      message: 'get questions success',
+      totalPage: totalPage,
+      data: response,
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -82,4 +96,4 @@ const createQuestion = async (req, res) => {
   }
 };
 
-module.exports = { createQuestion, getQuestions, getAnswers };
+module.exports = { createQuestion, getQuestions, getAnswers, getQuestionDetails };
