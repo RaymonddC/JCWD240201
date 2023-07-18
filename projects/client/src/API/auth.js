@@ -35,7 +35,7 @@ export function sendVerificationEmail(email) {
 
 export function postAPI(path, data, headerData) {
   return axios.post(
-    `${process.env.REACT_APP_API_BASE_URL}${path}`,
+    `${process.env.REACT_APP_API_BASE_URL}/${path}`,
     {
       ...data,
     },
@@ -48,7 +48,7 @@ export function postAPI(path, data, headerData) {
   );
 }
 export function getAPI(path, headerData) {
-  return axios.get(`${process.env.REACT_APP_API_BASE_URL}${path}`, {
+  return axios.get(`${process.env.REACT_APP_API_BASE_URL}/${path}`, {
     headers: {
       apiKey: APIKey,
       ...headerData,

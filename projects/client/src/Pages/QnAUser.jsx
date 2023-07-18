@@ -6,6 +6,9 @@ import QuestionCard from '../Components/QnA/QuestionCard';
 
 export default function QnAUSer() {
   const user = useSelector((state) => state?.user?.user);
+  const disabled = user?false:true
+  const placeholder = user?'Type your question here...': 'Please login to ask a question'
+  console.log(user)
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
@@ -38,10 +41,12 @@ export default function QnAUSer() {
                 <article className="prose">
                   <h2 className="label-text">Ask a question</h2>
                 </article>
+                
                 <textarea
                   ref={question}
                   className="textarea my-5 textarea-bordered h-24"
-                  placeholder="Type your question here..."
+                  placeholder={placeholder}
+                  disabled={disabled}
                 ></textarea>
               </div>
               <div className="flex justify-end">
