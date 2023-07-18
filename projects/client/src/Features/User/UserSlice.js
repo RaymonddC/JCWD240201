@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { getDataUser } from '../../API/user';
+import { getDataUser } from '../../API/userAPI';
 import { getAPI, postAPI } from '../../API/auth';
 
 // import { auth } from './../../firebase';
@@ -50,7 +50,7 @@ export const keepLoginAsync = () => async (dispatch) => {
     let token = localStorage.getItem('token');
     // if (token == null) throw { message: 'No User' };
     if (token) {
-      let response = await getAPI('auth/getUser', {
+      let response = await getAPI('/auth/getUser', {
         Authorization: `bearer ${token}`,
       });
 
@@ -82,7 +82,7 @@ export const logoutAsync = () => async (dispatch) => {
 export const checkCredentialAsync =
   (usernameOrEmail, password) => async (dispatch) => {
     try {
-      let response = await postAPI('auth/login', {
+      let response = await postAPI('/auth/login', {
         usernameOrEmail,
         password,
       });
@@ -128,7 +128,7 @@ export const onRegister = (values) => async (dispatch) => {
     // if (!username) return toast.error(`Fill All Data!`);
 
     const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}auth/register`,
+      `${process.env.REACT_APP_API_BASE_URL}/auth/register`,
       {
         username: usernameOrEmail,
         email: email,

@@ -1,7 +1,7 @@
 // import axios from 'axios';
 // import { useEffect, useState } from 'react';
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 // import VerifyEmail from './Pages/VerifyEmail';
 // import Landing from './Pages/Landing';
 // import QnA from './Pages/QnA';
@@ -17,6 +17,7 @@ import QnA from './Pages/QnA';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
+import User from './Pages/User';
 // import { RequestGetDataUser } from './Features/User/UserSlice';
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/qna" element={<QnA />} />
         <Route path="/verification" element={<VerifyEmail />} />
+        <Route path="/user" element={<Navigate to="/user/profile" />} />
       </Routes>
     </>
   );

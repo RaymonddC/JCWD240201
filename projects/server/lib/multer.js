@@ -5,10 +5,10 @@ const multer = require('multer');
 const fs = require('fs');
 
 // 1. Setup Disk Storage & Filename
-let defaultPath = 'Public';
+let defaultPath = 'public';
 var storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    console.log(file);
+    // console.log(file);
     // Check Directory (Exist or Not)
     let isDirectoryExist = fs.existsSync(`${defaultPath}/${file.fieldname}`);
 
@@ -23,6 +23,9 @@ var storage = multer.diskStorage({
       cb(null, `${defaultPath}/${file.fieldname}`);
     }
     if (file.fieldname === 'images') {
+      cb(null, `${defaultPath}/${file.fieldname}`);
+    }
+    if (file.fieldname === 'profile_image') {
       cb(null, `${defaultPath}/${file.fieldname}`);
     }
   },
@@ -41,8 +44,8 @@ var storage = multer.diskStorage({
 
 // 2. Setup File Filter
 var fileFilter = (req, file, cb) => {
-  console.log('>>>');
-  console.log(file);
+  // console.log('>>>');
+  // console.log(file);
   if (file.mimetype.split('/')[0] === 'image') {
     // Accept
     cb(null, true);
