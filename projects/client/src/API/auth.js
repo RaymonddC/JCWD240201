@@ -96,3 +96,18 @@ export function sendResetForm(email) {
     },
   );
 }
+
+export function changePassword(userId, oldPassword, newPassword){
+  return axios.patch(
+    `${URL}/auth/password/${userId}`,
+    {
+      oldPassword: oldPassword,
+      newPassword: newPassword
+    },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
