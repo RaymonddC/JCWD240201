@@ -9,7 +9,7 @@ export const InputPassword = (props) => {
       <div className={`form-control w-full relative ${props.hidden} `}>
         <div className="icon" onClick={() => setShowPass(!showPass)}>
           {showPass ? (
-            <MdOutlineVisibility className="absolute right-[20px] top-[50px] z-30 " />
+            <MdOutlineVisibility className="absolute right-[10px] xl:right-[15px] top-[55px] xl:top-[50px] z-30 text-[1em] xl:text-[1.5em]" />
           ) : (
             <MdOutlineVisibilityOff className="absolute right-[10px] xl:right-[15px] top-[55px] xl:top-[50px] z-30 text-[1em] xl:text-[1.5em]" />
           )}
@@ -21,10 +21,11 @@ export const InputPassword = (props) => {
           name={props.name}
           type={showPass ? 'text' : 'password'}
           placeholder={props.label}
-          className="input input-bordered w-full h-[3em]"
+          className={`input input-bordered w-full h-[3em] ${props.className}`}
           value={props.value}
           onBlur={props.onBlur}
           onChange={props.onChanged}
+          ref={props.defineRef}
         ></input>
         {props.errors && props.touched ? (
           <div className="error text-right">{props.errors}</div>

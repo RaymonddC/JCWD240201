@@ -13,42 +13,37 @@ const {
   validatePassword,
   generateToken,
   getUserByPk,
+  validateEmail,
 } = require('../helpers/userHelper');
 
 const sendVerifyEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const isEmail = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     let payload = { email: email };
     const token = jwt.sign(payload, 'verification-account');
     const data = fs.readFileSync('./helpers/verifyEmailTemplate.html', 'utf-8');
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 
-    if (isEmail.test(email)) {
-      await transporter.sendMail({
-        from: 'pharmacy.jcwd2402@gmail.com',
-        to: email,
-        subject: 'Account Verification',
-        html: tempResult,
-      });
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
 
-      return res.send({
-        success: true,
-        status: 200,
-        message: 'Send Verification Email Success',
-        data: null,
-      });
-    } else {
-      throw { status: 400, message: 'email is not valid' };
-    }
-  } catch (error) {
+    await transporter.sendMail({
+      from: 'pharmacy.jcwd2402@gmail.com',
+      to: email,
+      subject: 'Account Verification',
+      html: tempResult,
+    });
+
     return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
+      success: true,
+      status: 200,
+      message: 'Send Verification Email Success',
       data: null,
     });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 };
 const verifyAccount = async (req, res, next) => {
@@ -89,6 +84,7 @@ const verifyAccount = async (req, res, next) => {
     });
   }
 };
+
 const userCreate = async (req, res, next) => {
   try {
     const {
@@ -100,7 +96,6 @@ const userCreate = async (req, res, next) => {
       phoneNumber,
       role,
     } = req.body;
-    console.log(req.body.username);
 
     if (
       !fullName ||
@@ -112,8 +107,10 @@ const userCreate = async (req, res, next) => {
     )
       throw { message: 'Fill all data', code: 400 };
 
-    const isEmailExist = await getUser(email, username);
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
 
+    const isEmailExist = await getUser(email, username);
     if (isEmailExist)
       throw { message: 'username or email is already exists', code: 400 };
 
@@ -132,28 +129,24 @@ const userCreate = async (req, res, next) => {
       role_id: role ? role : 2,
     });
 
-    const result = await getUser(newUser.email, newUser.username);
+    const result = await getUser(newUser.email, newUser.username, 'password');
 
     req.params.username = result.username;
 
-    // next();
-    return res.status(201).send({
-      success: true,
-      message: 'Register Success',
-      data: result,
-    });
+    next();
+    // return res.status(201).send({
+    //   success: true,
+    //   message: 'Register Success',
+    //   data: result,
+    // });
   } catch (error) {
     next(error);
-    // res.status(error.code || 500).send({
-    //   success: false,
-    //   message: error.message,
-    //   data: null,
-    // });
   }
 };
 
 const userLogin = async (req, res, next) => {
   try {
+    console.log('test');
     const { usernameOrEmail, password } = req.body;
 
     if (!usernameOrEmail || !password)
@@ -178,8 +171,6 @@ const userLogin = async (req, res, next) => {
 
       //   const updateSuspend = await User.update({ suspendCounter: 0 }, { where: { [Op.or]: [{ email: usernameOrEmail }, { username: usernameOrEmail }] } });
 
-      //   result = await getUser(usernameOrEmail, usernameOrEmail);
-
       const user = await getUser(usernameOrEmail, usernameOrEmail, 'password');
 
       return res.status(200).send({
@@ -190,6 +181,7 @@ const userLogin = async (req, res, next) => {
       });
     }
   } catch (error) {
+    console.log('error');
     next(error);
   }
 };
@@ -201,6 +193,8 @@ const getUserById = async (req, res, next) => {
       'createdAt',
       'updatedAt',
     ]);
+    const User = db.user;
+    const { getUser, validatePassword } = require('../helpers/userHelper');
 
     if (!user) throw { message: 'user not found!', code: 400 };
     return res.status(200).send({
@@ -213,10 +207,155 @@ const getUserById = async (req, res, next) => {
   }
 };
 
+const sendResetPasswordForm = async (req, res) => {
+  try {
+    // create email token
+    const { email } = req.body;
+    const isEmail = new RegExp(/\S+@\S+.\S+/);
+    let payload = { email: email };
+    const token = jwt.sign(payload, 'reset-password');
+    if (!isEmail.test(email))
+      throw { status: 400, message: 'email is not valid' };
+
+    //find user
+    const findUser = await User.findOne({
+      where: { email: email },
+    });
+    if (!findUser) throw { message: 'Account is not found', status: 400 };
+
+    //send reset password form
+    const data = fs.readFileSync('./helpers/resetPasswordForm.html', 'utf-8');
+    const tempCompile = await Handlebars.compile(data);
+    const tempResult = tempCompile({ token: token });
+
+    if (isEmail.test(email)) {
+      await transporter.sendMail({
+        from: 'pharmacy.jcwd2402@gmail.com',
+        to: email,
+        subject: 'Reset Password',
+        html: tempResult,
+      });
+
+      return res.send({
+        success: true,
+        status: 200,
+        message: 'Send Reset Password Form Success',
+        data: null,
+      });
+    }
+  } catch (error) {
+    return res.send({
+      success: false,
+      status: error.status,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  try {
+    //create and validate new password
+    const { newPassword } = req.body;
+    const isPasswordValid = new RegExp(
+      '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})',
+    );
+    if (!isPasswordValid.test(newPassword))
+      throw { message: 'Password is not Valid', status: 400 };
+    const salt = await bcrypt.genSalt(10);
+    const hashPassword = await bcrypt.hash(newPassword, salt);
+
+    //get user email
+    let token = req.headers.authorization;
+    token = token.split(' ')[1];
+    let getEmail = jwt.verify(token, 'reset-password');
+
+    if (!getEmail) throw { message: 'Unauthorized request', status: 401 };
+
+    //reset password
+    User.update(
+      { password: hashPassword },
+      {
+        where: {
+          email: getEmail.email,
+        },
+      },
+    );
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'Reset Password Success',
+      data: null,
+    });
+  } catch (error) {
+    return res.send({
+      success: false,
+      status: error.status,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { oldPassword, newPassword } = req.body;
+
+    //validate new password
+    const isPasswordValid = new RegExp(
+      '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})',
+    );
+
+    if (!isPasswordValid.test(newPassword))
+      throw { message: 'Password is not Valid', status: 400 };
+
+    //get data user and compare old password
+    const getUser = await User.findOne({ where: { id: userId } });
+    if (!getUser) throw { message: 'Account is not found' };
+    const isUserExist = await bcrypt.compare(oldPassword, getUser.password);
+
+    //change password
+    if (isUserExist) {
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(newPassword, salt);
+
+      const result = await User.update(
+        { password: hashPassword },
+        {
+          where: {
+            id: userId,
+          },
+        },
+      );
+
+      return res.send({
+        success: true,
+        status: 200,
+        message: 'Change Password Success',
+        data: result,
+      });
+    }else{
+      throw {message: 'Wrong old password', status: 400}
+    }
+  } catch (error) {
+    return res.send({
+      success: false,
+      status: error.status,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
 module.exports = {
   sendVerifyEmail,
   verifyAccount,
   userCreate,
   userLogin,
   getUserById,
+  sendResetPasswordForm,
+  resetPassword,
+  changePassword,
 };

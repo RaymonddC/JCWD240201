@@ -1,7 +1,7 @@
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 
 export default function NavBar() {
@@ -32,9 +32,14 @@ export default function NavBar() {
                   <Link to={'/login'}>logout</Link>
                 </button>
               ) : (
-                <button className="btn btn-ghost">
-                  <Link to="/login">Login</Link>
-                </button>
+                <div className='flex gap-3'>
+                  <button className="btn btn-primary">
+                    <Link to="/login">Login</Link>
+                  </button>
+                  <button className="btn btn-outline btn-primary">
+                    <Link to="/register">Register</Link>
+                  </button>
+                </div>
               )}
             </div>
           </div>
@@ -49,10 +54,10 @@ export default function NavBar() {
               className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
               <li>
-                <Link to="/Landing">Item 1</Link>
+                <Link to="/Landing">SHOP</Link>
               </li>
               <li>
-                <Link to="/QnA">Item 2</Link>
+                <Link to="/QnA">QNA</Link>
               </li>
             </ul>
           </div>

@@ -1,28 +1,17 @@
 // import axios from 'axios';
 // import { useEffect, useState } from 'react';
 import './App.css';
-import { Navigate, Route, Routes } from 'react-router-dom';
-// import VerifyEmail from './Pages/VerifyEmail';
-// import Landing from './Pages/Landing';
-// import QnA from './Pages/QnA';
-// import { useEffect } from 'react';
-// import { useDispatch } from 'react-redux';
 
-import Profile from './Pages/Profile';
-import { Login } from './Pages/Login';
 import { Toaster } from 'react-hot-toast';
-import VerifyEmail from './Pages/VerifyEmail';
-import Landing from './Pages/Landing';
-import QnA from './Pages/QnA';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
-import User from './Pages/User';
-// import { RequestGetDataUser } from './Features/User/UserSlice';
+import AdminRoute from './utils/routes/adminRoute';
+import PublicRoute from './utils/routes/publicRoutes';
 
 function App() {
   const dispatch = useDispatch();
-  // const [message, setMessage] = useState('');
+  const { user } = useSelector((state) => state.user);
 
   // useEffect(() => {
   //   (async () => {
@@ -34,22 +23,13 @@ function App() {
   // }, []);
 
   useEffect(() => {
-    // dispatch(RequestGetDataUser());
-    // const dispatch = useDispatch();
     dispatch(keepLoginAsync());
   }, []);
+
   return (
     <>
       <Toaster />
-      <Routes>
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/qna" element={<QnA />} />
-        <Route path="/verification" element={<VerifyEmail />} />
-        <Route path="/user" element={<Navigate to="/user/profile" />} />
-      </Routes>
+      {user.role_id === 1 ? <AdminRoute /> : <PublicRoute />}
     </>
   );
 }

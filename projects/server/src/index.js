@@ -24,9 +24,11 @@ app.use('/public', express.static('public'));
 // ===========================
 // NOTE : Add your routes here
 
-const { authRoute, userRoute } = require('../routers');
+const { authRoute, userRoute, QnARouter } = require('../routers');
+
 
 app.use('/auth', authRoute);
+app.use('/qna', QnARouter);
 app.use('/users', userRoute);
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
@@ -59,6 +61,17 @@ app.get('/api/greetings', (req, res, next) => {
 //   }
 // });
 
+app.use((err, req, res, next) => {
+  const errStatus = err.code || 500;
+  const errMessage = err.message || 'Something went wrong';
+  return res.status(errStatus).json({
+    success: false,
+    status: errStatus,
+    message: errMessage,
+    stack: err.stack,
+    data: null,
+  });
+});
 //#endregion
 
 //#region CLIENT

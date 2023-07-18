@@ -3,15 +3,17 @@ import React, { useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
 import { onLoginAsync, onRegister } from '../../Features/User/UserSlice';
 
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FcGoogle } from 'react-icons/fc';
 import { Input } from './Input/Input';
 import { InputPassword } from './Input/InputPassword';
 
+// import { PhoneInput } from 'react-contact-number-input';
+
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
-  const isSubmit = useSelector((state) => state?.user?.isSubmitting);
+  const navigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -23,18 +25,27 @@ export const AuthForm = (propss) => {
         phoneNumber: '',
       }}
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
-      onSubmit={(values, { resetForm }) => {
-        dispatch(propss.isRegis ? onRegister(values) : onLoginAsync(values));
-        if (!propss.isRegis) resetForm();
-        else {
-          return <Navigate to={'/login'} />;
-        }
+      onSubmit={async (values, { resetForm }) => {
+        try {
+          const isSuccess = await dispatch(
+            propss.isRegis ? onRegister(values) : onLoginAsync(values),
+          );
+
+          if (!propss.isRegis) {
+            if (isSuccess) return navigate('/');
+            resetForm();
+          } else {
+            if (isSuccess) return navigate('/login');
+          }
+        } catch (error) {}
       }}
     >
       {(props) => (
         <form onSubmit={props.handleSubmit} className="min-w-[290px]">
           <div
-            className={propss.isRegis ? 'grid grid-cols-2 gap-x-5 gap-y-1' : ''}
+            className={
+              propss.isRegis ? 'grid lg:grid-cols-2 gap-x-5 gap-y-1' : ''
+            }
           >
             <Input
               hidden={propss.isRegis ? '' : 'hidden'}
@@ -79,6 +90,14 @@ export const AuthForm = (propss) => {
               onBlur={props.handleBlur}
               onChanged={props.handleChange}
             />
+            {/* <PhoneInput
+              disabled={disabled}
+              containerClass={containerClass}
+              countryCode={currentCountryCode}
+              onChange={handleOnChange}
+              placeholder={placeholder}
+            /> */}
+
             <InputPassword
               label={`Password`}
               name="password"
@@ -103,22 +122,21 @@ export const AuthForm = (propss) => {
             ''
           ) : (
             <>
-              <Link
-                to={propss.isRegis ? '/login' : '/register'}
-                className="text-blue-500"
-              >
+              <Link to={'/resetPassword'} className="text-blue-500">
                 Forgot Password?
               </Link>
             </>
           )}
           <button
             type="submit"
-            className="bg-[#007680]  text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px]"
-            disabled={isSubmit}
+            className={`btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
+              props.isSubmitting ? 'btn-disabled' : 'btn-primary '
+            } `}
+            disabled={props.isSubmitting}
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
-          <div className="btnOther w-full text-[13px] font-bold ">
+          {/* <div className="btnOther w-full text-[13px] font-bold ">
             <div className="font-bold rounded-xl py-[8px] w-full  border border-[#898989]  my-[10px] flex items-center">
               <div
                 // onClick={() => {
@@ -133,7 +151,7 @@ export const AuthForm = (propss) => {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
         </form>
       )}
     </Formik>
