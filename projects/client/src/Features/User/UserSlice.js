@@ -49,7 +49,7 @@ export const keepLoginAsync = () => async (dispatch) => {
     let token = localStorage.getItem('token');
     // if (token == null) throw { message: 'No User' };
     if (token) {
-      let response = await getAPI('auth/getUser', {
+      let response = await getAPI('/auth/getUser', {
         Authorization: `bearer ${token}`,
       });
 
