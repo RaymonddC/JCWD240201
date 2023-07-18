@@ -49,7 +49,7 @@ export const keepLoginAsync = () => async (dispatch) => {
     let token = localStorage.getItem('token');
     // if (token == null) throw { message: 'No User' };
     if (token) {
-      let response = await getAPI('auth/getUser', {
+      let response = await getAPI('/auth/getUser', {
         Authorization: `bearer ${token}`,
       });
 
@@ -81,7 +81,7 @@ export const logoutAsync = () => async (dispatch) => {
 export const checkCredentialAsync =
   (usernameOrEmail, password) => async (dispatch) => {
     try {
-      let response = await postAPI('auth/login', {
+      let response = await postAPI('/auth/login', {
         usernameOrEmail,
         password,
       });
@@ -115,6 +115,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
 
     toast.success('Login Success!');
   } catch (error) {
+    console.log(error);
     toast.error(error.message);
   } finally {
     dispatch(toggleBtn());
@@ -133,7 +134,7 @@ export const onRegister = (values) => async (dispatch) => {
       phoneNumber,
     } = values;
 
-    await postAPI(`auth/register`, {
+    await postAPI(`/auth/register`, {
       fullName,
       username: usernameOrEmail,
       email: email,

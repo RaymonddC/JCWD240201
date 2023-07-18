@@ -125,7 +125,9 @@ export const AuthForm = (propss) => {
           )}
           <button
             type="submit"
-            className="bg-[#007680]  text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px]"
+            className={`btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
+              isSubmit ? 'btn-disabled' : 'btn-primary '
+            } `}
             disabled={isSubmit}
           >
             {propss.isRegis ? 'Register' : 'Login'}
