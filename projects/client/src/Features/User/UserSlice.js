@@ -115,6 +115,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
 
     toast.success('Login Success!');
   } catch (error) {
+    console.log(error);
     toast.error(error.message);
   } finally {
     dispatch(toggleBtn());
@@ -144,7 +145,7 @@ export const onRegister = (values) => async (dispatch) => {
 
     // if (!response.data) throw { response };
 
-    toast.success('Register Success! Check Email for verifaction');
+    toast.success('Register Success! Check Email for verification');
   } catch (error) {
     toast.error(error?.response?.data?.message);
   } finally {
