@@ -10,7 +10,7 @@ const routerSource = (props) => [
     path: '/',
     element: (
       <AdminLayout>
-        <Dashboard {...props} />,
+        <Dashboard />,
       </AdminLayout>
     ),
   },

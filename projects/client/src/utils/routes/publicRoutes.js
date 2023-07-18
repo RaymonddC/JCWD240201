@@ -12,42 +12,42 @@ const routerSource = (props) => [
   {
     index: true,
     path: '/',
-    element: <Landing {...props} />,
+    element: <Landing />,
   },
   {
     index: true,
     path: '/user/profile',
-    element: <Profile {...props} />,
+    element: <Profile />,
   },
   {
     index: true,
     path: '/login',
-    element: <Login {...props} />,
+    element: <Login />,
   },
   {
     index: true,
     path: '/register',
-    element: <Login {...props} />,
+    element: <Login />,
   },
   {
     index: true,
     path: '/qna',
-    element: <QnA {...props} />,
+    element: <QnA />,
   },
   {
     index: true,
     path: '/verification',
-    element: <VerifyEmail {...props} />,
+    element: <VerifyEmail />,
   },
   {
     index: true,
     path: '/resetPassword',
-    element: <ReqResetPassword {...props} />,
+    element: <ReqResetPassword />,
   },
   {
     index: true,
     path: '/resetPasswordForm',
-    element: <ResetPasswordForm {...props} />,
+    element: <ResetPasswordForm />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },
