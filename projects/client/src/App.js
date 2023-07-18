@@ -14,16 +14,18 @@ import { Toaster } from 'react-hot-toast';
 import VerifyEmail from './Pages/VerifyEmail';
 import Landing from './Pages/Landing';
 import QnAUser from './Pages/QnAUser';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
+import AdminRoute from './utils/routes/adminRoute';
+import PublicRoute from './utils/routes/publicRoutes';
 // import { RequestGetDataUser } from './Features/User/UserSlice';
 import ReqResetPassword from './Pages/ReqResetPassword';
 import ResetPasswordForm from './Pages/ResetPasswordForm';
 
 function App() {
   const dispatch = useDispatch();
-  // const [message, setMessage] = useState('');
+  const { user } = useSelector((state) => state.user);
 
   // useEffect(() => {
   //   (async () => {
@@ -39,19 +41,11 @@ function App() {
     // const dispatch = useDispatch();
     dispatch(keepLoginAsync());
   }, []);
+
   return (
     <>
       <Toaster />
-      <Routes>
-        <Route path="/user/profile" element={<Profile />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Login />} />
-        <Route path="/" element={<Landing />} />
-        <Route path="/qna" element={<QnAUser />} />
-        <Route path="/verification" element={<VerifyEmail />} />
-        <Route path="/resetPassword" element={<ReqResetPassword />} />
-        <Route path="/resetPasswordForm" element={<ResetPasswordForm />} />
-      </Routes>
+      {user.role_id === 1 ? <AdminRoute /> : <PublicRoute />}
     </>
   );
 }

@@ -147,6 +147,7 @@ const userCreate = async (req, res, next) => {
 
 const userLogin = async (req, res, next) => {
   try {
+    console.log('test');
     const { usernameOrEmail, password } = req.body;
 
     if (!usernameOrEmail || !password)
@@ -171,8 +172,6 @@ const userLogin = async (req, res, next) => {
 
       //   const updateSuspend = await User.update({ suspendCounter: 0 }, { where: { [Op.or]: [{ email: usernameOrEmail }, { username: usernameOrEmail }] } });
 
-      //   result = await getUser(usernameOrEmail, usernameOrEmail);
-
       const user = await getUser(usernameOrEmail, usernameOrEmail, 'password');
 
       return res.status(200).send({
@@ -183,6 +182,7 @@ const userLogin = async (req, res, next) => {
       });
     }
   } catch (error) {
+    console.log('error');
     next(error);
   }
 };
