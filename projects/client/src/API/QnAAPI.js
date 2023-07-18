@@ -7,14 +7,14 @@ export function createQuestionAPI(data) {
   return axios.post(
     `${URL}/qna/questions`,
     { question: data.question, id: data.id },
-    { headers: { Authorization: 'Bearer ' + data.token, apiKey: APIKey } },
+    { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }
 
 export function getQuestionsAPI(data) {
-  return axios.get(
-    `${URL}/qna/questions`,
-    { params: { page: data.page, limit: data.limit } },
-    { headers: { Authorization: 'Bearer ' + data.token, apiKey: APIKey } },
-  );
+  console.log('apikey', APIKey);
+  return axios.get(`${URL}/qna/questions`, {
+    params: { page: data.page, limit: data.limit },
+    headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
+  });
 }

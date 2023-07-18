@@ -1,17 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import { createQuestionAPI, getQuestionsAPI } from '../../API/QnAAPI';
+import { getAllProducts } from '../../API/productAPI';
 
 const initialState = {
-  questions: null,
+  products: null,
   isSubmitting: false,
 };
 
-export const QnASlice = createSlice({
-  name: 'QnA',
+export const ProductSlice = createSlice({
+  name: 'Products',
   initialState,
   reducers: {
-    questions: (initialState, action) => {
+    products: (initialState, action) => {
       console.log(action.payload);
       initialState.questions = action.payload;
     },
@@ -32,19 +33,21 @@ export const submitQuestion = (question) => async (dispatch) => {
   }
 };
 
-export const getQuestions = (data) => async (dispatch) => {
+export const getProducts = (data) => async (dispatch) => {
   try {
-    console.log('getQuestions');
-    let response = await getQuestionsAPI({
+    console.log('getProducts');
+    let response = await getAllProducts({
       page: data.page,
       limit: data.limit,
+      search: data.search,
+      category: data.category,
     });
     console.log(response.data.data);
-    dispatch(questions(response?.data));
+    dispatch(products(response));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const { questions } = QnASlice.actions;
-export default QnASlice.reducer;
+export const { products } = ProductSlice.actions;
+export default ProductSlice.reducer;

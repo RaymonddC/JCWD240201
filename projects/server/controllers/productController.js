@@ -6,19 +6,17 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const db = require('../models');
 const questionDB = db.question;
-const answerDB = db.answer;
 const transporter = require('../helpers/transporter');
 
-const getQuestions = async (req, res, next) => {
+const getProducts = async (req, res, next) => {
   try {
-    const { page, search, sort, limit } = req.query;
+    const { page, search, category, limit } = req.query;
     console.log(req.query);
     const pageLimit = Number(limit);
     console.log(pageLimit, '<<');
     const offset = (Number(page) - 1) * pageLimit;
     console.log(offset);
     let response = await questionDB.findAndCountAll({
-      included: answerDB,
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
@@ -28,7 +26,7 @@ const getQuestions = async (req, res, next) => {
     console.log(totalPage);
     return res.status(200).send({
       success: true,
-      message: 'get questions success',
+      message: 'get Products success',
       totalPage: totalPage,
       data: response,
     });
@@ -40,35 +38,6 @@ const getQuestions = async (req, res, next) => {
     // });
   }
 };
-
-const getAnswer = async (req, res, next) => {
-  try {
-    const { question_id } = req.body;
-    console.log(req.body);
-    let response = await questionDB.findAndCountAll({
-      included: answerDB,
-      limit: pageLimit,
-      offset: offset,
-      order: [['updatedAt', 'DESC']],
-    });
-    console.log(response)
-    const totalPage = Math.ceil(response.count / pageLimit);
-    console.log(totalPage);
-    return res.status(200).send({
-      success: true,
-      message: 'get questions success',
-      totalPage: totalPage,
-      data: response,
-    });
-  } catch (error) {
-    next(error);
-    // return res.send({
-    //   success: false,
-    //   message: error.message,
-    // });
-  }
-};
-
 
 const createQuestion = async (req, res) => {
   const { question, user_id } = req.body;
@@ -89,4 +58,4 @@ const createQuestion = async (req, res) => {
   }
 };
 
-module.exports = { createQuestion, getQuestions };
+module.exports = { createQuestion, getProducts };

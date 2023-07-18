@@ -4,7 +4,7 @@ import { getQuestions, submitQuestion } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 
-export default function QnA() {
+export default function QnAUSer() {
   const user = useSelector((state) => state?.user?.user);
   const question = useRef();
   const dispatch = useDispatch();
