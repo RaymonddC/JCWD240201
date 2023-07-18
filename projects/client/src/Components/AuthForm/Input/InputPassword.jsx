@@ -25,6 +25,7 @@ export const InputPassword = (props) => {
           value={props.value}
           onBlur={props.onBlur}
           onChange={props.onChanged}
+          ref={props.defineRef}
         ></input>
         {props.errors && props.touched ? (
           <div className="error text-right">{props.errors}</div>

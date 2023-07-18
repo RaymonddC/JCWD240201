@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useState } from 'react';
 import { MdKeyboardBackspace } from 'react-icons/md';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { resetPassword } from '../API/auth';
 import { useSearchParams } from 'react-router-dom';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
@@ -76,7 +76,6 @@ export default function ResetPasswordForm() {
   };
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
       <div className="flex gap-4 border-b-2 h-14 p-3">
         <div className="flex items-center">
           <MdKeyboardBackspace size={25} />

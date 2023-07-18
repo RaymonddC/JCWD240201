@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { sendResetForm } from '../API/auth';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export default function ReqResetPassword() {
   const _email = useRef();
@@ -41,7 +41,6 @@ export default function ReqResetPassword() {
 
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
       <div className="flex gap-4 border-b-2 h-14 p-3">
         <div className="flex items-center">
           <MdKeyboardBackspace size={25} />

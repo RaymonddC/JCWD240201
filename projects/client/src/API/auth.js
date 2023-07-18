@@ -98,7 +98,7 @@ export function sendResetForm(email) {
 }
 
 export function changePassword(userId, oldPassword, newPassword){
-  return axios.post(
+  return axios.patch(
     `${URL}/auth/password/${userId}`,
     {
       oldPassword: oldPassword,
