@@ -46,12 +46,29 @@ var storage = multer.diskStorage({
 var fileFilter = (req, file, cb) => {
   // console.log('>>>');
   // console.log(file);
-  if (file.mimetype.split('/')[0] === 'image') {
+  // if (
+  //   file.mimetype.split('/')[1] === 'jpg' ||
+  //   file.mimetype.split('/')[1] === 'jpeg' ||
+  //   file.mimetype.split('/')[1] === 'png'
+  // ) {
+  // Accept
+  //   cb(null, true);
+  // } else if (file.mimetype.split('/')[0] !== 'image') {
+  // Reject
+  //   cb(new Error('File Must Be Image!'));
+  // }
+
+  // format
+  if (
+    file.mimetype.split('/')[1] === 'jpg' ||
+    file.mimetype.split('/')[1] === 'jpeg' ||
+    file.mimetype.split('/')[1] === 'png'
+  ) {
     // Accept
     cb(null, true);
-  } else if (file.mimetype.split('/')[0] !== 'image') {
+  } else {
     // Reject
-    cb(new Error('File Must Be Image!'));
+    cb(new Error('File Must Be JPG,JPEG, or PNG!'));
   }
 };
 

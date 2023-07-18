@@ -14,7 +14,7 @@ const {
   generateToken,
   getUserByPk,
   validateEmail,
-} = require('../helpers/userHelper');
+} = require('../helpers/authHelper');
 
 const sendVerifyEmail = async (req, res, next) => {
   try {
@@ -194,7 +194,7 @@ const getUserById = async (req, res, next) => {
       'updatedAt',
     ]);
     const User = db.user;
-    const { getUser, validatePassword } = require('../helpers/userHelper');
+    const { getUser, validatePassword } = require('../helpers/authHelper');
 
     if (!user) throw { message: 'user not found!', code: 400 };
     return res.status(200).send({
@@ -336,8 +336,8 @@ const changePassword = async (req, res) => {
         message: 'Change Password Success',
         data: result,
       });
-    }else{
-      throw {message: 'Wrong old password', status: 400}
+    } else {
+      throw { message: 'Wrong old password', status: 400 };
     }
   } catch (error) {
     return res.send({

@@ -6,6 +6,10 @@ import { useDispatch } from 'react-redux';
 import { keepLoginAsync } from '../../Features/User/UserSlice';
 import { toast } from 'react-hot-toast';
 import { validationUserEditModal } from '../../Helper/userHelper';
+import InputUserText from './Input/InputUserText';
+import InputUserRadio from './Input/InputUserRadio';
+import InputUserDate from './Input/InputUserDate';
+import InputUserFile from './Input/InputUserFile';
 
 export default function UserEditModal({ data }) {
   const [open, setOpen] = useState(false);
@@ -27,15 +31,13 @@ export default function UserEditModal({ data }) {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const result = await updateProfile(values);
-        console.log(result);
-        if (result.status === 200) {
+        if (result.data.success) {
           toast.success(result.data.message);
           dispatch(keepLoginAsync());
           setOpen(false);
           setSubmitting(false);
         }
       } catch (error) {
-        console.log(error);
         toast.error(error.response.data.message);
       }
     },
@@ -82,6 +84,7 @@ export default function UserEditModal({ data }) {
       setdisabled(true);
     }
   }, [data]);
+
   return (
     <>
       <button
@@ -91,6 +94,7 @@ export default function UserEditModal({ data }) {
         EDIT
       </button>
       <input
+        readOnly
         checked={open}
         type="checkbox"
         id="my_modal_6"
@@ -115,113 +119,62 @@ export default function UserEditModal({ data }) {
               ) : (
                 <MdPerson className="w-[100px] h-[100px]" />
               )}
-
-              <input
-                className="hidden"
-                type="file"
+              <InputUserFile
                 name="profile_image"
                 id="profile_image"
-                ref={fileInputRef}
+                refProp={fileInputRef}
                 onChange={(e) => {
                   formik.setFieldValue('profile_image', e.target.files[0]);
                 }}
+                label="Change Profile"
               />
-              <label
-                htmlFor="profile_image"
-                className="text-[#00A8B5] font-bold"
-              >
-                Change Profile
-              </label>
               <p className="text-[14px]">File max size 1 MB</p>
               <p className="text-[14px]">
                 File must be in .JPG, .JPEG and .PNG format
               </p>
             </div>
-            <label htmlFor="full_name" className="text-[14px]">
-              Full Name
-            </label>
-            <input
-              name="full_name"
+            <InputUserText
               id="full_name"
-              className={
-                formik.errors.full_name
-                  ? 'input input-error w-full px-3 mb-2 border rounded-md select-none focus:outline-none text-[14px]'
-                  : 'input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]'
-              }
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.full_name}
+              label="Full Name"
+              name="full_name"
+              errors={formik?.errors?.full_name}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.full_name}
             />
-            <p className="text-error text-[14px]">
-              {formik?.errors?.full_name}
-            </p>
-            <label htmlFor="" className="text-[14px]">
-              Phone Number
-            </label>
-            <input
-              name="phone_number"
+            <InputUserText
               id="phone_number"
-              className={
-                formik.errors.phone_number
-                  ? 'input input-error w-full px-3 mb-2 border rounded-md select-none focus:outline-none text-[14px]'
-                  : 'input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]'
-              }
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.phone_number}
+              label="Phone Number"
+              name="phone_number"
+              errors={formik?.errors?.phone_number}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.phone_number}
             />
-            <p className="text-error text-[14px]">
-              {formik?.errors?.phone_number}
-            </p>
             <label htmlFor="" className="text-[14px]">
               Gender
             </label>
             <div className="flex gap-4">
-              <div className="flex items-center gap-2">
-                <input
-                  id="gender"
-                  type="radio"
-                  name="gender"
-                  className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
-                  checked={formik.values.gender === 'male'}
-                  onChange={formik.handleChange}
-                  value="male"
-                />
-                <span>Male</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  id="gender"
-                  type="radio"
-                  name="gender"
-                  className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
-                  checked={formik.values.gender === 'female'}
-                  onChange={formik.handleChange}
-                  value="female"
-                />
-                <span>Female</span>
-              </div>
+              <InputUserRadio
+                formikValues={formik?.values?.gender}
+                values="male"
+                handleChange={formik?.handleChange}
+                label="Male"
+              />
+              <InputUserRadio
+                formikValues={formik?.values?.gender}
+                values="female"
+                handleChange={formik?.handleChange}
+                label="Female"
+              />
             </div>
             <p className="text-error text-[14px]">{formik?.errors?.gender}</p>
-            <label htmlFor="" className="text-[14px]">
-              Date of Birth
-            </label>
-            <input
-              className={
-                formik.errors.birthdate
-                  ? 'input input-error w-full px-3 mb-2 border rounded-md select-none focus:outline-none text-[14px]'
-                  : 'input w-full px-3 mb-2 border border-[#00A8B5] rounded-md select-none focus:outline-none text-[14px]'
-              }
-              name="birthdate"
+            <InputUserDate
               id="birthdate"
-              placeholder="Date of Birth"
-              type="date"
-              onChange={formik.handleChange}
-              value={formik.values.birthdate}
+              label="Date of Birth"
+              name="birthdate"
+              errors={formik?.errors?.birthdate}
+              handleChange={formik.handleChange}
+              values={formik?.values?.birthdate}
             />
-            <p className="text-error text-[14px]">
-              {formik?.errors?.birthdate}
-            </p>
             <button
               disabled={disabled || !formik.isValid || formik.isSubmitting}
               type="submit"

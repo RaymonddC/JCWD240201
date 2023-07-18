@@ -1,8 +1,8 @@
-export default function InputUser(props) {
+export default function InputUserText(props) {
   return (
     <>
       <label htmlFor={props.id} className="text-[14px]">
-        Full Name
+        {props.label}
       </label>
       <input
         name={props.name}

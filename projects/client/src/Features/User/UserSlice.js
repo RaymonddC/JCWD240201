@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { getDataUser } from '../../API/user';
+// import { getDataUser } from '../../API/user';
 import { checkCredential, keepLogin, register } from '../../API/auth';
 
 // import { auth } from './../../firebase';
@@ -30,15 +30,15 @@ export const UserSlice = createSlice({
 });
 
 // example get another user data
-export const RequestGetDataUser = (user_id) => async (dispatch) => {
-  try {
-    let response = await getDataUser();
-    console.log(response);
-    dispatch(setUser(response.data));
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const RequestGetDataUser = (user_id) => async (dispatch) => {
+//   try {
+//     let response = await getDataUser();
+//     console.log(response);
+//     dispatch(setUser(response.data));
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const keepLoginAsync = () => async (dispatch) => {
   try {
