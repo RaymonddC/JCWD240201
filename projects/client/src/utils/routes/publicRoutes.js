@@ -3,7 +3,7 @@ import React from 'react';
 import Landing from '../../Pages/Landing';
 import Profile from '../../Pages/Profile';
 import { Login } from '../../Pages/Login';
-import QnA from '../../Pages/QnA';
+import QnAUser from '../../Pages/QnAUser';
 import VerifyEmail from '../../Pages/VerifyEmail';
 import ReqResetPassword from '../../Pages/ReqResetPassword';
 import ResetPasswordForm from '../../Pages/ResetPasswordForm';
@@ -32,7 +32,7 @@ const routerSource = (props) => [
   {
     index: true,
     path: '/qna',
-    element: <QnA {...props} />,
+    element: <QnAUser {...props} />,
   },
   {
     index: true,

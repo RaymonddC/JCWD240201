@@ -14,7 +14,7 @@ const getQuestions = async (req, res, next) => {
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
     let response = await questionDB.findAndCountAll({
-      included: answerDB,
+      include: answerDB,
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
@@ -40,7 +40,7 @@ const getAnswers = async (req, res, next) => {
     const { page, search, sort, limit } = req.query;
     console.log(req.body);
     let response = await answerDB.findAll({
-      included: db.question,
+      include: db.question,
       // limit: pageLimit,
       // offset: offset,
       order: [['updatedAt', 'DESC']],
