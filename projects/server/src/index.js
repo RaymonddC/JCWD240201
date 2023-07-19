@@ -17,6 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use('/public', express.static('public'));
 
 //#region API ROUTES
 
@@ -32,7 +33,7 @@ const {
 } = require('../routers');
 
 app.use('/auth', authRoute);
-app.use('/qna', QnARouter);
+app.use('/discussions', QnARouter);
 app.use('/users', userRoute);
 // app.use('/carts', cartRoute);
 app.use('/products', productRoute);

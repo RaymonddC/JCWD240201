@@ -3,10 +3,13 @@ import React from 'react';
 import Landing from '../../Pages/Landing';
 import Profile from '../../Pages/Profile';
 import { Login } from '../../Pages/Login';
-import QnA from '../../Pages/QnA';
+import QnAUser from '../../Pages/QnAUser';
 import VerifyEmail from '../../Pages/VerifyEmail';
 import ReqResetPassword from '../../Pages/ReqResetPassword';
 import ResetPasswordForm from '../../Pages/ResetPasswordForm';
+import QuestionDetails from '../../Pages/QuestionDetails';
+import ChangePassword from '../../Pages/ChangePassword';
+import Address from '../../Pages/Address';
 
 const routerSource = (props) => [
   {
@@ -31,8 +34,8 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/qna',
-    element: <QnA />,
+    path: '/discussions',
+    element: <QnAUser />,
   },
   {
     index: true,
@@ -48,6 +51,21 @@ const routerSource = (props) => [
     index: true,
     path: '/resetPasswordForm',
     element: <ResetPasswordForm />,
+  },
+  {
+    index: true,
+    path: '/discussions/details/:id',
+    element: <QuestionDetails />,
+  },
+  {
+    index: true,
+    path: '/user/change-password',
+    element: <ChangePassword />,
+  },
+  {
+    index: true,
+    path: '/user/address',
+    element: <Address />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },

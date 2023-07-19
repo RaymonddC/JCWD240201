@@ -14,12 +14,11 @@ const {
   generateToken,
   getUserByPk,
   validateEmail,
-} = require('../helpers/userHelper');
+} = require('../helpers/authHelper');
 
 const sendVerifyEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const isEmail = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     let payload = { email: email };
     const token = jwt.sign(payload, 'verification-account');
     const data = fs.readFileSync('./helpers/verifyEmailTemplate.html', 'utf-8');
@@ -195,7 +194,7 @@ const getUserById = async (req, res, next) => {
       'updatedAt',
     ]);
     const User = db.user;
-    const { getUser, validatePassword } = require('../helpers/userHelper');
+    const { getUser, validatePassword } = require('../helpers/authHelper');
 
     if (!user) throw { message: 'user not found!', code: 400 };
     return res.status(200).send({
@@ -299,6 +298,57 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { oldPassword, newPassword } = req.body;
+
+    //validate new password
+    const isPasswordValid = new RegExp(
+      '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})',
+    );
+
+    if (!isPasswordValid.test(newPassword))
+      throw { message: 'Password is not Valid', status: 400 };
+
+    //get data user and compare old password
+    const getUser = await User.findOne({ where: { id: userId } });
+    if (!getUser) throw { message: 'Account is not found' };
+    const isUserExist = await bcrypt.compare(oldPassword, getUser.password);
+
+    //change password
+    if (isUserExist) {
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(newPassword, salt);
+
+      const result = await User.update(
+        { password: hashPassword },
+        {
+          where: {
+            id: userId,
+          },
+        },
+      );
+
+      return res.send({
+        success: true,
+        status: 200,
+        message: 'Change Password Success',
+        data: result,
+      });
+    } else {
+      throw { message: 'Wrong old password', status: 400 };
+    }
+  } catch (error) {
+    return res.send({
+      success: false,
+      status: error.status,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
 module.exports = {
   sendVerifyEmail,
   verifyAccount,
@@ -307,4 +357,5 @@ module.exports = {
   getUserById,
   sendResetPasswordForm,
   resetPassword,
+  changePassword,
 };

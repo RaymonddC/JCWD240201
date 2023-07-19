@@ -1,31 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
 import NavBar from '../Components/Layout/Navbar';
-import { getQuestions, submitQuestion } from '../Features/QnA/QnASlice';
+import { getAnswers, submitQuestion } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 
-export default function QnA() {
+export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
+  const disabled = Object.keys(user).length?false:true
+  const placeholder = disabled?'Please login to ask a question': 'Type your question here...'
+  console.log(user)
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
-  console.log('QnAStore', QnAStore.questions?.data?.rows);
+  // console.log('QnAStore', QnAStore.questions?.data?.rows);
   const totalPages = QnAStore?.questions?.totalPage;
   const [page, setPage] = useState(1);
   const next = () => {
     const nextPage = page >= totalPages ? totalPages : (page + 1);
-    console.log(nextPage);
     setPage(nextPage);
   };
   const prev = () => {
     const prevPage = page <= 1 ? 1 : (page - 1);
-    console.log(prevPage)
     setPage(prevPage);
   };
 
   useEffect(() => {
-    dispatch(getQuestions({ page, limit: 2 }));
-  }, [page]);
+    dispatch(getAnswers({ page, limit: 2 }));
+    // console.log('><><><><><')
+  }, [dispatch, page]);
 
   return (
     <>
@@ -38,10 +40,12 @@ export default function QnA() {
                 <article className="prose">
                   <h2 className="label-text">Ask a question</h2>
                 </article>
+                
                 <textarea
                   ref={question}
                   className="textarea my-5 textarea-bordered h-24"
-                  placeholder="Type your question here..."
+                  placeholder={placeholder}
+                  disabled={disabled}
                 ></textarea>
               </div>
               <div className="flex justify-end">
@@ -54,7 +58,7 @@ export default function QnA() {
                       }),
                     );
                   }}
-                  className="btn btn-accent"
+                  className={`btn ${disabled?'btn-disabled':'btn-accent'}`}
                 >
                   SUBMIT
                 </button>
