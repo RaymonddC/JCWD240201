@@ -4,26 +4,33 @@ const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function createQuestionAPI(data) {
   return axios.post(
-    `${URL}/dicussions/questions`,
+    `${URL}/discussions/questions`,
     { question: data.question, id: data.id },
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }
 
 export function getQuestionsAPI(data) {
-  return axios.get(`${URL}/dicussions/questions`, {
+  return axios.get(`${URL}/discussions/questions`, {
     params: { page: data.page, limit: data.limit },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
 }
 export function getQuestionDetailsAPI(data) {
-  return axios.get(`${URL}/dicussions/questions/${data.id}`, {
+  return axios.get(`${URL}/discussions/questions/${data.id}`, {
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
 }
 export function getAnswersAPI(data) {
-  return axios.get(`${URL}/dicussions/answers`, {
+  return axios.get(`${URL}/discussions/answers`, {
     params: { page: data.page, limit: data.limit },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
+}
+export function postAnswerAPI(data) {
+  return axios.post(
+    `${URL}/discussions/answers`,
+    { answer: data.answer },
+    { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
+  );
 }

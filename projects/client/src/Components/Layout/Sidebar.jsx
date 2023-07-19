@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import Logo from '../../utils/images/logoHealthyMed.svg';
@@ -9,6 +7,7 @@ import SalesIcon from '../../utils/images/Sales.svg';
 import { GiMedicines } from 'react-icons/gi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
+import { MdQuestionAnswer } from 'react-icons/md';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
@@ -34,6 +33,12 @@ export const Sidebar = () => {
             <p className="hidden lg:block">Product</p>
           </div>
         </Link>
+        <Link to={'/qna'} className="w-full">
+          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
+            <MdQuestionAnswer />
+            <p className="hidden lg:block">QnA</p>
+          </div>
+        </Link>
         <Link to={'/transaction'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <img className="" src={TransactionIcon} alt="" />
@@ -47,7 +52,7 @@ export const Sidebar = () => {
           </div>
         </Link>
       </div>
-      <Link to={!user || Object.keys(user).length == 0 ? '/login' : ''}>
+      <Link to={!user || Object.keys(user).length === 0 ? '/login' : ''}>
         <div className="profile min-w-[100%] p-[13px]   rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 lg:flex-row flex-col gap-2 lg:gap-0 items-center lg:items-start hidden sm:flex">
           <div className="avatar w-[40px] h-[40px] rounded-full m-[12px]">
             <img

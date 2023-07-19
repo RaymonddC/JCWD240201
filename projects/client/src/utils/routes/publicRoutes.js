@@ -32,7 +32,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/qna',
+    path: '/discussions',
     element: <QnAUser />,
   },
   {
@@ -52,7 +52,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/qna/details/:id',
+    path: '/discussions/details/:id',
     element: <QuestionDetails />,
   },
 

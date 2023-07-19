@@ -20,7 +20,7 @@ export default function NavBar() {
             <div className="flex">
               <button className="btn btn-sm btn-ghost">Shop</button>
               <button className="btn btn-sm btn-ghost">
-                <Link to="/QnA">QnA</Link>
+                <Link to="/discussions">QnA</Link>
               </button>
             </div>
             <div className="flex">
@@ -56,10 +56,10 @@ export default function NavBar() {
               className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
               <li>
-                <Link to="/Landing">SHOP</Link>
+                <Link to="/">SHOP</Link>
               </li>
               <li>
-                <Link to="/QnA">QNA</Link>
+                <Link to="/discussions">QNA</Link>
               </li>
             </ul>
           </div>

@@ -77,6 +77,21 @@ const getAnswers = async (req, res, next) => {
     next(error);
   }
 };
+const postAnswer = async (req, res, next) => {
+  const { question, user_id } = req.body;
+  console.log('question');
+  try {
+    let result = await answerDB.create({ answer, user_id });
+
+    return res.status(201).send({
+      success: true,
+      message: 'Your answer was created successfully',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const createQuestion = async (req, res) => {
   const { question, user_id } = req.body;
@@ -97,4 +112,10 @@ const createQuestion = async (req, res) => {
   }
 };
 
-module.exports = { createQuestion, getQuestions, getAnswers, getQuestionDetails };
+module.exports = {
+  createQuestion,
+  getQuestions,
+  getAnswers,
+  getQuestionDetails,
+  postAnswer,
+};

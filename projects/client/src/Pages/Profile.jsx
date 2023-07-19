@@ -43,7 +43,7 @@ export default function Profile() {
         <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
           <div className="flex">
             {user?.profile_image ? (
-              <img></img>
+              <img alt=''></img>
             ) : (
               <MdPerson className="w-[100px] h-[100px]" />
             )}

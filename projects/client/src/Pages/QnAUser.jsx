@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import NavBar from '../Components/Layout/Navbar';
-import { getAnswers, getQuestions, submitQuestion } from '../Features/QnA/QnASlice';
+import { getAnswers, submitQuestion } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 
-export default function QnAUSer() {
+export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
   const disabled = Object.keys(user).length?false:true
   const placeholder = disabled?'Please login to ask a question': 'Type your question here...'
@@ -17,18 +17,17 @@ export default function QnAUSer() {
   const [page, setPage] = useState(1);
   const next = () => {
     const nextPage = page >= totalPages ? totalPages : (page + 1);
-    console.log(nextPage);
     setPage(nextPage);
   };
   const prev = () => {
     const prevPage = page <= 1 ? 1 : (page - 1);
-    console.log(prevPage)
     setPage(prevPage);
   };
 
   useEffect(() => {
     dispatch(getAnswers({ page, limit: 2 }));
-  }, [page]);
+    // console.log('><><><><><')
+  }, [dispatch, page]);
 
   return (
     <>
