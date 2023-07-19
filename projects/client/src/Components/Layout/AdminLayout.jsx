@@ -14,7 +14,7 @@ export const AdminLayout = (props) => {
       5 * 60 * 1000,
     );
   }, []);
-  console.log('layout', user);
+  // console.log('layout', user);
   // if (!user) return <Navigate to={'/login'} />;
 
   return (

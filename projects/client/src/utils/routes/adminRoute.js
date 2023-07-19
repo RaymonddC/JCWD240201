@@ -1,8 +1,15 @@
 import { useRoutes } from 'react-router-dom';
 import React from 'react';
-import Landing from '../../Pages/Landing';
 import { Dashboard } from '../../Pages/Dashboard';
 import { AdminLayout } from '../../Components/Layout/AdminLayout';
+import QnAAdmin from '../../Pages/QnAAdmin';
+import QuestionDetails from '../../Pages/QuestionDetails';
+
+const AdminRoute = (props) => {
+  const routers = routerSource(props);
+  let routes = useRoutes(routers);
+  return routes;
+};
 
 const routerSource = (props) => [
   {
@@ -14,14 +21,26 @@ const routerSource = (props) => [
       </AdminLayout>
     ),
   },
+  {
+    index: true,
+    path: '/qna',
+    element: (
+      <AdminLayout>
+        <QnAAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/qna/details/:id',
+    element: (
+      <AdminLayout>
+        <QuestionDetails />,
+      </AdminLayout>
+    ),
+  },
 
   { index: true, path: '/*', element: <>ERROR</> },
 ];
-
-const AdminRoute = (props) => {
-  const routers = routerSource(props);
-  let routes = useRoutes(routers);
-  return routes;
-};
 
 export default AdminRoute;
