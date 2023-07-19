@@ -30,7 +30,23 @@ export function getAnswersAPI(data) {
 export function postAnswerAPI(data) {
   return axios.post(
     `${URL}/discussions/answers`,
-    { answer: data.answer },
+    {
+      answer: data.answer,
+      question_id: data.question_id,
+      user_id: data.user_id,
+    },
+    { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
+  );
+}
+export function updateAnswerAPI(data) {
+  return axios.put(
+    `${URL}/discussions/answers`,
+    {
+      id: data.id,
+      answer: data.answer,
+      question_id: data.question_id,
+      user_id: data.user_id,
+    },
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }

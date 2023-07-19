@@ -78,10 +78,11 @@ const getAnswers = async (req, res, next) => {
   }
 };
 const postAnswer = async (req, res, next) => {
-  const { question, user_id } = req.body;
-  console.log('question');
+  const { answer, user_id, question_id } = req.body;
+  console.log(req.body);
+  // process.exit()
   try {
-    let result = await answerDB.create({ answer, user_id });
+    let result = await answerDB.create({ answer, user_id, question_id });
 
     return res.status(201).send({
       success: true,
@@ -93,7 +94,7 @@ const postAnswer = async (req, res, next) => {
   }
 };
 
-const createQuestion = async (req, res) => {
+const createQuestion = async (req, res, next) => {
   const { question, user_id } = req.body;
   console.log('question');
   try {
@@ -105,10 +106,27 @@ const createQuestion = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    return res.status(400).send({
-      success: false,
-      message: error.message,
+   next(error);
+  }
+};
+
+const updateAnswer = async (req, res, next) => {
+  const { id, answer, user_id, question_id } = req.body;
+  console.log(req.body);
+  // process.exit()
+  try {
+    let result = await answerDB.update(
+      { answer, user_id, question_id },
+      { where: { id } },
+    );
+
+    return res.status(201).send({
+      success: true,
+      message: 'Your answer was updated successfully',
+      data: result,
     });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -118,4 +136,5 @@ module.exports = {
   getAnswers,
   getQuestionDetails,
   postAnswer,
+  updateAnswer
 };

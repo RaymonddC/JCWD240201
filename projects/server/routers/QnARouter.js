@@ -9,5 +9,7 @@ router.get('/questions/:id', APIKey, QnAController.getQuestionDetails);
 router.get('/questions', APIKey, QnAController.getQuestions);
 router.post('/answers',  QnAController.postAnswer)
 router.get('/answers', APIKey, QnAController.getAnswers);
+router.put('/answers', APIKey, QnAController.updateAnswer);
+
 
 module.exports = router;

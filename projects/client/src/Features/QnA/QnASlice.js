@@ -6,6 +6,7 @@ import {
   getAnswersAPI,
   getQuestionDetailsAPI,
   postAnswerAPI,
+  updateAnswerAPI,
 } from '../../API/QnAAPI';
 
 const initialState = {
@@ -55,6 +56,7 @@ export const getQuestions = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+
 export const getQuestionDetail = (data) => async (dispatch) => {
   try {
     console.log('getQuestions');
@@ -81,12 +83,35 @@ export const getAnswers = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+
 export const postAnswer = (data) => async (dispatch) => {
+  console.log(data);
+  // process.exit()
   try {
     let response = await postAnswerAPI({
-      answers: data.answer,
+      answer: data.answer,
       userId: data.userId,
-      questionId: data.questionId,
+      question_id: data.question_id,
+    });
+    if (response.data.success === true) {
+      toast.success(response.data.message);
+    } else {
+      toast.error(response.data.message);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateAnswer = (data) => async (dispatch) => {
+  console.log(data);
+  // process.exit()
+  try {
+    let response = await updateAnswerAPI({
+      id: data.id,
+      answer: data.answer,
+      userId: data.userId,
+      question_id: data.question_id,
     });
     if (response.data.success === true) {
       toast.success(response.data.message);
