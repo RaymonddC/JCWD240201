@@ -122,7 +122,7 @@ export const onRegister = (values) => async (dispatch) => {
       phoneNumber,
     } = values;
 
-    const response = await register({
+    await register({
       fullName,
       username: usernameOrEmail,
       email: email,
