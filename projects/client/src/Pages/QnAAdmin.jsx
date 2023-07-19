@@ -5,7 +5,7 @@ import QuestionCardAdmin from '../Components/QnA/QuestionCardAdmin';
 
 export default function QnAAdmin() {
   const user = useSelector((state) => state?.user?.user);
-  const disabled = Object.keys(user).length ? false : true;
+  const disabled = user||Object.keys(user)?.length ? false : true;
   const placeholder = disabled
     ? 'Please login to ask a question'
     : 'Type your question here...';
