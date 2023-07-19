@@ -7,6 +7,7 @@ const fs = require('fs');
 const db = require('../models');
 const questionDB = db.question;
 const transporter = require('../helpers/transporter');
+const Product = db.product;
 
 const getProducts = async (req, res, next) => {
   try {
@@ -57,10 +58,6 @@ const createQuestion = async (req, res) => {
     });
   }
 };
-
-module.exports = { createQuestion, getProducts };
-const db = require('../models');
-const Product = db.product;
 
 const getProduct = async (req, res, next) => {
   try {
@@ -142,7 +139,4 @@ const getAllProduct = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  getProduct,
-  getAllProduct,
-};
+module.exports = { createQuestion, getProducts, getProduct, getAllProduct };
