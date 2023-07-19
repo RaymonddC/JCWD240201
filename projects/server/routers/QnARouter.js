@@ -11,5 +11,4 @@ router.post('/answers',  QnAController.postAnswer)
 router.get('/answers', APIKey, QnAController.getAnswers);
 router.put('/answers', APIKey, QnAController.updateAnswer);
 
-
 module.exports = router;

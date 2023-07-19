@@ -19,11 +19,9 @@ export const QnASlice = createSlice({
   initialState,
   reducers: {
     questions: (initialState, action) => {
-      console.log(action.payload);
       initialState.questions = action.payload;
     },
     answers: (initialState, action) => {
-      console.log(action.payload);
       initialState.questions = action.payload;
     },
   },
@@ -31,7 +29,6 @@ export const QnASlice = createSlice({
 
 export const submitQuestion = (question) => async (dispatch) => {
   try {
-    console.log(question);
     let response = await createQuestionAPI(question);
     if (response.data.success === true) {
       toast.success(response.data.message);
@@ -45,7 +42,6 @@ export const submitQuestion = (question) => async (dispatch) => {
 
 export const getQuestions = (data) => async (dispatch) => {
   try {
-    console.log('getQuestions');
     let response = await getQuestionsAPI({
       page: data.page,
       limit: data.limit,
@@ -59,7 +55,6 @@ export const getQuestions = (data) => async (dispatch) => {
 
 export const getQuestionDetail = (data) => async (dispatch) => {
   try {
-    console.log('getQuestions');
     let response = await getQuestionDetailsAPI({
       id: data.id,
     });
@@ -72,7 +67,6 @@ export const getQuestionDetail = (data) => async (dispatch) => {
 
 export const getAnswers = (data) => async (dispatch) => {
   try {
-    console.log('getAnswers');
     let response = await getAnswersAPI({
       page: data.page,
       limit: data.limit,
@@ -85,8 +79,6 @@ export const getAnswers = (data) => async (dispatch) => {
 };
 
 export const postAnswer = (data) => async (dispatch) => {
-  console.log(data);
-  // process.exit()
   try {
     let response = await postAnswerAPI({
       answer: data.answer,
@@ -104,8 +96,6 @@ export const postAnswer = (data) => async (dispatch) => {
 };
 
 export const updateAnswer = (data) => async (dispatch) => {
-  console.log(data);
-  // process.exit()
   try {
     let response = await updateAnswerAPI({
       id: data.id,
