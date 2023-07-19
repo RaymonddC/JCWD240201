@@ -3,6 +3,7 @@ import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
+import { MdPerson } from 'react-icons/md';
 
 export default function NavBar() {
   let dispatch = useDispatch();
@@ -23,16 +24,33 @@ export default function NavBar() {
             </div>
             <div className="flex">
               {user && Object.keys(user).length !== 0 ? (
-                <button
-                  className="btn btn-ghost"
-                  onClick={() => {
-                    dispatch(logoutAsync());
-                  }}
-                >
-                  <Link to={'/login'}>logout</Link>
-                </button>
+                <div className="flex gap-2">
+                  <Link
+                    to="/user/profile"
+                    className="flex justify-center items-center gap-2 "
+                  >
+                    {user?.profile_image ? (
+                      <img
+                        className="w-[40px] h-[40px] rounded-full"
+                        src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                        alt="profile"
+                      />
+                    ) : (
+                      <MdPerson className="w-[40px] h-[40px]" />
+                    )}
+                    <span className="font-bold">{user?.full_name}</span>
+                  </Link>
+                  <button
+                    className="btn btn-ghost"
+                    onClick={() => {
+                      dispatch(logoutAsync());
+                    }}
+                  >
+                    <Link to={'/login'}>logout</Link>
+                  </button>
+                </div>
               ) : (
-                <div className='flex gap-3'>
+                <div className="flex gap-3">
                   <button className="btn btn-primary">
                     <Link to="/login">Login</Link>
                   </button>

@@ -26,6 +26,7 @@ export const updateProfile = (data) => {
       headers: {
         authorization: `Bearer ${token}`,
         apikey: apikey,
+        'Content-Type': 'multipart/form-data',
       },
     },
   );

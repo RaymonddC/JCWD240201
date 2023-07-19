@@ -8,6 +8,7 @@ import VerifyEmail from '../../Pages/VerifyEmail';
 import ReqResetPassword from '../../Pages/ReqResetPassword';
 import ResetPasswordForm from '../../Pages/ResetPasswordForm';
 import ChangePassword from '../../Pages/ChangePassword';
+import Address from '../../Pages/Address';
 
 const routerSource = (props) => [
   {
@@ -53,7 +54,12 @@ const routerSource = (props) => [
   {
     index: true,
     path: '/user/change-password',
-    element: <ChangePassword {...props} />,
+    element: <ChangePassword />,
+  },
+  {
+    index: true,
+    path: '/user/address',
+    element: <Address />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },
