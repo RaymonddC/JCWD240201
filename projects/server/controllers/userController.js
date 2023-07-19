@@ -32,7 +32,7 @@ const getUserData = async (req, res) => {
   }
 };
 
-const updateUserData = async (req, res) => {
+const updateUserData = async (req, res, next) => {
   try {
     const auth = req.user;
     const image = req.file;
@@ -95,7 +95,7 @@ const updateUserData = async (req, res) => {
     if (req.file) {
       deleteFiles([req.file]);
     }
-    res.status(error.code || 404).send(error.message || error);
+    next(error);
   }
 };
 

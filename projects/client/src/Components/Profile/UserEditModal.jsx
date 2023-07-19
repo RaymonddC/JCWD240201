@@ -25,9 +25,7 @@ export default function UserEditModal({ data }) {
       birthdate: '',
       profile_image: '',
     },
-    validate: (values) => {
-      validationUserEditModal(values);
-    },
+    validate: validationUserEditModal,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const result = await updateProfile(values);
@@ -71,6 +69,8 @@ export default function UserEditModal({ data }) {
       fileInputRef.current.value = null;
     }
   };
+
+  // console.log(formik.errors);
 
   useEffect(() => {
     if (data.full_name) {
