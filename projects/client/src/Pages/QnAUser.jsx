@@ -6,14 +6,15 @@ import QuestionCard from '../Components/QnA/QuestionCard';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
-  const disabled = (user||Object.keys(user)?.length?false:true)
+  const disabled = Object.keys(user).length?false:true
   const placeholder = disabled?'Please login to ask a question': 'Type your question here...'
   console.log(user)
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
-  console.log('QnAStore', QnAStore.questions?.data?.rows);
-  const totalPages = QnAStore?.questions?.totalPage;
+  console.log('QnAStore', QnAStore.answers?.data);
+  const totalPages = QnAStore?.answers?.totalPage;
+  console.log('Total pages', totalPages);
   const [page, setPage] = useState(1);
   const next = () => {
     const nextPage = page >= totalPages ? totalPages : (page + 1);
@@ -68,7 +69,7 @@ export default function QnAUser() {
                   <h2>QnA</h2>
                 </article>
                 <div>
-                  {QnAStore?.questions?.data?.rows.map((value, index) => {
+                  {QnAStore?.answers?.data?.rows.map((value, index) => {
                     // console.log(value)
                     return (
                       <QuestionCard data={value} key={`question${index}`} />
