@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import NavBar from '../Components/Layout/Navbar';
 import {
-  answers,
   getQuestionDetail,
   postAnswer,
   updateAnswer,
@@ -23,7 +22,6 @@ export default function QuestionDetails() {
   const answer = QnAStore?.questions?.answers?.[0]?.answer;
   const answerId = QnAStore?.questions?.answers?.[0]?.id;
   const answerText = useRef();
-  const [newAnswer, setNewAnswer] = useState('');
   const [disabled, setDisabled] = useState(true);
 
   // const [question, setQuestion] = useState();

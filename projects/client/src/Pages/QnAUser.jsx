@@ -12,7 +12,7 @@ export default function QnAUser() {
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
-  // console.log('QnAStore', QnAStore.questions?.data?.rows);
+  console.log('QnAStore', QnAStore.questions?.data?.rows);
   const totalPages = QnAStore?.questions?.totalPage;
   const [page, setPage] = useState(1);
   const next = () => {

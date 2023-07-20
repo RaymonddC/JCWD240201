@@ -5,29 +5,41 @@ const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
 const fs = require('fs');
 const db = require('../models');
-const questionDB = db.question;
+const productCategoryDB = db.product_category;
 const transporter = require('../helpers/transporter');
-const Product = db.product;
+const productDB = db.product;
 
-const getProducts = async (req, res, next) => {
+const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, category, limit } = req.query;
-    console.log(req.query);
     const pageLimit = Number(limit);
-    console.log(pageLimit, '<<');
-    const offset = (Number(page) - 1) * pageLimit;
-    console.log(offset);
-    let response = await questionDB.findAndCountAll({
+    const offset = (Number(page) - 1) * pageLimit + 1;
+    let where = undefined;
+    let order;
+    if (search) {
+      where = {};
+      where.name = { [Op.like]: `%${search}%` };
+    }
+    if (category) {
+      where = {};
+      where.category_id = category;
+    }
+    const response = await productDB.findAndCountAll({
+      include: productCategoryDB,
       limit: pageLimit,
       offset: offset,
-      order: [['updatedAt', 'DESC']],
+      where: where,
+      order: [['name', 'ASC']],
     });
-    console.log(response);
     const totalPage = Math.ceil(response.count / pageLimit);
+    console.log(req.query);
+    console.log(pageLimit, '<<');
+    console.log(response);
+    console.log(offset);
     console.log(totalPage);
     return res.status(200).send({
       success: true,
-      message: 'get Products success',
+      message: 'get all products success',
       totalPage: totalPage,
       data: response,
     });
@@ -110,7 +122,7 @@ const getAllProduct = async (req, res, next) => {
 
     // if (searchCategory) whereQuery['category_id'] = searchCategory;
 
-    const { count, rows } = await Product.findAndCountAll({
+    const { count, rows } = await productDB.findAndCountAll({
       //   include: [
       //     {
       //       model: LikeTweet,
@@ -139,4 +151,4 @@ const getAllProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { createQuestion, getProducts, getProduct, getAllProduct };
+module.exports = { createQuestion, getAllProducts, getProduct, getAllProduct };
