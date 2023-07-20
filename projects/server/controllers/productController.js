@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const { Op } = require('sequelize');
+const { Op, Transaction } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
 const fs = require('fs');
@@ -8,23 +8,27 @@ const db = require('../models');
 const questionDB = db.question;
 const transporter = require('../helpers/transporter');
 const Product = db.product;
+const ProductImages = db.product_image;
+const Label = db.label;
+const { sequelize } = require('../models');
+const deleteFiles = require('../helpers/deleteFiles');
 
 const getProducts = async (req, res, next) => {
   try {
     const { page, search, category, limit } = req.query;
-    console.log(req.query);
+    req.query;
     const pageLimit = Number(limit);
-    console.log(pageLimit, '<<');
+    pageLimit, '<<';
     const offset = (Number(page) - 1) * pageLimit;
-    console.log(offset);
+    offset;
     let response = await questionDB.findAndCountAll({
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
     });
-    console.log(response);
+    response;
     const totalPage = Math.ceil(response.count / pageLimit);
-    console.log(totalPage);
+    totalPage;
     return res.status(200).send({
       success: true,
       message: 'get Products success',
@@ -42,7 +46,7 @@ const getProducts = async (req, res, next) => {
 
 const createQuestion = async (req, res) => {
   const { question, user_id } = req.body;
-  console.log('question');
+  ('question');
   try {
     let result = await questionDB.create({ question, user_id });
 
@@ -93,7 +97,7 @@ const getProduct = async (req, res, next) => {
 
 const getAllProduct = async (req, res, next) => {
   try {
-    console.log('backend');
+    ('backend');
     let {
       searchCategory,
       ordered,
@@ -126,7 +130,7 @@ const getAllProduct = async (req, res, next) => {
       limit: Number(limitPage),
       offset: (Number(page) - 1) * limitPage,
     });
-    console.log(count);
+    count;
 
     return res.status(200).send({
       success: true,
@@ -139,4 +143,92 @@ const getAllProduct = async (req, res, next) => {
   }
 };
 
-module.exports = { createQuestion, getProducts, getProduct, getAllProduct };
+const createProduct = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    //get data from client
+    const data = JSON.parse(req.body.data);
+    const productCategories = JSON.parse(req.body.productCategories); //array
+
+    //create product data
+    let postProduct = await Product.create({ ...data }, { transaction: t });
+
+    const dataToCreate = req.files.product_images.map((value) => {
+      return { product_id: postProduct.id, image: value.path };
+    });
+
+    await ProductImages.bulkCreate(dataToCreate, {
+      transaction: t,
+      ignoreDuplicate: true,
+    });
+
+    const categoryData = productCategories.map((value) => {
+      return { product_id: postProduct.id, category_id: value };
+    });
+
+    await Label.bulkCreate(categoryData, {
+      transaction: t,
+      ignoreDuplicate: true,
+    });
+
+    await t.commit();
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'create product success',
+      data: postProduct,
+    });
+  } catch (error) {
+    await t.rollback();
+    deleteFiles(req.files.product_images);
+    return res.send({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    const { productId } = req.params;
+
+    //delete data
+    await Product.destroy({ where: { id: productId } }, { transaction: t });
+    await ProductImages.destroy(
+      { where: { product_id: productId } },
+      { transaction: t },
+    );
+    await Label.destroy(
+      { where: { product_id: productId } },
+      { transaction: t },
+    );
+
+    t.commit();
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'delete product success',
+      data: null,
+    });
+  } catch (error) {
+    t.rollback();
+    return res.send({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+module.exports = {
+  createQuestion,
+  getProducts,
+  getProduct,
+  getAllProduct,
+  createProduct,
+  deleteProduct,
+};
