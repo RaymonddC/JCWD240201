@@ -6,7 +6,7 @@ import QuestionCard from '../Components/QnA/QuestionCard';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
-  const disabled = Object.keys(user).length?false:true
+  const disabled = (user||Object.keys(user)?.length?false:true)
   const placeholder = disabled?'Please login to ask a question': 'Type your question here...'
   console.log(user)
   const question = useRef();
