@@ -1,9 +1,20 @@
 import { Link } from 'react-router-dom';
 import { MdArrowDropDown } from 'react-icons/md';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getAllCategories,
+  getCategories,
+} from '../../Features/Category/CategorySlice';
 
 export default function FilterBar(props) {
-  
-
+  const dispatch = useDispatch();
+  const CategoryStore = useSelector((state) => state?.categories);
+  console.log(CategoryStore)
+  useEffect(() => {
+    dispatch(getAllCategories);
+    
+  }, []);
   return (
     <>
       <div className="flex justify-center">
@@ -12,7 +23,7 @@ export default function FilterBar(props) {
           placeholder="Search"
           className="input input-bordered w-full max-w-xs"
           onChange={(e) => {
-            props.setSearch(e.target.value);
+            props?.setSearch(e.target.value);
           }}
         />
         <div className="dropdown dropdown-end border rounded-lg mx-2">
