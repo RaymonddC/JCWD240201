@@ -28,7 +28,5 @@ export const getAllCategories = (data) => async (dispatch) => {
   }
 };
 
-
-
 export const { categories } = CategorySlice.actions;
 export default CategorySlice.reducer;
