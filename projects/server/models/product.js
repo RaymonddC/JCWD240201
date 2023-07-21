@@ -9,6 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      product.hasMany(models.cart, {
+        foreignKey: 'product_id',
+      });
+      product.belongsTo(models.packaging_type, {
+        foreignKey: 'packaging_type_id',
+      });
+      product.hasMany(models.promotion, {
+        foreignKey: 'product_id',
+      });
     }
   }
   product.init(
@@ -22,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       BPOM_id: DataTypes.STRING,
       require_prescription: DataTypes.BOOLEAN,
       price: DataTypes.INTEGER,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,

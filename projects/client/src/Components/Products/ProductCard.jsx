@@ -14,7 +14,7 @@ export default function ProductCard(props) {
       return toast.error('Login First before adding product to cart');
       // return navigate('/login');
     }
-    dispatch(addToCartAsync({ productId: props.product.id, userId: user.id }));
+    dispatch(addToCartAsync({ productId: props?.product?.id }));
   };
 
   return (

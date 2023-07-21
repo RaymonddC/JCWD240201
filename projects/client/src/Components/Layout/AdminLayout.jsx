@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import Navbar from './Navbar';
 
 export const AdminLayout = (props) => {
-  const { user } = useSelector((state) => state.user);
   useEffect(() => {
     setTimeout(
       () => {

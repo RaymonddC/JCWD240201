@@ -1,0 +1,134 @@
+const jwt = require('jsonwebtoken');
+
+const { Op } = require('sequelize');
+const db = require('../models');
+const { getCart } = require('../helpers/cartHelper');
+const Cart = db.cart;
+const Product = db.product;
+const User = db.user;
+const PackagingType = db.packaging_type;
+const Promotion = db.promotion;
+
+// const getUserCarts = async (req, res, next) => {};
+
+const getCarts = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    console.log('backend');
+    let {
+      searchCategory,
+      ordered,
+      orderedBy,
+      search,
+      page = 1,
+      limitPage = 5,
+    } = req.query;
+
+    let whereQuery = {
+      user_id: userId,
+      // caption: { [Op.like]: `%${search || ''}%` },
+      // reply_id: { [Op.eq]: null },
+    };
+
+    // if (searchCategory) whereQuery['category_id'] = searchCategory;
+
+    const { count, rows } = await Cart.findAndCountAll({
+      include: [
+        {
+          model: Product,
+          // attributes: ['user_id'],
+          include: [{ model: PackagingType }, { model: Promotion }],
+        },
+        // {
+        //   model: User,
+        //   //   attributes: ['username', 'official', 'profilePicture', 'fullname'],
+        // },
+      ],
+      where: whereQuery,
+      order: [['createdAt', 'DESC']],
+      limit: Number(limitPage),
+      offset: (Number(page) - 1) * limitPage,
+    });
+    console.log(count);
+
+    return res.status(200).send({
+      success: true,
+      message: 'getAll Cart',
+      data: rows,
+      pageCount: count,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const addToCart = async (req, res, next) => {
+  try {
+    const { productId, qty } = req.body;
+    const userId = req.user.id;
+
+    // const product = await getProduct()
+    // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
+
+    const isCart = await getCart('', {
+      product_id: productId,
+      user_id: userId,
+    });
+    // if (!result) throw { message: 'Invalid Credentials', code: 400 };
+
+    if (isCart && isCart.qty === qty) '';
+    else if (isCart)
+      await Cart.update(
+        {
+          user_id: userId,
+          product_id: productId,
+          qty: qty || isCart.qty + 1,
+          prescription_image: null,
+          confirmation: null,
+        },
+        { where: { id: isCart.id } },
+      );
+    else {
+      await Cart.create({
+        user_id: userId,
+        product_id: productId,
+        qty: qty || 1,
+        prescription_image: null,
+        confirmation: null,
+      });
+    }
+
+    const cart = await getCart('', {
+      product_id: productId,
+      user_id: userId,
+    });
+
+    return res.status(200).send({
+      success: true,
+      message: 'Product add to cart',
+      data: cart,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteCart = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deleted = await Cart.destroy({
+      where: {
+        [Op.or]: [{ id: id }],
+      },
+    });
+    return res.status(200).send({
+      success: true,
+      message: 'Cart Deleted',
+      data: deleted,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getCarts, addToCart, deleteCart };

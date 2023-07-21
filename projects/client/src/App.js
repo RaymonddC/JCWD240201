@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
 import AdminRoute from './utils/routes/adminRoute';
 import PublicRoute from './utils/routes/publicRoutes';
+import { getCartUserAsync } from './Features/Cart/CartSlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ function App() {
   return (
     <>
       <Toaster />
-      {user.role_id === 1 ? <AdminRoute /> : <PublicRoute />}
+      {user.role?.role_name === 'admin' ? <AdminRoute /> : <PublicRoute />}
     </>
   );
 }

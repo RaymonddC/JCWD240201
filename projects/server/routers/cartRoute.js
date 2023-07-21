@@ -1,10 +1,14 @@
-// const express = require('express');
-// const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-// const { QnAController } = require('../controllers');
-// const APIKey = require('../middleware/APIKey');
+const { cartController } = require('../controllers');
+const { APIKey } = require('../middleware/APIKey');
+
+const { verifyToken } = require('../middleware/auth');
 
 // router.post('/questions', QnAController.createQuestion)
-// router.get('/questions', QnAController.getQuestions)
+router.get('/', APIKey, verifyToken, cartController.getCarts);
+router.post('/', APIKey, verifyToken, cartController.addToCart);
+router.delete('/:id', cartController.deleteCart);
 
-// module.exports = router;
+module.exports = router;

@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
@@ -5,13 +6,21 @@ import { Link } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import { MdPerson } from 'react-icons/md';
 
+import { SlBag } from 'react-icons/sl';
+import { getCartUserAsync } from '../../Features/Cart/CartSlice';
+
 export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { total } = useSelector((state) => state.cart);
+  useEffect(() => {
+    dispatch(getCartUserAsync());
+  }, [user]);
+
   return (
     <>
       <div className="flex relative gap-2 items-center p-3 ">
-        <div className='w-72'>
+        <div className="w-72">
           <Link to="/">
             <img className="px-2" src={Logo} alt="" />
           </Link>
@@ -23,6 +32,22 @@ export default function NavBar() {
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">QnA</Link>
               </button>
+              {user && Object.keys(user).length !== 0 ? (
+                <button className="btn btn-sm btn-ghost relative">
+                  <Link to={'/cart'}>
+                    <SlBag className="h-[24px] w-[24px]" />
+                    {total > 0 && Object.keys(user).length !== 0 ? (
+                      <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
+                        <span className="text-[12px] text-white">{total}</span>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </Link>
+                </button>
+              ) : (
+                ''
+              )}
             </div>
             <div className="flex">
               {user && Object.keys(user).length !== 0 ? (

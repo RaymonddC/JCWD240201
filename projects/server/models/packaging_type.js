@@ -9,12 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      packaging_type.hasMany(models.product, {
+        foreignKey: 'packaging_type_id',
+      });
     }
   }
   packaging_type.init(
     {
       type_name: DataTypes.STRING,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
