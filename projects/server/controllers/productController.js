@@ -6,33 +6,34 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const db = require('../models');
 const productCategoryDB = db.product_category;
+const labelDB = db.label;
 const transporter = require('../helpers/transporter');
 const productDB = db.product;
 
 const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, category, limit } = req.query;
+    console.log(req.query);
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit + 1;
     let where = undefined;
     let order;
-    if (search) {
+    if (search !== 'undefined') {
       where = {};
       where.name = { [Op.like]: `%${search}%` };
     }
-    if (category) {
+    if (category !== 'undefined') {
       where = {};
       where.category_id = category;
     }
     const response = await productDB.findAndCountAll({
-      include: productCategoryDB,
+      include: labelDB,
       limit: pageLimit,
       offset: offset,
       where: where,
       order: [['name', 'ASC']],
     });
-    const totalPage = Math.ceil(response.count / pageLimit);
-    console.log(req.query);
+    const totalPage = Math.ceil((response.count - 1) / pageLimit);
     console.log(pageLimit, '<<');
     console.log(response);
     console.log(offset);

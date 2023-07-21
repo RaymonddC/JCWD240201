@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllProducts } from '../../API/productAPI';
+import { getAllProductsAPI } from '../../API/productAPI';
 
 const initialState = {
   products: null,
@@ -14,14 +14,15 @@ export const ProductSlice = createSlice({
       console.log(action.payload);
       initialState.products = action.payload;
     },
+    page: (initialState, action) => {
+      initialState.page = action.payload;
+    },
   },
 });
 
-
 export const getProducts = (data) => async (dispatch) => {
   try {
-    console.log('getProducts');
-    let response = await getAllProducts({
+    let response = await getAllProductsAPI({
       page: data.page,
       limit: data.limit,
       search: data.search,
@@ -32,6 +33,13 @@ export const getProducts = (data) => async (dispatch) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const nextPage = (data) => (dispatch) => {
+  const currentPage = data.page;
+  const totalPages = data.totalPages;
+  const nextPage = currentPage >= totalPages ? totalPages : currentPage + 1;
+  dispatch(products(nextPage))
 };
 
 export const { products } = ProductSlice.actions;

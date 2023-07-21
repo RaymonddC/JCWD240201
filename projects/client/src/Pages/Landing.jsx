@@ -4,8 +4,23 @@ import ProductCard from '../Components/Products/ProductCard';
 import jumbotronImage from '../utils/images/jumbotronImage.png';
 import prescriptionImage from '../utils/images/prescription.svg';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProducts } from '../Features/Product/ProductSlice';
+import { useEffect } from 'react';
 
 export default function Landing() {
+  const dispatch = useDispatch();
+  const ProductsStore = useSelector((state) => state?.products?.products);
+  const productMap = ProductsStore?.data?.rows?.map((value, index) => {
+    return (
+      <div key={`product${index}`} className="carousel-item ">
+        <ProductCard data={value} />
+      </div>
+    );
+  });
+  useEffect(() => {
+    dispatch(getProducts({ page: 1, limit: 9 }));
+  }, [dispatch]);
   return (
     <>
       <NavBar />
@@ -36,7 +51,6 @@ export default function Landing() {
           </article>
         </div>
       </div>
-
       <div className="flex my-5 justify-center">
         <div className="w-fit items-center flex flex-col md:flex-row drop-shadow-md">
           <img
@@ -58,22 +72,8 @@ export default function Landing() {
         </article>
       </div>
       <div className="flex mb-20 justify-center">
-        <div className="carousel carousel-center w-[80%] p-4 space-x-4  rounded-box">
-          <div className="carousel-item relative">
-            <ProductCard />
-          </div>
-          <div className="carousel-item relative">
-            <ProductCard />
-          </div>
-          <div className="carousel-item ">
-            <ProductCard />
-          </div>
-          <div className="carousel-item ">
-            <ProductCard />
-          </div>
-          <div className="carousel-item ">
-            <ProductCard />
-          </div>
+        <div className="carousel carousel-center w-[72%] p-4 space-x-4  rounded-box">
+          {productMap}
         </div>
       </div>
       <div className="w-full">
