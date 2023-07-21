@@ -194,6 +194,13 @@ const deleteProduct = async (req, res) => {
   const t = await sequelize.transaction();
   try {
     const { productId } = req.params;
+    const findImageData = await ProductImages.findAll({
+      where: { product_id: productId },
+    });
+
+    const oldPath = findImageData.map((value) => {
+      return value.image;
+    });
 
     //delete data
     await Product.destroy({ where: { id: productId } }, { transaction: t });
@@ -208,6 +215,17 @@ const deleteProduct = async (req, res) => {
 
     t.commit();
 
+    oldPath.map((value) => {
+      const fileName = value.split('\\');
+      const newPath = `public/deleted_product_images/${
+        fileName[fileName.length - 1]
+      }`;
+
+      fs.rename(value, newPath, function (err) {
+        if (err) throw err;
+      });
+    });
+    
     return res.send({
       success: true,
       status: 200,
