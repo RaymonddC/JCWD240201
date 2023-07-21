@@ -12,6 +12,7 @@ import ChangePassword from '../../Pages/ChangePassword';
 import Address from '../../Pages/Address';
 import Cart from '../../Pages/Cart';
 import { PublicLayout } from '../../Components/Layout/PublicLayout';
+import Products from '../../Pages/Products';
 
 const routerSource = (props) => [
   {
@@ -65,6 +66,9 @@ const routerSource = (props) => [
         <Cart />,
       </PublicLayout>
     ),
+    index: true,
+    path: '/products',
+    element: <Products />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },

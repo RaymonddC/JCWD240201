@@ -28,7 +28,9 @@ export default function NavBar() {
         <div className="hidden sm:block w-full">
           <div className="flex justify-between pr-2">
             <div className="flex">
-              <button className="btn btn-sm btn-ghost">Shop</button>
+              <button className="btn btn-sm btn-ghost">
+                <Link to="/products">Shop</Link>
+              </button>
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">QnA</Link>
               </button>
@@ -99,7 +101,7 @@ export default function NavBar() {
               className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
               <li>
-                <Link to="/">SHOP</Link>
+                <Link to="/products">SHOP</Link>
               </li>
               <li>
                 <Link to="/discussions">QNA</Link>

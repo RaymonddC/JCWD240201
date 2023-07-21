@@ -1,16 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getQuestions } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCardAdmin from '../Components/QnA/QuestionCardAdmin';
 
 export default function QnAAdmin() {
   const user = useSelector((state) => state?.user?.user);
-  const disabled = Object.keys(user).length ? false : true;
-  const placeholder = disabled
-    ? 'Please login to ask a question'
-    : 'Type your question here...';
-  // console.log(user);
-  const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
   const questionList = QnAStore?.questions?.data?.rows;
@@ -44,9 +38,7 @@ export default function QnAAdmin() {
                 <article className="prose">
                   <h2>QnA</h2>
                 </article>
-                <div>
-                  {questionMap}
-                </div>
+                <div>{questionMap}</div>
               </div>
             </div>
             <div className="flex justify-center">
