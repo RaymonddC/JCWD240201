@@ -27,3 +27,12 @@ export function postCart(token, data) {
     },
   );
 }
+
+export function deleteCart(token, id) {
+  return axios.delete(`${URL}/carts/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apiKey: APIKey,
+    },
+  });
+}

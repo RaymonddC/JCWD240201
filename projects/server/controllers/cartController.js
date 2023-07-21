@@ -21,7 +21,7 @@ const getCarts = async (req, res, next) => {
       orderedBy,
       search,
       page = 1,
-      limitPage = 5,
+      limitPage = 10,
     } = req.query;
 
     let whereQuery = {
@@ -36,8 +36,11 @@ const getCarts = async (req, res, next) => {
       include: [
         {
           model: Product,
-          // attributes: ['user_id'],
-          include: [{ model: PackagingType }, { model: Promotion }],
+          attributes: { exclude: ['description', 'dosing', 'BPOM_id'] },
+          include: [
+            { model: PackagingType, attributes: ['type_name'] },
+            { model: Promotion },
+          ],
         },
         // {
         //   model: User,
@@ -69,6 +72,7 @@ const addToCart = async (req, res, next) => {
 
     // const product = await getProduct()
     // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
+    // if(product. === true) throw({message:'butuh resep bro'})
 
     const isCart = await getCart('', {
       product_id: productId,
@@ -80,11 +84,11 @@ const addToCart = async (req, res, next) => {
     else if (isCart)
       await Cart.update(
         {
-          user_id: userId,
-          product_id: productId,
+          user_id: isCart.user_id,
+          product_id: isCart.product_id,
           qty: qty || isCart.qty + 1,
-          prescription_image: null,
-          confirmation: null,
+          prescription_image: isCart.prescription_image,
+          confirmation: isCart.confirmation,
         },
         { where: { id: isCart.id } },
       );
@@ -116,11 +120,14 @@ const addToCart = async (req, res, next) => {
 const deleteCart = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const userId = req.user.id;
     const deleted = await Cart.destroy({
       where: {
-        [Op.or]: [{ id: id }],
+        id: id,
+        user_id: userId,
       },
     });
+
     return res.status(200).send({
       success: true,
       message: 'Cart Deleted',

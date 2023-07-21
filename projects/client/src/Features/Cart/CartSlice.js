@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { getUserCarts, postCart } from '../../API/cartAPI';
+import { deleteCart, getUserCarts, postCart } from '../../API/cartAPI';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
@@ -15,19 +15,10 @@ export const CartSlice = createSlice({
   initialState,
   reducers: {
     onGetData: (initialState, action) => {
-      console.log(action.payload);
       initialState.carts = action.payload.data;
       initialState.total = action.payload.total;
       initialState.totalPrice = action.payload.totalPrice;
-      // action.payload.map((value) => {
-      //   initialState.total += value.quantity;
-      //   initialState.totalPrice +=
-      //     value.quantity *
-      //     (value.product.price -
-      //       (value.product.price * value.type.discount) / 100);
-      // });
     },
-    // onCheckData: (initialState, action)
   },
 });
 
@@ -35,14 +26,11 @@ export const getCartUserAsync = () => async (dispatch) => {
   try {
     console.log('cartAsync');
     let token = localStorage.getItem('token');
-    // let userId = localStorage.getItem('userId');
     if (!token) {
       dispatch(onGetData([]));
       throw { message: 'No User' };
     }
-    // let response = await axios.get(
-    //   `${UrlApi}/carts?userId=${userId}&_expand=product&_expand=type`,
-    // );
+
     let { data } = await getUserCarts(token);
 
     // action.payload.map((value) => {
@@ -53,15 +41,13 @@ export const getCartUserAsync = () => async (dispatch) => {
     //       (value.product.price * value.type.discount) / 100);
     // });
 
-    let total = 10,
+    let total = 0,
       totalPrice = 0;
     data.data.map((value) => {
       total += value.qty;
       totalPrice += value.qty * value.product.price;
     });
 
-    console.log('cartAsync', data.data, total, totalPrice);
-    console.log('cartAsync', total, totalPrice);
     dispatch(onGetData({ data: data.data, total, totalPrice }));
   } catch (error) {
     console.log(error);
@@ -70,7 +56,7 @@ export const getCartUserAsync = () => async (dispatch) => {
 
 export const addToCartAsync = (values) => async (dispatch) => {
   try {
-    const { productId = 10, qty } = values;
+    const { productId, qty } = values;
     const token = localStorage.getItem('token');
     if (!token) throw { message: 'Please Login First' };
     if (!productId) throw { message: "Product doesn't exist" };
@@ -80,6 +66,20 @@ export const addToCartAsync = (values) => async (dispatch) => {
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+export const deleteCartAsync = (values) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    let { data } = await deleteCart(token, values.id);
+    if (data.data) {
+      await dispatch(getCartUserAsync());
+      return toast.success('Product removed from cart');
+    }
+    return toast.error('Failed to remove product');
   } catch (error) {
     toast.error(error.message);
   }

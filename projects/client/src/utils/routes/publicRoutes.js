@@ -66,6 +66,8 @@ const routerSource = (props) => [
         <Cart />,
       </PublicLayout>
     ),
+  },
+  {
     index: true,
     path: '/products',
     element: <Products />,

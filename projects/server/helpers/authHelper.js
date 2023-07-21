@@ -34,7 +34,7 @@ const validateEmail = async (email = '') => {
 const getUser = async (email = '', username = '', excludes) => {
   try {
     return await User.findOne({
-      include: [{ model: Role }],
+      include: [{ model: Role, attributes: ['role_name'] }],
       where: {
         [Op.or]: [{ email: email }, { username: username }],
       },
@@ -48,7 +48,7 @@ const getUser = async (email = '', username = '', excludes) => {
 const getUserByPk = async (primaryKey, excludes) => {
   try {
     return await User.findByPk(primaryKey, {
-      include: [{ model: Role }],
+      include: [{ model: Role, attributes: ['role_name'] }],
       attributes: { exclude: excludes },
     });
   } catch (error) {
