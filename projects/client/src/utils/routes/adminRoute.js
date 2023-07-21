@@ -4,6 +4,7 @@ import { Dashboard } from '../../Pages/Dashboard';
 import { AdminLayout } from '../../Components/Layout/AdminLayout';
 import QnAAdmin from '../../Pages/QnAAdmin';
 import QuestionDetails from '../../Pages/QuestionDetails';
+import ProductListAdmin from '../../Pages/ProductListAdmin';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -36,6 +37,15 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <QuestionDetails />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/products',
+    element: (
+      <AdminLayout>
+        <ProductListAdmin />,
       </AdminLayout>
     ),
   },

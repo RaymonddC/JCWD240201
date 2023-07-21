@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import NavBar from '../Components/Layout/Navbar';
 import {
-  answers,
   getQuestionDetail,
   postAnswer,
   updateAnswer,
@@ -23,46 +22,17 @@ export default function QuestionDetails() {
   const answer = QnAStore?.questions?.answers?.[0]?.answer;
   const answerId = QnAStore?.questions?.answers?.[0]?.id;
   const answerText = useRef();
-  const [newAnswer, setNewAnswer] = useState('');
   const [disabled, setDisabled] = useState(true);
 
   // const [question, setQuestion] = useState();
   // const[ answer , setAnswer] = useState();
-  // console.log(user);
+  console.log(user);
 
   useEffect(() => {
     dispatch(getQuestionDetail({ id: Number(id) }));
     console.log(answerText?.current?.value);
   }, [dispatch, id, answerText]);
-  if (role === 2) {
-    return (
-      <>
-        <NavBar />
-        <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
-          <div className="flex justify-end px-3">
-            <div className="label">{date}</div>
-          </div>
-          <div className="card-body ">
-            <article className="prose">
-              <h3> Question: </h3>
-              <p>{question}</p>
-            </article>
-          </div>
-        </div>
-        <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
-          <div className="flex justify-end px-3">
-            {/* <div className="label">{date}</div> */}
-          </div>
-          <div className="card-body ">
-            <article className="prose">
-              <h3> Answer:</h3>
-              <p>{answer}</p>
-            </article>
-          </div>
-        </div>
-      </>
-    );
-  } else if (role === 1) {
+  if (role === 1) {
     return (
       <>
         <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
@@ -145,6 +115,34 @@ export default function QuestionDetails() {
             </div>
           </>
         )}
+      </>
+    );
+  } else {
+    return (
+      <>
+        <NavBar />
+        <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
+          <div className="flex justify-end px-3">
+            <div className="label">{date}</div>
+          </div>
+          <div className="card-body ">
+            <article className="prose">
+              <h3> Question: </h3>
+              <p>{question}</p>
+            </article>
+          </div>
+        </div>
+        <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
+          <div className="flex justify-end px-3">
+            {/* <div className="label">{date}</div> */}
+          </div>
+          <div className="card-body ">
+            <article className="prose">
+              <h3> Answer:</h3>
+              <p>{answer}</p>
+            </article>
+          </div>
+        </div>
       </>
     );
   }

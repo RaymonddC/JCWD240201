@@ -10,6 +10,7 @@ import ResetPasswordForm from '../../Pages/ResetPasswordForm';
 import QuestionDetails from '../../Pages/QuestionDetails';
 import ChangePassword from '../../Pages/ChangePassword';
 import Address from '../../Pages/Address';
+import Products from '../../Pages/Products';
 
 const routerSource = (props) => [
   {
@@ -66,6 +67,11 @@ const routerSource = (props) => [
     index: true,
     path: '/user/address',
     element: <Address />,
+  },
+  {
+    index: true,
+    path: '/products',
+    element: <Products />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },
