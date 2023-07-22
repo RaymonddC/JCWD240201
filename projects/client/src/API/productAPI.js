@@ -6,3 +6,7 @@ export function getAllProductsAPI(data) {
     `${URL}/products?page=${data.page}&limit=${data.limit}&search=${data.search}&category=${data.category}`,
   );
 }
+
+export function getProductDetails(id) {
+  return axios.get(`${URL}/products/${id}`);
+}

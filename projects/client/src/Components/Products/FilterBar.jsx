@@ -26,8 +26,8 @@ export default function FilterBar(props) {
             props?.setSearch(e.target.value);
           }}
         />
-        <div className="dropdown dropdown-end border rounded-lg mx-2">
-          <label tabIndex={0} className="btn btn-ghost rounded-btn">
+        <div className="dropdown dropdown-end border">
+          <label tabIndex={0} className="btn btn-secondary">
             Category <MdArrowDropDown size={25} />
           </label>
           <ul
