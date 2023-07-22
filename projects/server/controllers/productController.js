@@ -270,29 +270,41 @@ const updateProduct = async (req, res) => {
 
 const updateProductImage = async (req, res) => {
   try {
-    const { imageId } = req.params;
+    const { imageId, productId } = req.query;
 
-    //find image old path and new path
-    const findImageData = await ProductImages.findOne({
-      where: { id: imageId },
+    //search product image
+    const getImage = await ProductImages.findOne({
+      where: { product_id: productId },
     });
 
-    const oldPath = findImageData.image;
-    const fileName = oldPath.split('\\');
-    const newPath = `public/deleted_product_images/${
-      fileName[fileName.length - 1]
-    }`;
+    if (getImage) {
+      //find image old path and new path
+      const findImageData = await ProductImages.findOne({
+        where: { id: imageId },
+      });
 
-    //update product image
-    const updateProductImage = await ProductImages.update(
-      { image: req.files.product_images[0].path },
-      { where: { id: imageId } },
-    );
+      const oldPath = findImageData.image;
+      const fileName = oldPath.split('\\');
+      const newPath = `public/deleted_product_images/${
+        fileName[fileName.length - 1]
+      }`;
 
-    //move old image to deleted folder
-    if (updateProductImage) {
-      fs.rename(value, newPath, function (err) {
-        if (err) throw err;
+      //update product image
+      const updateProductImage = await ProductImages.update(
+        { image: req.files.product_images[0].path },
+        { where: { id: imageId } },
+      );
+
+      //move old image to deleted folder
+      if (updateProductImage) {
+        fs.rename(oldPath, newPath, function (err) {
+          if (err) throw err;
+        });
+      }
+    } else {
+      await ProductImages.create({
+        image: req.files.product_images[0].path,
+        product_id: productId,
       });
     }
 
@@ -304,7 +316,7 @@ const updateProductImage = async (req, res) => {
     });
   } catch (error) {
     return res.send({
-      success: true,
+      success: false,
       message: error.message,
       data: null,
     });

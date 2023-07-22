@@ -32,7 +32,7 @@ router.put(
   productController.updateProduct,
 );
 router.put(
-  '/image/:imageId',
+  '/image/admin',
   APIKey.APIKey,
   // verifyToken,
   // isAdmin,
