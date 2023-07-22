@@ -148,7 +148,7 @@ const createProduct = async (req, res) => {
   try {
     //get data from client
     const data = JSON.parse(req.body.data);
-    const productCategories = JSON.parse(req.body.productCategories); //array
+    const productCategories = JSON.parse(req.body.productCategories); //array of category id
 
     //create product data
     let postProduct = await Product.create({ ...data }, { transaction: t });
@@ -225,7 +225,7 @@ const deleteProduct = async (req, res) => {
         if (err) throw err;
       });
     });
-    
+
     return res.send({
       success: true,
       status: 200,
@@ -242,6 +242,75 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    //get data from client
+    const { productId } = req.params;
+    const { data } = req.body;
+
+    //update product data
+    const updateProduct = await Product.update(data, {
+      where: { id: productId },
+    });
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'Update Product Success',
+      data: updateProduct,
+    });
+  } catch (error) {
+    return res.send({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+const updateProductImage = async (req, res) => {
+  try {
+    const { imageId } = req.params;
+
+    //find image old path and new path
+    const findImageData = await ProductImages.findOne({
+      where: { id: imageId },
+    });
+
+    const oldPath = findImageData.image;
+    const fileName = oldPath.split('\\');
+    const newPath = `public/deleted_product_images/${
+      fileName[fileName.length - 1]
+    }`;
+
+    //update product image
+    const updateProductImage = await ProductImages.update(
+      { image: req.files.product_images[0].path },
+      { where: { id: imageId } },
+    );
+
+    //move old image to deleted folder
+    if (updateProductImage) {
+      fs.rename(value, newPath, function (err) {
+        if (err) throw err;
+      });
+    }
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'update product image success',
+      data: updateProductImage,
+    });
+  } catch (error) {
+    return res.send({
+      success: true,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
 module.exports = {
   createQuestion,
   getProducts,
@@ -249,4 +318,6 @@ module.exports = {
   getAllProduct,
   createProduct,
   deleteProduct,
+  updateProduct,
+  updateProductImage,
 };
