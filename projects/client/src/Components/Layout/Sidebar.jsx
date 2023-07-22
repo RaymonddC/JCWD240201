@@ -27,13 +27,13 @@ export const Sidebar = () => {
             <p className="hidden lg:block">Dashboard</p>
           </div>
         </Link>
-        <Link to={'/product'} className="w-full">
+        <Link to={'/products'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
             <GiMedicines />
             <p className="hidden lg:block">Product</p>
           </div>
         </Link>
-        <Link to={'/qna'} className="w-full">
+        <Link to={'/discussions'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <MdQuestionAnswer />
             <p className="hidden lg:block">QnA</p>

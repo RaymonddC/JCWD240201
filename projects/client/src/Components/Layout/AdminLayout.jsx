@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 
 export const AdminLayout = (props) => {
   const { user } = useSelector((state) => state.user);
+  console.log(props);
   useEffect(() => {
     setTimeout(
       () => {
@@ -26,7 +27,7 @@ export const AdminLayout = (props) => {
       >
         <Navbar></Navbar>
         <div className="bg-gradient-to-b from-[#D6F5F3] from-10% via-[#F7FCFC] via-90% to-[#F1F5FC]  min-h-[100vh] px-[3em] py-[2em]">
-          {props.children[0]}
+          {props?.children[0]}
         </div>
       </div>
     </div>
