@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
 // import { handleAddToCart } from '../../Helper/cartHelper';
 
-
 export default function ProductCard(props) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const productName = props?.data?.name;
-  const price= props?.data?.price?.toLocaleString(['id']);
+  const price = props?.data?.price?.toLocaleString(['id']);
   // console.log(props?.data)
 
   const handleAddToCart = () => {
@@ -16,7 +15,7 @@ export default function ProductCard(props) {
       return toast.error('Login First before adding product to cart');
       // return navigate('/login');
     }
-    dispatch(addToCartAsync({ productId: props.product.id, userId: user.id }));
+    dispatch(addToCartAsync({ productId: props?.data?.id }));
   };
 
   return (

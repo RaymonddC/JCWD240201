@@ -24,7 +24,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/qna',
+    path: '/discussions',
     element: (
       <AdminLayout>
         <QnAAdmin />,

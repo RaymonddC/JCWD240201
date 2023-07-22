@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 export const AdminLayout = (props) => {
   const { user } = useSelector((state) => state.user);
-  console.log(props)
+  console.log(props);
   useEffect(() => {
     setTimeout(
       () => {
