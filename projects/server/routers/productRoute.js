@@ -12,8 +12,8 @@ router.get('/', productController.getAllProduct);
 router.post(
   '/',
   APIKey.APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   uploadProduct,
   productController.createProduct,
 );
@@ -27,15 +27,15 @@ router.delete(
 router.put(
   '/:productId',
   APIKey.APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   productController.updateProduct,
 );
 router.put(
   '/image/admin',
   APIKey.APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   uploadUpdateProduct,
   productController.updateProductImage,
 );
