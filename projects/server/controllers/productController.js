@@ -13,7 +13,7 @@ const productDB = db.product;
 const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, category, limit } = req.query;
-    console.log(req.query);
+    // console.log(req.query);
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit + 1;
     let where = undefined;
@@ -34,10 +34,10 @@ const getAllProducts = async (req, res, next) => {
       order: [['name', 'ASC']],
     });
     const totalPage = Math.ceil((response.count - 1) / pageLimit);
-    console.log(pageLimit, '<<');
-    console.log(response);
-    console.log(offset);
-    console.log(totalPage);
+    // console.log(pageLimit, '<<');
+    // console.log(response);
+    // console.log(offset);
+    // console.log(totalPage);
     return res.status(200).send({
       success: true,
       message: 'get all products success',
@@ -55,7 +55,7 @@ const getAllProducts = async (req, res, next) => {
 
 const createQuestion = async (req, res) => {
   const { question, user_id } = req.body;
-  console.log('question');
+  // console.log('question');
   try {
     let result = await questionDB.create({ question, user_id });
 
@@ -139,7 +139,7 @@ const getAllProduct = async (req, res, next) => {
       limit: Number(limitPage),
       offset: (Number(page) - 1) * limitPage,
     });
-    console.log(count);
+    // console.log(count);
 
     return res.status(200).send({
       success: true,

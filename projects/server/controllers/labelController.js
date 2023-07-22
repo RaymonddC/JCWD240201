@@ -9,24 +9,22 @@ const productCategoryDB = db.product_category;
 const labelDB = db.label;
 const transporter = require('../helpers/transporter');
 
-const getAllCategories = async (req, res, next) => {
+const getLabels = async (req, res, next) => {
   try {
-    // console.log('Getting all categories');
-    const response = await productCategoryDB.findAll();
-
+    console.log('get labels');
+    const response = await labelDB.findAll({
+      attributes: ['product_id'],
+      distinct: true,
+			
+    });
     return res.status(200).send({
       success: true,
-      message: 'get all categories success',
+      message: 'get all labels success',
       data: response,
     });
   } catch (error) {
     next(error);
-    // return res.send({
-    //   success: false,
-    //   message: error.message,
-    // });
   }
 };
 
-
-module.exports = { getAllCategories };
+module.exports = { getLabels };

@@ -11,12 +11,12 @@ export const ProductSlice = createSlice({
   initialState,
   reducers: {
     products: (initialState, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       initialState.products = action.payload;
     },
-    page: (initialState, action) => {
-      initialState.page = action.payload;
-    },
+    // page: (initialState, action) => {
+    //   initialState.page = action.payload;
+    // },
   },
 });
 
@@ -28,19 +28,25 @@ export const getProducts = (data) => async (dispatch) => {
       search: data.search,
       category: data.category,
     });
-    console.log(response?.data.data);
+    // console.log(response?.data.data);
     dispatch(products(response?.data));
   } catch (error) {
     console.log(error);
   }
 };
 
-export const nextPage = (data) => (dispatch) => {
-  const currentPage = data.page;
-  const totalPages = data.totalPages;
-  const nextPage = currentPage >= totalPages ? totalPages : currentPage + 1;
-  dispatch(products(nextPage))
-};
+// export const nextPage = (data) => (dispatch) => {
+//   const currentPage = data.page;
+//   const totalPages = data.totalPages;
+//   const nextPage = currentPage >= totalPages ? totalPages : currentPage + 1;
+//   dispatch(page(nextPage));
+// };
 
-export const { products } = ProductSlice.actions;
+// export const prevPage = (data) => (dispatch) => {
+//   const currentPage = data.page;
+//   const prefPage = currentPage <= 0 ? 0 : currentPage - 1;
+//   dispatch(page(prefPage));
+// };
+
+export const { products, page } = ProductSlice.actions;
 export default ProductSlice.reducer;

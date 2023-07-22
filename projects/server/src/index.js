@@ -30,7 +30,8 @@ const {
   QnARouter,
   cartRoute,
   productRoute,
-  categoryRoute
+  categoryRoute,
+  labelRoute
 } = require('../routers');
 
 app.use('/auth', authRoute);
@@ -39,6 +40,8 @@ app.use('/users', userRoute);
 // app.use('/carts', cartRoute);
 app.use('/products', productRoute);
 app.use('/categories', categoryRoute);
+app.use('/labels', labelRoute);
+
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);
 });

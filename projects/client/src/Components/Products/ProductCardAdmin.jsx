@@ -20,9 +20,9 @@ export default function ProductCardAdmin(props) {
 
   return (
     <>
-      <div className=" flex bg-base-100 py-2 items-center w-full max-w-4xl shadow-xl">
+      <div className=" flex bg-base-100  items-center w-full max-w-4xl shadow-xl">
         <img
-          className="h-28 hidden md:block px-5"
+          className="h-24 hidden md:block px-5"
           src="https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_750,w_750/v1/production/pharmacy/products/1643869601_tolak_angin_sidomuncul_12_sachet_15_ml"
           alt=""
         />
