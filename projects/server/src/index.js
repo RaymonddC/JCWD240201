@@ -30,11 +30,13 @@ const {
   QnARouter,
   cartRoute,
   productRoute,
+  addressRoute,
 } = require('../routers');
 
 app.use('/auth', authRoute);
 app.use('/discussions', QnARouter);
 app.use('/users', userRoute);
+app.use('/addresses', addressRoute);
 // app.use('/carts', cartRoute);
 app.use('/products', productRoute);
 app.get('/api', (req, res) => {
