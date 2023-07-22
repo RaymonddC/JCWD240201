@@ -22,7 +22,7 @@ export const QnASlice = createSlice({
       initialState.questions = action.payload;
     },
     answers: (initialState, action) => {
-      initialState.questions = action.payload;
+      initialState.answers = action.payload;
     },
   },
 });
@@ -71,7 +71,7 @@ export const getAnswers = (data) => async (dispatch) => {
       page: data.page,
       limit: data.limit,
     });
-    console.log(response.data.data);
+    console.log(response.data.data.rows);
     dispatch(answers(response?.data));
   } catch (error) {
     console.log(error);

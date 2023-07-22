@@ -5,13 +5,10 @@ const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
 const fs = require('fs');
 const db = require('../models');
-const questionDB = db.question;
+const productCategoryDB = db.product_category;
+const labelDB = db.label;
 const transporter = require('../helpers/transporter');
-const Product = db.product;
-const ProductImages = db.product_image;
-const Label = db.label;
-const { sequelize } = require('../models');
-const deleteFiles = require('../helpers/deleteFiles');
+const productDB = db.product;
 
 const getAllProducts = async (req, res, next) => {
   try {

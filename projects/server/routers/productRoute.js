@@ -8,7 +8,8 @@ const { uploadProduct, uploadUpdateProduct } = require('../middleware/upload');
 const { isAdmin } = require('../middleware/checkRole');
 
 // router.post('/questions', QnAController.createQuestion)
-router.get('/', productController.getAllProduct);
+router.get('/', productController.getAllProducts);
+router.get('/:id', productController.getProductDetails);
 router.post(
   '/',
   APIKey.APIKey,

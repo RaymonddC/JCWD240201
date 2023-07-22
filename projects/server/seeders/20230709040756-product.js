@@ -6,6 +6,7 @@ module.exports = {
     await queryInterface.bulkInsert('products', [
       // obat mata-------------------------------------------------------------------------------------
       {
+        //1
         name: 'Obat Racik/Resep',
         packaging_type_id: null,
         product_type_id: null,
@@ -19,6 +20,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        //2
         name: 'Blecidex Tetes Mata/Telinga 5 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -34,6 +36,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 3
         name: 'Cendo Asthenof Tetes Mata Minidose 0,6 Ml 5 Ampul',
         packaging_type_id: 2,
         product_type_id: 4,
@@ -48,6 +51,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 4
         name: 'Cendo Catarlent Tetes Mata 15 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -63,6 +67,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 5
         name: 'Cendo Fenicol 0,25% Tetes Mata 5 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -78,6 +83,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 6
         name: 'Cendo Fenicol Salep Mata 3,5 gr',
         packaging_type_id: 4,
         product_type_id: 3,
@@ -93,6 +99,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 7
         name: 'Cendo Cenfresh Tetes Mata Minidose 0,6 Ml 5 Ampul',
         packaging_type_id: 2,
         product_type_id: 4,
@@ -108,6 +115,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 8
         name: 'Cendo Hyalub Tetes Mata Minidose 0,6 Ml 5 Ampul',
         packaging_type_id: 2,
         product_type_id: 4,
@@ -123,6 +131,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 9
         name: 'Sanbe Tears Tetes Mata 8 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -137,6 +146,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 10
         name: 'Insto Dry Eyes 7,5 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -152,6 +162,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 11
         name: 'Rohto Dryfresh 7 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -167,6 +178,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 12
         name: 'Rohto Tetes Mata 7 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -182,6 +194,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 13
         name: 'Insto Regular Tetes Mata 15 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -197,6 +210,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 14
         name: 'Rohto V- Extra Tetes Mata 7 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -212,6 +226,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 15
         name: 'Cendo Xitrol Tetes Mata Minidose 0,6 Ml 5 Ampul',
         packaging_type_id: 2,
         product_type_id: 4,
@@ -227,6 +242,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
+        // 16
         name: 'Callusol Cairan Obat Luar 10 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
