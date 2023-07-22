@@ -13,6 +13,7 @@ import Address from '../../Pages/Address';
 import Cart from '../../Pages/Cart';
 import { PublicLayout } from '../../Components/Layout/PublicLayout';
 import Products from '../../Pages/Products';
+import ProductDetails from '../../Pages/ProductDetails';
 
 const routerSource = (props) => [
   {
@@ -72,6 +73,12 @@ const routerSource = (props) => [
     path: '/products',
     element: <Products />,
   },
+  {
+    index: true,
+    path: '/products/:id',
+    element: <ProductDetails />,
+  },
+
 
   { index: true, path: '/*', element: <>ERROR</> },
 ];

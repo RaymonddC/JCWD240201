@@ -7,15 +7,16 @@ const fs = require('fs');
 const db = require('../models');
 const productCategoryDB = db.product_category;
 const labelDB = db.label;
+const productDB = db.product;
 const transporter = require('../helpers/transporter');
 
 const getLabels = async (req, res, next) => {
   try {
     console.log('get labels');
     const response = await labelDB.findAll({
-      attributes: ['product_id'],
-      distinct: true,
-			
+      include: productDB,
+      // group: ['product_id'],
+      
     });
     return res.status(200).send({
       success: true,

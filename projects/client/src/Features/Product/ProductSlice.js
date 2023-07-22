@@ -34,7 +34,15 @@ export const getProducts = (data) => async (dispatch) => {
     console.log(error);
   }
 };
-
+export const getProductDetails = (id) => async (dispatch) => {
+  try {
+    let response = await getAllProductsAPI(id);
+    // console.log(response?.data.data);
+    dispatch(products(response?.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
 // export const nextPage = (data) => (dispatch) => {
 //   const currentPage = data.page;
 //   const totalPages = data.totalPages;
