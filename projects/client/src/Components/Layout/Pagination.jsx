@@ -1,14 +1,12 @@
-import { useState } from "react";
-
 export default function Pagination(props) {
-	const [page, setPage] = useState(1);
-	const next = () => {
-    const nextPage = page >= props?.totalPages ? props?.totalPages : page + 1;
-    setPage(nextPage);
+  const next = () => {
+    const nextPage =
+      props?.page >= props?.totalPages ? props?.totalPages : props?.page + 1;
+    props?.setPage(nextPage);
   };
   const prev = () => {
-    const prevPage = page <= 1 ? 1 : page - 1;
-    setPage(prevPage);
+    const prevPage = props?.page <= 1 ? 1 : props?.page - 1;
+    props?.setPage(prevPage);
   };
   return (
     <>

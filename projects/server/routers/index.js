@@ -5,6 +5,7 @@ const cartRoute = require('./cartRoute');
 const productRoute = require('./productRoute');
 const addressRoute = require('./addressRoute');
 const categoryRoute = require('./categoryRoute');
+const labelRoute = require('./labelRoute');
 
 module.exports = {
   authRoute,
@@ -14,4 +15,5 @@ module.exports = {
   productRoute,
   addressRoute,
   categoryRoute,
+  labelRoute,
 };

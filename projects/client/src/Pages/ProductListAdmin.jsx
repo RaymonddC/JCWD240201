@@ -4,6 +4,7 @@ import { getProducts } from '../Features/Product/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBar from '../Components/Products/FilterBar';
+import Pagination from '../Components/Layout/Pagination';
 
 export default function ProductListAdmin() {
   const dispatch = useDispatch();
@@ -15,21 +16,23 @@ export default function ProductListAdmin() {
   const debouncedSearchValue = useDebounce(search);
   const productMap = productList?.map((value, index) => {
     return (
-      <div key={`productAdmin${index}`} className="py-3 flex w-full justify-center">
+      <div key={`product${index}`} className="py-1 flex w-full justify-center">
         <ProductCardAdmin data={value} />
       </div>
     );
   });
   useEffect(() => {
-    dispatch(getProducts({ page, limit: 20, search: debouncedSearchValue }));
+    dispatch(getProducts({ page, limit: 9, search: debouncedSearchValue }));
   }, [debouncedSearchValue, dispatch, page]);
   return (
     <>
-    <div className=' sticky top-5'>
-		<FilterBar/>
-
-    </div>
-      {productMap}
+      <div className="sticky top-3 mb-3">
+        <FilterBar setSearch={setSearch} />
+      </div>
+      <div>{productMap}</div>
+      <div className="py-5">
+        <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+      </div>
     </>
   );
 }
