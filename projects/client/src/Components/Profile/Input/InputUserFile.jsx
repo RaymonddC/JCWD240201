@@ -9,7 +9,7 @@ export default function InputUserFile(props) {
         ref={props.refProp}
         onChange={props.onChange}
       />
-      <label htmlFor={props.id} className="text-[#00A8B5] font-bold">
+      <label htmlFor={props.id} className="text-primary font-bold">
         {props.label}
       </label>
     </>

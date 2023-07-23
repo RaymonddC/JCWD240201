@@ -5,6 +5,9 @@ const {
   changeOldIsMain,
   getOldIsMain,
   setNewIsMain,
+  manipulateArray,
+  getProvinceRajaOngkir,
+  getCityRajaOngkir,
 } = require('../helpers/addressHelper');
 const db = require('../models');
 const addressDB = db.address;
@@ -17,10 +20,13 @@ const getAllAddress = async (req, res, next) => {
         user_id,
       },
     });
-    res.send({
+
+    const result = manipulateArray(data);
+
+    res.status(200).send({
       success: true,
       message: 'Get All Address Successfully',
-      data: data,
+      data: result,
     });
   } catch (error) {
     next(error);
@@ -53,7 +59,6 @@ const createAddress = async (req, res, next) => {
       message: 'Address Created successfully',
       data: result,
     });
-    console.log(is_main);
   } catch (error) {
     next(error);
   }
@@ -105,15 +110,11 @@ const updateIsMain = async (req, res, next) => {
       throw { message: 'Please fill your form correctly', code: 400 };
 
     await validateUserAndIsDeleted(user_id, id);
-
     const oldIsMain = await getOldIsMain(user_id);
-
     await changeOldIsMain(oldIsMain.id);
 
     const result = await addressDB.update(
-      {
-        is_main: true,
-      },
+      { is_main: true },
       {
         where: {
           id,
@@ -157,10 +158,41 @@ const deleteAddress = async (req, res, next) => {
   }
 };
 
+const getProvince = async (req, res, next) => {
+  try {
+    const result = await getProvinceRajaOngkir();
+
+    res.status(200).send({
+      success: true,
+      message: 'Get Province Success',
+      data: result.data.rajaongkir.results,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getCity = async (req, res, next) => {
+  try {
+    const { province_id } = req.query;
+    const result = await getCityRajaOngkir(province_id);
+
+    res.status(200).send({
+      success: true,
+      message: 'Get city Success',
+      data: result.data.rajaongkir.results,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllAddress,
   createAddress,
   updateAddress,
   updateIsMain,
   deleteAddress,
+  getProvince,
+  getCity,
 };
