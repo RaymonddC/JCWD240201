@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 export default function Landing() {
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
+  console.log(ProductsStore)
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
       <div key={`product${index}`} className="carousel-item ">
