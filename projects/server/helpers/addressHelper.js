@@ -12,11 +12,11 @@ const validateForm = (data) => {
     throw { message: 'Please fill your form correctly', code: 400 };
   }
 
-  if (data.address.length < 150) {
+  if (data.address.length > 150) {
     throw { message: 'Address is too long', code: 400 };
   }
 
-  if (data.notes.length > 150) {
+  if (data.notes && data.notes.length > 150) {
     throw { message: 'Notes is too long', code: 400 };
   }
 };

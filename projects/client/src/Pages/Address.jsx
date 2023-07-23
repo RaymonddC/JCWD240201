@@ -53,7 +53,7 @@ export default function Address() {
           </div>
           <div className="text-[16px] grid gap-4 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
             {loadAddress === false && !address.length ? (
-              <div className="w-full flex justify-center">
+              <div className="flex flex-col items-center">
                 <h3 className="text-[18px] font-bold">
                   Oops! You haven't set an address yet
                 </h3>
