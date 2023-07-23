@@ -5,15 +5,12 @@ module.exports = {
     try {
       const token = req.headers.apikey;
 
-      if (!token) throw { message: 'Access Denied 1' };
+      if (!token) throw { message: 'Access Denied 1', code: 401 };
       let APIAccess = jwt.verify(token, 'API-key');
       if (!APIAccess) throw { message: 'Access Denied 2' };
       if (APIAccess.password === 'access-confirm') next();
     } catch (error) {
-      return res.send({
-        success: false,
-        message: error.message,
-      });
+      next(error);
     }
   },
 };

@@ -3,6 +3,7 @@ const userRoute = require('./userRoute');
 const QnARouter = require('./QnARouter');
 const cartRoute = require('./cartRoute');
 const productRoute = require('./productRoute');
+const addressRoute = require('./addressRoute');
 const categoryRoute = require('./categoryRoute');
 const labelRoute = require('./labelRoute');
 
@@ -12,6 +13,7 @@ module.exports = {
   QnARouter,
   cartRoute,
   productRoute,
+  addressRoute,
   categoryRoute,
   labelRoute,
 };
