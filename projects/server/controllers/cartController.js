@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 
 const { Op } = require('sequelize');
 const db = require('../models');
-const { getCart } = require('../helpers/cartHelper');
+const { getCart, getCartByPk } = require('../helpers/cartHelper');
+const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Product = db.product;
 const User = db.user;
@@ -89,6 +90,7 @@ const addToCart = async (req, res, next) => {
           qty: qty || isCart.qty + 1,
           prescription_image: isCart.prescription_image,
           confirmation: isCart.confirmation,
+          is_check: true,
         },
         { where: { id: isCart.id } },
       );
@@ -99,6 +101,7 @@ const addToCart = async (req, res, next) => {
         qty: qty || 1,
         prescription_image: null,
         confirmation: null,
+        is_check: true,
       });
     }
 
@@ -110,6 +113,51 @@ const addToCart = async (req, res, next) => {
     return res.status(200).send({
       success: true,
       message: 'Product add to cart',
+      data: cart,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+const updateCart = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { qty, confirmation = false, isCheck = true } = req.body;
+    const userId = req.user.id;
+
+    // const product = await getProduct()
+    // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
+    // if(product. === true) throw({message:'butuh resep bro'})
+
+    const isCart = await getCartByPk(id, '');
+    if (!isCart) throw { code: 400, message: 'Cart Not Found' };
+
+    const user = await getUserByPk(userId);
+    if (isCart.user_id !== userId)
+      if (user.role.role_name === 'user')
+        throw { code: 400, message: 'Cart Not Found' };
+
+    console.log(isCheck);
+    if (isCart && isCart.qty === qty && isCart.is_check === isCheck) '';
+    else if (isCart) {
+      await Cart.update(
+        {
+          user_id: isCart.user_id,
+          product_id: isCart.product_id,
+          qty: qty || isCart.qty + 1,
+          prescription_image: isCart.prescription_image,
+          confirmation: confirmation,
+          is_check: isCheck,
+        },
+        { where: { id: isCart.id } },
+      );
+    }
+
+    const cart = await getCartByPk(id, '');
+
+    return res.status(200).send({
+      success: true,
+      message: 'Cart Updated',
       data: cart,
     });
   } catch (error) {
@@ -138,4 +186,4 @@ const deleteCart = async (req, res, next) => {
   }
 };
 
-module.exports = { getCarts, addToCart, deleteCart };
+module.exports = { getCarts, addToCart, updateCart, deleteCart };

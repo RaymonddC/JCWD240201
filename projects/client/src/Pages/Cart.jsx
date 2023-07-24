@@ -8,9 +8,11 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state?.user);
-  const { carts, total, totalPrice } = useSelector((state) => state?.cart);
-  const [isCheck, setIsCheck] = useState(true);
-  const [totalNow, setTotalNow] = useState(total);
+  const { carts, totalCart, totalPrice, activeCart } = useSelector(
+    (state) => state?.cart,
+  );
+  const [isCheck, setIsCheck] = useState(totalCart === activeCart);
+  const [totalNow, setTotalNow] = useState(totalCart);
   const [totalPriceNow, setTotalPriceNow] = useState(totalPrice);
   const [discountNow, setDiscountNow] = useState(10);
   useEffect(() => {
@@ -18,17 +20,21 @@ const Cart = () => {
   }, []);
 
   // useEffect(() => {
-  //   console.log(totalNow, total);
-  //   if (totalNow === total) setIsCheck(true);
+  //   console.log(totalNow, totalCart);
+  //   if (totalNow === totalCart) setIsCheck(true);
   // }, [totalNow]);
 
-  if (Object.keys(user).length === 0) return <Navigate to={'/'} />;
+  // if (Object.keys(user).length === 0) return <Navigate to={'/'} />;
 
   return (
-    <div className="">
+    <div className="min-h-[50vh]">
       <p className="font-bold text-[24px] mb-9">Keranjang Saya</p>
       <div className="flex justify-between">
-        <div className="card card-compact w-[65%] bg-base-100 shadow-xl ">
+        <div
+          className={`card card-compact w-[65%] bg-base-100 shadow-xl ${
+            totalCart === 0 ? 'hidden' : ''
+          } `}
+        >
           <div className="card-body">
             <div className="selectAll flex gap-5 items-center justify-between">
               <input
@@ -56,6 +62,9 @@ const Cart = () => {
               })}
             </div>
           </div>
+        </div>
+        <div className={`noCart ${totalCart === 0 ? '' : 'hidden'} `}>
+          <div className="p">Start Add Product to cart</div>
         </div>
         <div className="card card-compact w-[30%] bg-base-100 shadow-xl h-fit fixed right-12  ">
           <div className="card-body">
