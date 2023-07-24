@@ -5,8 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBar from '../Components/Products/FilterBar';
 import Pagination from '../Components/Layout/Pagination';
+import { MdAddCircleOutline } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductListAdmin() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -26,6 +29,7 @@ export default function ProductListAdmin() {
   }, [debouncedSearchValue, dispatch, page]);
   return (
     <>
+    <div className='relative'>
       <div className="sticky top-3 mb-3">
         <FilterBar setSearch={setSearch} />
       </div>
@@ -33,6 +37,10 @@ export default function ProductListAdmin() {
       <div className="py-5">
         <Pagination setPage={setPage} page={page} totalPages={totalPages} />
       </div>
+      <div className='sticky bottom-3' onClick={() => navigate('/products/new')}>
+        <MdAddCircleOutline size={40} />
+      </div>
+    </div>
     </>
   );
 }
