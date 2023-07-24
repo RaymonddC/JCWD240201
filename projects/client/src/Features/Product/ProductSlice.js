@@ -33,7 +33,7 @@ export const getProducts = (data) => async (dispatch) => {
       sortType: data.sortType,
       sortOrder: data.sortOrder,
     });
-    // console.log(response?.data.data);
+    console.log(response?.data.data);
     dispatch(products(response?.data));
   } catch (error) {
     console.log(error);

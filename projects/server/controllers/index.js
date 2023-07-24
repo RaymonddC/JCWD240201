@@ -3,9 +3,9 @@ const QnAController = require('./QnAController');
 const userController = require('./userController');
 const cartController = require('./cartController');
 const productController = require('./productController');
-const addressController = require('./addressController');
 const categoryController = require('./categoryController');
 const labelController = require('./labelController');
+const addressController = require('./addressController');
 
 module.exports = {
   authController,
@@ -13,7 +13,8 @@ module.exports = {
   userController,
   cartController,
   productController,
-  addressController,
   categoryController,
   labelController,
+  addressController
+  
 };

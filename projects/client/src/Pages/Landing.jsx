@@ -14,13 +14,13 @@ export default function Landing() {
   console.log(ProductsStore)
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
-      <div key={`product${index}`} className="carousel-item ">
+      <div key={`product${index}`} className="carousel-item mx-5 ">
         <ProductCard data={value} />
       </div>
     );
   });
   useEffect(() => {
-    dispatch(getProducts({ page: 1, limit: 9 }));
+    dispatch(getProducts({ page: 1, limit: 9,search:'' }));
   }, [dispatch]);
   return (
     <>
@@ -73,7 +73,7 @@ export default function Landing() {
         </article>
       </div>
       <div className="flex mb-20 justify-center">
-        <div className="carousel carousel-center w-[72%] p-4 space-x-4  rounded-box">
+        <div className="carousel carousel-center w-[72%] p-4 space-x-4 rounded-box">
           {productMap}
         </div>
       </div>
