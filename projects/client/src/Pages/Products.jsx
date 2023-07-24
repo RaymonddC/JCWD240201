@@ -23,7 +23,7 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1500);
   const CategoryStore = useSelector((state) => state?.categories.categories);
-  // console.log(CategoryStore?.data);
+  console.log(productList);
   let productMap;
   const categoriesMap = CategoryStore?.data?.map((value, index) => {
     return (
@@ -37,7 +37,7 @@ export default function Products() {
       </div>
     );
   });
-  if (category && !debouncedSearchValue) {
+  if (category) {
     productMap = productList?.map((value, index) => {
       return (
         <div key={`product${index}`} className="py-3 flex justify-center">
@@ -56,7 +56,7 @@ export default function Products() {
   }
   useEffect(() => {
     dispatch(getAllCategories());
-    if (category && !debouncedSearchValue) {
+    if (category) {
       dispatch(
         getLabels({
           page,
@@ -82,13 +82,15 @@ export default function Products() {
   return (
     <>
       <NavBar />
-      <FilterBar
-        setSearch={setSearch}
-        setSortType={setSortType}
-        setSortOrder={setSortOrder}
-      />
-      <div className="flex">
-        <div className="hidden w-72 md:block pl-5">
+      <div className="sticky top-3 mb-3 z-10">
+        <FilterBar
+          setSearch={setSearch}
+          setSortType={setSortType}
+          setSortOrder={setSortOrder}
+        />
+      </div>
+      <div className="flex ">
+        <div className="hidden w-72 md:block pl-5 ">
           <article className="prose">
             <h3 className="pb-5">Categories</h3>
           </article>

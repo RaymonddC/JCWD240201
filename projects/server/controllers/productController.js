@@ -13,12 +13,11 @@ const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, limit, sortType, sortOrder } = req.query;
     const pageLimit = Number(limit);
-    const offset = (Number(page) - 1) * pageLimit + 1;
+    const offset = (Number(page) - 1) * pageLimit;
     let where = {};
     let order = [];
-    if (search !== 'undefined') {
-      where.name = { [Op.like]: `%${search}%` };
-    }
+    where.name = { [Op.like]: `%${search}%` };
+    where.id ={[Op.not]:1}
     if (sortType) {
       order = [[sortType, sortOrder]];
     } else {

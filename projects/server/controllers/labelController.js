@@ -15,23 +15,28 @@ const getLabels = async (req, res, next) => {
     console.log('get labels');
     const { page, search, limit, sortType, sortOrder, category } = req.query;
     const pageLimit = Number(limit);
-    const offset = (Number(page) - 1) * pageLimit + 1;
-
-    const whereCat = {};
+    const offset = (Number(page) - 1) * pageLimit;
+    let order = [];
     const whereLabel = {};
+    const whereCat = {}
     if (category) {
       whereCat.category_name = category;
     }
-    // console.log('>>>',limit,page);
+    if (sortType) {
+      order = [['product',sortType, sortOrder]];
+    } else {
+      order = [['product','updatedAt', 'DESC']];
+    }
     const categories = await productCategoryDB.findAll({ where: whereCat });
     whereLabel.category_id = categories[0].id;
     const response = await labelDB.findAndCountAll({
-      include: [productDB, productCategoryDB],
+      include: [{model:productDB,where:{name:{[Op.like]:`%${search}%`}}}, productCategoryDB],
       limit: pageLimit,
       offset: offset,
       where: whereLabel,
-      order: [['product', 'id', 'desc']],
+      order: order,
     });
+
     const totalPage = Math.ceil((response.count - 1) / pageLimit);
     const key = 'product';
     const uniqueResponse = [
@@ -48,5 +53,9 @@ const getLabels = async (req, res, next) => {
     next(error);
   }
 };
+
+getProductLabels = async (req, res, next) => {
+
+}
 
 module.exports = { getLabels };
