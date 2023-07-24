@@ -5,6 +5,7 @@ import QnAReducer from '.././Features/QnA/QnASlice';
 import CartReducer from '.././Features/Cart/CartSlice';
 import ProductReducer from '.././Features/Product/ProductSlice';
 import CategoryReducer from '.././Features/Category/CategorySlice';
+import AddressReducer from '../Features/Address/AddressSlice';
 
 export const Store = configureStore({
   reducer: {
@@ -13,5 +14,6 @@ export const Store = configureStore({
     cart: CartReducer,
     products: ProductReducer,
     categories: CategoryReducer,
+    address: AddressReducer,
   },
 });

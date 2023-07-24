@@ -5,7 +5,7 @@ export default function InputUserRadio(props) {
         id="gender"
         type="radio"
         name="gender"
-        className="radio border-[#00A8B5] checked:bg-[#00A8B5]"
+        className="radio border-primary checked:bg-primary"
         checked={props.formikValues === props.values}
         onChange={props.handleChange}
         value={props.values}

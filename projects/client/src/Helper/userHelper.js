@@ -13,6 +13,9 @@ export const validationUserEditModal = (values) => {
   if (!values.phone_number) {
     errors.phone_number = 'Phone number is required';
   }
+  if (isNaN(Number(values.phone_number))) {
+    errors.phone_number = 'Phone number should be a number';
+  }
   if (!values.gender) {
     errors.gender = 'Gender is required';
   }

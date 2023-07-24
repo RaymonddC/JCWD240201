@@ -16,7 +16,6 @@ export default function UserEditModal({ data }) {
   const [disabled, setdisabled] = useState(true);
   const dispatch = useDispatch();
   const fileInputRef = useRef(null);
-
   const formik = useFormik({
     initialValues: {
       full_name: '',
@@ -28,7 +27,10 @@ export default function UserEditModal({ data }) {
     validate: validationUserEditModal,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        const result = await updateProfile(values);
+        const result = await updateProfile(
+          values,
+          localStorage.getItem('token'),
+        );
         if (result.data.success) {
           toast.success(result.data.message);
           dispatch(keepLoginAsync());
@@ -55,22 +57,19 @@ export default function UserEditModal({ data }) {
   const CloseBtn = (e) => {
     e.preventDefault();
     setOpen(false);
-    if (disabled === false) {
-      formik.setValues({
-        full_name: data.full_name,
-        phone_number: data.phone_number,
-        gender: data.gender,
-        birthdate: data.birthdate,
-      });
-      formik.setFieldValue('profile_image', '');
-      setdisabled(true);
-    }
+    formik.resetForm();
+    formik.setValues({
+      full_name: data.full_name,
+      phone_number: data.phone_number,
+      gender: data.gender,
+      birthdate: data.birthdate,
+    });
+    formik.setFieldValue('profile_image', '');
+    setdisabled(true);
     if (fileInputRef.current) {
       fileInputRef.current.value = null;
     }
   };
-
-  // console.log(formik.errors);
 
   useEffect(() => {
     if (data.full_name) {
@@ -88,7 +87,7 @@ export default function UserEditModal({ data }) {
   return (
     <>
       <button
-        className="btn btn-outline border-[#00A8B5] text-[#00A8B5] hover:bg-[#00A8B5] hover:border-[#00A8B5]"
+        className="btn btn-outline border-primary text-primary hover:bg-primary hover:border-primary"
         onClick={() => setOpen(true)}
       >
         EDIT
@@ -139,6 +138,8 @@ export default function UserEditModal({ data }) {
               name="full_name"
               errors={formik?.errors?.full_name}
               handleChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              touched={formik?.touched?.full_name}
               values={formik?.values?.full_name}
             />
             <InputUserText
@@ -147,6 +148,8 @@ export default function UserEditModal({ data }) {
               name="phone_number"
               errors={formik?.errors?.phone_number}
               handleChange={formik?.handleChange}
+              onBlur={formik?.handleBlur}
+              touched={formik?.touched?.phone_number}
               values={formik?.values?.phone_number}
             />
             <label htmlFor="" className="text-[14px]">
@@ -178,12 +181,12 @@ export default function UserEditModal({ data }) {
             <button
               disabled={disabled || !formik.isValid || formik.isSubmitting}
               type="submit"
-              className="btn w-full bg-[#00A8B5] text-white"
+              className="btn w-full bg-primary text-white"
             >
               SAVE
             </button>
             <button
-              className="btn btn-ghost w-full text-[#00A8B5]"
+              className="btn btn-ghost w-full text-primary"
               onClick={(e) => CloseBtn(e)}
             >
               Close
