@@ -9,6 +9,10 @@ const productCategoryDB = db.product_category;
 const labelDB = db.label;
 const transporter = require('../helpers/transporter');
 const productDB = db.product;
+const productImageDB = db.product_image;
+const packagingDB = db.packaging_type;
+const productTypeDB = db.product_type
+const { sequelize } = require('../models');
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -67,7 +71,7 @@ const getProductDetails = async (req, res, next) => {
   } catch (error) {}
 };
 
-const createProduct = async (req, res) => {
+const createProduct = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     //get data from client
@@ -75,13 +79,13 @@ const createProduct = async (req, res) => {
     const productCategories = JSON.parse(req.body.productCategories); //array of category id
 
     //create product data
-    let postProduct = await Product.create({ ...data }, { transaction: t });
+    let postProduct = await productDB.create({ ...data }, { transaction: t });
 
     const dataToCreate = req.files.product_images.map((value) => {
       return { product_id: postProduct.id, image: value.path };
     });
 
-    await ProductImages.bulkCreate(dataToCreate, {
+    await productImageDB.bulkCreate(dataToCreate, {
       transaction: t,
       ignoreDuplicate: true,
     });
@@ -90,7 +94,7 @@ const createProduct = async (req, res) => {
       return { product_id: postProduct.id, category_id: value };
     });
 
-    await Label.bulkCreate(categoryData, {
+    await labelDB.bulkCreate(categoryData, {
       transaction: t,
       ignoreDuplicate: true,
     });
@@ -106,19 +110,15 @@ const createProduct = async (req, res) => {
   } catch (error) {
     await t.rollback();
     deleteFiles(req.files.product_images);
-    return res.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+    next(error);
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { productId } = req.params;
-    const findImageData = await ProductImages.findAll({
+    const findImageData = await productImageDB.findAll({
       where: { product_id: productId },
     });
 
@@ -127,17 +127,17 @@ const deleteProduct = async (req, res) => {
     });
 
     //delete data
-    await Product.destroy({ where: { id: productId } }, { transaction: t });
-    await ProductImages.destroy(
+    await productDB.destroy({ where: { id: productId } }, { transaction: t });
+    await productImageDB.destroy(
       { where: { product_id: productId } },
       { transaction: t },
     );
-    await Label.destroy(
+    await labelDB.destroy(
       { where: { product_id: productId } },
       { transaction: t },
     );
 
-    t.commit();
+    await t.commit();
 
     oldPath.map((value) => {
       const fileName = value.split('\\');
@@ -157,23 +157,19 @@ const deleteProduct = async (req, res) => {
       data: null,
     });
   } catch (error) {
-    t.rollback();
-    return res.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+    await t.rollback();
+    next(error);
   }
 };
 
-const updateProduct = async (req, res) => {
+const updateProduct = async (req, res, next) => {
   try {
     //get data from client
     const { productId } = req.params;
     const { data } = req.body;
 
     //update product data
-    const updateProduct = await Product.update(data, {
+    const updateProduct = await productDB.update(data, {
       where: { id: productId },
     });
 
@@ -184,26 +180,22 @@ const updateProduct = async (req, res) => {
       data: updateProduct,
     });
   } catch (error) {
-    return res.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+    next(error);
   }
 };
 
-const updateProductImage = async (req, res) => {
+const updateProductImage = async (req, res, next) => {
   try {
     const { imageId, productId } = req.query;
 
     //search product image
-    const getImage = await ProductImages.findOne({
+    const getImage = await productImageDB.findOne({
       where: { product_id: productId },
     });
 
     if (getImage) {
       //find image old path and new path
-      const findImageData = await ProductImages.findOne({
+      const findImageData = await productImageDB.findOne({
         where: { id: imageId },
       });
 
@@ -214,7 +206,7 @@ const updateProductImage = async (req, res) => {
       }`;
 
       //update product image
-      const updateProductImage = await ProductImages.update(
+      const updateProductImage = await productImageDB.update(
         { image: req.files.product_images[0].path },
         { where: { id: imageId } },
       );
@@ -226,7 +218,7 @@ const updateProductImage = async (req, res) => {
         });
       }
     } else {
-      await ProductImages.create({
+      await productImageDB.create({
         image: req.files.product_images[0].path,
         product_id: productId,
       });
@@ -239,11 +231,37 @@ const updateProductImage = async (req, res) => {
       data: updateProductImage,
     });
   } catch (error) {
+    next(error);
+  }
+};
+
+const getPackaging = async (req, res, next) => {
+  try {
+    const result = await packagingDB.findAll();
+
     return res.send({
-      success: false,
-      message: error.message,
-      data: null,
+      success: true,
+      status: 200,
+      message: 'get data success',
+      data: result,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getProductType = async (req, res, next) => {
+  try {
+    const result = await productTypeDB.findAll();
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'get data success',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -254,4 +272,6 @@ module.exports = {
   deleteProduct,
   updateProduct,
   updateProductImage,
+  getPackaging,
+  getProductType,
 };

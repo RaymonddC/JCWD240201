@@ -40,5 +40,19 @@ router.put(
   uploadUpdateProduct,
   productController.updateProductImage,
 );
+router.get(
+  '/packaging/types',
+  APIKey.APIKey,
+  verifyToken,
+  isAdmin,
+  productController.getPackaging,
+);
+router.get(
+  '/types/admin',
+  APIKey.APIKey,
+  verifyToken,
+  isAdmin,
+  productController.getProductType,
+);
 
 module.exports = router;

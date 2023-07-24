@@ -1,11 +1,19 @@
 import { useFormik } from 'formik';
 import { validateAddProduct } from '../Helper/productHelper';
-import { addProduct } from '../API/productAPI';
+import {
+  addProduct,
+  getPackagingType,
+  getProductType,
+} from '../API/productAPI';
 import { toast } from 'react-hot-toast';
 import InputUserFile from '../Components/Profile/Input/InputUserFile';
 import InputUserText from '../Components/Profile/Input/InputUserText';
+import { useEffect, useState } from 'react';
+import Select from '../Components/Products/Input/Select';
 
 export default function AddProduct() {
+  const [packaging, setPackaging] = useState([]);
+  const [productType, setProductType] = useState([]);
   const formik = useFormik({
     initialValues: {
       product: {
@@ -37,6 +45,21 @@ export default function AddProduct() {
       } catch (error) {}
     },
   });
+
+  const getPackaging = async () => {
+    const result = await getPackagingType();
+    setPackaging(result.data.data);
+  };
+
+  const getType = async () => {
+    const result = await getProductType();
+    setProductType(result.data.data);
+  };
+
+  useEffect(() => {
+    getPackaging();
+    getType();
+  }, []);
   return (
     <>
       <div className="font-bold text-xl">Add New Product</div>
@@ -48,15 +71,39 @@ export default function AddProduct() {
           errors={formik?.errors?.name}
           handleChange={formik?.handleChange}
           values={formik?.values?.product?.name}
+          touched={formik.touched?.product?.name}
         />
-        <InputUserText
+        <Select
           id="primary unit"
-          label="Primary Unit"
-          name="product.packaging_type"
-          errors={formik?.errors?.name}
+          name="product.packaging_type_id"
           handleChange={formik?.handleChange}
-          values={formik?.values?.product?.name}
+          onBlur={formik?.handleBlur}
+          errors={formik?.errors?.packaging_type_id}
+          value={formik?.values?.product?.packaging_type_id}
+          data={packaging}
+          placeholder="Please select primary unit"
+          label="Primary Unit"
+          touched={formik.touched?.product?.packaging_type_id}
         />
+        <Select
+          id="secondary unit"
+          name="product.product_type_id"
+          handleChange={formik?.handleChange}
+          onBlur={formik?.handleBlur}
+          errors={formik?.errors?.product_type_id}
+          value={formik?.values?.product?.product_type_id}
+          data={productType}
+          placeholder="Please select secondary unit"
+          label="Secondary Unit"
+          touched={formik.touched?.product?.product_type_id}
+        />
+        <button
+          disabled={formik.isSubmitting}
+          type="submit"
+          className="btn w-full bg-primary text-white"
+        >
+          SAVE
+        </button>
       </form>
     </>
   );
