@@ -11,7 +11,6 @@ const transporter = require('../helpers/transporter');
 
 const getAllCategories = async (req, res, next) => {
   try {
-    // console.log('Getting all categories');
     const response = await productCategoryDB.findAll();
 
     return res.status(200).send({
@@ -21,12 +20,52 @@ const getAllCategories = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    // return res.send({
-    //   success: false,
-    //   message: error.message,
-    // });
   }
 };
 
+const createCategory = async (req, res, next) => {
+  try {
+    const { category_name } = req.body;
+    const response = await productCategoryDB.create({
+      category_name,
+    });
+
+    return res.status(201).send({
+      success: true,
+      message: 'get all categories success',
+      data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateCategory = async (req, res, next) => {
+  try {
+    const response = await productCategoryDB.findAll();
+
+    return res.status(200).send({
+      success: true,
+      message: 'get all categories success',
+      data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteCategory = async (req, res, next) => {
+  try {
+    const response = await productCategoryDB.findAll();
+
+    return res.status(200).send({
+      success: true,
+      message: 'get all categories success',
+      data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = { getAllCategories };
