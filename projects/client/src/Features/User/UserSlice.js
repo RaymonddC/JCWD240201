@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-// import { getDataUser } from '../../API/user';
 import { checkCredential, keepLogin, register } from '../../API/auth';
 
 // import { auth } from './../../firebase';
