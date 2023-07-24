@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCartUserAsync } from '../Features/Cart/CartSlice';
+import { checkoutAsync, getCartUserAsync } from '../Features/Cart/CartSlice';
 import { Navigate } from 'react-router-dom';
 
 const Cart = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state?.user);
-  const { carts, totalCart, totalPrice, activeCart } = useSelector(
+  const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
     (state) => state?.cart,
   );
-  const [isCheck, setIsCheck] = useState(totalCart === activeCart);
-  const [totalNow, setTotalNow] = useState(totalCart);
-  const [totalPriceNow, setTotalPriceNow] = useState(totalPrice);
-  const [discountNow, setDiscountNow] = useState(10);
+  const [isCheck, setIsCheck] = useState(false);
+  // const [isForceCheck, setIsForceCheck] = useState(false);;
+
   useEffect(() => {
     dispatch(getCartUserAsync());
   }, []);
 
-  // useEffect(() => {
-  //   console.log(totalNow, totalCart);
-  //   if (totalNow === totalCart) setIsCheck(true);
-  // }, [totalNow]);
-
-  // if (Object.keys(user).length === 0) return <Navigate to={'/'} />;
+  useEffect(() => {
+    if (activeCart === totalCart && totalCart !== 0) setIsCheck(true);
+    else setIsCheck(false);
+  }, [carts]);
 
   return (
     <div className="min-h-[50vh]">
@@ -46,17 +43,15 @@ const Cart = () => {
               <p>Pilih Semua</p>
             </div>
             <div className="div">
-              {console.log(carts)}
-              {carts.map((value) => {
+              {/* {console.log(carts)} */}
+              {carts.map((value, idx) => {
                 return (
                   <CartCard
+                    key={idx}
                     cart={value}
                     check={isCheck}
                     setCheck={setIsCheck}
-                    total={totalNow}
-                    setTotal={setTotalNow}
-                    totalPrice={totalPriceNow}
-                    setTotalPrice={setTotalPriceNow}
+                    // isForceCheck={isForceCheck}
                   />
                 );
               })}
@@ -74,19 +69,29 @@ const Cart = () => {
             </div>
             <div className="details py-3 border-b border-[#D5D7DD]">
               <div className="detailPrice flex justify-between text-[16px]">
-                <p>Total Harga ({totalNow} barang)</p>
-                <span>Rp{totalPriceNow.toLocaleString(['id'])}</span>
+                <p>Total Harga ({activeCart} barang)</p>
+                <span>Rp{totalPrice.toLocaleString(['id'])}</span>
               </div>
               <div className="detailDiscount flex justify-between text-[16px]">
                 <p>Total Diskon Barang</p>
-                <span>-Rp{discountNow.toLocaleString(['id'])}</span>
+                <span>-Rp{discount.toLocaleString(['id'])}</span>
               </div>
             </div>
             <div className="lastPrice flex justify-between text-[24px] my-2 font-bold">
               <p>Total Harga</p>
               <span className="">
-                Rp{(totalPriceNow - discountNow).toLocaleString(['id'])}
+                Rp{(totalPrice - discount).toLocaleString(['id'])}
               </span>
+            </div>
+            <div className="orderNow pt-5">
+              <button
+                className="btn btn-md btn-primary w-full text-white"
+                onClick={() => {
+                  checkoutAsync();
+                }}
+              >
+                Bayar ({activeCart})
+              </button>
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ const initialState = {
   totalCart: 0,
   activeCart: 0,
   totalPrice: 0,
+  discount: 0,
 };
 
 export const CartSlice = createSlice({
@@ -25,6 +26,7 @@ export const CartSlice = createSlice({
       initialState.totalCart = action.payload.totalCart;
       initialState.activeCart = action.payload.activeCart;
       initialState.totalPrice = action.payload.totalPrice;
+      initialState.discount = action.payload.discount;
     },
   },
 });
@@ -39,27 +41,33 @@ export const getCartUserAsync = () => async (dispatch) => {
     }
 
     let { data } = await getUserCarts(token);
-
-    // action.payload.map((value) => {
-    //   initialState.total += value.quantity;
-    //   initialState.totalPrice +=
-    //     value.quantity *
-    //     (value.product.price -
-    //       (value.product.price * value.type.discount) / 100);
-    // });
-
     let totalPrice = 0,
       totalCart = 0,
-      activeCart = 0;
+      activeCart = 0,
+      discount = 0;
     data.data.map((value) => {
+      // console.log(value.product);
       totalCart += value.qty;
       if (value.is_check) {
         activeCart += value.qty;
         totalPrice += value.qty * value.product.price;
+        value.product.promotions?.map((promo) => {
+          if (promo?.discount)
+            discount +=
+              value.qty * value.product.price * (promo.discount / 100);
+        });
       }
     });
 
-    dispatch(onGetData({ data: data.data, totalCart, totalPrice, activeCart }));
+    dispatch(
+      onGetData({
+        data: data.data,
+        totalCart,
+        totalPrice,
+        activeCart,
+        discount,
+      }),
+    );
   } catch (error) {
     console.log(error);
   }
@@ -84,11 +92,14 @@ export const addToCartAsync = (values) => async (dispatch) => {
 
 export const updateCartAsync = (values) => async (dispatch) => {
   try {
-    const { cartId, qty, isCheck } = values;
+    const { cartId, qty, isCheck, stock } = values;
+
     const token = localStorage.getItem('token');
+    if (stock < qty) throw { message: 'stock kurang' };
     if (qty <= 0) await deleteCart(token, cartId);
     else await updateCart(token, cartId, { qty, isCheck });
   } catch (error) {
+    toast.error(error.message);
   } finally {
     dispatch(getCartUserAsync());
   }
@@ -108,30 +119,31 @@ export const deleteCartAsync = (values) => async (dispatch) => {
   }
 };
 
-// export const checkoutAsync = () => async (dispatch) => {
-//   try {
-//     console.log('checkout');
-//     let userId = localStorage.getItem('userId');
-//     let { data } = await axios.get(
-//       `${UrlApi}/carts?userId=${userId}&_expand=type`,
-//     );
+export const checkoutAsync = () => async (dispatch) => {
+  try {
+    console.log('checkout');
+    let token = localStorage.getItem('token');
 
-//     console.log(data, 'cart');
-//     data.map(async (value) => {
-//       try {
-//         console.log(value.type.stock, value.quantity);
-//         await axios.patch(`${UrlApi}/types/${value.typeId}`, {
-//           stock: value.type.stock - value.quantity,
-//         });
-//         await axios.delete(`${UrlApi}/carts/${value.id}`);
-//       } catch (error) {
-//         toast.error(error);
-//       } finally {
-//         dispatch(getCartUserAsync());
-//       }
-//     });
-//   } catch (error) {}
-// };
+    let { data } = await axios.get(
+      `${UrlApi}/carts?userId=${userId}&_expand=type`,
+    );
+
+    console.log(data, 'cart');
+    data.map(async (value) => {
+      try {
+        console.log(value.type.stock, value.quantity);
+        await axios.patch(`${UrlApi}/types/${value.typeId}`, {
+          stock: value.type.stock - value.quantity,
+        });
+        await axios.delete(`${UrlApi}/carts/${value.id}`);
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        dispatch(getCartUserAsync());
+      }
+    });
+  } catch (error) {}
+};
 
 export const { onGetData } = CartSlice.actions;
 

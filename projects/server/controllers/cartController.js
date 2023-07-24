@@ -9,6 +9,7 @@ const Product = db.product;
 const User = db.user;
 const PackagingType = db.packaging_type;
 const Promotion = db.promotion;
+const ClosedStock = db.closed_stock;
 
 // const getUserCarts = async (req, res, next) => {};
 
@@ -27,11 +28,9 @@ const getCarts = async (req, res, next) => {
 
     let whereQuery = {
       user_id: userId,
-      // caption: { [Op.like]: `%${search || ''}%` },
-      // reply_id: { [Op.eq]: null },
     };
 
-    // if (searchCategory) whereQuery['category_id'] = searchCategory;
+    const today = new Date();
 
     const { count, rows } = await Cart.findAndCountAll({
       include: [
@@ -40,7 +39,17 @@ const getCarts = async (req, res, next) => {
           attributes: { exclude: ['description', 'dosing', 'BPOM_id'] },
           include: [
             { model: PackagingType, attributes: ['type_name'] },
-            { model: Promotion },
+            {
+              model: Promotion,
+              where: {
+                [Op.and]: [
+                  { date_start: { [Op.lte]: today } },
+                  { date_end: { [Op.gte]: today } },
+                ],
+              },
+              required: false,
+            },
+            { model: ClosedStock },
           ],
         },
         // {
