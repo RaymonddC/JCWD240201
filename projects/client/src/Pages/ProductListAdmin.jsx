@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBar from '../Components/Products/FilterBar';
 import Pagination from '../Components/Layout/Pagination';
-import { MdAddCircleOutline } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductListAdmin() {
@@ -37,8 +37,8 @@ export default function ProductListAdmin() {
       <div className="py-5">
         <Pagination setPage={setPage} page={page} totalPages={totalPages} />
       </div>
-      <div className='sticky bottom-3' onClick={() => navigate('/products/new')}>
-        <MdAddCircleOutline size={40} />
+      <div className='sticky bottom-6 bg-primary w-fit rounded-full hover:cursor-pointer' onClick={() => navigate('/products/new')}>
+        <MdAdd size={40} />
       </div>
     </div>
     </>

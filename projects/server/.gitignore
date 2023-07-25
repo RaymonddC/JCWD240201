@@ -2,7 +2,8 @@
 /node_modules
 /.pnp
 .pnp.js
-/config
+/src/config
+/public
 
 # testing
 /coverage
