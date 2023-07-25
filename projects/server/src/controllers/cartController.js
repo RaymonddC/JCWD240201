@@ -43,6 +43,7 @@ const getCarts = async (req, res, next) => {
               model: Promotion,
               where: {
                 [Op.and]: [
+                  { limit: { [Op.gt]: 0 } },
                   { date_start: { [Op.lte]: today } },
                   { date_end: { [Op.gte]: today } },
                 ],

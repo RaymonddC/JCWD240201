@@ -20,11 +20,12 @@ module.exports = (sequelize, DataTypes) => {
       address: DataTypes.STRING,
       phone_number: DataTypes.STRING,
       receiver: DataTypes.STRING,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: 'transaction',
+      paranoid: true,
     },
   );
   return transaction;
