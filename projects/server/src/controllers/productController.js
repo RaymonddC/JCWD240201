@@ -13,6 +13,7 @@ const productImageDB = db.product_image;
 const packagingDB = db.packaging_type;
 const productTypeDB = db.product_type
 const { sequelize } = require('../models');
+const deleteFiles = require('../helpers/deleteFiles');
 
 const getAllProducts = async (req, res, next) => {
   try {
