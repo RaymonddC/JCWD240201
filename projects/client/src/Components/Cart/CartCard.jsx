@@ -4,40 +4,69 @@ import Logo from '../../utils/images/logoHealthyMed.svg';
 
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { deleteCartAsync } from '../../Features/Cart/CartSlice';
+import {
+  deleteCartAsync,
+  updateCartAsync,
+} from '../../Features/Cart/CartSlice';
+import { toast } from 'react-hot-toast';
 
 const CartCard = (props) => {
   const dispatch = useDispatch();
-  const [isCheckCart, setIsCheckCart] = useState(props.check);
+  const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
+  const [qty, setQty] = useState(props.cart.qty);
+  const [stock, setStock] = useState(
+    props.cart.product?.closed_stocks[0]?.total_stock,
+  );
+
+  const discount = () => {
+    let tempDisc = 0;
+    props.cart.product.promotions?.map((promo) => {
+      if (promo?.discount)
+        tempDisc += props.cart.product.price * (promo.discount / 100);
+    });
+    return tempDisc;
+  };
+  const [disc, setDisc] = useState(discount());
 
   useEffect(() => {
     if (props.check) {
       if (!isCheckCart) handleCheck();
-      setIsCheckCart(true);
     }
   }, [props.check]);
 
   useEffect(() => {
-    // if (isCheckCart) {
-    //   props.setTotal(props.total + props.cart.qty);
-    //   props.setTotalPrice(props.totalPrice + props.cart.product.price);
-    // } else {
-    //   props.setTotal(props.total - props.cart.qty);
-    //   props.setTotalPrice(props.totalPrice - props.cart.product.price);
-    // }
-  }, [isCheckCart]);
+    dispatch(
+      updateCartAsync({
+        cartId: props.cart.id,
+        qty,
+        isCheck: isCheckCart,
+        stock,
+      }),
+    );
+    // };
+  }, [qty, isCheckCart]);
 
   const handleCheck = () => {
-    if (isCheckCart) {
-      props.setCheck(false);
-      props.setTotal(props.total - props.cart.qty);
-      props.setTotalPrice(props.totalPrice - props.cart.product.price);
-    } else {
-      props.setTotal(props.total + props.cart.qty);
-      props.setTotalPrice(props.totalPrice + props.cart.product.price);
-    }
     setIsCheckCart(!isCheckCart);
   };
+
+  const handleQty = (e, calc) => {
+    if (calc) {
+      if (calc === '+')
+        if (qty + 1 > stock) return toast.error('Out Of Stock');
+        else setQty(qty + 1);
+      else setQty(qty - 1);
+    } else {
+      if (Number(e.currentTarget.value) > stock)
+        return toast.error('Out Of Stock');
+      else setQty(Number(e.currentTarget.value));
+    }
+  };
+
+  // if (qty === 0) {
+  //   return;
+  // }
+
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2">
       <div className="product flex justify-between ">
@@ -57,16 +86,19 @@ const CartCard = (props) => {
         <div className="detail flex-grow px-5">
           <p>{props?.cart?.product?.name}</p>
           <p>
-            {props.cart.qty}{' '}
-            {props?.cart?.product?.packaging_type?.type_name || 'buah'}
+            {qty} {props?.cart?.product?.packaging_type?.type_name || 'buah'}
           </p>
         </div>
         <div className="summary flex gap-2 leading-6 h-fit items-center">
-          <p className={`text-[#737A8D] text-[14px] line-through`}>
+          <p
+            className={`text-[#737A8D] text-[14px] line-through ${
+              disc === 0 ? 'hidden' : ''
+            }`}
+          >
             Rp {props.cart.product.price.toLocaleString(['id'])}
           </p>
           <p className={``}>
-            Rp {props.cart.product.price.toLocaleString(['id'])}
+            Rp {(props.cart.product.price - disc).toLocaleString(['id'])}
           </p>
         </div>
       </div>
@@ -82,13 +114,24 @@ const CartCard = (props) => {
           />
         </div>
         <div className="join join-vertical lg:join-horizontal">
-          <button className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]">
+          <button
+            className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            onClick={(e) => handleQty(e, '-')}
+          >
             -
           </button>
-          <button className=" join-item bg-[#daf8ff] btn btn-sm min-w-[50px] w-[10px] text-[#009B90]">
-            {props.cart.qty}
-          </button>
-          <button className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]">
+          <input
+            className="join-item bg-[#daf8ff]  min-w-[50px] w-[10px] text-[#009B90] text-center"
+            type="number"
+            onChange={(e) => {
+              handleQty(e);
+            }}
+            value={qty}
+          />
+          <button
+            className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            onClick={(e) => handleQty(e, '+')}
+          >
             +
           </button>
         </div>

@@ -2,8 +2,8 @@
 /node_modules
 /.pnp
 .pnp.js
-/src/config
-/config
+config.json
+
 
 # testing
 /coverage

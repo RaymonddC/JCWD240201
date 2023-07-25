@@ -14,7 +14,7 @@ app.use(
     ],
   }),
 );
-console.log(process.env.WHITELISTED_DOMAIN)
+
 app.use(express.json());
 app.use(cors());
 app.use('/public', express.static('public'));
@@ -33,17 +33,18 @@ const {
   addressRoute,
   categoryRoute,
   labelRoute,
+  transactionRoute,
 } = require('./routers');
 
 app.use('/auth', authRoute);
 app.use('/discussions', QnARouter);
 app.use('/users', userRoute);
 app.use('/addresses', addressRoute);
-// app.use('/carts', cartRoute);
 app.use('/carts', cartRoute);
 app.use('/products', productRoute);
 app.use('/categories', categoryRoute);
 app.use('/labels', labelRoute);
+app.use('/transactions', transactionRoute);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

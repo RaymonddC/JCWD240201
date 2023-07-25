@@ -84,6 +84,7 @@ export default function AddressModal(props) {
       });
     }
     return () => {
+      console.log('test');
       formik.resetForm();
       dispatch(setCity([]));
     };

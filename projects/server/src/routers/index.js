@@ -6,6 +6,7 @@ const productRoute = require('./productRoute');
 const addressRoute = require('./addressRoute');
 const categoryRoute = require('./categoryRoute');
 const labelRoute = require('./labelRoute');
+const transactionRoute = require('./transactionRoute');
 
 module.exports = {
   authRoute,
@@ -16,4 +17,5 @@ module.exports = {
   addressRoute,
   categoryRoute,
   labelRoute,
+  transactionRoute,
 };

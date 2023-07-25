@@ -24,6 +24,9 @@ module.exports = {
       confirmation: {
         type: Sequelize.BOOLEAN,
       },
+      is_check: {
+        type: Sequelize.BOOLEAN,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },
