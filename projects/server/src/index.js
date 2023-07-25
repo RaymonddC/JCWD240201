@@ -33,7 +33,7 @@ const {
   addressRoute,
   categoryRoute,
   labelRoute,
-} = require('../routers');
+} = require('./routers');
 
 app.use('/auth', authRoute);
 app.use('/discussions', QnARouter);

@@ -1,26 +1,24 @@
 import { toast } from 'react-hot-toast';
 import { deleteAddress } from '../../API/addressAPI';
-import { useDispatch } from 'react-redux';
-import { getUserAddressAsync } from '../../Features/Address/AddressSlice';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCategories } from '../../Features/Category/CategorySlice';
+import { deleteCategory } from '../../API/categoryAPI';
 
-export default function DeleteAddressModal(props) {
+export default function DeleteModalCategory(props) {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
+  const { search } = useSelector((state) => state.categories);
 
   const deleteHandler = async () => {
     try {
-      const response = await deleteAddress(
-        props.id,
+      const response = await deleteCategory(
         localStorage.getItem('token'),
+        props.id,
       );
       if (response?.data?.success) {
-        setOpen(false);
+        props?.closeModal();
         toast.success(response.data.message);
-        dispatch(getUserAddressAsync());
-        console.log('hehe');
+        dispatch(getAllCategories(search));
       }
-      console.log('hehe');
     } catch (error) {
       toast.error(error.message);
     }
@@ -28,33 +26,26 @@ export default function DeleteAddressModal(props) {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="text-primary text-[15px] cursor-pointer"
-      >
-        Delete
-      </button>
-
       <input
         readOnly
-        checked={open}
+        checked={props?.open}
         type="checkbox"
         id={`modal_delete_${props?.id}`}
         className="modal-toggle"
       />
       <div className="modal">
         <div className="modal-box w-fit flex flex-col items-center">
-          <h3 className="font-bold text-lg mb-4">Delete Address</h3>
+          <h3 className="font-bold text-lg mb-4">Delete Category</h3>
           <p className="font-normal">
-            Are you sure want to Delete This Address?
+            Are you sure want to Delete This category?
           </p>
           <p className="font-normal text-center">
-            You cannot restore an address that <br />
+            You cannot restore an category that <br />
             has been deleted.
           </p>
           <div className="modal-action">
             <button
-              onClick={() => setOpen(false)}
+              onClick={() => props?.closeModal()}
               className="btn btn-outline border-primary hover:border-primary hover:bg-primary"
             >
               Cancel

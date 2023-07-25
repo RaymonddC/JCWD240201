@@ -12,13 +12,25 @@ const transporter = require('../helpers/transporter');
 
 const getAllCategories = async (req, res, next) => {
   try {
+    const { search_category } = req.query;
     const user = req.user;
 
-    console.log(user);
+    let response;
 
-    const response = await productCategoryDB.findAll({
-      attributes: { exclude: ['image'] },
-    });
+    if (search_category) {
+      response = await productCategoryDB.findAll({
+        attributes: { exclude: ['image'] },
+        where: {
+          category_name: {
+            [Op.like]: `%${search_category}%`,
+          },
+        },
+      });
+    } else {
+      response = await productCategoryDB.findAll({
+        attributes: { exclude: ['image'] },
+      });
+    }
 
     return res.status(200).send({
       success: true,
