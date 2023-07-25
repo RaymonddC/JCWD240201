@@ -33,13 +33,13 @@ export default function ProductDetails() {
 
   console.log(user);
 
-  const setActiveTab = () => {
-    if (descTab === 'tab-active') {
-      setDescTab('');
-      setDosingTab('tab-active');
-    } else {
+  const setActiveTab = (tab) => {
+    if (tab === 'desc') {
       setDescTab('tab-active');
       setDosingTab('');
+    } else if (tab === 'dosing') {
+      setDescTab('');
+      setDosingTab('tab-active');
     }
   };
 
@@ -66,7 +66,7 @@ export default function ProductDetails() {
   useEffect(() => {
     dispatch(getProductDetails({ id: productId }));
     // rajaOngkir()
-  }, [dispatch, id]);
+  }, [dispatch, id, productId]);
   if (role === 1) {
     return <></>;
   } else {
@@ -97,15 +97,21 @@ export default function ProductDetails() {
               >
                 add to cart
               </button>
+              <div>
+              <article className="prose">
+                <h3>{productName}</h3>
+                <h2>Rp. {productPrice}</h2>
+              </article>
+              </div>
               <div className="tabs justify-center py-5">
                 <div
-                  onClick={() => setActiveTab()}
+                  onClick={() => setActiveTab('desc')}
                   className={`tab tab-bordered ${descTab}`}
                 >
                   Description
                 </div>
                 <div
-                  onClick={() => setActiveTab()}
+                  onClick={() => setActiveTab('dosing')}
                   className={`tab tab-bordered ${dosingTab}`}
                 >
                   Dosing

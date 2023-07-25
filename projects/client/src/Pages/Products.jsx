@@ -102,14 +102,14 @@ export default function Products() {
           </div>
           {categoriesMap}
         </div>
-        <div className="flex w-full justify-center ">
+        <div className="flex flex-col w-full justify-center ">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 w-full px-5">
             {productMap}
           </div>
+          <div className="my-5">
+            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+          </div>
         </div>
-      </div>
-      <div className="my-5">
-        <Pagination setPage={setPage} page={page} totalPages={totalPages} />
       </div>
       <Footer />
     </>

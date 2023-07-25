@@ -53,7 +53,7 @@ export default function Landing() {
         </div>
       </div>
       <div className="flex my-5 justify-center">
-        <div className="w-fit items-center flex flex-col md:flex-row drop-shadow-md">
+        <div className="w-fit items-center flex flex-col md:flex-row drop-shadow-md mt-5 bg-gray-300 rounded-xl">
           <img
             className="h-28 hidden lg:block "
             src={prescriptionImage}
@@ -62,7 +62,7 @@ export default function Landing() {
           <article className="prose">
             <h3> Have doctor's prescription?</h3>
           </article>
-          <button className="btn mx-5"> Upload Prescription</button>
+          <button className="btn btn-accent mx-5"> Upload Prescription</button>
         </div>
       </div>
       <div className=" mt-10 flex justify-end pr-[10%]">
