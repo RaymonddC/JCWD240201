@@ -99,8 +99,8 @@ export default function ProductDetails() {
               </button>
               <div>
               <article className="prose">
-                <h3>{productName}</h3>
-                <h2>Rp. {productPrice}</h2>
+                <p>Labels</p>
+                <p>Rp. {productPrice}</p>
               </article>
               </div>
               <div className="tabs justify-center py-5">

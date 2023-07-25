@@ -65,6 +65,14 @@ export const getLabels = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const getproductLabel=(data)=>async(dispatch)=>{
+  try {
+    
+  } catch (error) {
+    
+  }
+}
 // export const nextPage = (data) => (dispatch) => {
 //   const currentPage = data.page;
 //   const totalPages = data.totalPages;
