@@ -8,11 +8,21 @@ import { useEffect, useState } from 'react';
 import Select from '../Components/Products/Input/Select';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPackaging, getType } from '../Features/Product/ProductSlice';
+import Multiselect from 'multiselect-react-dropdown';
+import {
+  categories,
+  getAllCategories,
+} from '../Features/Category/CategorySlice';
+import SelectPrescription from '../Components/Products/Input/SelectPrescription';
+import InputProductImage from '../Components/Products/Input/InputFile';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddProduct() {
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
+  const category = useSelector((state) => state?.categories?.categories);
   const formik = useFormik({
     initialValues: {
       product: {
@@ -23,7 +33,7 @@ export default function AddProduct() {
         description: '',
         dosing: '',
         BPOM_id: '',
-        require_prescription: 0,
+        require_prescription: null,
         price: 0,
       },
       category: {
@@ -37,18 +47,50 @@ export default function AddProduct() {
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const result = await addProduct(values);
+        const errorMessage = { message: result.data.message };
         if (result.data.success) {
           toast.success(result.data.message);
           setSubmitting(false);
+          navigate('/products')
         }
-      } catch (error) {}
+        throw errorMessage;
+      } catch (error) {
+        toast.success(error.message);
+      }
     },
   });
+
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [removedOptions, setRemovedOptions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+  const onSelectOptions = (selectedList, selectedItem) => {
+    setSelectedOptions([...selectedOptions, selectedItem]);
+    setSelectedCategory([...selectedCategory, selectedItem.id]);
+  };
+  const onRemoveOptions = (selectedList, removedItem) => {
+    setRemovedOptions([...removedOptions, removedItem]);
+    let selectedItems = [...selectedOptions];
+    let selectedCategories = [...selectedCategory];
+    selectedItems.map((value, index) => {
+      if (value.id === removedItem.id) {
+        selectedItems.splice(index, 1);
+      }
+    });
+    selectedCategories.map((value, index) => {
+      if (value === removedItem.id) {
+        selectedCategories.splice(index, 1);
+      }
+    });
+    setSelectedOptions(selectedItems);
+    setSelectedCategory(selectedCategories);
+  };
 
   useEffect(() => {
     dispatch(getPackaging());
     dispatch(getType());
-  }, []);
+    dispatch(getAllCategories());
+    formik.setFieldValue('category.category_id', [...selectedCategory]);
+  }, [selectedOptions]);
   return (
     <>
       <div className="font-bold text-xl">Add New Product</div>
@@ -122,13 +164,15 @@ export default function AddProduct() {
           values={formik?.values?.product?.BPOM_id}
           touched={formik.touched?.product?.BPOM_id}
         />
-        <InputUserText
-          id="require prescription"
-          label="Prescription"
+        <SelectPrescription
+          id="prescreption"
           name="product.require_prescription"
-          errors={formik?.errors?.require_prescription}
           handleChange={formik?.handleChange}
-          values={formik?.values?.product?.require_prescription}
+          onBlur={formik?.handleBlur}
+          errors={formik?.errors?.require_prescription}
+          value={formik?.values?.product?.require_prescription}
+          placeholder="Please select secondary unit"
+          label="Prescription"
           touched={formik.touched?.product?.require_prescription}
         />
         <InputUserText
@@ -140,15 +184,34 @@ export default function AddProduct() {
           values={formik?.values?.product?.price}
           touched={formik.touched?.product?.price}
         />
-        {/* <InputUserText
+        <label htmlFor={category} className="text-[14px]">
+          Categories
+        </label>
+        <Multiselect
           id="category"
-          label="Category"
-          name="product.category_id"
-          errors={formik?.errors?.category_id}
-          handleChange={formik?.handleChange}
-          values={formik?.values?.product?.category_id}
-          touched={formik.touched?.product?.category_id}
-        /> */}
+          name="category.category_id"
+          displayValue="category_name"
+          placeholder="Select Options"
+          onKeyPressFn={function noRefCheck() {}}
+          onRemove={onRemoveOptions}
+          onSearch={function noRefCheck() {}}
+          onSelect={onSelectOptions}
+          options={category ? category : []}
+          className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
+          label="test"
+        />
+        <InputProductImage
+          name="image.product"
+          id="product_image"
+          onChange={(e) => {
+            formik.setFieldValue('image.product', e.target.files[0]);
+          }}
+          label="Product Image"
+        />
+        <p className="text-[14px]">File max size 1 MB</p>
+        <p className="text-[14px]">
+          File must be in .JPG, .JPEG and .PNG format
+        </p>
         <button
           disabled={!formik.isValid || formik.isSubmitting}
           type="submit"

@@ -19,12 +19,13 @@ export function addProduct(values) {
     {
       product_images: values.image.product,
       data: JSON.stringify(values.product),
-      productCategories: values.category.id,
+      productCategories: JSON.stringify(values.category.category_id),
     },
     {
       headers: {
         apiKey: apiKey,
         authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
     },
   );

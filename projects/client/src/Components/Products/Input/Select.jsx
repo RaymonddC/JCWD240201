@@ -19,7 +19,7 @@ export default function Select(props) {
           {props.placeholder}
         </option>
         {props?.data?.map((value) => {
-          return <option value={value?.id}>{value?.type_name}</option>;
+          return <option key={value.id} value={value?.id}>{value?.type_name}</option>;
         })}
       </select>
       {props.errors && props?.touched ? (
