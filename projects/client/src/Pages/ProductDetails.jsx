@@ -21,6 +21,8 @@ export default function ProductDetails() {
   const productDescription = productsStore?.data?.description;
   const productDosing = productsStore?.data?.dosing;
   const productPrice = productsStore?.data?.price?.toLocaleString(['id']);
+  const productLabels = productsStore?.labels;
+  console.log(productLabels);
   console.log(productsStore?.data);
   const dispatch = useDispatch();
   const params = useParams();
@@ -30,6 +32,16 @@ export default function ProductDetails() {
   const [dosingTab, setDosingTab] = useState('');
   let descActive = '';
   let dosingActive = '';
+  const labelsMap = productLabels?.map((value, index) => {
+    return (
+      <div
+        key={`label${index}`}
+        className="badge badge-secondary badge-outline mr-3"
+      >
+        {value.product_category.category_name}
+      </div>
+    );
+  });
 
   console.log(user);
 
@@ -43,18 +55,6 @@ export default function ProductDetails() {
     }
   };
 
-  // const rajaOngkir = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       'https://api.rajaongkir.com/starter/province',
-  //       {
-  //         headers: { key: 'c5a276b04ff81ac5bb2bd4ad3ed2d3fe' },
-  //       },
-  //     );
-  //     console.log(response);
-  //   } catch (error) {}
-  // };
-
   const handleAddToCart = () => {
     if (Object.keys(user).length === 0) {
       return toast.error('Login First before adding product to cart');
@@ -65,7 +65,6 @@ export default function ProductDetails() {
 
   useEffect(() => {
     dispatch(getProductDetails({ id: productId }));
-    // rajaOngkir()
   }, [dispatch, id, productId]);
   if (role === 1) {
     return <></>;
@@ -98,10 +97,10 @@ export default function ProductDetails() {
                 add to cart
               </button>
               <div>
-              <article className="prose">
-                <p>Labels</p>
-                <p>Rp. {productPrice}</p>
-              </article>
+                <article className="prose">
+                  <div>Labels</div>
+                  <div>{labelsMap}</div>
+                </article>
               </div>
               <div className="tabs justify-center py-5">
                 <div

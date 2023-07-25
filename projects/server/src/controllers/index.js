@@ -17,6 +17,5 @@ module.exports = {
   categoryController,
   labelController,
   addressController,
-  
   transactionController,
 };

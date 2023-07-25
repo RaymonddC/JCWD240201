@@ -17,7 +17,7 @@ const getAllProducts = async (req, res, next) => {
     let where = {};
     let order = [];
     where.name = { [Op.like]: `%${search}%` };
-    where.id ={[Op.not]:1}
+    where.id = { [Op.not]: 1 };
     if (sortType) {
       order = [[sortType, sortOrder]];
     } else {
@@ -58,10 +58,14 @@ const getProductDetails = async (req, res, next) => {
     const response = await productDB.findOne({
       where: { id },
     });
-
+    const labels = await labelDB.findAll({
+      include: productCategoryDB,
+      where: { product_id: id },
+    });
     return res.status(200).send({
       success: true,
       message: 'get product details success',
+      labels: labels,
       data: response,
     });
   } catch (error) {
