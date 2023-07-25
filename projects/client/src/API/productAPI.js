@@ -53,13 +53,11 @@ export function getProductType() {
 export function deleteProduct(productId) {
   const token = localStorage.getItem('token');
   return axios.delete(
-    `${URL}/products/:${productId}`,
-    {},
+    `${URL}/products/${productId}`,
     {
       headers: {
         apiKey: apiKey,
         authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
       },
     },
   );

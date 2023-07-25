@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
 // import { handleAddToCart } from '../../Helper/cartHelper';
 import DeleteModal from './DeleteModal';
+import { MdDeleteOutline } from 'react-icons/md';
 
 export default function ProductCardAdmin(props) {
   const { user } = useSelector((state) => state.user);
@@ -10,7 +11,6 @@ export default function ProductCardAdmin(props) {
   const productName = props?.data?.name;
   const price = props?.data?.price?.toLocaleString(['id']);
   const productId = props?.data.id;
-  // console.log(props?.data)
 
   const handleAddToCart = () => {
     if (Object.keys(user).length === 0) {
@@ -42,7 +42,9 @@ export default function ProductCardAdmin(props) {
             >
               edit
             </button>
-            <DeleteModal />
+            <label htmlFor="my_modal_6" className="btn btn-accent" onClick={() => props.setProductId(productId)}>
+              <MdDeleteOutline size={30} />
+            </label>
           </div>
         </div>
       </div>

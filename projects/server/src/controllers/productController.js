@@ -11,7 +11,7 @@ const transporter = require('../helpers/transporter');
 const productDB = db.product;
 const productImageDB = db.product_image;
 const packagingDB = db.packaging_type;
-const productTypeDB = db.product_type
+const productTypeDB = db.product_type;
 const { sequelize } = require('../models');
 const deleteFiles = require('../helpers/deleteFiles');
 
@@ -116,6 +116,7 @@ const createProduct = async (req, res, next) => {
 };
 
 const deleteProduct = async (req, res, next) => {
+  console.log(req.params.productId);
   const t = await sequelize.transaction();
   try {
     const { productId } = req.params;
@@ -139,7 +140,6 @@ const deleteProduct = async (req, res, next) => {
     );
 
     await t.commit();
-
     oldPath.map((value) => {
       const fileName = value.split('\\');
       const newPath = `public/deleted_product_images/${

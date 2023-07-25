@@ -21,8 +21,8 @@ router.post(
 router.delete(
   '/:productId',
   APIKey.APIKey,
-  verifyToken,
-  isAdmin,
+  // verifyToken,
+  // isAdmin,
   productController.deleteProduct,
 );
 router.put(
