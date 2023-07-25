@@ -1,3 +1,6 @@
+import { useFormik } from 'formik';
+import { addProduct } from '../API/productAPI';
+
 export const validateAddProduct = (values) => {
   const errors = {};
   if (!values.product.name) {
