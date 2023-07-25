@@ -1,13 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { deleteCart, getUserCarts, postCart } from '../../API/cartAPI';
+import {
+  deleteCart,
+  getUserCarts,
+  postCart,
+  updateCart,
+} from '../../API/cartAPI';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
   carts: [],
-  total: 0,
+  totalCart: 0,
+  activeCart: 0,
   totalPrice: 0,
+  discount: 0,
 };
 
 export const CartSlice = createSlice({
@@ -16,8 +23,10 @@ export const CartSlice = createSlice({
   reducers: {
     onGetData: (initialState, action) => {
       initialState.carts = action.payload.data;
-      initialState.total = action.payload.total;
+      initialState.totalCart = action.payload.totalCart;
+      initialState.activeCart = action.payload.activeCart;
       initialState.totalPrice = action.payload.totalPrice;
+      initialState.discount = action.payload.discount;
     },
   },
 });
@@ -32,23 +41,33 @@ export const getCartUserAsync = () => async (dispatch) => {
     }
 
     let { data } = await getUserCarts(token);
-
-    // action.payload.map((value) => {
-    //   initialState.total += value.quantity;
-    //   initialState.totalPrice +=
-    //     value.quantity *
-    //     (value.product.price -
-    //       (value.product.price * value.type.discount) / 100);
-    // });
-
-    let total = 0,
-      totalPrice = 0;
+    let totalPrice = 0,
+      totalCart = 0,
+      activeCart = 0,
+      discount = 0;
     data.data.map((value) => {
-      total += value.qty;
-      totalPrice += value.qty * value.product.price;
+      // console.log(value.product);
+      totalCart += value.qty;
+      if (value.is_check) {
+        activeCart += value.qty;
+        totalPrice += value.qty * value.product.price;
+        value.product.promotions?.map((promo) => {
+          if (promo?.discount)
+            discount +=
+              value.qty * value.product.price * (promo.discount / 100);
+        });
+      }
     });
 
-    dispatch(onGetData({ data: data.data, total, totalPrice }));
+    dispatch(
+      onGetData({
+        data: data.data,
+        totalCart,
+        totalPrice,
+        activeCart,
+        discount,
+      }),
+    );
   } catch (error) {
     console.log(error);
   }
@@ -71,6 +90,21 @@ export const addToCartAsync = (values) => async (dispatch) => {
   }
 };
 
+export const updateCartAsync = (values) => async (dispatch) => {
+  try {
+    const { cartId, qty, isCheck, stock } = values;
+
+    const token = localStorage.getItem('token');
+    if (stock < qty) throw { message: 'stock kurang' };
+    if (qty <= 0) await deleteCart(token, cartId);
+    else await updateCart(token, cartId, { qty, isCheck });
+  } catch (error) {
+    toast.error(error.message);
+  } finally {
+    dispatch(getCartUserAsync());
+  }
+};
+
 export const deleteCartAsync = (values) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
@@ -85,47 +119,31 @@ export const deleteCartAsync = (values) => async (dispatch) => {
   }
 };
 
-// export const checkoutAsync = () => async (dispatch) => {
-//   try {
-//     console.log('checkout');
-//     let userId = localStorage.getItem('userId');
-//     let { data } = await axios.get(
-//       `${UrlApi}/carts?userId=${userId}&_expand=type`,
-//     );
+export const checkoutAsync = () => async (dispatch) => {
+  try {
+    console.log('checkout');
+    let token = localStorage.getItem('token');
 
-//     console.log(data, 'cart');
-//     data.map(async (value) => {
-//       try {
-//         console.log(value.type.stock, value.quantity);
-//         await axios.patch(`${UrlApi}/types/${value.typeId}`, {
-//           stock: value.type.stock - value.quantity,
-//         });
-//         await axios.delete(`${UrlApi}/carts/${value.id}`);
-//       } catch (error) {
-//         toast.error(error);
-//       } finally {
-//         dispatch(getCartUserAsync());
-//       }
-//     });
-//   } catch (error) {}
-// };
+    let { data } = await axios.get(
+      `${UrlApi}/carts?userId=${userId}&_expand=type`,
+    );
 
-// export const updateQuantityAsync = (calc, id, now) => async (dispatch) => {
-//   try {
-//     let neww = 0;
-//     if (calc == '+') neww = now + 1;
-//     else neww = now - 1;
-//     console.log(neww);
-//     if (neww <= 0) await axios.delete(`${UrlApi}/carts/${id}`);
-//     else
-//       await axios.patch(`${UrlApi}/carts/${id}`, {
-//         quantity: neww,
-//       });
-//   } catch (error) {
-//   } finally {
-//     dispatch(getCartUserAsync());
-//   }
-// };
+    console.log(data, 'cart');
+    data.map(async (value) => {
+      try {
+        console.log(value.type.stock, value.quantity);
+        await axios.patch(`${UrlApi}/types/${value.typeId}`, {
+          stock: value.type.stock - value.quantity,
+        });
+        await axios.delete(`${UrlApi}/carts/${value.id}`);
+      } catch (error) {
+        toast.error(error);
+      } finally {
+        dispatch(getCartUserAsync());
+      }
+    });
+  } catch (error) {}
+};
 
 export const { onGetData } = CartSlice.actions;
 
