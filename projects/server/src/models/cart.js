@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       qty: DataTypes.INTEGER,
       prescription_image: DataTypes.INTEGER,
       confirmation: DataTypes.BOOLEAN,
+      is_check: DataTypes.BOOLEAN,
       deletedAt: DataTypes.DATE,
     },
     {

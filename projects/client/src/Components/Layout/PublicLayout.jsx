@@ -20,7 +20,7 @@ export const PublicLayout = (props) => {
   return (
     <div className="min-h-[100vh]">
       <Navbar></Navbar>
-      <div className="relative  px-[3em] py-[2em]">
+      <div className="relative md:px-[3em] md:py-[2em]">
         <div className="z-10">{props.children[0]}</div>
         {/* <div className="z-50 hidden sm:block">
           <div className="avatar absolute right-0  -top-[10em]">
@@ -28,7 +28,9 @@ export const PublicLayout = (props) => {
           </div>
         </div> */}
       </div>
-      <Footer />
+      <div className="hidden md:block">
+        <Footer />
+      </div>
     </div>
   );
 };

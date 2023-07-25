@@ -36,3 +36,16 @@ export function deleteCart(token, id) {
     },
   });
 }
+
+export function updateCart(token, id, data) {
+  return axios.put(
+    `${URL}/carts/${id}`,
+    { ...data },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apiKey: APIKey,
+      },
+    },
+  );
+}

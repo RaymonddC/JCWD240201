@@ -12,7 +12,7 @@ import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const { total } = useSelector((state) => state.cart);
+  const { totalCart } = useSelector((state) => state.cart);
   useEffect(() => {
     dispatch(getCartUserAsync());
   }, [user]);
@@ -38,9 +38,11 @@ export default function NavBar() {
                 <button className="btn btn-sm btn-ghost relative">
                   <Link to={'/cart'}>
                     <SlBag className="h-[24px] w-[24px]" />
-                    {total > 0 && Object.keys(user).length !== 0 ? (
+                    {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
-                        <span className="text-[12px] text-white">{total}</span>
+                        <span className="text-[12px] text-white">
+                          {totalCart}
+                        </span>
                       </div>
                     ) : (
                       ''

@@ -7,46 +7,43 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       city_id: {
-        type: Sequelize.INTEGER,
-      },
-      province_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       notes: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       address: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       phone_number: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       reciever: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       is_main: {
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.BOOLEAN
       },
       deletedAt: {
         type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('addresses');
-  },
+  }
 };
