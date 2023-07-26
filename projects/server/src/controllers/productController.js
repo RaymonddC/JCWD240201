@@ -227,13 +227,13 @@ const updateProduct = async (req, res, next) => {
     });
 
     await t.commit();
-    console.log('oldpath>>>>', oldPath);
-    console.log('newpath>>>>', newPath);
 
     //move old image to deleted folder
-    fs.rename(oldPath, newPath, function (err) {
-      if (err) throw err;
-    });
+    if (oldPath && newPath) {
+      fs.rename(oldPath, newPath, function (err) {
+        if (err) throw err;
+      });
+    }
 
     return res.send({
       success: true,
