@@ -50,14 +50,29 @@ export function getProductType() {
     },
   });
 }
+
 export function deleteProduct(productId) {
   const token = localStorage.getItem('token');
-  return axios.delete(
+  return axios.delete(`${URL}/products/${productId}`, {
+    headers: {
+      apiKey: apiKey,
+      authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export function updateProduct(data, categoryId, productId) {
+  const token = localStorage.getItem('token');
+  return axios.put(
     `${URL}/products/${productId}`,
+    {
+      data,
+      categoryId
+    },
     {
       headers: {
         apiKey: apiKey,
-        authorization: `Bearer ${token}`,
+        authorization: `Bearer ${token}`
       },
     },
   );

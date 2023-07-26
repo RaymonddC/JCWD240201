@@ -116,7 +116,6 @@ const createProduct = async (req, res, next) => {
 };
 
 const deleteProduct = async (req, res, next) => {
-  console.log(req.params.productId);
   const t = await sequelize.transaction();
   try {
     const { productId } = req.params;
@@ -145,7 +144,6 @@ const deleteProduct = async (req, res, next) => {
       const newPath = `public/deleted_product_images/${
         fileName[fileName.length - 1]
       }`;
-
       fs.rename(value, newPath, function (err) {
         if (err) throw err;
       });
@@ -164,14 +162,77 @@ const deleteProduct = async (req, res, next) => {
 };
 
 const updateProduct = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     //get data from client
     const { productId } = req.params;
-    const { data } = req.body;
+    const data = JSON.parse(req.body.data);
+    const categoryId = JSON.parse(req.body.categoryId);
+
+    //search product image
+    const getImage = await productImageDB.findOne({
+      where: { product_id: productId },
+    });
+
+    if (getImage) {
+      //find image old path and new path
+      const findImageData = await productImageDB.findOne({
+        where: { product_id: productId },
+      });
+
+      var oldPath = findImageData.image;
+      var fileName = oldPath.split('\\');
+      var newPath = `public/deleted_product_images/${
+        fileName[fileName.length - 1]
+      }`;
+
+      //delete old image
+      await productImageDB.destroy(
+        { where: { product_id: productId } },
+        { transaction: t },
+      );
+    }
+
+    //delete old label
+    await labelDB.destroy(
+      { where: { product_id: productId } },
+      { transaction: t },
+    );
 
     //update product data
-    const updateProduct = await productDB.update(data, {
-      where: { id: productId },
+    const updateProduct = await productDB.update(
+      data,
+      {
+        where: { id: productId },
+      },
+      { transaction: t },
+    );
+
+    const labelData = categoryId.map((value) => {
+      return { product_id: productId, category_id: value };
+    });
+
+    await labelDB.bulkCreate(labelData, {
+      transaction: t,
+      ignoreDuplicate: true,
+    });
+
+    const productImage = req.files.product_images.map((value) => {
+      return { product_id: productId, image: value.path };
+    });
+
+    await productImageDB.bulkCreate(productImage, {
+      transaction: t,
+      ignoreDuplicate: true,
+    });
+
+    await t.commit();
+    console.log('oldpath>>>>', oldPath);
+    console.log('newpath>>>>', newPath);
+
+    //move old image to deleted folder
+    fs.rename(oldPath, newPath, function (err) {
+      if (err) throw err;
     });
 
     return res.send({
@@ -181,6 +242,9 @@ const updateProduct = async (req, res, next) => {
       data: updateProduct,
     });
   } catch (error) {
+    console.log('masuk errooorrrr');
+    await t.rollback();
+    deleteFiles(req.files.product_images);
     next(error);
   }
 };
