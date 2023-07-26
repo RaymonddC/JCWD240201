@@ -12,16 +12,13 @@ export default function CategoryAdmin() {
   const dispatch = useDispatch();
   const [openModalForm, setOpenModalForm] = useState(false);
   const { categories, search } = useSelector((state) => state.categories);
-  // const [search, setSearch] = useState();
   const debouncedSearchValue = useDebounce(search, 1000);
 
   useEffect(() => {
     if (search?.length >= 3) {
-      console.log('Ngesearch nih bos');
       dispatch(getAllCategories(search));
     }
     if (!search?.length) {
-      console.log('Jalan nih pertama kali');
       dispatch(getAllCategories());
     }
   }, [debouncedSearchValue]);
