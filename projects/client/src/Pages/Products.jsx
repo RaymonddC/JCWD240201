@@ -16,7 +16,8 @@ export default function Products() {
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const limit = 20;
-    let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  let queryParams = {};
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sortType, setSortType] = useState('');
@@ -57,6 +58,22 @@ export default function Products() {
     });
   }
   useEffect(() => {
+    if (page) {
+      queryParams['page'] = page;
+    }
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
+    if (sortType) {
+      queryParams['sortType'] = sortType;
+    }
+    if (sortOrder) {
+      queryParams['sortOrder'] = sortOrder;
+    }
+    if (category) {
+      queryParams['category'] = category;
+    }
+    setSearchParams(queryParams);
     dispatch(getAllCategories());
     if (category) {
       dispatch(
@@ -80,7 +97,7 @@ export default function Products() {
         }),
       );
     }
-  }, [page, dispatch, debouncedSearchValue, sortType, sortOrder, category]);
+  }, [page, dispatch, debouncedSearchValue, sortType, sortOrder, category, search]);
   return (
     <>
       <NavBar />
