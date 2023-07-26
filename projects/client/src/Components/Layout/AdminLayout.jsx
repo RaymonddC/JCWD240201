@@ -19,7 +19,7 @@ export const AdminLayout = (props) => {
   // if (!user) return <Navigate to={'/login'} />;
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <Sidebar />
       <div
         className="lg:ml-[275px] sm:ml-[80px] ml-0 grow    md:flex flex-col  

@@ -5,7 +5,6 @@ import { AdminLayout } from '../../Components/Layout/AdminLayout';
 import QnAAdmin from '../../Pages/QnAAdmin';
 import QuestionDetails from '../../Pages/QuestionDetails';
 import ProductListAdmin from '../../Pages/ProductListAdmin';
-import CategoryAdmin from '../../Pages/CategoryAdmin';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -47,15 +46,6 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <ProductListAdmin />,
-      </AdminLayout>
-    ),
-  },
-  {
-    index: true,
-    path: '/categories',
-    element: (
-      <AdminLayout>
-        <CategoryAdmin />,
       </AdminLayout>
     ),
   },

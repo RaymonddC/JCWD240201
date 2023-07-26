@@ -8,7 +8,6 @@ import { GiMedicines } from 'react-icons/gi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
 import { MdQuestionAnswer } from 'react-icons/md';
-import { MdCategory } from 'react-icons/md';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
@@ -26,12 +25,6 @@ export const Sidebar = () => {
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
             <AiOutlineHome />
             <p className="hidden lg:block">Dashboard</p>
-          </div>
-        </Link>
-        <Link to={'/categories'} className="w-full">
-          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
-            <MdCategory />
-            <p className="hidden lg:block">Categories</p>
           </div>
         </Link>
         <Link to={'/products'} className="w-full">

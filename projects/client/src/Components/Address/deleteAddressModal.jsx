@@ -14,6 +14,9 @@ export default function DeleteAddressModal(props) {
         props.id,
         localStorage.getItem('token'),
       );
+
+      console.log(response);
+
       if (response?.data?.success) {
         setOpen(false);
         toast.success(response.data.message);
