@@ -6,6 +6,7 @@ import QnAAdmin from '../../Pages/QnAAdmin';
 import QuestionDetails from '../../Pages/QuestionDetails';
 import ProductListAdmin from '../../Pages/ProductListAdmin';
 import AddProduct from '../../Pages/AddProduct';
+import EditProduct from '../../Pages/EditProduct';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -56,6 +57,15 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <AddProduct />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/products/edit',
+    element: (
+      <AdminLayout>
+        <EditProduct />,
       </AdminLayout>
     ),
   },

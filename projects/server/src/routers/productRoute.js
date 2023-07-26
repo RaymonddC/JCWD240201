@@ -21,25 +21,25 @@ router.post(
 router.delete(
   '/:productId',
   APIKey.APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   productController.deleteProduct,
 );
 router.put(
   '/:productId',
   APIKey.APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   uploadUpdateProduct,
   productController.updateProduct,
 );
-router.put(
-  '/image/admin',
-  APIKey.APIKey,
-  verifyToken,
-  isAdmin,
-  productController.updateProductImage,
-);
+// router.put(
+//   '/image/admin',
+//   APIKey.APIKey,
+//   verifyToken,
+//   isAdmin,
+//   productController.updateProductImage,
+// );
 router.get(
   '/packaging/types',
   APIKey.APIKey,

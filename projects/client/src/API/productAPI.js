@@ -61,13 +61,14 @@ export function deleteProduct(productId) {
   });
 }
 
-export function updateProduct(data, categoryId, productId) {
+export function updateProduct(data, categoryId, productId, product_images) {
   const token = localStorage.getItem('token');
   return axios.put(
     `${URL}/products/${productId}`,
     {
-      data,
-      categoryId
+      product_images: product_images,
+      data: JSON.stringify(data),
+      categoryId: JSON.stringify(categoryId)
     },
     {
       headers: {

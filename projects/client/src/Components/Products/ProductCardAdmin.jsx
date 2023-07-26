@@ -1,24 +1,11 @@
-import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCartAsync } from '../../Features/Cart/CartSlice';
-// import { handleAddToCart } from '../../Helper/cartHelper';
-import DeleteModal from './DeleteModal';
 import { MdDeleteOutline } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductCardAdmin(props) {
-  const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const productName = props?.data?.name;
   const price = props?.data?.price?.toLocaleString(['id']);
   const productId = props?.data.id;
-
-  const handleAddToCart = () => {
-    if (Object.keys(user).length === 0) {
-      return toast.error('Login First before adding product to cart');
-      // return navigate('/login');
-    }
-    dispatch(addToCartAsync({ productId: props.product.id, userId: user.id }));
-  };
 
   return (
     <>
@@ -35,9 +22,7 @@ export default function ProductCardAdmin(props) {
           </div>
           <div className="flex gap-3 pr-5 justify-end">
             <button
-              onClick={() => {
-                handleAddToCart();
-              }}
+              onClick={() => navigate('/products/edit')}
               className="btn btn-sm md:btn-md btn-accent"
             >
               edit
