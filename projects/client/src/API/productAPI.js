@@ -13,13 +13,13 @@ export function getAllProductsAPI(data) {
       sortType: data?.sortType,
       sortOrder: data?.sortOrder,
     },
-    headers: { Authorization: 'Bearer ' + data?.token, apikey: APIKey },
+    headers: { apikey: APIKey },
   });
 }
 
 export function getProductDetailsAPI(data) {
   return axios.get(`${URL}/products/${data.id}`, {
-    headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
+    headers: { apikey: APIKey },
   });
 }
 
@@ -33,6 +33,6 @@ export function getAllLabelsAPI(data) {
       sortType: data?.sortType,
       sortOrder: data?.sortOrder,
     },
-    headers: { Authorization: 'Bearer ' + data?.token, apikey: APIKey },
+    headers: { apikey: APIKey },
   });
 }

@@ -8,6 +8,7 @@ import Footer from '../Components/Layout/Footer';
 import useDebounce from '../Hooks/useDebounce';
 import Pagination from '../Components/Layout/Pagination';
 import { getAllCategories } from '../Features/Category/CategorySlice';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Products() {
   const user = useSelector((state) => state?.user?.user);
@@ -15,6 +16,7 @@ export default function Products() {
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const limit = 20;
+    let [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [sortType, setSortType] = useState('');

@@ -53,7 +53,7 @@ export default function Landing() {
         </div>
       </div>
       <div className="flex my-5 justify-center">
-        <div className="w-fit items-center flex flex-col md:flex-row drop-shadow-md mt-5 bg-gray-300 rounded-xl">
+        <div className="w-fit items-center flex flex-col md:flex-row drop-shadow-md mt-5 p-3 bg-gray-200 rounded-xl">
           <img
             className="h-28 hidden lg:block "
             src={prescriptionImage}

@@ -87,7 +87,7 @@ const Cart = () => {
               <button
                 className="btn btn-md btn-primary w-full text-white"
                 onClick={() => {
-                  checkoutAsync();
+                  // checkoutAsync();
                 }}
               >
                 Bayar ({activeCart})

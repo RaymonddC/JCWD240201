@@ -119,31 +119,31 @@ export const deleteCartAsync = (values) => async (dispatch) => {
   }
 };
 
-export const checkoutAsync = () => async (dispatch) => {
-  try {
-    console.log('checkout');
-    let token = localStorage.getItem('token');
+// export const checkoutAsync = () => async (dispatch) => {
+//   try {
+//     console.log('checkout');
+//     let token = localStorage.getItem('token');
 
-    let { data } = await axios.get(
-      `${UrlApi}/carts?userId=${userId}&_expand=type`,
-    );
+//     let { data } = await axios.get(
+//       `${UrlApi}/carts?userId=${userId}&_expand=type`,
+//     );
 
-    console.log(data, 'cart');
-    data.map(async (value) => {
-      try {
-        console.log(value.type.stock, value.quantity);
-        await axios.patch(`${UrlApi}/types/${value.typeId}`, {
-          stock: value.type.stock - value.quantity,
-        });
-        await axios.delete(`${UrlApi}/carts/${value.id}`);
-      } catch (error) {
-        toast.error(error);
-      } finally {
-        dispatch(getCartUserAsync());
-      }
-    });
-  } catch (error) {}
-};
+//     console.log(data, 'cart');
+//     data.map(async (value) => {
+//       try {
+//         console.log(value.type.stock, value.quantity);
+//         await axios.patch(`${UrlApi}/types/${value.typeId}`, {
+//           stock: value.type.stock - value.quantity,
+//         });
+//         await axios.delete(`${UrlApi}/carts/${value.id}`);
+//       } catch (error) {
+//         toast.error(error);
+//       } finally {
+//         dispatch(getCartUserAsync());
+//       }
+//     });
+//   } catch (error) {}
+// };
 
 export const { onGetData } = CartSlice.actions;
 
