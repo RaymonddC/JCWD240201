@@ -6,7 +6,7 @@ const { APIKey } = require('../middleware/APIKey');
 const { verifyToken } = require('../middleware/auth');
 const { isAdmin } = require('../middleware/checkRole');
 
-router.get('/', APIKey, verifyToken, categoryController.getAllCategories);
+router.get('/', APIKey, categoryController.getAllCategories);
 router.post(
   '/',
   APIKey,

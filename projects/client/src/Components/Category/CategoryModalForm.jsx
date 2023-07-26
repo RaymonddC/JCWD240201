@@ -80,7 +80,7 @@ export default function CategoryModalForm(props) {
             <div className="modal-action">
               <button
                 disabled={formik.isSubmitting}
-                className="btn"
+                className="btn btn-outline border-primary hover:border-primary hover:bg-primary"
                 type="button"
                 onClick={() => props?.closeModal()}
               >
@@ -88,7 +88,7 @@ export default function CategoryModalForm(props) {
               </button>
               <button
                 disabled={formik.isSubmitting}
-                className="btn btn-primary"
+                className="btn btn-primary text-white"
                 type="submit"
               >
                 save

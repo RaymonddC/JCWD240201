@@ -2,10 +2,9 @@ import axios from 'axios';
 const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const apikey = `${process.env.REACT_APP_API_KEY}`;
 
-export function getAllCategoriesAPI(token, search_category) {
+export function getAllCategoriesAPI(search_category) {
   return axios.get(`${URL}/categories?search_category=${search_category}`, {
     headers: {
-      authorization: `Bearer ${token}`,
       apikey: apikey,
     },
   });

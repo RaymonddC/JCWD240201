@@ -25,8 +25,7 @@ export const getAllCategories =
   (search_category = '') =>
   async (dispatch) => {
     try {
-      let token = localStorage.getItem('token');
-      let response = await getAllCategoriesAPI(token, search_category);
+      let response = await getAllCategoriesAPI(search_category);
       console.log(response?.data.data);
       dispatch(categories(response?.data?.data));
     } catch (error) {
