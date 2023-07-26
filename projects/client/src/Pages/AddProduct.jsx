@@ -18,7 +18,7 @@ export default function AddProduct() {
   const dispatch = useDispatch();
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
-  const category = useSelector((state) => state?.categories?.categories);
+  const category = useSelector((state) => state?.categories?.categories?.data);
   const formik = useFormik({
     initialValues: {
       product: {
@@ -188,6 +188,7 @@ export default function AddProduct() {
               <label htmlFor={category} className="text-[14px]">
                 Categories
               </label>
+              {console.log(category)}
               <Multiselect
                 id="category"
                 name="category.category_id"
@@ -200,7 +201,20 @@ export default function AddProduct() {
                 options={category ? category : []}
                 className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
                 label="test"
-              />
+                />
+              {/* <Multiselect
+                id="category"
+                name="category.category_id"
+                displayValue="category_name"
+                placeholder="Select Options"
+                onKeyPressFn={function noRefCheck() {}}
+                onRemove={onRemoveOptions}
+                onSearch={function noRefCheck() {}}
+                onSelect={onSelectOptions}
+                options={category ? category : []}
+                className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
+                label="test"
+              /> */}
             </div>
             <div>
               <InputProductImage

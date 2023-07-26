@@ -22,7 +22,7 @@ export default function ProductCardAdmin(props) {
           </div>
           <div className="flex gap-3 pr-5 justify-end">
             <button
-              onClick={() => navigate('/products/edit/admin')}
+              onClick={() => navigate(`/products/edit/admin?productId=${productId}`)}
               className="btn btn-sm md:btn-md btn-accent"
             >
               edit

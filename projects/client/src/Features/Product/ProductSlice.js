@@ -25,6 +25,12 @@ export const ProductSlice = createSlice({
     // page: (initialState, action) => {
     //   initialState.page = action.payload;
     // },
+    packagingType: (initialState, action) => {
+      initialState.packagingType = action.payload;
+    },
+    productType: (initialState, action) => {
+      initialState.packagingType = action.payload;
+    },
   },
 });
 
@@ -70,13 +76,10 @@ export const getLabels = (data) => async (dispatch) => {
   }
 };
 
-export const getproductLabel=(data)=>async(dispatch)=>{
+export const getproductLabel = (data) => async (dispatch) => {
   try {
-    
-  } catch (error) {
-    
-  }
-}
+  } catch (error) {}
+};
 // export const nextPage = (data) => (dispatch) => {
 //   const currentPage = data.page;
 //   const totalPages = data.totalPages;
@@ -100,5 +103,6 @@ export const getType = () => async (dispatch) => {
   dispatch(productType(result.data.data));
 };
 
-export const { products, page, packagingType, productType } = ProductSlice.actions;
+export const { products, page, packagingType, productType } =
+  ProductSlice.actions;
 export default ProductSlice.reducer;

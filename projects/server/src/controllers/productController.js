@@ -67,11 +67,15 @@ const getProductDetails = async (req, res, next) => {
       include: productCategoryDB,
       where: { product_id: id },
     });
+    const image = await productImageDB.findOne({
+      where: { product_id: id },
+    });
     return res.status(200).send({
       success: true,
       message: 'get product details success',
       labels: labels,
       data: response,
+      image: image,
     });
   } catch (error) {
     next(error);
