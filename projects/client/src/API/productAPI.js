@@ -1,15 +1,40 @@
 import axios from 'axios';
 const URL = `${process.env.REACT_APP_API_BASE_URL}`;
-const apiKey = `${process.env.REACT_APP_API_KEY}`;
+const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function getAllProductsAPI(data) {
-  return axios.get(
-    `${URL}/products?page=${data.page}&limit=${data.limit}&search=${data.search}&category=${data.category}`,
-  );
+  // console.log(data);
+  return axios.get(`${URL}/products`, {
+    params: {
+      page: data?.page,
+      limit: data?.limit,
+      search: data?.search,
+      category: data?.category,
+      sortType: data?.sortType,
+      sortOrder: data?.sortOrder,
+    },
+    headers: { Authorization: 'Bearer ' + data?.token, apikey: APIKey },
+  });
 }
 
-export function getProductDetails(id) {
-  return axios.get(`${URL}/products/${id}`);
+export function getProductDetailsAPI(data) {
+  return axios.get(`${URL}/products/${data.id}`, {
+    headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
+  });
+}
+
+export function getAllLabelsAPI(data) {
+  return axios.get(`${URL}/labels`, {
+    params: {
+      page: data?.page,
+      limit: data?.limit,
+      search: data?.search,
+      category: data?.category,
+      sortType: data?.sortType,
+      sortOrder: data?.sortOrder,
+    },
+    headers: { Authorization: 'Bearer ' + data?.token, apikey: APIKey },
+  });
 }
 
 export function addProduct(values) {
@@ -23,7 +48,7 @@ export function addProduct(values) {
     },
     {
       headers: {
-        apiKey: apiKey,
+        apiKey: APIKey,
         authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data',
       },
@@ -35,7 +60,7 @@ export function getPackagingType() {
   const token = localStorage.getItem('token');
   return axios.get(`${URL}/products/packaging/types`, {
     headers: {
-      apiKey: apiKey,
+      apiKey: APIKey,
       authorization: `Bearer ${token}`,
     },
   });
@@ -45,7 +70,7 @@ export function getProductType() {
   const token = localStorage.getItem('token');
   return axios.get(`${URL}/products/types/admin`, {
     headers: {
-      apiKey: apiKey,
+      apiKey: APIKey,
       authorization: `Bearer ${token}`,
     },
   });
@@ -55,7 +80,7 @@ export function deleteProduct(productId) {
   const token = localStorage.getItem('token');
   return axios.delete(`${URL}/products/${productId}`, {
     headers: {
-      apiKey: apiKey,
+      apiKey: APIKey,
       authorization: `Bearer ${token}`,
     },
   });
@@ -72,7 +97,7 @@ export function updateProduct(data, categoryId, productId, product_images) {
     },
     {
       headers: {
-        apiKey: apiKey,
+        apiKey: APIKey,
         authorization: `Bearer ${token}`
       },
     },

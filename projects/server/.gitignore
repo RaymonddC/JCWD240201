@@ -4,6 +4,8 @@
 .pnp.js
 /src/config
 /public
+config.json
+
 
 # testing
 /coverage

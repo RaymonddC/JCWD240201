@@ -62,7 +62,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/products/edit',
+    path: '/products/edit/admin',
     element: (
       <AdminLayout>
         <EditProduct />,

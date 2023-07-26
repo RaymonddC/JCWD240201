@@ -14,6 +14,18 @@ const getCart = async (includes, whereQuery) => {
     return error;
   }
 };
+
+const getCartByPk = async (primaryKey, excludes) => {
+  try {
+    return await Cart.findByPk(primaryKey, {
+      attributes: { exclude: excludes },
+    });
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getCart,
+  getCartByPk,
 };

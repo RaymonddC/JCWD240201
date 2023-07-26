@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
       product.hasMany(models.label, {
         foreignKey: 'product_id',
       });
+      product.hasMany(models.closed_stock, {
+        foreignKey: 'product_id',
+      });
     }
   }
   product.init(

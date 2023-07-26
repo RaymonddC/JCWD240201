@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  getAllLabelsAPI,
   getAllProductsAPI,
+  getProductDetailsAPI,
   getPackagingType,
   getProductType,
 } from '../../API/productAPI';
@@ -23,12 +25,6 @@ export const ProductSlice = createSlice({
     // page: (initialState, action) => {
     //   initialState.page = action.payload;
     // },
-    packagingType: (initialState, action) => {
-      initialState.packagingType = action.payload;
-    },
-    productType: (initialState, action) => {
-      initialState.productType = action.payload;
-    },
   },
 });
 
@@ -38,23 +34,49 @@ export const getProducts = (data) => async (dispatch) => {
       page: data.page,
       limit: data.limit,
       search: data.search,
+      sortType: data.sortType,
+      sortOrder: data.sortOrder,
+    });
+    console.log(response?.data.data);
+    dispatch(products(response?.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getProductDetails = (data) => async (dispatch) => {
+  try {
+    let response = await getProductDetailsAPI({ id: data.id });
+    dispatch(products(response?.data));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getLabels = (data) => async (dispatch) => {
+  try {
+    let response = await getAllLabelsAPI({
+      page: data.page,
+      limit: data.limit,
+      search: data.search,
+      sortType: data.sortType,
+      sortOrder: data.sortOrder,
       category: data.category,
     });
-    // console.log(response?.data.data);
+
+    console.log(response);
     dispatch(products(response?.data));
   } catch (error) {
     console.log(error);
   }
 };
-export const getProductDetails = (id) => async (dispatch) => {
+
+export const getproductLabel=(data)=>async(dispatch)=>{
   try {
-    let response = await getAllProductsAPI(id);
-    // console.log(response?.data.data);
-    dispatch(products(response?.data));
+    
   } catch (error) {
-    console.log(error);
+    
   }
-};
+}
 // export const nextPage = (data) => (dispatch) => {
 //   const currentPage = data.page;
 //   const totalPages = data.totalPages;

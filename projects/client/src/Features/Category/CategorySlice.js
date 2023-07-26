@@ -12,7 +12,7 @@ export const CategorySlice = createSlice({
   initialState,
   reducers: {
     categories: (initialState, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       initialState.categories = action.payload;
     },
   },
@@ -20,9 +20,10 @@ export const CategorySlice = createSlice({
 
 export const getAllCategories = (data) => async (dispatch) => {
   try {
+    // console.log('>>>>>');
     let response = await getAllCategoriesAPI();
-    console.log(response?.data.data);
-    dispatch(categories(response?.data.data));
+    // console.log(response?.data);
+    dispatch(categories(response?.data));
   } catch (error) {
     console.log(error);
   }
