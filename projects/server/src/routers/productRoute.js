@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { productController } = require('../controllers');
-const APIKey = require('../middleware/APIKey');
+const {APIKey} = require('../middleware/APIKey');
 const { verifyToken } = require('../middleware/auth');
 const { uploadProduct, uploadUpdateProduct } = require('../middleware/upload');
 const { isAdmin } = require('../middleware/checkRole');
@@ -12,7 +12,7 @@ router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProductDetails);
 router.post(
   '/',
-  APIKey.APIKey,
+  APIKey,
   verifyToken,
   isAdmin,
   uploadProduct,
@@ -20,14 +20,14 @@ router.post(
 );
 router.delete(
   '/:productId',
-  APIKey.APIKey,
+  APIKey,
   verifyToken,
   isAdmin,
   productController.deleteProduct,
 );
 router.put(
   '/:productId',
-  APIKey.APIKey,
+  APIKey,
   verifyToken,
   isAdmin,
   uploadUpdateProduct,
@@ -35,21 +35,21 @@ router.put(
 );
 // router.put(
 //   '/image/admin',
-//   APIKey.APIKey,
+//   APIKey,
 //   verifyToken,
 //   isAdmin,
 //   productController.updateProductImage,
 // );
 router.get(
   '/packaging/types',
-  APIKey.APIKey,
+  APIKey,
   verifyToken,
   isAdmin,
   productController.getPackaging,
 );
 router.get(
   '/types/admin',
-  APIKey.APIKey,
+  APIKey,
   verifyToken,
   isAdmin,
   productController.getProductType,
