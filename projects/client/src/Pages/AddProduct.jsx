@@ -18,7 +18,7 @@ export default function AddProduct() {
   const dispatch = useDispatch();
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
-  const category = useSelector((state) => state?.categories?.categories?.data);
+  const category = useSelector((state) => state?.categories?.categories);
   const formik = useFormik({
     initialValues: {
       product: {

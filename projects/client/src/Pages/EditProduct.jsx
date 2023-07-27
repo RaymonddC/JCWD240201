@@ -2,7 +2,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getProductDetailsAPI, updateProduct } from '../API/productAPI';
 import { useFormik } from 'formik';
-import { validateAddProduct } from '../Helper/productHelper';
+import { validateAddProduct, validateEditProduct } from '../Helper/productHelper';
 import { toast } from 'react-hot-toast';
 import InputProductImage from '../Components/Products/Input/InputFile';
 import Multiselect from 'multiselect-react-dropdown';
@@ -22,8 +22,8 @@ export default function EditProduct() {
   const [product, setProduct] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState(null);
   const fileInputRef = useRef(null);
-  const category = useSelector((state) => state?.categories?.categories?.data);
   const dispatch = useDispatch();
+  const category = useSelector((state) => state?.categories?.categories);
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
 
@@ -61,7 +61,7 @@ export default function EditProduct() {
         product: '',
       },
     },
-    // validate: validateAddProduct,
+    validate: validateEditProduct,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const result = await updateProduct(values, productId);
@@ -74,7 +74,6 @@ export default function EditProduct() {
           throw errorMessage;
         }
       } catch (error) {
-        console.log('asjidsaidhsaidh');
         toast.error(error.message);
       }
     },
@@ -280,7 +279,6 @@ export default function EditProduct() {
                 selectedValues={selectedCategories}
               />
             </div>
-            {console.log(selectedCategory)}
             <div>
               <InputProductImage
                 name="image.product"

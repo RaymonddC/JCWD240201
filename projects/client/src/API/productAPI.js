@@ -88,6 +88,7 @@ export function deleteProduct(productId) {
 
 export function updateProduct(values, productId) {
   const token = localStorage.getItem('token');
+  console.log(values);
   return axios.put(
     `${URL}/products/${productId}`,
     {
