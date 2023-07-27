@@ -27,6 +27,9 @@ module.exports = {
       dosing: {
         type: Sequelize.STRING(1000),
       },
+      weight: {
+        type: Sequelize.INTEGER,
+      },
       BPOM_id: {
         type: Sequelize.STRING,
       },

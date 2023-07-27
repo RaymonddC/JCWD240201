@@ -28,9 +28,10 @@ export default function AddProduct() {
         net_content: '',
         description: '',
         dosing: '',
+        weight: '',
         BPOM_id: '',
         require_prescription: null,
-        price: 0,
+        price: '',
       },
       category: {
         category_id: [],
@@ -48,8 +49,9 @@ export default function AddProduct() {
           toast.success(result.data.message);
           setSubmitting(false);
           navigate('/products');
+        } else {
+          throw errorMessage;
         }
-        throw errorMessage;
       } catch (error) {
         toast.error(error.message);
       }
@@ -153,6 +155,15 @@ export default function AddProduct() {
               values={formik?.values?.product?.dosing}
               touched={formik.touched?.product?.dosing}
             />
+            <InputUserText
+              id="weight"
+              label="Weight"
+              name="product.weight"
+              errors={formik?.errors?.weight}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.product?.weight}
+              touched={formik.touched?.product?.weight}
+            />
           </div>
           <div>
             <InputUserText
@@ -201,7 +212,7 @@ export default function AddProduct() {
                 options={category ? category : []}
                 className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
                 label="test"
-                />
+              />
             </div>
             <div>
               <InputProductImage

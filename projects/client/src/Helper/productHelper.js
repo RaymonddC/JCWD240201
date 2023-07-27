@@ -18,6 +18,9 @@ export const validateAddProduct = (values) => {
   if (!values.product.dosing) {
     errors.dosing = 'Dosing is required';
   }
+  if (!values.product.weight) {
+    errors.weight = 'Weight is required';
+  }
   if (!values.product.BPOM_id) {
     errors.BPOM_id = 'BPOM id is required';
   }
@@ -55,6 +58,9 @@ export const validateEditProduct = (values) => {
   }
   if (!values.product.dosing) {
     errors.dosing = 'Dosing is required';
+  }
+  if (!values.product.weight) {
+    errors.weight = 'Weight is required';
   }
   if (!values.product.BPOM_id) {
     errors.BPOM_id = 'BPOM id is required';

@@ -50,6 +50,7 @@ export default function EditProduct() {
         net_content: '',
         description: '',
         dosing: '',
+        weight: '',
         BPOM_id: '',
         require_prescription: null,
         price: 0,
@@ -120,6 +121,7 @@ export default function EditProduct() {
         net_content: product?.net_content,
         description: product?.description,
         dosing: product?.dosing,
+        weight: product?.weight,
         BPOM_id: product?.BPOM_id,
         require_prescription: product?.require_prescription,
         price: product?.price,
@@ -227,6 +229,15 @@ export default function EditProduct() {
               handleChange={formik?.handleChange}
               values={formik?.values?.product?.dosing}
               touched={formik.touched?.product?.dosing}
+            />
+            <InputUserText
+              id="weight"
+              label="Weight"
+              name="product.weight"
+              errors={formik?.errors?.weight}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.product?.weight}
+              touched={formik.touched?.product?.weight}
             />
           </div>
           <div>
