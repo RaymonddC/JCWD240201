@@ -34,7 +34,6 @@ const {
   categoryRoute,
   labelRoute,
   transactionRoute,
-  prescriptionRoute,
 } = require('./routers');
 
 app.use('/auth', authRoute);
