@@ -14,12 +14,9 @@ import useDebounce from '../../Hooks/useDebounce';
 const CartCard = (props) => {
   const dispatch = useDispatch();
   const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
-  const [qty, setQty] = useState(props.cart.qty);
-  const [stock, setStock] = useState(
-    props.cart.product?.closed_stocks[0]?.total_stock,
-  );
+  const stock = props.cart.product?.closed_stocks[0]?.total_stock;
 
-  const debouncedQtyValue = useDebounce(qty, 1500);
+  const debouncedQtyValue = useDebounce(props.cart.qty, 1500);
 
   const discount = () => {
     let tempDisc = 0;
@@ -49,26 +46,25 @@ const CartCard = (props) => {
     // };
   }, [debouncedQtyValue, isCheckCart]);
 
+  useEffect(() => {
+    console.log('test', props.cart.qty);
+    return () => {
+      console.log('test', props.cart.qty);
+      dispatch(
+        updateCartAsync({
+          cartId: props.cart.id,
+          qty: 100,
+          isCheck: isCheckCart,
+          stock,
+        }),
+      );
+    };
+    // };
+  }, []);
+
   const handleCheck = () => {
     setIsCheckCart(!isCheckCart);
   };
-
-  const handleQty = (e, calc) => {
-    if (calc) {
-      if (calc === '+')
-        if (qty + 1 > stock) return toast.error('Out Of Stock');
-        else setQty(qty + 1);
-      else setQty(qty - 1);
-    } else {
-      if (Number(e.currentTarget.value) > stock)
-        return toast.error('Out Of Stock');
-      else setQty(Number(e.currentTarget.value));
-    }
-  };
-
-  // if (qty === 0) {
-  //   return;
-  // }
 
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2">
@@ -90,7 +86,8 @@ const CartCard = (props) => {
           <div className="detail flex-grow pb-2">
             <p>{props?.cart?.product?.name}</p>
             <p>
-              {qty} {props?.cart?.product?.packaging_type?.type_name || 'buah'}
+              {props.cart.qty}{' '}
+              {props?.cart?.product?.packaging_type?.type_name || 'buah'}
             </p>
           </div>
           <div className="summary flex gap-2 leading-6 h-fit items-center">
@@ -121,7 +118,7 @@ const CartCard = (props) => {
         <div className="join join-horizontal">
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
-            onClick={(e) => handleQty(e, '-')}
+            onClick={(e) => props.setQty(e, '-', props.idx)}
           >
             -
           </button>
@@ -129,13 +126,13 @@ const CartCard = (props) => {
             className="join-item bg-[#daf8ff]  min-w-[50px] w-[10px] text-[#009B90] text-center"
             type="number"
             onChange={(e) => {
-              handleQty(e);
+              props.setQty(e, null, props.idx);
             }}
-            value={qty}
+            value={props.cart.qty}
           />
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
-            onClick={(e) => handleQty(e, '+')}
+            onClick={(e) => props.setQty(e, '+', props.idx)}
           >
             +
           </button>

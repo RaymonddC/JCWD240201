@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkoutAsync, getCartUserAsync } from '../Features/Cart/CartSlice';
+import {
+  checkoutAsync,
+  getCartUserAsync,
+  updateQtyAsync,
+} from '../Features/Cart/CartSlice';
 import { Navigate } from 'react-router-dom';
 
 const Cart = () => {
@@ -13,6 +17,28 @@ const Cart = () => {
   );
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
+
+  const handleQty = (e, calc, idx) => {
+    // if (calc) {
+    //   if (calc === '+')
+    //     if (qty + 1 > stock) return toast.error('Out Of Stock');
+    //     else setQty(qty + 1);
+    //   else setQty(qty - 1);
+    // } else {
+    //   if (Number(e.currentTarget.value) > stock)
+    //     return toast.error('Out Of Stock');
+    //   else setQty(Number(e.currentTarget.value));
+
+    dispatch(
+      updateQtyAsync({
+        newQty: Number(e.currentTarget.value),
+        calc,
+        idx,
+        carts,
+      }),
+    );
+    // }
+  };
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -52,6 +78,8 @@ const Cart = () => {
                     cart={value}
                     check={isCheck}
                     setCheck={setIsCheck}
+                    setQty={handleQty}
+                    idx={idx}
                     // isForceCheck={isForceCheck}
                   />
                 );
