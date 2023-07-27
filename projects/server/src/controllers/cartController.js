@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const { Op } = require('sequelize');
 const db = require('../models');
 const { getCart, getCartByPk } = require('../helpers/cartHelper');
@@ -196,12 +195,4 @@ const deleteCart = async (req, res, next) => {
   }
 };
 
-const uploadPrescription = async (req, res, next) => {
-  const auth = req.user;
-  const image = req.file;
-  const { token } = req.body;
-  try {
-  } catch (error) {}
-};
-
-module.exports = { getCarts, addToCart, updateCart, deleteCart };
+module.exports = {getCarts,addToCart,updateCart,deleteCart,};

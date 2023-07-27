@@ -7,6 +7,7 @@ const categoryController = require('./categoryController');
 const labelController = require('./labelController');
 const addressController = require('./addressController');
 const transactionController = require('./transactionController');
+const prescriptionController = require('./prescriptionController');
 
 module.exports = {
   authController,

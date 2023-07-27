@@ -24,9 +24,8 @@ export default function Products() {
     searchParams.get('sortOrder') || '',
   );
   const [category, setCategory] = useState(searchParams.get('category') || '');
-
   const productList = ProductsStore?.data?.rows;
-  const debouncedSearchValue = useDebounce(search, 1500);
+  const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
   console.log(productList);
   let productMap;
