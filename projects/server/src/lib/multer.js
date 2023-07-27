@@ -28,6 +28,9 @@ var storage = multer.diskStorage({
     if (file.fieldname === 'profile_image') {
       cb(null, `${defaultPath}/${file.fieldname}`);
     }
+    if (file.fieldname === 'prescription_image') {
+      cb(null, `${defaultPath}/${file.fieldname}`);
+    }
   },
   filename: (req, file, cb) => {
     cb(

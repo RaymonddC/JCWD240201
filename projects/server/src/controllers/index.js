@@ -19,4 +19,5 @@ module.exports = {
   labelController,
   addressController,
   transactionController,
+  prescriptionController,
 };

@@ -27,17 +27,20 @@ export default function NavBar() {
         </div>
         <div className="hidden sm:block w-full">
           <div className="flex justify-between pr-2">
-            <div className="flex">
+            <div className="flex items-center">
               <button className="btn btn-sm btn-ghost">
                 <Link to="/products">Shop</Link>
               </button>
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">QnA</Link>
               </button>
-              {user && Object.keys(user).length !== 0 ? (
-                <button className="btn btn-sm btn-ghost relative">
+              
+            </div>
+            <div className="flex items-center relative">
+            {user && Object.keys(user).length !== 0 ? (
+                <button className="btn btn-sm btn-ghost absolute right-72">
                   <Link to={'/cart'}>
-                    <SlBag className="h-[24px] w-[24px]" />
+                    <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
                         <span className="text-[12px] text-white">
@@ -52,8 +55,6 @@ export default function NavBar() {
               ) : (
                 ''
               )}
-            </div>
-            <div className="flex">
               {user && Object.keys(user).length !== 0 ? (
                 <div className="flex gap-2">
                   <Link
@@ -72,7 +73,7 @@ export default function NavBar() {
                     <span className="font-bold">{user?.full_name}</span>
                   </Link>
                   <button
-                    className="btn btn-ghost"
+                    className="btn btn-outline btn-secondary ml-3"
                     onClick={() => {
                       dispatch(logoutAsync());
                     }}

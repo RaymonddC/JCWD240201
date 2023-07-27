@@ -27,7 +27,7 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  console.log(productList);
+  // console.log(productList);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
@@ -58,6 +58,10 @@ export default function Products() {
       );
     });
   }
+
+  useEffect(() => {
+    dispatch(getAllCategories());
+  }, []);
   useEffect(() => {
     if (page) {
       queryParams['page'] = page;
@@ -75,7 +79,6 @@ export default function Products() {
       queryParams['category'] = category;
     }
     setSearchParams(queryParams);
-    dispatch(getAllCategories());
     if (category) {
       dispatch(
         getLabels({
@@ -98,15 +101,7 @@ export default function Products() {
         }),
       );
     }
-  }, [
-    page,
-    dispatch,
-    debouncedSearchValue,
-    sortType,
-    sortOrder,
-    category,
-    setSearchParams,
-  ]);
+  }, [page, debouncedSearchValue, sortType, sortOrder, category]);
   return (
     <>
       <NavBar />
