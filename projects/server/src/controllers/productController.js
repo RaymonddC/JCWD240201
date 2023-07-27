@@ -180,27 +180,29 @@ const updateProduct = async (req, res, next) => {
     const categoryId = JSON.parse(req.body.categoryId);
 
     //search product image
-    const getImage = await productImageDB.findOne({
-      where: { product_id: productId },
-    });
-
-    if (getImage) {
-      //find image old path and new path
-      const findImageData = await productImageDB.findOne({
+    if (req.files.product_images) {
+      const getImage = await productImageDB.findOne({
         where: { product_id: productId },
       });
 
-      var oldPath = findImageData.image;
-      var fileName = oldPath.split('\\');
-      var newPath = `public/deleted_product_images/${
-        fileName[fileName.length - 1]
-      }`;
+      if (getImage) {
+        //find image old path and new path
+        const findImageData = await productImageDB.findOne({
+          where: { product_id: productId },
+        });
 
-      //delete old image
-      await productImageDB.destroy(
-        { where: { product_id: productId } },
-        { transaction: t },
-      );
+        var oldPath = findImageData.image;
+        var fileName = oldPath.split('\\');
+        var newPath = `public/deleted_product_images/${
+          fileName[fileName.length - 1]
+        }`;
+
+        //delete old image
+        await productImageDB.destroy(
+          { where: { product_id: productId } },
+          { transaction: t },
+        );
+      }
     }
 
     //delete old label
@@ -227,14 +229,16 @@ const updateProduct = async (req, res, next) => {
       ignoreDuplicate: true,
     });
 
-    const productImage = req.files.product_images.map((value) => {
-      return { product_id: productId, image: value.path };
-    });
+    if (req.files.product_images) {
+      var productImage = req.files.product_images.map((value) => {
+        return { product_id: productId, image: value.path };
+      });
 
-    await productImageDB.bulkCreate(productImage, {
-      transaction: t,
-      ignoreDuplicate: true,
-    });
+      await productImageDB.bulkCreate(productImage, {
+        transaction: t,
+        ignoreDuplicate: true,
+      });
+    }
 
     await t.commit();
 
@@ -252,7 +256,6 @@ const updateProduct = async (req, res, next) => {
       data: updateProduct,
     });
   } catch (error) {
-    console.log('masuk errooorrrr');
     await t.rollback();
     deleteFiles(req.files.product_images);
     next(error);

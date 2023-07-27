@@ -86,19 +86,20 @@ export function deleteProduct(productId) {
   });
 }
 
-export function updateProduct(data, categoryId, productId, product_images) {
+export function updateProduct(values, productId) {
   const token = localStorage.getItem('token');
   return axios.put(
     `${URL}/products/${productId}`,
     {
-      product_images: product_images,
-      data: JSON.stringify(data),
-      categoryId: JSON.stringify(categoryId)
+      product_images: values?.image?.product,
+      data: JSON.stringify(values.product),
+      categoryId: JSON.stringify(values.category.category_id[0])
     },
     {
       headers: {
         apiKey: APIKey,
-        authorization: `Bearer ${token}`
+        authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
       },
     },
   );

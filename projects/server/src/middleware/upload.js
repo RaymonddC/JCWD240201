@@ -98,7 +98,7 @@ const uploadProduct = (req, res, next) => {
   multerResult(req, res, function (err) {
     try {
       if (err) throw err;
-      
+
       // Validate each file size
       req.files.product_images.forEach((value) => {
         if (value.size > 100000000)
@@ -130,15 +130,17 @@ const uploadUpdateProduct = (req, res, next) => {
   multerResult(req, res, function (err) {
     try {
       if (err) throw err;
-      
+
       // Validate each file size
-      req.files.product_images.forEach((value) => {
-        if (value.size > 100000000)
-          throw {
-            message: `${value.originalname} is Too Large`,
-            fileToDelete: req.files.images,
-          };
-      });
+      if (req.files.product_images) {
+        req.files.product_images.forEach((value) => {
+          if (value.size > 100000000)
+            throw {
+              message: `${value.originalname} is Too Large`,
+              fileToDelete: req.files.images,
+            };
+        });
+      }
 
       next();
     } catch (error) {
@@ -155,4 +157,10 @@ const uploadUpdateProduct = (req, res, next) => {
   });
 };
 
-module.exports = { uploadSingle, uploadMultiple, uploadProfile, uploadProduct, uploadUpdateProduct };
+module.exports = {
+  uploadSingle,
+  uploadMultiple,
+  uploadProfile,
+  uploadProduct,
+  uploadUpdateProduct,
+};

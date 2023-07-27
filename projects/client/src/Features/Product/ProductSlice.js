@@ -29,7 +29,7 @@ export const ProductSlice = createSlice({
       initialState.packagingType = action.payload;
     },
     productType: (initialState, action) => {
-      initialState.packagingType = action.payload;
+      initialState.productType = action.payload;
     },
   },
 });

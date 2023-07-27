@@ -51,7 +51,7 @@ export default function AddProduct() {
         }
         throw errorMessage;
       } catch (error) {
-        toast.success(error.message);
+        toast.error(error.message);
       }
     },
   });
@@ -171,7 +171,7 @@ export default function AddProduct() {
               onBlur={formik?.handleBlur}
               errors={formik?.errors?.require_prescription}
               value={formik?.values?.product?.require_prescription}
-              placeholder="Please select secondary unit"
+              placeholder="Need Prescreption>"
               label="Prescription"
               touched={formik.touched?.product?.require_prescription}
             />
@@ -202,19 +202,6 @@ export default function AddProduct() {
                 className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
                 label="test"
                 />
-              {/* <Multiselect
-                id="category"
-                name="category.category_id"
-                displayValue="category_name"
-                placeholder="Select Options"
-                onKeyPressFn={function noRefCheck() {}}
-                onRemove={onRemoveOptions}
-                onSearch={function noRefCheck() {}}
-                onSelect={onSelectOptions}
-                options={category ? category : []}
-                className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
-                label="test"
-              /> */}
             </div>
             <div>
               <InputProductImage

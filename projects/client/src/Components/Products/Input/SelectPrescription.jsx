@@ -14,11 +14,18 @@ export default function SelectPrescription(props) {
         onChange={props.handleChange}
         value={props.values}
       >
-        <option disabled selected>
+        <option disabled selected={props.selected ? false : true}>
           {props.placeholder}
         </option>
-        <option value={true}>Yes</option>
-        <option value={false}>No</option>
+        <option value={true} selected={props.selected === true ? true : false}>
+          Yes
+        </option>
+        <option
+          value={false}
+          selected={props.selected === false ? true : false}
+        >
+          No
+        </option>
       </select>
       {props.errors && props?.touched ? (
         <p className="text-error text-[14px]">{props.errors}</p>
