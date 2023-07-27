@@ -1,22 +1,11 @@
-import { toast } from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCartAsync } from '../../Features/Cart/CartSlice';
-// import { handleAddToCart } from '../../Helper/cartHelper';
+import { MdDeleteOutline } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductCardAdmin(props) {
-  const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const productName = props?.data?.name;
   const price = props?.data?.price?.toLocaleString(['id']);
-  // console.log(props?.data)
-
-  const handleAddToCart = () => {
-    if (Object.keys(user).length === 0) {
-      return toast.error('Login First before adding product to cart');
-      // return navigate('/login');
-    }
-    dispatch(addToCartAsync({ productId: props.product.id, userId: user.id }));
-  };
+  const productId = props?.data.id;
 
   return (
     <>
@@ -26,20 +15,21 @@ export default function ProductCardAdmin(props) {
           src="https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_750,w_750/v1/production/pharmacy/products/1643869601_tolak_angin_sidomuncul_12_sachet_15_ml"
           alt=""
         />
-        <div className='flex justify-between items-center w-full'>
-          <div className='px-5 '>
+        <div className="flex justify-between items-center w-full">
+          <div className="px-5 ">
             <p className="font-bold line-clamp-2">{productName}</p>
             <p>Rp. {price}</p>
           </div>
-          <div className="pr-5 justify-end">
+          <div className="flex gap-3 pr-5 justify-end">
             <button
-              onClick={() => {
-                handleAddToCart();
-              }}
+              onClick={() => navigate(`/products/edit/admin?productId=${productId}`)}
               className="btn btn-sm md:btn-md btn-accent"
             >
               edit
             </button>
+            <label htmlFor="my_modal_6" className="btn btn-accent" onClick={() => props.setProductId(productId)}>
+              <MdDeleteOutline size={30} />
+            </label>
           </div>
         </div>
       </div>
