@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { productController } = require('../controllers');
-const {APIKey} = require('../middleware/APIKey');
+const { APIKey } = require('../middleware/APIKey');
 const { verifyToken } = require('../middleware/auth');
 const { uploadProduct, uploadUpdateProduct } = require('../middleware/upload');
 const { isAdmin } = require('../middleware/checkRole');
