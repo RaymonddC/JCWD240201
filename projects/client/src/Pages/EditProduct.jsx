@@ -12,8 +12,10 @@ import SelectPrescription from '../Components/Products/Input/SelectPrescription'
 import Select from '../Components/Products/Input/Select';
 import { getPackaging, getType } from '../Features/Product/ProductSlice';
 import { getAllCategories } from '../Features/Category/CategorySlice';
+import { useNavigate } from 'react-router-dom';
 
 export default function EditProduct() {
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams();
   const productId = searchParams.get('productId');
   const [image, setImage] = useState(null);
@@ -67,6 +69,7 @@ export default function EditProduct() {
         if (result.data.success) {
           toast.success(result.data.message);
           setSubmitting(false);
+          navigate('/products')
         } else {
           throw errorMessage;
         }
@@ -148,11 +151,19 @@ export default function EditProduct() {
   return (
     <>
       <div className="font-bold text-xl">Edit Product</div>
-      <img
-        className="w-3/12"
-        src={`http://localhost:8000/${image}`}
-        alt="product_image"
-      />
+      {formik?.values?.image?.product ? (
+        <img
+          className="w-3/12"
+          src={URL.createObjectURL(formik.values.image.product)}
+          alt="product_image"
+        />
+      ) : (
+        <img
+          className="w-3/12"
+          src={`http://localhost:8000/${image}`}
+          alt="product_image"
+        />
+      )}
       <form onSubmit={formik.handleSubmit}>
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
@@ -283,13 +294,16 @@ export default function EditProduct() {
             </div>
           </div>
         </div>
-        <button
-          disabled={!formik.isValid || formik.isSubmitting}
-          type="submit"
-          className="btn w-full bg-primary text-white"
-        >
-          SAVE
-        </button>
+        <div className='grid grid-cols-2 gap-4 my-6 mb-6'>
+          <button className="btn w-full bg-primary text-white" onClick={() => navigate('/products')}>Cancel</button>
+          <button
+            disabled={!formik.isValid || formik.isSubmitting}
+            type="submit"
+            className="btn w-full bg-primary text-white"
+          >
+            SAVE
+          </button>
+        </div>
       </form>
     </>
   );

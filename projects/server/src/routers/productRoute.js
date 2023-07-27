@@ -28,8 +28,8 @@ router.delete(
 router.put(
   '/:productId',
   APIKey.APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   uploadUpdateProduct,
   productController.updateProduct,
 );
