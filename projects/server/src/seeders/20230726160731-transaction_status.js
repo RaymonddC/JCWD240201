@@ -39,7 +39,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        status: 'Complaint',
+        status: 'Complete',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

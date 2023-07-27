@@ -26,7 +26,7 @@ export default function NavBar() {
           </Link>
         </div>
         <div className="hidden sm:block w-full">
-          <div className="flex justify-between pr-2">
+          <div className="flex justify-between pr-2 items-center">
             <div className="flex">
               <button className="btn btn-sm btn-ghost">
                 <Link to="/products">Shop</Link>

@@ -8,7 +8,7 @@ const TransactionCard = (props) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="div border-t border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2">
+    <div className="div border-t border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3">
         <p>Jumat, 5 April 2022, 15:45</p>
         <p>Menunggu</p>

@@ -1,6 +1,8 @@
 // import axios from 'axios';
 // import { useEffect, useState } from 'react';
 import './App.css';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +31,7 @@ function App() {
 
   return (
     <>
-      <div className=''>
+      <div className="">
         <Toaster />
         {user.role?.role_name === 'admin' ? <AdminRoute /> : <PublicRoute />}
       </div>

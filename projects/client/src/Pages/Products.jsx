@@ -87,6 +87,7 @@ export default function Products() {
           setSearch={setSearch}
           setSortType={setSortType}
           setSortOrder={setSortOrder}
+          sortBy={true}
         />
       </div>
       <div className="flex ">

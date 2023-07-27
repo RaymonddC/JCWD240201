@@ -10,13 +10,16 @@ import {
 } from '../../Features/Cart/CartSlice';
 import { toast } from 'react-hot-toast';
 import useDebounce from '../../Hooks/useDebounce';
+import DeleteModal from '../DeleteModal/DeleteModal';
 
 const CartCard = (props) => {
   const dispatch = useDispatch();
   const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
   const stock = props.cart.product?.closed_stocks[0]?.total_stock;
 
-  const debouncedQtyValue = useDebounce(props.cart.qty, 1500);
+  const debouncedQtyValue = useDebounce(props.cart.qty, 500);
+
+  const [openDeleteModal, setOpenDeletemodal] = useState(false);
 
   const discount = () => {
     let tempDisc = 0;
@@ -46,21 +49,21 @@ const CartCard = (props) => {
     // };
   }, [debouncedQtyValue, isCheckCart]);
 
-  useEffect(() => {
-    console.log('test', props.cart.qty);
-    return () => {
-      console.log('test', props.cart.qty);
-      dispatch(
-        updateCartAsync({
-          cartId: props.cart.id,
-          qty: 100,
-          isCheck: isCheckCart,
-          stock,
-        }),
-      );
-    };
-    // };
-  }, []);
+  // useEffect(() => {
+  //   console.log('test', props.cart.qty);
+  //   return () => {
+  //     console.log('test', props.cart.qty);
+  //     dispatch(
+  //       updateCartAsync({
+  //         cartId: props.cart.id,
+  //         qty: 100,
+  //         isCheck: isCheckCart,
+  //         stock,
+  //       }),
+  //     );
+  //   };
+  //   // };
+  // }, []);
 
   const handleCheck = () => {
     setIsCheckCart(!isCheckCart);
@@ -68,6 +71,12 @@ const CartCard = (props) => {
 
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2">
+      <DeleteModal
+        open={openDeleteModal}
+        closeModal={() => setOpenDeletemodal(false)}
+        id={props?.data?.id}
+        model={'Cart'}
+      />
       <div className="product flex justify-between ">
         <div className="check">
           <div className="select flex gap-5 items-center h-full">
@@ -76,9 +85,11 @@ const CartCard = (props) => {
               className="h-3 w-3"
               checked={isCheckCart}
               onClick={handleCheck}
+              readOnly
             />
           </div>
         </div>
+
         <div className="img">
           <img className="h-20 w-20" src={props.cart.img || Logo} alt={Logo} />
         </div>
@@ -111,7 +122,8 @@ const CartCard = (props) => {
             size={'18px'}
             color="#009B90"
             onClick={() => {
-              dispatch(deleteCartAsync({ id: props.cart.id }));
+              setOpenDeletemodal(true);
+              // dispatch(deleteCartAsync({ id: props.cart.id }));
             }}
           />
         </div>

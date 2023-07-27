@@ -42,10 +42,11 @@ export const updateQtyAsync = (values) => async (dispatch) => {
   if (calc) {
     if (calc === '+')
       if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
-      else {
-        cart.qty = cart.qty + 1;
-      }
-    else cart.qty--;
+      else cart.qty = cart.qty + 1;
+    else {
+      if (cart.qty <= 0) return toast.error('cart deleted');
+      else cart.qty--;
+    }
   } else {
     if (newQty > stock) return toast.error('Out Of Stock');
     else cart.qty = newQty;

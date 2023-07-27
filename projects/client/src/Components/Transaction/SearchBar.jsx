@@ -24,7 +24,7 @@ export default function SearchBar(props) {
         <input
           type="text"
           placeholder="Search"
-          className="input input-bordered w-full md:w-96 mx-3"
+          className="input input-bordered w-full mx-3"
           onChange={(e) => {
             props?.setSearch(e.target.value);
           }}
@@ -40,7 +40,11 @@ export default function SearchBar(props) {
             {categoriesMap}
           </ul>
         </div> */}
-        <div className="dropdown dropdown-end border hidden md:block">
+        <div
+          className={`dropdown dropdown-end border hidden md:${
+            props.sortBy ? 'block' : 'hidden'
+          }`}
+        >
           <label tabIndex={0} className="btn btn-secondary">
             Sort by <MdArrowDropDown size={25} />
           </label>
