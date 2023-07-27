@@ -25,11 +25,13 @@ module.exports = (sequelize, DataTypes) => {
       maximum_discount_amount: DataTypes.INTEGER,
       date_start: DataTypes.DATEONLY,
       date_end: DataTypes.DATEONLY,
+      limit: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: 'promotion',
+      paranoid: true,
     },
   );
   return promotion;

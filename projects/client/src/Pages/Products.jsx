@@ -1,5 +1,5 @@
 import NavBar from '../Components/Layout/Navbar';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLabels, getProducts } from '../Features/Product/ProductSlice';
 import ProductCard from '../Components/Products/ProductCard';
@@ -11,24 +11,26 @@ import { getAllCategories } from '../Features/Category/CategorySlice';
 import { useSearchParams } from 'react-router-dom';
 
 export default function Products() {
-  const user = useSelector((state) => state?.user?.user);
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const limit = 20;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [sortType, setSortType] = useState('');
-  const [sortOrder, setSortOrder] = useState('');
-  const [category, setCategory] = useState('');
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
+  const [sortOrder, setSortOrder] = useState(
+    searchParams.get('sortOrder') || '',
+  );
+  const [category, setCategory] = useState(searchParams.get('category') || '');
+
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1500);
-  const CategoryStore = useSelector((state) => state?.categories.categories);
+  const CategoryStore = useSelector((state) => state?.categories?.categories);
   console.log(productList);
   let productMap;
-  const categoriesMap = CategoryStore?.data?.map((value, index) => {
+  const categoriesMap = CategoryStore?.map((value, index) => {
     return (
       <div key={`cat${index}`} className="w-full">
         <div
@@ -97,7 +99,15 @@ export default function Products() {
         }),
       );
     }
-  }, [page, dispatch, debouncedSearchValue, sortType, sortOrder, category, search]);
+  }, [
+    page,
+    dispatch,
+    debouncedSearchValue,
+    sortType,
+    sortOrder,
+    category,
+    setSearchParams,
+  ]);
   return (
     <>
       <NavBar />

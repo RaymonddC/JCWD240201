@@ -27,16 +27,15 @@ export const CartSlice = createSlice({
       initialState.activeCart = action.payload.activeCart;
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
+      console.log('masuk');
     },
   },
 });
 
 export const getCartUserAsync = () => async (dispatch) => {
   try {
-    console.log('cartAsync');
     let token = localStorage.getItem('token');
     if (!token) {
-      dispatch(onGetData([]));
       throw { message: 'No User' };
     }
 
@@ -46,7 +45,6 @@ export const getCartUserAsync = () => async (dispatch) => {
       activeCart = 0,
       discount = 0;
     data.data.map((value) => {
-      // console.log(value.product);
       totalCart += value.qty;
       if (value.is_check) {
         activeCart += value.qty;

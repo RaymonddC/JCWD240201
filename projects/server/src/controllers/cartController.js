@@ -43,6 +43,7 @@ const getCarts = async (req, res, next) => {
               model: Promotion,
               where: {
                 [Op.and]: [
+                  { limit: { [Op.gt]: 0 } },
                   { date_start: { [Op.lte]: today } },
                   { date_end: { [Op.gte]: today } },
                 ],
@@ -193,6 +194,14 @@ const deleteCart = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+const uploadPrescription = async (req, res, next) => {
+  const auth = req.user;
+  const image = req.file;
+  const { token } = req.body;
+  try {
+  } catch (error) {}
 };
 
 module.exports = { getCarts, addToCart, updateCart, deleteCart };

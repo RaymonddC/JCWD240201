@@ -73,7 +73,7 @@ export default function Landing() {
         </article>
       </div>
       <div className="flex mb-20 justify-center">
-        <div className="carousel carousel-center w-[72%] p-4 space-x-4 rounded-box">
+        <div className="carousel carousel-center overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap}
         </div>
       </div>
