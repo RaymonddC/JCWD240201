@@ -6,29 +6,33 @@ import SelectAction from './Input/SelectAction';
 import Select from '../Products/Input/Select';
 import { useEffect, useState } from 'react';
 import { getHistoryTypeAPI, updateStockAPI } from '../../API/stockAPI';
+import { validateUpdateStock } from '../../Helper/stockHelper';
 
 export default function UpdateStockModal(props) {
   const [historyType, setHistoryType] = useState(null);
+  const [defaultValue, setDefaultValue] = useState(true);
   const formik = useFormik({
     initialValues: {
-      stock_history_type_id: '',
+      stock_history_type_id: "0",
       qty: '',
-      action: '',
+      action: "0",
       notes: '',
     },
-    // validate: validateAddProduct,
+    validate: validateUpdateStock,
     onSubmit: async (values, { setSubmitting }) => {
       try {
         const result = await updateStockAPI(values, props.productId);
         if (result?.data?.success) {
+          setDefaultValue(false);
           toast.success(result?.data?.message);
           formik.setValues({
-            stock_history_type_id: '',
+            stock_history_type_id: "0",
             qty: '',
-            action: '',
+            action: "0",
             notes: '',
           });
           formik.resetForm();
+          props.isUpdated(true);
           setSubmitting(false);
         } else {
           const errorMessage = { message: result?.data?.message };
@@ -41,15 +45,16 @@ export default function UpdateStockModal(props) {
   });
 
   const onClose = () => {
+    setDefaultValue(false);
     formik.resetForm();
     formik.setValues({
-      stock_history_type_id: '',
+      stock_history_type_id: "0",
       qty: '',
-      action: '',
+      action: "0",
       notes: '',
     });
   };
-
+console.log(formik.values);
   const getHistoryType = async () => {
     const result = await getHistoryTypeAPI();
     setHistoryType(result?.data?.data);
@@ -63,7 +68,7 @@ export default function UpdateStockModal(props) {
       <input type="checkbox" id="update_stock" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Update Stock {props.isSelected}</h3>
+          <h3 className="font-bold text-lg">Update Stock</h3>
           <form onSubmit={formik.handleSubmit}>
             <InputNumber
               id="qty"
@@ -84,6 +89,7 @@ export default function UpdateStockModal(props) {
               placeholder="Please select action"
               label="Action"
               touched={formik.touched?.action}
+              selected={defaultValue}
             />
             <Select
               id="history_type"
@@ -96,7 +102,7 @@ export default function UpdateStockModal(props) {
               placeholder="Please select update type"
               label="Update Type"
               touched={formik.touched?.stock_history_type_id}
-              selected={props.isSelected}
+              selected={defaultValue}
             />
             <InputUserText
               id="notes"

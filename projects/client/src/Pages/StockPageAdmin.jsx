@@ -14,7 +14,7 @@ export default function StockPageAdmin() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [productId, setProductId] = useState(null);
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [isUpdated, setIsUpdated] = useState(false);
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const productList = ProductsStore?.data?.rows;
@@ -32,8 +32,8 @@ export default function StockPageAdmin() {
   });
   useEffect(() => {
     dispatch(getProducts({ page, limit: 9, search: debouncedSearchValue }));
-    setIsDeleted(false);
-  }, [debouncedSearchValue, dispatch, page, isDeleted]);
+    setIsUpdated(false);
+  }, [debouncedSearchValue, dispatch, page, isUpdated]);
   return (
     <>
       <div className="relative">
@@ -45,7 +45,7 @@ export default function StockPageAdmin() {
           <Pagination setPage={setPage} page={page} totalPages={totalPages} />
         </div>
       </div>
-      <UpdateStockModal productId={productId} isSelected={false}/>
+      <UpdateStockModal productId={productId} isUpdated={setIsUpdated} />
     </>
   );
 }
