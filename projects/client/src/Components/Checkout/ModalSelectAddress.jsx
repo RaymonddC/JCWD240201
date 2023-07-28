@@ -33,7 +33,7 @@ export default function ModalSelectAddress(props) {
               ADD NEW ADDRESS
             </button>
           </div>
-          <div className="grid gap-4 h-[400px] overflow-y-scroll">
+          <div className="flex flex-col gap-4 h-[400px] pr-4 overflow-y-scroll">
             {address.map((value) => {
               return (
                 <CardAddress
