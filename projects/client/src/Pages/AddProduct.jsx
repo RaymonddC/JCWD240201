@@ -226,13 +226,21 @@ export default function AddProduct() {
             </div>
           </div>
         </div>
-        <button
-          disabled={!formik.isValid || formik.isSubmitting}
-          type="submit"
-          className="btn w-full bg-primary text-white"
-        >
-          SAVE
-        </button>
+        <div className="grid grid-cols-2 gap-4 my-6 mb-6">
+          <button
+            className="btn w-full bg-primary text-white"
+            onClick={() => navigate('/products')}
+          >
+            Cancel
+          </button>
+          <button
+            disabled={!formik.isValid || formik.isSubmitting}
+            type="submit"
+            className="btn w-full bg-primary text-white"
+          >
+            SAVE
+          </button>
+        </div>
       </form>
     </>
   );

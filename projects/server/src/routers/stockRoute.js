@@ -7,10 +7,10 @@ const { verifyToken } = require('../middleware/auth');
 const { isAdmin } = require('../middleware/checkRole');
 
 router.post(
-  '/',
+  '/:productId',
   APIKey,
-//   verifyToken,
-//   isAdmin,
+  // verifyToken,
+  // isAdmin,
   stockController.createDataStock,
 );
 router.get('/', APIKey, stockController.getStockHistoryType)

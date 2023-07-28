@@ -24,7 +24,7 @@ export default function Select(props) {
               value={value?.id}
               selected={props.selected === value.id ? true : false}
             >
-              {value?.type_name}
+              {value?.type_name || value?.type}
             </option>
           );
         })}

@@ -5,39 +5,44 @@ const closedStockDB = db.closed_stock;
 const { sequelize } = require('../models');
 
 const createDataStock = async (req, res, next) => {
-  //update unit utama = false
+  const t = await sequelize.transaction();
   try {
     // get data from client
     const { data } = req.body;
+    const { productId } = req.params;
 
     //update closed stock
     let updateStock;
-    if (data.action === 'in') {
+    if (data.action.toLowerCase() === 'in') {
       const productStock = await closedStockDB.findOne({
-        where: { product_id: data.product_id },
+        where: { product_id: productId },
       });
 
       if (productStock) {
         const addStock = productStock.total_stock + data.qty;
         updateStock = await closedStockDB.update(
           { total_stock: addStock },
-          { where: { product_id: data.product_id } },
+          { where: { product_id: productId } },
+          { transaction: t },
         );
         data.unit = false;
         data.total_stock = addStock;
         await stockHistoryDB.create(data);
       } else {
-        updateStock = await closedStockDB.create({
-          product_id: data.product_id,
-          total_stock: data.qty,
-        });
+        updateStock = await closedStockDB.create(
+          {
+            product_id: productId,
+            total_stock: data.qty,
+          },
+          { transaction: t },
+        );
         data.unit = false;
         data.total_stock = addStock;
-        await stockHistoryDB.create(data);
+        await stockHistoryDB.create(data, { transaction: t });
       }
-    } else if (data.action === 'out') {
+    } else if (data.action.toLowerCase() === 'out') {
       const productStock = await closedStockDB.findOne({
-        where: { product_id: data.product_id },
+        where: { product_id: productId },
       });
 
       if (productStock && productStock.total_stock) {
@@ -45,15 +50,18 @@ const createDataStock = async (req, res, next) => {
         if (addStock < 0) throw { message: 'stock is minus' };
         updateStock = await closedStockDB.update(
           { total_stock: addStock },
-          { where: { product_id: data.product_id } },
+          { where: { product_id: productId } },
+          { transaction: t },
         );
         data.unit = false;
         data.total_stock = addStock;
-        await stockHistoryDB.create(data);
+        await stockHistoryDB.create(data, { transaction: t });
       } else if (!productStock || !productStock.total_stock) {
         throw { message: 'stock in empty already' };
       }
     }
+
+    await t.commit()
 
     return res.send({
       success: true,
@@ -62,7 +70,12 @@ const createDataStock = async (req, res, next) => {
       data: updateStock,
     });
   } catch (error) {
-    next(error);
+    await t.rollback()
+    return res.send({
+      success: false,
+      message: error.message,
+      data: null,
+    });
   }
 };
 
