@@ -1,9 +1,9 @@
 import { MdPerson } from 'react-icons/md';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { InputPassword } from '../Components/AuthForm/Input/InputPassword';
 import { useRef, useState } from 'react';
-import { changePassword } from '../API/auth';
+import { changePassword } from '../API/authAPI';
 import toast from 'react-hot-toast';
 import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
 import NavBar from '../Components/Layout/Navbar';

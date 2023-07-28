@@ -73,18 +73,25 @@ export const getCartUserAsync = () => async (dispatch) => {
 
 export const addToCartAsync = (values) => async (dispatch) => {
   try {
-    const { productId, qty } = values;
+    console.log('>>>>>>>', values);
+    const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
+    console.log(values)
     if (!token) throw { message: 'Please Login First' };
     if (!productId) throw { message: "Product doesn't exist" };
+    // if (!prescriptionImage) throw { message: 'Please upload image' };
     // if(!userId) throw{}
-
-    postCart(token, { productId, qty });
+    const response = await postCart(token, {
+      productId,
+      qty,
+    
+    });
+    console.log(response);
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');
   } catch (error) {
-    toast.error(error.message);
+    toast.error(error.response.data.message);
   }
 };
 

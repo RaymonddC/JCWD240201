@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useState } from 'react';
 import { MdKeyboardBackspace } from 'react-icons/md';
-import { sendResetForm } from '../API/auth';
+import { sendResetForm } from '../API/authAPI';
 import toast from 'react-hot-toast';
 
 export default function ReqResetPassword() {

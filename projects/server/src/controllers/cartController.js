@@ -71,9 +71,11 @@ const getCarts = async (req, res, next) => {
 };
 
 const addToCart = async (req, res, next) => {
+  console.log('masuk add to cart');
   try {
     const { productId, qty } = req.body;
     const userId = req.user.id;
+    const image = req.file;
 
     // const product = await getProduct()
     // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
@@ -83,6 +85,8 @@ const addToCart = async (req, res, next) => {
       user_id: userId,
     });
     // if (!result) throw { message: 'Invalid Credentials', code: 400 };
+    if (productId === 1 && !prescriptionImage)
+      throw { message: 'Please upload a file' };
     if (isCart && isCart.qty === qty) '';
     else if (isCart)
       await Cart.update(
@@ -90,7 +94,7 @@ const addToCart = async (req, res, next) => {
           user_id: isCart.user_id,
           product_id: isCart.product_id,
           qty: qty || isCart.qty + 1,
-          prescription_image: isCart.prescription_image,
+          prescription_image: isCart.prescription_image || null,
           confirmation: isCart.confirmation,
           is_check: true,
         },

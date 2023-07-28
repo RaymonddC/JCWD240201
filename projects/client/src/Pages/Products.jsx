@@ -113,7 +113,7 @@ export default function Products() {
         />
       </div>
       <div className="flex ">
-        <div className="hidden w-72 md:block pl-5 ">
+        <div className="hidden w-52 md:block pl-3">
           <article className="prose">
             <h3 className="pb-5">Categories</h3>
           </article>
@@ -126,7 +126,7 @@ export default function Products() {
           {categoriesMap}
         </div>
         <div className="flex flex-col w-full justify-center ">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 w-full px-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full px-5">
             {productMap}
           </div>
           <div className="my-5">

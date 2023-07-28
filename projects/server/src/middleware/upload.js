@@ -5,18 +5,20 @@ const { multerUpload } = require('../lib/multer');
 const deleteFiles = require('../helpers/deleteFiles');
 
 const uploadPrescription = (req, res, next) => {
-  const multerResult = multerUpload.single('prescription_image');
+  console.log('masuk upload prescription');
+  const multerResult = multerUpload.single('prescription_images');
   multerResult(req, res, function (err) {
     try {
+      console.log('masuk try upload');
       if (err) throw err;
       // Validate each file size
-      req.files.images.forEach((value) => {
-        if (value.size > 100000000)
-          throw {
-            message: `${value.originalname} is Too Large`,
-            fileToDelete: req.file,
-          };
-      });
+      if (!req.file) throw { message: 'please upload image' };
+      if (req.file && req.file.size > 1000000)
+        throw {
+          message: `${value.originalname} is Too Large`,
+          fileToDelete: [req.file],
+        };
+
       next();
     } catch (error) {
       if (error.fileToDelete) {
@@ -59,7 +61,7 @@ const uploadMultiple = (req, res, next) => {
 };
 
 const uploadProfile = (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body);
   const multerResult = multerUpload.single('profile_image');
   multerResult(req, res, function (err) {
     try {
