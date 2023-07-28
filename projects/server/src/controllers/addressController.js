@@ -17,11 +17,7 @@ const addressDB = db.address;
 const getAllAddress = async (req, res, next) => {
   try {
     const user_id = req.user.id;
-    const data = await addressDB.findAll({
-      where: {
-        user_id,
-      },
-    });
+    const data = await addressDB.findAll({ where: { user_id } });
 
     const result = manipulateArray(data);
 
@@ -70,16 +66,7 @@ const updateAddress = async (req, res, next) => {
     validateForm({ ...data });
     await validateUserAndIsDeleted(user_id, id);
 
-    const result = await addressDB.update(
-      {
-        ...data,
-      },
-      {
-        where: {
-          id,
-        },
-      },
-    );
+    const result = await addressDB.update({ ...data }, { where: { id } });
 
     res.status(200).send({
       success: true,
@@ -104,14 +91,7 @@ const updateIsMain = async (req, res, next) => {
     const oldIsMain = await getOldIsMain(user_id);
     await changeOldIsMain(oldIsMain.id);
 
-    const result = await addressDB.update(
-      { is_main: true },
-      {
-        where: {
-          id,
-        },
-      },
-    );
+    const result = await addressDB.update({ is_main: true }, { where: { id } });
 
     res.status(200).send({
       success: true,
@@ -138,11 +118,7 @@ const updateIsSelected = async (req, res, next) => {
 
     const result = await addressDB.update(
       { is_selected: true },
-      {
-        where: {
-          id,
-        },
-      },
+      { where: { id } },
     );
 
     res.status(200).send({
@@ -166,12 +142,7 @@ const deleteAddress = async (req, res, next) => {
 
     if (getAddress.is_selected) setNewIsSelected(user_id);
 
-    const result = await addressDB.destroy({
-      where: {
-        id,
-        user_id,
-      },
-    });
+    const result = await addressDB.destroy({ where: { id, user_id } });
 
     res.status(200).send({
       success: true,

@@ -25,6 +25,9 @@ export default function ConfirmationMainAddressModal(props) {
         setOpen(false);
         toast.success(response.data.message);
         dispatch(getUserAddressAsync());
+        if (props?.checkoutPage) {
+          props?.closeModalSelect();
+        }
       }
     } catch (error) {
       toast.error(error.message);
@@ -46,6 +49,9 @@ export default function ConfirmationMainAddressModal(props) {
         setOpen(false);
         toast.success(changeIsMain.data.message);
         dispatch(getUserAddressAsync());
+        if (props?.checkoutPage) {
+          props?.closeModalSelect();
+        }
       }
     } catch (error) {
       toast.error(error.message);

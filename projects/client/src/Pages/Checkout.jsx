@@ -1,41 +1,50 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getProvinceAsync,
   getUserAddressAsync,
 } from '../Features/Address/AddressSlice';
+import CheckoutAddress from '../Components/Checkout/CheckoutAddress';
+import { Navigate } from 'react-router-dom';
 
 export default function Checkout() {
   const dispatch = useDispatch();
+  let token = localStorage.getItem('token');
   const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
     (state) => state?.cart,
   );
-  const { address, loadAddress } = useSelector((state) => state.address);
+  const { address, editAddressData } = useSelector((state) => state.address);
 
   useEffect(() => {
     dispatch(getUserAddressAsync());
+    dispatch(getProvinceAsync());
   }, []);
+
+  if (!token) return <Navigate to="/" />;
+  if (!carts.length) return <Navigate to="/cart" />;
 
   return (
     <div className="flex justify-between">
-      <div>
-        {carts?.map((value) => {
-          if (value?.is_check) {
-            return (
-              <div key={value?.id}>
-                <p>{value?.product?.name}</p>
-              </div>
-            );
-          }
-        })}
-        {loadAddress === false && !address.length ? (
-          <div className="flex flex-col items-center">
-            <h3 className="text-[18px] font-bold">
-              Oops! You haven't set an address yet
-            </h3>
-            <p>Please set your address by clicking Add Address</p>
-          </div>
-        ) : null}
+      <div className="w-full p-4">
+        <CheckoutAddress />
+        <div className="flex flex-col gap-4 mt-4">
+          {carts?.map((value) => {
+            if (value?.is_check) {
+              return (
+                <div key={value?.id} className="flex gap-2">
+                  <div>
+                    <div className="w-[100px] h-[100px] bg-primary"></div>
+                  </div>
+                  <div>
+                    <p>{value?.product?.name}</p>
+                    <p>{value?.qty} Item</p>
+                    <p>Rp.{value?.product?.price.toLocaleString(['id'])}</p>
+                  </div>
+                </div>
+              );
+            }
+          })}
+        </div>
       </div>
       <div
         className={`card card-compact w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[11em] md:w-[30%] bg-base-100 shadow-xl h-fit  md:right-12  ${

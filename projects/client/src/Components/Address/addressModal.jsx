@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputUserText from '../Profile/Input/InputUserText';
 import InputAddressTextField from './input/inputAddressTexField';
@@ -9,6 +9,7 @@ import {
   getCityAsync,
   getUserAddressAsync,
   setCity,
+  setEditAddressData,
 } from '../../Features/Address/AddressSlice';
 import { toast } from 'react-hot-toast';
 import { createAddress, updateAddress } from '../../API/addressAPI';
@@ -45,19 +46,23 @@ export default function AddressModal(props) {
         }
 
         if (result.data.success) {
-          console.log(result);
           dispatch(getUserAddressAsync());
           toast.success(result.data.message);
           setSubmitting(false);
-          if (props?.navigate) navigate(props?.navigate);
           props?.closeModal();
+          if (props?.checkoutPage) props?.openSelectAddress();
+          if (props?.navigate) navigate(props?.navigate);
         }
       } catch (error) {
-        console.log(error);
         toast.error(error.message);
       }
     },
   });
+
+  const closeHandler = () => {
+    if (props?.checkoutPage) props?.openSelectAddress();
+    return props?.closeModal();
+  };
 
   useEffect(() => {
     if (
@@ -89,9 +94,9 @@ export default function AddressModal(props) {
       });
     }
     return () => {
-      console.log('test');
       formik.resetForm();
       dispatch(setCity([]));
+      if (props?.checkoutPage) dispatch(setEditAddressData({}));
     };
   }, []);
 
@@ -180,7 +185,7 @@ export default function AddressModal(props) {
             <div className="modal-action">
               <button
                 type="button"
-                onClick={props?.closeModal}
+                onClick={closeHandler}
                 className="btn btn-outline border-primary text-primary"
               >
                 close

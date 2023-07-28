@@ -1,6 +1,9 @@
 import { useDispatch } from 'react-redux';
 import { updateIsMain, updateIsSelected } from '../../API/addressAPI';
-import { getUserAddressAsync } from '../../Features/Address/AddressSlice';
+import {
+  getUserAddressAsync,
+  setEditAddressData,
+} from '../../Features/Address/AddressSlice';
 import { toast } from 'react-hot-toast';
 import DeleteAddressModal from './deleteAddressModal';
 import AddressModal from './addressModal';
@@ -20,9 +23,22 @@ export default function CardAddress(props) {
       if (response.data.success) {
         dispatch(getUserAddressAsync());
         toast.success(response?.data?.message);
+        if (props?.closeSelectModal) {
+          props?.closeSelectModal();
+        }
       }
     } catch (error) {
       toast.error(error.message);
+    }
+  };
+
+  const updateHandler = () => {
+    if (props?.checkoutPage) {
+      props?.closeSelectModal();
+      props?.openEditAddress();
+      dispatch(setEditAddressData(props?.data));
+    } else {
+      setOpenAddressModal(true);
     }
   };
 
@@ -35,29 +51,35 @@ export default function CardAddress(props) {
       }
     >
       <div>
-        {props?.data?.is_main ? (
-          <p className="text-primary font-bold">Main Address</p>
-        ) : null}
         <h4 className="font-bold text-[18px] line-clamp-1">
           {props?.data?.reciever}
+          {props?.data?.is_main ? (
+            <span className="text-primary font-bold ml-2">Main</span>
+          ) : null}
         </h4>
         <p>{props?.data?.phone_number}</p>
         <p className="line-clamp-1">{props?.data?.address}</p>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-[14px] font-bold sm:items-center mt-2">
-          <p
-            onClick={() => setOpenAddressModal(true)}
-            className="text-primary cursor-pointer"
-          >
+          <p onClick={updateHandler} className="text-primary cursor-pointer">
             Update
           </p>
           {!props?.data?.is_main && !props?.data?.is_selected ? (
             <>
-              <ConfirmationMainAddressModal id={props?.data?.id} />
+              <ConfirmationMainAddressModal
+                id={props?.data?.id}
+                checkoutPage={props?.checkoutPage ? true : false}
+                closeModalSelect={() => props?.closeSelectModal()}
+              />
               <DeleteAddressModal id={props?.data?.id} />
             </>
           ) : !props?.data?.is_main && props?.data?.is_selected ? (
             <>
-              <ConfirmationMainAddressModal selected id={props?.data?.id} />
+              <ConfirmationMainAddressModal
+                selected
+                checkoutPage={props?.checkoutPage ? true : false}
+                id={props?.data?.id}
+                closeModalSelect={() => props?.closeSelectModal()}
+              />
               <DeleteAddressModal id={props?.data?.id} />
             </>
           ) : null}

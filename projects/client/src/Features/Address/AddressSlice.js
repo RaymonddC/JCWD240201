@@ -7,6 +7,7 @@ const initialState = {
   loadAddress: null,
   province: [],
   city: [],
+  editAddressData: {},
 };
 
 export const AddressSlice = createSlice({
@@ -25,6 +26,9 @@ export const AddressSlice = createSlice({
     setCity: (initialState, action) => {
       initialState.city = action.payload;
     },
+    setEditAddressData: (initialState, action) => {
+      initialState.editAddressData = action.payload;
+    },
   },
 });
 
@@ -33,14 +37,14 @@ export const getUserAddressAsync = () => async (dispatch) => {
     let token = localStorage.getItem('token');
     dispatch(setloadAddress(true));
     const result = await getUserAddress(token);
-    console.log(result);
     if (result.data.success) {
       dispatch(setloadAddress(false));
       dispatch(setAddress(result.data.data));
     }
   } catch (error) {
-    toast.error(error.message);
-    console.log(error);
+    if (error.response.data.message === 'jwt malformed')
+      return toast.error('Please log in first');
+    return toast.error(error.message);
   }
 };
 
@@ -51,9 +55,7 @@ export const getProvinceAsync = () => async (dispatch) => {
     const response = await getProvince(token);
 
     dispatch(setProvince(response.data.data));
-  } catch (error) {
-    toast.error(error.message);
-  }
+  } catch (error) {}
 };
 
 export const getCityAsync = (province_id) => async (dispatch) => {
@@ -68,7 +70,12 @@ export const getCityAsync = (province_id) => async (dispatch) => {
   }
 };
 
-export const { setAddress, setloadAddress, setProvince, setCity } =
-  AddressSlice.actions;
+export const {
+  setAddress,
+  setloadAddress,
+  setProvince,
+  setCity,
+  setEditAddressData,
+} = AddressSlice.actions;
 
 export default AddressSlice.reducer;

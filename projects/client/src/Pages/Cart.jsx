@@ -26,6 +26,8 @@ const Cart = () => {
 
   useEffect(() => {
     dispatch(getCartUserAsync());
+    dispatch(getUserAddressAsync());
+    dispatch(getProvinceAsync());
   }, []);
 
   useEffect(() => {
@@ -113,9 +115,8 @@ const Cart = () => {
                   onClick={() => {
                     // checkoutAsync();
                     // navigate('/checkout');
-                    dispatch(getUserAddressAsync());
-                    setOpenAddressModal(true);
-                    dispatch(getProvinceAsync());
+                    if (!address.length) return setOpenAddressModal(true);
+                    return navigate('/checkout');
                   }}
                 >
                   Bayar ({activeCart})
@@ -125,7 +126,7 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      {!address.length && loadAddress === false && openAddressModal ? (
+      {openAddressModal ? (
         <AddressModal
           addAddress
           navigate={'/checkout'}
