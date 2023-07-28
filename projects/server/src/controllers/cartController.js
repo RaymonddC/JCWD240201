@@ -85,7 +85,7 @@ const addToCart = async (req, res, next) => {
       user_id: userId,
     });
     // if (!result) throw { message: 'Invalid Credentials', code: 400 };
-    if (productId === 1 && !prescriptionImage)
+    if (productId === 1 && !image) 
       throw { message: 'Please upload a file' };
     if (isCart && isCart.qty === qty) '';
     else if (isCart)
@@ -94,7 +94,7 @@ const addToCart = async (req, res, next) => {
           user_id: isCart.user_id,
           product_id: isCart.product_id,
           qty: qty || isCart.qty + 1,
-          prescription_image: isCart.prescription_image || null,
+          prescription_image: image.path || null,
           confirmation: isCart.confirmation,
           is_check: true,
         },
@@ -105,7 +105,7 @@ const addToCart = async (req, res, next) => {
         user_id: userId,
         product_id: productId,
         qty: qty || 1,
-        prescription_image: image || null,
+        prescription_image: image.path || null,
         confirmation: null,
         is_check: true,
       });

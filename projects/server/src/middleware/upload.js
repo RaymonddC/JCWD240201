@@ -9,7 +9,7 @@ const uploadPrescription = (req, res, next) => {
   const multerResult = multerUpload.single('prescription_images');
   multerResult(req, res, function (err) {
     try {
-      console.log('masuk try upload');
+      console.log('masuk try upload', req.file);
       if (err) throw err;
       // Validate each file size
       if (!req.file) throw { message: 'please upload image' };

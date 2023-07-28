@@ -76,15 +76,15 @@ export const addToCartAsync = (values) => async (dispatch) => {
     console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
-    console.log(values)
+    console.log(values);
     if (!token) throw { message: 'Please Login First' };
     if (!productId) throw { message: "Product doesn't exist" };
-    // if (!prescriptionImage) throw { message: 'Please upload image' };
+    if (!prescriptionImage) throw { message: 'Please upload image' };
     // if(!userId) throw{}
     const response = await postCart(token, {
       productId,
       qty,
-    
+      prescription_images: prescriptionImage,
     });
     console.log(response);
 
