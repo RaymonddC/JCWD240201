@@ -59,6 +59,21 @@ export const updateIsMain = (id, token) => {
   );
 };
 
+export const updateIsSelected = (id, token) => {
+  return axios.patch(
+    URL + `/addresses/selected/${id}`,
+    {
+      is_selected: true,
+    },
+    {
+      headers: {
+        authorization: `Bearer ${token}`,
+        apikey: apikey,
+      },
+    },
+  );
+};
+
 export const deleteAddress = (id, token) => {
   return axios.delete(URL + `/addresses/${id}`, {
     headers: {

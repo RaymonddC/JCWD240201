@@ -25,7 +25,7 @@ const manipulateArray = (data) => {
   let result = [];
 
   for (let index = 0; index < data.length; index++) {
-    if (data[index].is_main) {
+    if (data[index].is_selected) {
       result.unshift(data[index]);
     } else {
       result.push(data[index]);
@@ -63,17 +63,15 @@ const validateUserAndIsDeleted = async (user_id, id) => {
   return getAddress;
 };
 
-const setNewIsMain = async (user_id) => {
+const setNewIsSelected = async (user_id) => {
   const getAddress = await address.findOne({
     where: {
       user_id,
-      is_main: false,
+      is_main: true,
     },
   });
 
-  if (getAddress) {
-    await address.update({ is_main: true }, { where: { id: getAddress.id } });
-  }
+  await address.update({ is_selected: true }, { where: { id: getAddress.id } });
 };
 
 const getOldIsMain = async (user_id) => {
@@ -90,6 +88,30 @@ const changeOldIsMain = async (id) => {
   const updateOldIsMain = await address.update(
     {
       is_main: false,
+    },
+    {
+      where: {
+        id,
+      },
+    },
+  );
+  return updateOldIsMain;
+};
+
+const getOldIsSelected = async (user_id) => {
+  const getAddress = await address.findOne({
+    where: {
+      user_id,
+      is_selected: true,
+    },
+  });
+  return getAddress;
+};
+
+const changeOldIsSelected = async (id) => {
+  const updateOldIsMain = await address.update(
+    {
+      is_selected: false,
     },
     {
       where: {
@@ -125,8 +147,10 @@ module.exports = {
   validateUserAndIsDeleted,
   changeOldIsMain,
   getOldIsMain,
-  setNewIsMain,
+  setNewIsSelected,
   manipulateArray,
+  getOldIsSelected,
+  changeOldIsSelected,
   getProvinceRajaOngkir,
   getCityRajaOngkir,
 };
