@@ -2,20 +2,32 @@ import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkoutAsync, getCartUserAsync } from '../Features/Cart/CartSlice';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import {
+  getProvinceAsync,
+  getUserAddressAsync,
+} from '../Features/Address/AddressSlice';
+import AddressModal from '../Components/Address/addressModal';
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const [openAddressModal, setOpenAddressModal] = useState(false);
   const { user } = useSelector((state) => state?.user);
+  const { address, loadAddress } = useSelector((state) => state.address);
   const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
     (state) => state?.cart,
   );
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
 
+  // console.log(address, loadAddress);
+
   useEffect(() => {
     dispatch(getCartUserAsync());
+    dispatch(getUserAddressAsync());
+    dispatch(getProvinceAsync());
   }, []);
 
   useEffect(() => {
@@ -102,6 +114,9 @@ const Cart = () => {
                   className="btn btn-sm md:btn-md  btn-primary w-full text-white"
                   onClick={() => {
                     // checkoutAsync();
+                    // navigate('/checkout');
+                    if (!address.length) return setOpenAddressModal(true);
+                    return navigate('/checkout');
                   }}
                 >
                   Bayar ({activeCart})
@@ -111,6 +126,14 @@ const Cart = () => {
           </div>
         </div>
       </div>
+      {openAddressModal ? (
+        <AddressModal
+          addAddress
+          navigate={'/checkout'}
+          openAddressModal={openAddressModal}
+          closeModal={() => setOpenAddressModal(false)}
+        />
+      ) : null}
     </div>
   );
 };

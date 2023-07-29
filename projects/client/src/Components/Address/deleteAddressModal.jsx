@@ -18,9 +18,7 @@ export default function DeleteAddressModal(props) {
         setOpen(false);
         toast.success(response.data.message);
         dispatch(getUserAddressAsync());
-        console.log('hehe');
       }
-      console.log('hehe');
     } catch (error) {
       toast.error(error.message);
     }
@@ -30,7 +28,7 @@ export default function DeleteAddressModal(props) {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="text-primary text-[15px] cursor-pointer"
+        className="w-fit text-primary cursor-pointer"
       >
         Delete
       </button>
@@ -49,8 +47,7 @@ export default function DeleteAddressModal(props) {
             Are you sure want to Delete This Address?
           </p>
           <p className="font-normal text-center">
-            You cannot restore an address that <br />
-            has been deleted.
+            You cannot restore an address that has been deleted.
           </p>
           <div className="modal-action">
             <button
