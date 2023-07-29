@@ -14,7 +14,7 @@ export default function SelectAction(props) {
         onChange={props.handleChange}
         value={props.values}
       >
-        <option value="0" selected={props.selected ? false : true}>
+        <option value="0" hidden selected={props.selected ? false : true}>
           {props.placeholder}
         </option>
         <option value="In">In</option>

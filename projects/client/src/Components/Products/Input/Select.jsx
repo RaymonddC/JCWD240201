@@ -14,7 +14,7 @@ export default function Select(props) {
         onChange={props.handleChange}
         value={props.values}
       >
-        <option value="0" selected={props.selected ? false : true}>
+        <option value="0" hidden selected={props.selected ? false : true}>
           {props.placeholder}
         </option>
         {props?.data?.map((value) => {

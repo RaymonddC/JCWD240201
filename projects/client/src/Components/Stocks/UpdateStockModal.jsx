@@ -13,9 +13,9 @@ export default function UpdateStockModal(props) {
   const [defaultValue, setDefaultValue] = useState(true);
   const formik = useFormik({
     initialValues: {
-      stock_history_type_id: "0",
+      stock_history_type_id: '',
       qty: '',
-      action: "0",
+      action: '',
       notes: '',
     },
     validate: validateUpdateStock,
@@ -26,13 +26,17 @@ export default function UpdateStockModal(props) {
           setDefaultValue(false);
           toast.success(result?.data?.message);
           formik.setValues({
-            stock_history_type_id: "0",
+            stock_history_type_id: '',
             qty: '',
-            action: "0",
+            action: '',
             notes: '',
           });
           formik.resetForm();
           props.isUpdated(true);
+          const action = document.getElementById('action');
+          action.selectedIndex = 0;
+          const historyType = document.getElementById('history_type');
+          historyType.selectedIndex = 0;
           setSubmitting(false);
         } else {
           const errorMessage = { message: result?.data?.message };
@@ -45,22 +49,27 @@ export default function UpdateStockModal(props) {
   });
 
   const onClose = () => {
+    const action = document.getElementById('action');
+    action.selectedIndex = 0;
+    const historyType = document.getElementById('history_type');
+    historyType.selectedIndex = 0;
     setDefaultValue(false);
     formik.resetForm();
     formik.setValues({
-      stock_history_type_id: "0",
+      stock_history_type_id: '',
       qty: '',
-      action: "0",
+      action: '',
       notes: '',
     });
   };
-console.log(formik.values);
+  console.log(formik.values);
   const getHistoryType = async () => {
     const result = await getHistoryTypeAPI();
     setHistoryType(result?.data?.data);
   };
 
   useEffect(() => {
+    console.log('masuk modal');
     getHistoryType();
   }, []);
   return (
