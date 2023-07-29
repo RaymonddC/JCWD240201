@@ -77,7 +77,7 @@ export default function UpdateStockModal(props) {
       <input type="checkbox" id="update_stock" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
-          <h3 className="font-bold text-lg">Update Stock {props.productId}</h3>
+          <h3 className="font-bold text-lg">Update Stock</h3>
           <form onSubmit={formik.handleSubmit}>
             <InputNumber
               id="qty"
