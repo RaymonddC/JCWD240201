@@ -19,8 +19,6 @@ const createDataStock = async (req, res, next) => {
       });
 
       if (productStock) {
-        console.log(productStock.total_stock);
-        console.log(data.qty);
         const addStock = Number(productStock.total_stock) + Number(data.qty);
         updateStock = await closedStockDB.update(
           { total_stock: addStock },
@@ -28,6 +26,7 @@ const createDataStock = async (req, res, next) => {
           { transaction: t },
         );
         data.unit = false;
+        data.product_id = productId
         data.total_stock = addStock;
         await stockHistoryDB.create(data);
       } else {
@@ -39,6 +38,8 @@ const createDataStock = async (req, res, next) => {
           { transaction: t },
         );
         data.unit = false;
+        data.product_id = productId
+        data.total_stock = data.qty
         await stockHistoryDB.create(data, { transaction: t });
       }
     } else if (data.action.toLowerCase() === 'out') {
@@ -55,6 +56,8 @@ const createDataStock = async (req, res, next) => {
           { transaction: t },
         );
         data.unit = false;
+        data.product_id = productId
+        data.total_stock = addStock;
         await stockHistoryDB.create(data, { transaction: t });
       } else if (!productStock || !productStock.total_stock) {
         throw { message: 'stock in empty already' };
