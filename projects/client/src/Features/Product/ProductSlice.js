@@ -36,6 +36,7 @@ export const ProductSlice = createSlice({
 
 export const getProducts = (data) => async (dispatch) => {
   try {
+    
     let response = await getAllProductsAPI({
       page: data.page,
       limit: data.limit,
@@ -80,18 +81,14 @@ export const getproductLabel = (data) => async (dispatch) => {
   try {
   } catch (error) {}
 };
-// export const nextPage = (data) => (dispatch) => {
-//   const currentPage = data.page;
-//   const totalPages = data.totalPages;
-//   const nextPage = currentPage >= totalPages ? totalPages : currentPage + 1;
-//   dispatch(page(nextPage));
-// };
+
 
 // export const prevPage = (data) => (dispatch) => {
 //   const currentPage = data.page;
 //   const prefPage = currentPage <= 0 ? 0 : currentPage - 1;
 //   dispatch(page(prefPage));
 // };
+
 
 export const getPackaging = () => async (dispatch) => {
   const result = await getPackagingType();

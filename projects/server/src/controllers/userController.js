@@ -55,11 +55,7 @@ const updateUserData = async (req, res, next) => {
           birthdate,
           profile_image: image.path,
         },
-        {
-          where: {
-            id: auth.id,
-          },
-        },
+        { where: { id: auth.id } },
       );
 
       if (previousImage) {

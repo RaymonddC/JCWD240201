@@ -1,5 +1,5 @@
 import NavBar from '../Components/Layout/Navbar';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLabels, getProducts } from '../Features/Product/ProductSlice';
 import ProductCard from '../Components/Products/ProductCard';
@@ -8,24 +8,28 @@ import Footer from '../Components/Layout/Footer';
 import useDebounce from '../Hooks/useDebounce';
 import Pagination from '../Components/Layout/Pagination';
 import { getAllCategories } from '../Features/Category/CategorySlice';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Products() {
-  const user = useSelector((state) => state?.user?.user);
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const limit = 20;
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [sortType, setSortType] = useState('');
-  const [sortOrder, setSortOrder] = useState('');
-  const [category, setCategory] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  let queryParams = {};
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
+  const [sortOrder, setSortOrder] = useState(
+    searchParams.get('sortOrder') || '',
+  );
+  const [category, setCategory] = useState(searchParams.get('category') || '');
   const productList = ProductsStore?.data?.rows;
-  const debouncedSearchValue = useDebounce(search, 1500);
-  const CategoryStore = useSelector((state) => state?.categories.categories);
-  console.log(productList);
+  const debouncedSearchValue = useDebounce(search, 1200);
+  const CategoryStore = useSelector((state) => state?.categories?.categories);
+  // console.log(productList);
   let productMap;
-  const categoriesMap = CategoryStore?.data?.map((value, index) => {
+  const categoriesMap = CategoryStore?.map((value, index) => {
     return (
       <div key={`cat${index}`} className="w-full">
         <div
@@ -54,8 +58,27 @@ export default function Products() {
       );
     });
   }
+
   useEffect(() => {
     dispatch(getAllCategories());
+  }, []);
+  useEffect(() => {
+    if (page) {
+      queryParams['page'] = page;
+    }
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
+    if (sortType) {
+      queryParams['sortType'] = sortType;
+    }
+    if (sortOrder) {
+      queryParams['sortOrder'] = sortOrder;
+    }
+    if (category) {
+      queryParams['category'] = category;
+    }
+    setSearchParams(queryParams);
     if (category) {
       dispatch(
         getLabels({
@@ -78,7 +101,7 @@ export default function Products() {
         }),
       );
     }
-  }, [page, dispatch, debouncedSearchValue, sortType, sortOrder, category]);
+  }, [page, debouncedSearchValue, sortType, sortOrder, category]);
   return (
     <>
       <NavBar />
@@ -90,7 +113,7 @@ export default function Products() {
         />
       </div>
       <div className="flex ">
-        <div className="hidden w-72 md:block pl-5 ">
+        <div className="hidden w-52 md:block pl-3">
           <article className="prose">
             <h3 className="pb-5">Categories</h3>
           </article>
@@ -103,7 +126,7 @@ export default function Products() {
           {categoriesMap}
         </div>
         <div className="flex flex-col w-full justify-center ">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 w-full px-5">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full px-5">
             {productMap}
           </div>
           <div className="my-5">
