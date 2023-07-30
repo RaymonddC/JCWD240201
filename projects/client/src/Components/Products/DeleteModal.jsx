@@ -2,13 +2,13 @@ import { deleteProduct } from '../../API/productAPI';
 import { toast } from 'react-hot-toast';
 
 export default function DeleteModal(props) {
-    const onDelete = async(productId) => {
-        const result = await deleteProduct(productId)
-        if(result?.data?.message){
-            toast.success(result?.data?.message)
-            props.isDeleted(true)
-        }
+  const onDelete = async (productId) => {
+    const result = await deleteProduct(productId);
+    if (result?.data?.message) {
+      toast.success(result?.data?.message);
+      props.isDeleted(true);
     }
+  };
   return (
     <>
       <input type="checkbox" id="my_modal_6" className="modal-toggle" />
@@ -20,7 +20,11 @@ export default function DeleteModal(props) {
             <label htmlFor="my_modal_6" className="btn">
               Close
             </label>
-            <label htmlFor="my_modal_6" className="btn btn-accent" onClick={() => onDelete(props.productId)}>
+            <label
+              htmlFor="my_modal_6"
+              className="btn btn-accent"
+              onClick={() => onDelete(props.productId)}
+            >
               Delete
             </label>
           </div>
