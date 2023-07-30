@@ -29,14 +29,14 @@ export default function Landing() {
   });
   const addToCart = async() => {
     try {
-      const response = dispatch(
+      const  response =  dispatch(
         addToCartAsync({
           productId: 1,
           qty: 1,
           prescriptionImage: file,
         }),
       );
-      console.log(response);   
+      setFile(null)  
     } catch (error) {
       
     }

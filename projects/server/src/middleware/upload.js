@@ -24,11 +24,12 @@ const uploadPrescription = (req, res, next) => {
       if (error.fileToDelete) {
         deleteFiles(error.fileToDelete);
       }
-      return res.status(404).send({
-        isError: true,
-        message: error.message,
-        data: null,
-      });
+      // return res.status(404).send({
+      //   isError: true,
+      //   message: error.message,
+      //   data: null,
+      // });
+      next(error);
     }
   });
 };
