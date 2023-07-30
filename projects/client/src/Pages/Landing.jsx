@@ -27,15 +27,20 @@ export default function Landing() {
       </div>
     );
   });
-  const addToCart = () => {
-    const response = dispatch(
-      addToCartAsync({
-        productId: 1,
-        qty: 1,
-        prescriptionImage: file,
-      }),
-    );
-    console.log(response);
+  const addToCart = async() => {
+    try {
+      const response = dispatch(
+        addToCartAsync({
+          productId: 1,
+          qty: 1,
+          prescriptionImage: file,
+        }),
+      );
+      console.log(response);   
+    } catch (error) {
+      
+    }
+   
   };
   useEffect(() => {
     dispatch(getProducts({ page: 1, limit: 9, search: '' }));

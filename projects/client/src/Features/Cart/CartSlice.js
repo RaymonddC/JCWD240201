@@ -90,7 +90,7 @@ export const addToCartAsync = (values) => async (dispatch) => {
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');
-    return response;
+    
   } catch (error) {
     console.log(error);
     toast.error(error?.response?.data?.message || error?.message);
