@@ -7,6 +7,7 @@ const addressRoute = require('./addressRoute');
 const categoryRoute = require('./categoryRoute');
 const labelRoute = require('./labelRoute');
 const transactionRoute = require('./transactionRoute');
+const rajaOngkirRoute = require('./rajaOngkirRoute');
 
 module.exports = {
   authRoute,
@@ -18,4 +19,5 @@ module.exports = {
   categoryRoute,
   labelRoute,
   transactionRoute,
+  rajaOngkirRoute,
 };

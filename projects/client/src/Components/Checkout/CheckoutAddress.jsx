@@ -1,37 +1,48 @@
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import ModalSelectAddress from './ModalSelectAddress';
 import AddressModal from '../Address/addressModal';
+import {
+  getCityUserSlice,
+  getProvinceAsync,
+  getUserAddressAsync,
+} from '../../Features/Address/AddressSlice';
 
 export default function CheckoutAddress() {
-  const { address, editAddressData } = useSelector((state) => state.address);
+  const { editAddressData, selectedAddress, cityUser } = useSelector(
+    (state) => state.address,
+  );
+  const dispatch = useDispatch();
   const [openSelectAddress, setOpenSelectAddress] = useState(false);
   const [openEditAddress, setopenEditAddress] = useState(false);
   const [openAddAddress, setopenAddAddress] = useState(false);
 
+  useEffect(() => {
+    dispatch(getUserAddressAsync());
+    dispatch(getProvinceAsync());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getCityUserSlice(selectedAddress?.id));
+  }, [selectedAddress]);
+
   return (
-    <div>
-      <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#DBDEE2]">
+    <div className="shadow-md p-4 rounded-xl">
+      <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#D5D7DD]">
         Shipping Address
       </h2>
-      {address?.map((value) => {
-        if (value.is_selected) {
-          return (
-            <div key={value.id} className="py-2 border-b-2 border-[#DBDEE2]">
-              <p>
-                {value.reciever}{' '}
-                {value?.is_main ? (
-                  <span className="text-primary font-bold ml-2">Main</span>
-                ) : null}
-              </p>
-              <p>{value.phone_number}</p>
-              <p>{value.address}</p>
-              {/* <p>{`${value.city_id}, ${value.province_id}`}</p> */}
-            </div>
-          );
-        }
-      })}
-      <div className="py-4 border-b-2 border-[#DBDEE2]">
+      <div className="py-2 border-b-2 border-[#D5D7DD]">
+        <p>
+          {selectedAddress?.reciever}
+          {selectedAddress?.is_main ? (
+            <span className="text-primary font-bold ml-2">Main</span>
+          ) : null}
+        </p>
+        <p>{selectedAddress.phone_number}</p>
+        <p>{selectedAddress.address}</p>
+        {/* <p>{`${cityUser.city_name}, ${cityUser.province}, ${cityUser.postal_code}`}</p> */}
+      </div>
+      <div className="py-4 border-b-2 border-[#D5D7DD]">
         <button
           onClick={() => setOpenSelectAddress(true)}
           className="btn btn-primary text-white"
