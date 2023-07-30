@@ -34,6 +34,7 @@ const {
   categoryRoute,
   labelRoute,
   transactionRoute,
+  rajaOngkirRoute,
   stockRoute,
 } = require('./routers');
 
@@ -46,6 +47,7 @@ app.use('/products', productRoute);
 app.use('/categories', categoryRoute);
 app.use('/labels', labelRoute);
 app.use('/transactions', transactionRoute);
+app.use('/rajaongkir', rajaOngkirRoute);
 app.use('/stocks', stockRoute);
 
 app.get('/api', (req, res) => {

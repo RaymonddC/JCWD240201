@@ -154,35 +154,6 @@ const deleteAddress = async (req, res, next) => {
   }
 };
 
-const getProvince = async (req, res, next) => {
-  try {
-    const result = await getProvinceRajaOngkir();
-
-    res.status(200).send({
-      success: true,
-      message: 'Get Province Success',
-      data: result.data.rajaongkir.results,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const getCity = async (req, res, next) => {
-  try {
-    const { province_id } = req.query;
-    const result = await getCityRajaOngkir(province_id);
-
-    res.status(200).send({
-      success: true,
-      message: 'Get city Success',
-      data: result.data.rajaongkir.results,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports = {
   getAllAddress,
   createAddress,
@@ -190,6 +161,4 @@ module.exports = {
   updateIsMain,
   updateIsSelected,
   deleteAddress,
-  getProvince,
-  getCity,
 };

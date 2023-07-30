@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { getCity, getProvince, getUserAddress } from '../../API/addressAPI';
+import {
+  getCity,
+  getCityUser,
+  getProvince,
+  getUserAddress,
+} from '../../API/addressAPI';
 
 const initialState = {
   address: [],
@@ -8,6 +13,8 @@ const initialState = {
   province: [],
   city: [],
   editAddressData: {},
+  selectedAddress: {},
+  cityUser: {},
 };
 
 export const AddressSlice = createSlice({
@@ -29,6 +36,12 @@ export const AddressSlice = createSlice({
     setEditAddressData: (initialState, action) => {
       initialState.editAddressData = action.payload;
     },
+    setSelectedAddress: (initialState, action) => {
+      initialState.selectedAddress = action.payload;
+    },
+    setCityUser: (initialState, action) => {
+      initialState.cityUser = action.payload;
+    },
   },
 });
 
@@ -38,8 +51,10 @@ export const getUserAddressAsync = () => async (dispatch) => {
     dispatch(setloadAddress(true));
     const result = await getUserAddress(token);
     if (result.data.success) {
+      dispatch(setCityUser({}));
       dispatch(setloadAddress(false));
       dispatch(setAddress(result.data.data));
+      dispatch(setSelectedAddress(result?.data?.data[0]));
     }
   } catch (error) {
     if (error.response.data.message === 'jwt malformed')
@@ -70,12 +85,26 @@ export const getCityAsync = (province_id) => async (dispatch) => {
   }
 };
 
+export const getCityUserSlice = (city_id) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+
+    const response = await getCityUser(city_id, token);
+
+    dispatch(setCityUser(response.data.data));
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
 export const {
   setAddress,
   setloadAddress,
   setProvince,
   setCity,
   setEditAddressData,
+  setSelectedAddress,
+  setCityUser,
 } = AddressSlice.actions;
 
 export default AddressSlice.reducer;
