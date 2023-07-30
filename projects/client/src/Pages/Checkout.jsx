@@ -10,6 +10,8 @@ export default function Checkout() {
   const dispatch = useDispatch();
   let token = localStorage.getItem('token');
   const { shippingFee } = useSelector((state) => state.checkout);
+  const { editAddressData, selectedAddress, cityUser, loadAddress } =
+    useSelector((state) => state.address);
   const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
     (state) => state?.cart,
   );
@@ -19,6 +21,7 @@ export default function Checkout() {
   }, []);
 
   if (!token) return <Navigate to="/" />;
+  if (totalCart === 0 && loadAddress === false) return <Navigate to="/cart" />;
   // if (!carts.length) return <Navigate to="/cart" />;
 
   return (

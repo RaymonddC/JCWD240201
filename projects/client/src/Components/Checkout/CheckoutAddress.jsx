@@ -38,8 +38,8 @@ export default function CheckoutAddress() {
             <span className="text-primary font-bold ml-2">Main</span>
           ) : null}
         </p>
-        <p>{selectedAddress.phone_number}</p>
-        <p>{selectedAddress.address}</p>
+        <p>{selectedAddress?.phone_number}</p>
+        <p>{selectedAddress?.address}</p>
         {/* <p>{`${cityUser.city_name}, ${cityUser.province}, ${cityUser.postal_code}`}</p> */}
       </div>
       <div className="py-4 border-b-2 border-[#D5D7DD]">
