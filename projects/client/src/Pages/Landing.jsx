@@ -22,7 +22,7 @@ export default function Landing() {
   };
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
-      <div key={`product${index}`} className="carousel-item mx-5 ">
+      <div key={`product${index}`} className="carousel-item ">
         <ProductCard data={value} />
       </div>
     );
