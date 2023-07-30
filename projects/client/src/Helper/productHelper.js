@@ -33,9 +33,9 @@ export const validateAddProduct = (values) => {
   if (values.category.category_id.length === 0) {
     errors.category_id = 'Category is required';
   }
-  // if (!values.image.product) {
-  //   errors.product = 'Image is required';
-  // }
+  if (!values.image.product) {
+    errors.product = 'Image is required';
+  }
   return errors;
 };
 
