@@ -27,6 +27,16 @@ export default function Landing() {
       </div>
     );
   });
+  const addToCart = () => {
+    const response = dispatch(
+      addToCartAsync({
+        productId: 1,
+        qty: 1,
+        prescriptionImage: file,
+      }),
+    );
+    console.log(response);
+  };
   useEffect(() => {
     dispatch(getProducts({ page: 1, limit: 9, search: '' }));
   }, [dispatch]);
@@ -88,20 +98,8 @@ export default function Landing() {
               </p>
             </article>
           </div>
-          <button
-            onClick={() =>
-              dispatch(
-                addToCartAsync({
-                  productId: 1,
-                  qty: 1,
-                  prescriptionImage: file,
-                }),
-              )
-            }
-            className="btn btn-accent mx-5"
-          >
-            {' '}
-            Upload Prescription
+          <button onClick={addToCart} className="btn btn-accent mx-5">
+            <div>Upload Prescription</div>
           </button>
         </div>
       </div>

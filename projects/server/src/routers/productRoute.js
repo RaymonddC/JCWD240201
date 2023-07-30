@@ -34,7 +34,7 @@ router.put(
 );
 // router.put(
 //   '/image/admin',
-//   APIKey.APIKey,
+//   APIKey,
 //   verifyToken,
 //   isAdmin,
 //   productController.updateProductImage,
