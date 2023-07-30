@@ -13,6 +13,7 @@ const packagingDB = db.packaging_type;
 const productTypeDB = db.product_type;
 const { sequelize } = require('../models');
 const deleteFiles = require('../helpers/deleteFiles');
+const closedStockDB = db.closed_stock;
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -30,7 +31,17 @@ const getAllProducts = async (req, res, next) => {
     }
     console.log(sortType, sortOrder, search, order);
     const response = await productDB.findAndCountAll({
-      include: labelDB,
+      include: [
+        {
+          model: labelDB
+        },
+        {
+          model: closedStockDB
+        },
+        {
+          model: packagingDB
+        }
+      ],
       limit: pageLimit,
       offset: offset,
       where: where,

@@ -24,6 +24,9 @@ module.exports = {
       action: {
         type: Sequelize.STRING,
       },
+      total_stock: {
+        type: Sequelize.INTEGER,
+      },
       notes: {
         type: Sequelize.STRING,
       },
