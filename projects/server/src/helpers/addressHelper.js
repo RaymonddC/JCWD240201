@@ -1,4 +1,3 @@
-const { default: axios } = require('axios');
 const { address } = require('./../models');
 
 const validateForm = (data) => {
@@ -122,25 +121,6 @@ const changeOldIsSelected = async (id) => {
   return updateOldIsMain;
 };
 
-const getProvinceRajaOngkir = async () => {
-  return axios.get('https://api.rajaongkir.com/starter/province', {
-    headers: {
-      key: `5536a7b3e0879609c3d5693b088c13be`,
-    },
-  });
-};
-
-const getCityRajaOngkir = async (province_id) => {
-  return axios.get(
-    `https://api.rajaongkir.com/starter/city?province=${province_id}`,
-    {
-      headers: {
-        key: `5536a7b3e0879609c3d5693b088c13be`,
-      },
-    },
-  );
-};
-
 module.exports = {
   validateForm,
   isFirstAddress,
@@ -151,6 +131,4 @@ module.exports = {
   manipulateArray,
   getOldIsSelected,
   changeOldIsSelected,
-  getProvinceRajaOngkir,
-  getCityRajaOngkir,
 };

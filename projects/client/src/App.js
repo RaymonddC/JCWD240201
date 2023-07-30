@@ -29,7 +29,7 @@ function App() {
 
   return (
     <>
-      <div className=''>
+      <div className="">
         <Toaster />
         {user.role?.role_name === 'admin' ? <AdminRoute /> : <PublicRoute />}
       </div>
