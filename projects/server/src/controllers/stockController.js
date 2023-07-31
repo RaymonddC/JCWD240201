@@ -97,6 +97,10 @@ const getStockHistoryType = async (req, res, next) => {
   }
 };
 
+const unitConsversion= async (req, res, next) => {
+   
+}
+
 module.exports = {
   createDataStock,
   getStockHistoryType,
