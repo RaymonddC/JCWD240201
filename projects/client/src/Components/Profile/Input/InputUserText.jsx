@@ -18,6 +18,7 @@ export default function InputUserText(props) {
         type="text"
         onChange={props.handleChange}
         value={props.values}
+        disabled={props.disabled}
       />
       {props.errors && props?.touched ? (
         <p className="text-error text-[14px]">{props.errors}</p>

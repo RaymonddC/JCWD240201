@@ -1,4 +1,4 @@
-export default function Select(props) {
+export default function SelectProduct(props) {
   return (
     <>
       <label className="text-[14px]">{props.label}</label>
