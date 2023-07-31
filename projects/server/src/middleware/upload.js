@@ -5,20 +5,21 @@ const { multerUpload } = require('../lib/multer');
 const deleteFiles = require('../helpers/deleteFiles');
 
 const uploadPrescription = (req, res, next) => {
-  console.log('masuk upload prescription');
   const multerResult = multerUpload.single('prescription_images');
   multerResult(req, res, function (err) {
     try {
       console.log('masuk try upload', req.file);
-      if (err) throw err;
-      // Validate each file size
-      if (!req.file) throw { message: 'please upload image' };
-      if (req.file && req.file.size > 1000000)
-        throw {
-          message: `${value.originalname} is Too Large`,
-          fileToDelete: [req.file],
-        };
-
+      console.log(req.body.productId);
+      if (req.body.productId !== 1) {
+        if (err) throw err;
+        // Validate each file size
+        // if (!req.file) throw { message: 'please upload image' };
+        if (req.file && req.file.size > 1000000)
+          throw {
+            message: `${value.originalname} is Too Large`,
+            fileToDelete: [req.file],
+          };
+      }
       next();
     } catch (error) {
       if (error.fileToDelete) {
