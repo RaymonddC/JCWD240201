@@ -1,4 +1,3 @@
-const { default: axios } = require('axios');
 const { address } = require('./../models');
 
 const validateForm = (data) => {
@@ -25,7 +24,7 @@ const manipulateArray = (data) => {
   let result = [];
 
   for (let index = 0; index < data.length; index++) {
-    if (data[index].is_main) {
+    if (data[index].is_selected) {
       result.unshift(data[index]);
     } else {
       result.push(data[index]);
@@ -63,17 +62,15 @@ const validateUserAndIsDeleted = async (user_id, id) => {
   return getAddress;
 };
 
-const setNewIsMain = async (user_id) => {
+const setNewIsSelected = async (user_id) => {
   const getAddress = await address.findOne({
     where: {
       user_id,
-      is_main: false,
+      is_main: true,
     },
   });
 
-  if (getAddress) {
-    await address.update({ is_main: true }, { where: { id: getAddress.id } });
-  }
+  await address.update({ is_selected: true }, { where: { id: getAddress.id } });
 };
 
 const getOldIsMain = async (user_id) => {
@@ -100,23 +97,28 @@ const changeOldIsMain = async (id) => {
   return updateOldIsMain;
 };
 
-const getProvinceRajaOngkir = async () => {
-  return axios.get('https://api.rajaongkir.com/starter/province', {
-    headers: {
-      key: `5536a7b3e0879609c3d5693b088c13be`,
+const getOldIsSelected = async (user_id) => {
+  const getAddress = await address.findOne({
+    where: {
+      user_id,
+      is_selected: true,
     },
   });
+  return getAddress;
 };
 
-const getCityRajaOngkir = async (province_id) => {
-  return axios.get(
-    `https://api.rajaongkir.com/starter/city?province=${province_id}`,
+const changeOldIsSelected = async (id) => {
+  const updateOldIsMain = await address.update(
     {
-      headers: {
-        key: `5536a7b3e0879609c3d5693b088c13be`,
+      is_selected: false,
+    },
+    {
+      where: {
+        id,
       },
     },
   );
+  return updateOldIsMain;
 };
 
 module.exports = {
@@ -125,8 +127,8 @@ module.exports = {
   validateUserAndIsDeleted,
   changeOldIsMain,
   getOldIsMain,
-  setNewIsMain,
+  setNewIsSelected,
   manipulateArray,
-  getProvinceRajaOngkir,
-  getCityRajaOngkir,
+  getOldIsSelected,
+  changeOldIsSelected,
 };

@@ -15,11 +15,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       product_id: DataTypes.INTEGER,
       image: DataTypes.STRING,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,
       paranoid: true,
+      modelName: 'product_image',
     },
   );
   return product_image;

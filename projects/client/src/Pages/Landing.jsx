@@ -7,20 +7,43 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../Features/Product/ProductSlice';
 import { useEffect } from 'react';
+import { useState } from 'react';
+import { FileUploader } from 'react-drag-drop-files';
+import { addToCartAsync } from '../Features/Cart/CartSlice';
 
 export default function Landing() {
   const dispatch = useDispatch();
+  const fileTypes = ['JPEG', 'PNG'];
   const ProductsStore = useSelector((state) => state?.products?.products);
-  console.log(ProductsStore)
+  console.log(ProductsStore);
+  const [file, setFile] = useState(null);
+  const handleChange = (file) => {
+    setFile(file);
+  };
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
-      <div key={`product${index}`} className="carousel-item mx-5 ">
+      <div key={`product${index}`} className="carousel-item ">
         <ProductCard data={value} />
       </div>
     );
   });
+  const addToCart = async() => {
+    try {
+      const  response =  dispatch(
+        addToCartAsync({
+          productId: 1,
+          qty: 1,
+          prescriptionImage: file,
+        }),
+      );
+      setFile(null)  
+    } catch (error) {
+      
+    }
+   
+  };
   useEffect(() => {
-    dispatch(getProducts({ page: 1, limit: 9,search:'' }));
+    dispatch(getProducts({ page: 1, limit: 9, search: '' }));
   }, [dispatch]);
   return (
     <>
@@ -52,8 +75,8 @@ export default function Landing() {
           </article>
         </div>
       </div>
-      <div className="flex my-5 justify-center">
-        <div className="w-fit items-center flex flex-col md:flex-row drop-shadow-md mt-5 bg-gray-300 rounded-xl">
+      <div className="flex my-5 px-3 justify-center">
+        <div className="w-fit items-center flex flex-col drop-shadow-md mt-5 p-3 bg-gray-200 rounded-xl">
           <img
             className="h-28 hidden lg:block "
             src={prescriptionImage}
@@ -62,7 +85,27 @@ export default function Landing() {
           <article className="prose">
             <h3> Have doctor's prescription?</h3>
           </article>
-          <button className="btn btn-accent mx-5"> Upload Prescription</button>
+          <div className="py-3 flex flex-col items-center ">
+            <article className="prose">
+              <p>Drag & drop your files here</p>
+            </article>
+            <FileUploader
+              multiple={false}
+              handleChange={handleChange}
+              name="file"
+              types={fileTypes}
+              label="add here"
+              maxSixe={1}
+            />
+            <article className="prose">
+              <p>
+                {file ? `File name: ${file.name}` : 'no files uploaded yet'}
+              </p>
+            </article>
+          </div>
+          <button onClick={addToCart} className="btn btn-accent mx-5">
+            <div>Upload Prescription</div>
+          </button>
         </div>
       </div>
       <div className=" mt-10 flex justify-end pr-[10%]">
@@ -73,7 +116,7 @@ export default function Landing() {
         </article>
       </div>
       <div className="flex mb-20 justify-center">
-        <div className="carousel carousel-center w-[72%] p-4 space-x-4 rounded-box">
+        <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap}
         </div>
       </div>
@@ -83,3 +126,32 @@ export default function Landing() {
     </>
   );
 }
+
+/*
+import { useState } from "react";
+import { FileUploader } from "react-drag-drop-files";
+
+import "./styles.css";
+
+const fileTypes = ["JPEG", "PNG", "GIF"];
+
+export default function App() {
+  const [file, setFile] = useState(null);
+  const handleChange = (file) => {
+    setFile(file);
+  };
+  return (
+    <div className="App">
+      <h1>Hello To Drag & Drop Files</h1>
+      <FileUploader
+        multiple={true}
+        handleChange={handleChange}
+        name="file"
+        types={fileTypes}
+      />
+      <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
+    </div>
+  );
+}
+
+*/
