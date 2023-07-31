@@ -46,7 +46,6 @@ export default function Address() {
             </button>
             {openAddressModal ? (
               <AddressModal
-                addAddress
                 openAddressModal={openAddressModal}
                 closeModal={() => setOpenAddressModal(false)}
               />

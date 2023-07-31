@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       phone_number: DataTypes.STRING,
       reciever: DataTypes.STRING,
       is_main: DataTypes.BOOLEAN,
-      is_selected: DataTypes.BOOLEAN,
       deletedAt: DataTypes.DATE,
     },
     {

@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useState } from 'react';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import toast from 'react-hot-toast';
-import { resetPassword } from '../API/authAPI';
+import { resetPassword } from '../API/auth';
 import { useSearchParams } from 'react-router-dom';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
 

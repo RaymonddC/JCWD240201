@@ -121,28 +121,26 @@ export default function QuestionDetails() {
     return (
       <>
         <NavBar />
-        <div className='flex flex-col items-center w-full'>
-          <div className="card card-compact max-w-3xl w-full my-5 bg-base-100 shadow-xl">
-            <div className="flex justify-end px-3">
-              <div className="label">{date}</div>
-            </div>
-            <div className="card-body ">
-              <article className="prose">
-                <h3> Question: </h3>
-                <p>{question}</p>
-              </article>
-            </div>
+        <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
+          <div className="flex justify-end px-3">
+            <div className="label">{date}</div>
           </div>
-          <div className="card card-compact max-w-3xl w-full my-5 bg-base-100 shadow-xl">
-            <div className="flex justify-end px-3">
-              {/* <div className="label">{date}</div> */}
-            </div>
-            <div className="card-body ">
-              <article className="prose">
-                <h3> Answer:</h3>
-                <p>{answer}</p>
-              </article>
-            </div>
+          <div className="card-body ">
+            <article className="prose">
+              <h3> Question: </h3>
+              <p>{question}</p>
+            </article>
+          </div>
+        </div>
+        <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
+          <div className="flex justify-end px-3">
+            {/* <div className="label">{date}</div> */}
+          </div>
+          <div className="card-body ">
+            <article className="prose">
+              <h3> Answer:</h3>
+              <p>{answer}</p>
+            </article>
           </div>
         </div>
       </>

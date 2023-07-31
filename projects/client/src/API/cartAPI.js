@@ -16,12 +16,13 @@ export function getUserCarts(token) {
 export function postCart(token, data) {
   return axios.post(
     `${URL}/carts`,
-    { ...data },
+    {
+      ...data,
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,
         apiKey: APIKey,
-        'Content-Type': 'multipart/form-data',
       },
     },
   );

@@ -2,9 +2,11 @@ import axios from 'axios';
 
 const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const apikey = `${process.env.REACT_APP_API_KEY}`;
+const RAJAONGKIRURL = `${process.env.REACT_APP_API_RAJA_ONGKIR}`;
+const RAJAONGKIRURLKEY = `${process.env.REACT_APP_API_RAJA_ONGKIR_KEY}`;
 
 export const getUserAddress = (token) => {
-  return axios.get(`${URL}/addresses`, {
+  return axios.get(URL + '/addresses/', {
     headers: {
       authorization: `Bearer ${token}`,
       apikey: apikey,
@@ -14,7 +16,7 @@ export const getUserAddress = (token) => {
 
 export const createAddress = (data, token) => {
   return axios.post(
-    `${URL}/addresses`,
+    URL + `/addresses`,
     {
       ...data,
     },
@@ -29,7 +31,7 @@ export const createAddress = (data, token) => {
 
 export const updateAddress = (id, data, token) => {
   return axios.put(
-    `${URL}/addresses/${id}`,
+    URL + `/addresses/${id}`,
     {
       ...data,
     },
@@ -44,24 +46,9 @@ export const updateAddress = (id, data, token) => {
 
 export const updateIsMain = (id, token) => {
   return axios.patch(
-    `${URL}/addresses/${id}`,
+    URL + `/addresses/${id}`,
     {
       is_main: true,
-    },
-    {
-      headers: {
-        authorization: `Bearer ${token}`,
-        apikey: apikey,
-      },
-    },
-  );
-};
-
-export const updateIsSelected = (id, token) => {
-  return axios.patch(
-    URL + `/addresses/selected/${id}`,
-    {
-      is_selected: true,
     },
     {
       headers: {
@@ -82,7 +69,7 @@ export const deleteAddress = (id, token) => {
 };
 
 export const getProvince = (token) => {
-  return axios.get(`${URL}/rajaongkir/province`, {
+  return axios.get(URL + '/addresses/province', {
     headers: {
       authorization: `Bearer ${token}`,
       apikey: apikey,
@@ -91,16 +78,7 @@ export const getProvince = (token) => {
 };
 
 export const getCity = (province_id, token) => {
-  return axios.get(`${URL}/rajaongkir/city?province_id=${province_id}`, {
-    headers: {
-      authorization: `Bearer ${token}`,
-      apikey: apikey,
-    },
-  });
-};
-
-export const getCityUser = (city_id, token) => {
-  return axios.get(`${URL}/rajaongkir/city?city_id=${city_id}`, {
+  return axios.get(URL + '/addresses/city?province_id=' + province_id, {
     headers: {
       authorization: `Bearer ${token}`,
       apikey: apikey,

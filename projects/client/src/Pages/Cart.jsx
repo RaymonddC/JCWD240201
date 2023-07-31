@@ -7,21 +7,11 @@ import {
   updateQtyAsync,
 } from '../Features/Cart/CartSlice';
 import { Navigate } from 'react-router-dom';
-import { checkoutAsync, getCartUserAsync } from '../Features/Cart/CartSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
-import {
-  getProvinceAsync,
-  getUserAddressAsync,
-} from '../Features/Address/AddressSlice';
-import AddressModal from '../Components/Address/addressModal';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const [openAddressModal, setOpenAddressModal] = useState(false);
   const { user } = useSelector((state) => state?.user);
-  const { address, loadAddress } = useSelector((state) => state.address);
   const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
     (state) => state?.cart,
   );
@@ -49,12 +39,9 @@ const Cart = () => {
     );
     // }
   };
-  // console.log(address, loadAddress);
 
   useEffect(() => {
     dispatch(getCartUserAsync());
-    dispatch(getUserAddressAsync());
-    dispatch(getProvinceAsync());
   }, []);
 
   useEffect(() => {
@@ -69,7 +56,7 @@ const Cart = () => {
       </p>
       <div className="flex justify-between">
         <div
-          className={`card card-compact w-[100%] md:w-[65%] bg-base-100 shadow-xl mb-[7em] md:mb-0 max-w-[1000px] ${
+          className={`card card-compact w-[100%] md:w-[65%] bg-base-100 shadow-xl mb-[7em] md:mb-0 ${
             totalCart === 0 ? 'hidden' : ''
           } `}
         >
@@ -143,9 +130,6 @@ const Cart = () => {
                   className="btn btn-sm md:btn-md  btn-primary w-full text-white"
                   onClick={() => {
                     // checkoutAsync();
-                    // navigate('/checkout');
-                    if (!address.length) return setOpenAddressModal(true);
-                    return navigate('/checkout');
                   }}
                 >
                   Bayar ({activeCart})
@@ -155,14 +139,6 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      {openAddressModal ? (
-        <AddressModal
-          addAddress
-          navigate={'/checkout'}
-          openAddressModal={openAddressModal}
-          closeModal={() => setOpenAddressModal(false)}
-        />
-      ) : null}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputUserText from '../Profile/Input/InputUserText';
 import InputAddressTextField from './input/inputAddressTexField';
@@ -9,14 +9,13 @@ import {
   getCityAsync,
   getUserAddressAsync,
   setCity,
-  setEditAddressData,
 } from '../../Features/Address/AddressSlice';
 import { toast } from 'react-hot-toast';
 import { createAddress, updateAddress } from '../../API/addressAPI';
-import { useNavigate } from 'react-router-dom';
 
 export default function AddressModal(props) {
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [disabled, setdisabled] = useState(true);
   const dispatch = useDispatch();
   const { province, city } = useSelector((state) => state.address);
 
@@ -32,7 +31,6 @@ export default function AddressModal(props) {
     validate: validationAddressModal,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        setSubmitting(true);
         let result;
 
         if (props.data) {
@@ -48,21 +46,13 @@ export default function AddressModal(props) {
         if (result.data.success) {
           dispatch(getUserAddressAsync());
           toast.success(result.data.message);
-          setSubmitting(false);
           props?.closeModal();
-          if (props?.checkoutPage) props?.openSelectAddress();
-          if (props?.navigate) navigate(props?.navigate);
         }
       } catch (error) {
         toast.error(error.message);
       }
     },
   });
-
-  const closeHandler = () => {
-    if (props?.checkoutPage) props?.openSelectAddress();
-    return props?.closeModal();
-  };
 
   useEffect(() => {
     if (
@@ -94,9 +84,9 @@ export default function AddressModal(props) {
       });
     }
     return () => {
+      console.log('test');
       formik.resetForm();
       dispatch(setCity([]));
-      if (props?.checkoutPage) dispatch(setEditAddressData({}));
     };
   }, []);
 
@@ -111,11 +101,6 @@ export default function AddressModal(props) {
       />
       <div className="modal">
         <div className="modal-box">
-          <div className="flex justify-center">
-            <h2 className="font-bold text-[24px] mb-2">
-              {props?.addAddress ? 'Add Address' : 'Edit Address'}
-            </h2>
-          </div>
           <form className="flex flex-col" onSubmit={formik.handleSubmit}>
             <InputUserText
               id="reciever"
@@ -184,8 +169,7 @@ export default function AddressModal(props) {
             />
             <div className="modal-action">
               <button
-                type="button"
-                onClick={closeHandler}
+                onClick={props?.closeModal}
                 className="btn btn-outline border-primary text-primary"
               >
                 close

@@ -13,7 +13,7 @@ const generateToken = async (result) => {
     };
 
     return jwt.sign(payload, 'pharmacy', {
-      expiresIn: '5h',
+      expiresIn: '1h',
     });
   } catch (error) {
     return error;

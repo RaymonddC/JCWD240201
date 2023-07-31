@@ -34,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
       net_content: DataTypes.INTEGER,
       description: DataTypes.STRING(1000),
       dosing: DataTypes.STRING(1000),
-      weight: DataTypes.INTEGER,
       BPOM_id: DataTypes.STRING,
       require_prescription: DataTypes.BOOLEAN,
       price: DataTypes.INTEGER,
@@ -42,7 +41,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      paranoid: true,
       modelName: 'product',
     },
   );

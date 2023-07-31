@@ -9,7 +9,6 @@ import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
 import { MdQuestionAnswer } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
-import { MdOutlineInventory2 } from 'react-icons/md';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
@@ -39,12 +38,6 @@ export const Sidebar = () => {
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
             <GiMedicines />
             <p className="hidden lg:block">Product</p>
-          </div>
-        </Link>
-        <Link to={'/stocks'} className="w-full">
-          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
-            <MdOutlineInventory2 />
-            <p className="hidden lg:block">Stock</p>
           </div>
         </Link>
         <Link to={'/discussions'} className="w-full">

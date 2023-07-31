@@ -34,12 +34,10 @@ export default function NavBar() {
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">QnA</Link>
               </button>
-            </div>
-            <div className="flex items-center relative">
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn btn-sm btn-ghost absolute right-72">
+                <button className="btn btn-sm btn-ghost relative">
                   <Link to={'/cart'}>
-                    <SlBag size={25} />
+                    <SlBag className="h-[24px] w-[24px]" />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
                         <span className="text-[12px] text-white">
@@ -54,6 +52,8 @@ export default function NavBar() {
               ) : (
                 ''
               )}
+            </div>
+            <div className="flex">
               {user && Object.keys(user).length !== 0 ? (
                 <div className="flex gap-2">
                   <Link
@@ -72,7 +72,7 @@ export default function NavBar() {
                     <span className="font-bold">{user?.full_name}</span>
                   </Link>
                   <button
-                    className="btn btn-outline btn-secondary ml-3"
+                    className="btn btn-ghost"
                     onClick={() => {
                       dispatch(logoutAsync());
                     }}

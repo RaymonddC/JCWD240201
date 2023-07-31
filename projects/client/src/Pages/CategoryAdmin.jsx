@@ -7,27 +7,19 @@ import {
 } from '../Features/Category/CategorySlice';
 import CategoryCard from '../Components/Category/CategoryCard';
 import CategoryModalForm from '../Components/Category/CategoryModalForm';
-import { useSearchParams } from 'react-router-dom';
 
 export default function CategoryAdmin() {
   const dispatch = useDispatch();
   const [openModalForm, setOpenModalForm] = useState(false);
-  const [queryCategory, setQueryCategory] = useSearchParams();
   const { categories, search } = useSelector((state) => state.categories);
   const debouncedSearchValue = useDebounce(search, 1000);
 
-  console.log(queryCategory.get('search'));
-
   useEffect(() => {
-    if (!search?.length && queryCategory.get('search')) {
-      dispatch(getAllCategories(queryCategory.get('search')));
-      dispatch(setSearch(queryCategory.get('search')));
-    } else if (search?.length >= 3) {
+    if (search?.length >= 3) {
       dispatch(getAllCategories(search));
-      setQueryCategory(`search=${search}`);
-    } else if (!search?.length) {
+    }
+    if (!search?.length) {
       dispatch(getAllCategories());
-      setQueryCategory(``);
     }
   }, [debouncedSearchValue]);
 
@@ -44,7 +36,6 @@ export default function CategoryAdmin() {
           type="text"
           placeholder="Search Category"
           className="input input-bordered input-success w-full max-w-xs"
-          value={search}
           onChange={(e) => dispatch(setSearch(e.target.value))}
         />
         <button

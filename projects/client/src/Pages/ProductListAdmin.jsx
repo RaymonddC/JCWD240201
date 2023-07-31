@@ -5,17 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBar from '../Components/Products/FilterBar';
 import Pagination from '../Components/Layout/Pagination';
-import { MdAdd } from "react-icons/md";
-import { useNavigate } from 'react-router-dom';
-import DeleteModal from '../Components/Products/DeleteModal';
 
 export default function ProductListAdmin() {
-  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [productId, setProductId] = useState(null);
-  const [isDeleted, setIsDeleted] = useState(false);
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const productList = ProductsStore?.data?.rows;
@@ -23,17 +17,15 @@ export default function ProductListAdmin() {
   const productMap = productList?.map((value, index) => {
     return (
       <div key={`product${index}`} className="py-1 flex w-full justify-center">
-        <ProductCardAdmin data={value} setProductId={setProductId}/>
+        <ProductCardAdmin data={value} />
       </div>
     );
   });
   useEffect(() => {
     dispatch(getProducts({ page, limit: 9, search: debouncedSearchValue }));
-    setIsDeleted(false)
-  }, [debouncedSearchValue, dispatch, page, isDeleted]);
+  }, [debouncedSearchValue, dispatch, page]);
   return (
     <>
-    <div className='relative'>
       <div className="sticky top-3 mb-3">
         <FilterBar setSearch={setSearch} />
       </div>
@@ -41,11 +33,6 @@ export default function ProductListAdmin() {
       <div className="py-5">
         <Pagination setPage={setPage} page={page} totalPages={totalPages} />
       </div>
-      <div className='sticky bottom-6 bg-primary w-fit rounded-full hover:cursor-pointer' onClick={() => navigate('/products/new')}>
-        <MdAdd size={40} />
-      </div>
-    </div>
-    <DeleteModal productId={productId} isDeleted={setIsDeleted}/>
     </>
   );
 }

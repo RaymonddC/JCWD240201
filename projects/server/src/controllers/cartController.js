@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+
 const { Op } = require('sequelize');
 const db = require('../models');
 const { getCart, getCartByPk } = require('../helpers/cartHelper');
@@ -11,6 +12,7 @@ const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
 
 // const getUserCarts = async (req, res, next) => {};
+
 const getCarts = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -24,8 +26,12 @@ const getCarts = async (req, res, next) => {
       limitPage = 10,
     } = req.query;
 
-    let whereQuery = { user_id: userId };
+    let whereQuery = {
+      user_id: userId,
+    };
+
     const today = new Date();
+
     const { count, rows } = await Cart.findAndCountAll({
       include: [
         {
@@ -71,22 +77,20 @@ const getCarts = async (req, res, next) => {
 };
 
 const addToCart = async (req, res, next) => {
-  console.log('masuk add to cart');
   try {
     const { productId, qty } = req.body;
     const userId = req.user.id;
-    const image = req.file;
 
     // const product = await getProduct()
     // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
     // if(product. === true) throw({message:'butuh resep bro'})
+
     const isCart = await getCart('', {
       product_id: productId,
       user_id: userId,
     });
     // if (!result) throw { message: 'Invalid Credentials', code: 400 };
-    if (productId === 1 && !image) 
-      throw { message: 'Please upload a file' };
+
     if (isCart && isCart.qty === qty) '';
     else if (isCart)
       await Cart.update(
@@ -94,7 +98,7 @@ const addToCart = async (req, res, next) => {
           user_id: isCart.user_id,
           product_id: isCart.product_id,
           qty: qty || isCart.qty + 1,
-          prescription_image: image.path || null,
+          prescription_image: isCart.prescription_image,
           confirmation: isCart.confirmation,
           is_check: true,
         },
@@ -105,13 +109,16 @@ const addToCart = async (req, res, next) => {
         user_id: userId,
         product_id: productId,
         qty: qty || 1,
-        prescription_image: image.path || null,
+        prescription_image: null,
         confirmation: null,
         is_check: true,
       });
     }
 
-    const cart = await getCart('', { product_id: productId, user_id: userId });
+    const cart = await getCart('', {
+      product_id: productId,
+      user_id: userId,
+    });
 
     return res.status(200).send({
       success: true,
@@ -173,7 +180,10 @@ const deleteCart = async (req, res, next) => {
     const { id } = req.params;
     const userId = req.user.id;
     const deleted = await Cart.destroy({
-      where: { id: id, user_id: userId },
+      where: {
+        id: id,
+        user_id: userId,
+      },
     });
 
     return res.status(200).send({

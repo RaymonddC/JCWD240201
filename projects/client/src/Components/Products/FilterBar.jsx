@@ -26,8 +26,7 @@ export default function FilterBar(props) {
           placeholder="Search"
           className="input input-bordered w-full md:w-96 mx-3"
           onChange={(e) => {
-            if (e.target.value.length > 2 || e.target.value.length === 0)
-              props?.setSearch(e.target.value);
+            props?.setSearch(e.target.value);
           }}
         />
         {/* <div className="dropdown dropdown-end border hidden md:block">
@@ -41,7 +40,7 @@ export default function FilterBar(props) {
             {categoriesMap}
           </ul>
         </div> */}
-        <div className="dropdown dropdown-end hidden md:block">
+        <div className="dropdown dropdown-end border hidden md:block">
           <label tabIndex={0} className="btn btn-secondary">
             Sort by <MdArrowDropDown size={25} />
           </label>

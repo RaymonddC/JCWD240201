@@ -16,7 +16,6 @@ const initialState = {
   activeCart: 0,
   totalPrice: 0,
   discount: 0,
-  weight: 0,
 };
 
 export const CartSlice = createSlice({
@@ -29,8 +28,6 @@ export const CartSlice = createSlice({
       initialState.activeCart = action.payload.activeCart;
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
-      initialState.weight = action.payload.weight;
-      console.log('masuk');
     },
   },
 });
@@ -66,18 +63,15 @@ export const getCartUserAsync = () => async (dispatch) => {
     }
 
     let { data } = await getUserCarts(token);
-
     let totalPrice = 0,
       totalCart = 0,
       activeCart = 0,
-      weight = 0,
       discount = 0;
     data.data.map((value) => {
       totalCart += value.qty;
       if (value.is_check) {
         activeCart += value.qty;
         totalPrice += value.qty * value.product.price;
-        weight += value.product.weight;
         value.product.promotions?.map((promo) => {
           if (promo?.discount)
             discount +=
@@ -93,7 +87,6 @@ export const getCartUserAsync = () => async (dispatch) => {
         totalPrice,
         activeCart,
         discount,
-        weight,
       }),
     );
   } catch (error) {
@@ -103,26 +96,18 @@ export const getCartUserAsync = () => async (dispatch) => {
 
 export const addToCartAsync = (values) => async (dispatch) => {
   try {
-    console.log('>>>>>>>', values);
-    const { productId, qty, prescriptionImage } = values;
+    const { productId, qty } = values;
     const token = localStorage.getItem('token');
-    console.log(values);
     if (!token) throw { message: 'Please Login First' };
     if (!productId) throw { message: "Product doesn't exist" };
-    if (!prescriptionImage) throw { message: 'Please upload image' };
     // if(!userId) throw{}
-    const response = await postCart(token, {
-      productId,
-      qty,
-      prescription_images: prescriptionImage,
-    });
-    console.log(response);
+
+    postCart(token, { productId, qty });
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');
   } catch (error) {
-    console.log(error);
-    toast.error(error?.response?.data?.message || error?.message);
+    toast.error(error.message);
   }
 };
 
