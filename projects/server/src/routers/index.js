@@ -9,6 +9,7 @@ const labelRoute = require('./labelRoute');
 const transactionRoute = require('./transactionRoute');
 const rajaOngkirRoute = require('./rajaOngkirRoute');
 const stockRoute = require('./stockRoute');
+const promotionRoute = require('./promotionRoute');
 
 module.exports = {
   authRoute,
@@ -22,4 +23,5 @@ module.exports = {
   transactionRoute,
   rajaOngkirRoute,
   stockRoute,
+  promotionRoute,
 };

@@ -10,6 +10,7 @@ const transactionController = require('./transactionController');
 const prescriptionController = require('./prescriptionController');
 const rajaongkircController = require('./rajaOngkirController');
 const stockController = require('./stockController');
+const promotionController = require('./promotionController');
 
 module.exports = {
   authController,
@@ -24,4 +25,5 @@ module.exports = {
   prescriptionController,
   rajaongkircController,
   stockController,
+  promotionController,
 };
