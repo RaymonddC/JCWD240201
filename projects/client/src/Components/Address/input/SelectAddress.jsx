@@ -29,7 +29,9 @@ export default function SelectAddress(props) {
         value={props.values}
         disabled={!props?.data?.length ? true : false}
       >
-        <option value="0">{props.placeholder}</option>
+        <option value="0" hidden>
+          {props.placeholder}
+        </option>
 
         {props.id === 'province_id'
           ? props?.data?.map((value) => {

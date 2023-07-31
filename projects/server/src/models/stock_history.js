@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       stock_history_type_id: DataTypes.INTEGER,
       qty: DataTypes.INTEGER,
       action: DataTypes.STRING,
+      total_stock: DataTypes.INTEGER,
       notes: DataTypes.STRING,
       deletedAt: DataTypes.DATE
     },

@@ -6,6 +6,9 @@ import QnAAdmin from '../../Pages/QnAAdmin';
 import QuestionDetails from '../../Pages/QuestionDetails';
 import ProductListAdmin from '../../Pages/ProductListAdmin';
 import CategoryAdmin from '../../Pages/CategoryAdmin';
+import AddProduct from '../../Pages/AddProduct';
+import EditProduct from '../../Pages/EditProduct';
+import StockPageAdmin from '../../Pages/StockPageAdmin';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -56,6 +59,33 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <CategoryAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/products/new',
+    element: (
+      <AdminLayout>
+        <AddProduct />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/products/edit/admin',
+    element: (
+      <AdminLayout>
+        <EditProduct />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/stocks',
+    element: (
+      <AdminLayout>
+        <StockPageAdmin />,
       </AdminLayout>
     ),
   },

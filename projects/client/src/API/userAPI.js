@@ -14,7 +14,7 @@ const apikey = `${process.env.REACT_APP_API_KEY}`;
 
 export const updateProfile = (data, token) => {
   return axios.put(
-    URL + '/users/',
+    `${URL}/users/`,
     {
       ...data,
     },

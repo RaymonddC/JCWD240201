@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { userVerification } from '../API/auth';
+import { userVerification } from '../API/authAPI';
 import { MdOutlineCheck } from 'react-icons/md';
 
 export default function VerifyEmail() {
