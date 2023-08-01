@@ -3,12 +3,15 @@ import { toast } from 'react-hot-toast';
 import Select from '../Components/Products/Input/Select';
 import InputUserText from '../Components/Profile/Input/InputUserText';
 import { useEffect, useState } from 'react';
-import { getPromotionTypeAPI } from '../API/promotionAPI';
+import { createPromotionAPI, getPromotionTypeAPI } from '../API/promotionAPI';
 import SelectProduct from '../Components/Promotion/Input/SelectProduct';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import { getProducts } from '../Features/Product/ProductSlice';
+import InputNumber from '../Components/Stocks/Input/InputNumber';
+import InputUserDate from '../Components/Profile/Input/InputUserDate';
+import { validateProductDiscount } from '../Helper/promotionHelper';
 
 export default function AddPromotion() {
   const dispatch = useDispatch();
@@ -55,10 +58,19 @@ export default function AddPromotion() {
       date_end: '',
       limit: '',
     },
-    // validate: validateAddProduct,
+    validate: validateProductDiscount,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log(values);
+        const result = await createPromotionAPI(values);
+        const errorMessage = { message: result.data.message };
+        if (result.data.success) {
+          toast.success(result.data.message);
+          formik.resetForm();
+          setSelectedProduct('');
+          setSubmitting(false);
+        } else {
+          throw errorMessage;
+        }
       } catch (error) {
         toast.error(error.message);
       }
@@ -105,24 +117,53 @@ export default function AddPromotion() {
             values={selectedProduct}
             onClick={() => setOpenProduct(!openProduct)}
             placeholder="Please select product"
+            errors={formik?.errors?.product_id}
             label="Product"
+            isDisabled={
+              formik?.values?.promotion_type_id === '1' ||
+              formik?.values?.promotion_type_id === '3'
+                ? false
+                : true
+            }
           />
           <div className={openProduct ? 'absolute w-full' : 'hidden'}>
             {productMap}
           </div>
         </div>
-        <InputUserText
-          id="discount"
-          label="Discount"
-          name="discount"
-          errors={formik?.errors?.discount}
-          handleChange={formik?.handleChange}
-          values={formik?.values?.discount}
-          touched={formik.touched?.discount}
-        />
         <div className="flex justify-between gap-3">
-          <div className='w-6/12'>
-            <InputUserText
+          <div className="w-6/12">
+            <InputNumber
+              id="discount"
+              label="Discount"
+              name="discount"
+              errors={formik?.errors?.discount}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.discount}
+              touched={formik.touched?.discount}
+              isDisabled={
+                formik?.values?.promotion_type_id === '1' ||
+                formik?.values?.promotion_type_id === '2'
+                  ? false
+                  : true
+              }
+            />
+          </div>
+          <div className="w-6/12">
+            <InputNumber
+              id="limit"
+              label="Promotion Limit"
+              name="limit"
+              errors={formik?.errors?.limit}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.limit}
+              touched={formik.touched?.limit}
+              isDisabled={formik?.values?.promotion_type_id ? false : true}
+            />
+          </div>
+        </div>
+        <div className="flex justify-between gap-3">
+          <div className="w-6/12">
+            <InputNumber
               id="buy"
               label="Buy"
               name="buy"
@@ -130,10 +171,13 @@ export default function AddPromotion() {
               handleChange={formik?.handleChange}
               values={formik?.values?.buy}
               touched={formik.touched?.buy}
+              isDisabled={
+                formik?.values?.promotion_type_id === '3' ? false : true
+              }
             />
           </div>
-          <div className='w-6/12'>
-            <InputUserText
+          <div className="w-6/12">
+            <InputNumber
               id="get"
               label="Get"
               name="get"
@@ -141,11 +185,75 @@ export default function AddPromotion() {
               handleChange={formik?.handleChange}
               values={formik?.values?.get}
               touched={formik.touched?.get}
+              isDisabled={
+                formik?.values?.promotion_type_id === '3' ? false : true
+              }
+            />
+          </div>
+        </div>
+        <div className="flex justify-between gap-3">
+          <div className="w-6/12">
+            <InputNumber
+              id="min_transaction"
+              label="Min. Transaction"
+              name="minimum_transaction"
+              errors={formik?.errors?.minimum_transaction}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.minimum_transaction}
+              touched={formik.touched?.minimum_transaction}
+              isDisabled={
+                formik?.values?.promotion_type_id === '2' ? false : true
+              }
+            />
+          </div>
+          <div className="w-6/12">
+            <InputNumber
+              id="maximum_discount_amount"
+              label="Max. Discount Amount"
+              name="maximum_discount_amount"
+              errors={formik?.errors?.maximum_discount_amount}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.maximum_discount_amount}
+              touched={formik.touched?.maximum_discount_amount}
+              isDisabled={
+                formik?.values?.promotion_type_id === '1' ||
+                formik?.values?.promotion_type_id === '2'
+                  ? false
+                  : true
+              }
+            />
+          </div>
+        </div>
+        <div className="flex justify-between gap-3">
+          <div className="w-6/12">
+            <InputUserDate
+              id="date_start"
+              label="Promotion Start"
+              name="date_start"
+              errors={formik?.errors?.date_start}
+              handleChange={formik.handleChange}
+              values={formik?.values?.date_start}
+              isDisabled={formik?.values?.promotion_type_id ? false : true}
+            />
+          </div>
+          <div className="w-6/12">
+            <InputUserDate
+              id="date_end"
+              label="Promotion End"
+              name="date_end"
+              errors={formik?.errors?.date_end}
+              handleChange={formik.handleChange}
+              values={formik?.values?.date_end}
+              isDisabled={formik?.values?.promotion_type_id ? false : true}
             />
           </div>
         </div>
         <button
-          disabled={!formik.isValid || formik.isSubmitting}
+          disabled={
+            !formik?.values?.promotion_type_id ||
+            !formik.isValid ||
+            formik.isSubmitting
+          }
           type="submit"
           className="btn w-full bg-primary text-white"
         >

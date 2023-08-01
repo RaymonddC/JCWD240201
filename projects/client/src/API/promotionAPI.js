@@ -11,3 +11,17 @@ export function getPromotionTypeAPI() {
     },
   });
 }
+
+export function createPromotionAPI(values) {
+  const token = localStorage.getItem('token');
+  return axios.post(
+    `${URL}/promotions/`,
+    { data: values },
+    {
+      headers: {
+        apiKey: APIKey,
+        authorization: `Bearer ${token}`,
+      },
+    },
+  );
+}
