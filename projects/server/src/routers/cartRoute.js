@@ -6,9 +6,17 @@ const { APIKey } = require('../middleware/APIKey');
 
 const { verifyToken } = require('../middleware/auth');
 const { uploadPrescription } = require('../middleware/upload');
+const { isAdmin } = require('../middleware/checkRole');
 
 // router.post('/questions', QnAController.createQuestion)
 router.get('/', APIKey, verifyToken, cartController.getCarts);
+router.get(
+  '/prescription',
+  // APIKey,
+  // verifyToken,
+  // isAdmin,
+  cartController.getAllPrescriptionsCarts,
+);
 router.post(
   '/',
   APIKey,

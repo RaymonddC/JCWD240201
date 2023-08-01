@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import {
   deleteCart,
+  getAllPrescriptionsCartsAPI,
   getUserCarts,
   postCart,
   updateCart,
@@ -17,6 +18,7 @@ const initialState = {
   totalPrice: 0,
   discount: 0,
   weight: 0,
+  prescriptionCarts: [],
 };
 
 export const CartSlice = createSlice({
@@ -31,6 +33,9 @@ export const CartSlice = createSlice({
       initialState.discount = action.payload.discount;
       initialState.weight = action.payload.weight;
       console.log('masuk');
+    },
+    setPrescriptionCarts: (initialState, action) => {
+      initialState.prescriptionCarts = action.payload;
     },
   },
 });
@@ -182,6 +187,20 @@ export const deleteCartAsync = (values) => async (dispatch) => {
 //   } catch (error) {}
 // };
 
-export const { onGetData, getCurrentCart } = CartSlice.actions;
+export const getAllPrescriptionsCartsSlice = () => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await getAllPrescriptionsCartsAPI(token);
+
+    if (response.data.success) {
+      dispatch(setPrescriptionCarts(response.data.data.rows));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const { onGetData, getCurrentCart, setPrescriptionCarts } =
+  CartSlice.actions;
 
 export default CartSlice.reducer;

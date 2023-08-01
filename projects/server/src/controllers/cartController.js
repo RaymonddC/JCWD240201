@@ -160,40 +160,23 @@ const deleteCart = async (req, res, next) => {
 
 const getAllPrescriptionsCarts = async (req, res, next) => {
   try {
-    const { count, rows } = await Cart.findAndCountAll({
-      include: [
-        {
-          model: Product,
-          attributes: { exclude: ['description', 'dosing', 'BPOM_id'] },
-          include: [
-            { model: PackagingType, attributes: ['type_name'] },
-            {
-              model: Promotion,
-              where: {
-                [Op.and]: [
-                  { limit: { [Op.gt]: 0 } },
-                  { date_start: { [Op.lte]: today } },
-                  { date_end: { [Op.gte]: today } },
-                ],
-              },
-              required: false,
-            },
-            { model: ClosedStock },
-          ],
-        },
-        // {
-        //   model: User,
-        //   //   attributes: ['username', 'official', 'profilePicture', 'fullname'],
-        // },
-      ],
-      where: whereQuery,
-      order: [['createdAt', 'DESC']],
-      limit: Number(limitPage),
-      offset: (Number(page) - 1) * limitPage,
+    const getAllPrescriptions = await getUserCarts('', { product_id: 1 });
+
+    // res.send(getAllPrescriptions);
+    return res.status(200).send({
+      success: true,
+      message: 'Get all prescriptions carts successfully',
+      data: getAllPrescriptions,
     });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = { getCarts, addToCart, updateCart, deleteCart };
+module.exports = {
+  getCarts,
+  addToCart,
+  updateCart,
+  deleteCart,
+  getAllPrescriptionsCarts,
+};

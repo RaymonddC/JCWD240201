@@ -36,7 +36,6 @@ export const ProductSlice = createSlice({
 
 export const getProducts = (data) => async (dispatch) => {
   try {
-    
     let response = await getAllProductsAPI({
       page: data.page,
       limit: data.limit,
@@ -44,7 +43,7 @@ export const getProducts = (data) => async (dispatch) => {
       sortType: data.sortType,
       sortOrder: data.sortOrder,
     });
-    console.log(response?.data.data);
+    // console.log(response?.data.data);
     dispatch(products(response?.data));
   } catch (error) {
     console.log(error);
@@ -82,13 +81,11 @@ export const getproductLabel = (data) => async (dispatch) => {
   } catch (error) {}
 };
 
-
 // export const prevPage = (data) => (dispatch) => {
 //   const currentPage = data.page;
 //   const prefPage = currentPage <= 0 ? 0 : currentPage - 1;
 //   dispatch(page(prefPage));
 // };
-
 
 export const getPackaging = () => async (dispatch) => {
   const result = await getPackagingType();

@@ -48,3 +48,12 @@ export function updateCart(token, id, data) {
     },
   );
 }
+
+export function getAllPrescriptionsCartsAPI(token) {
+  return axios.get(`${URL}/carts/prescription`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apiKey: APIKey,
+    },
+  });
+}

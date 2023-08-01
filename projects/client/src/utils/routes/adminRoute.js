@@ -9,7 +9,7 @@ import CategoryAdmin from '../../Pages/CategoryAdmin';
 import AddProduct from '../../Pages/AddProduct';
 import EditProduct from '../../Pages/EditProduct';
 import StockPageAdmin from '../../Pages/StockPageAdmin';
-import Prescription from '../../Pages/Prescription';
+import PrescriptionAdmin from '../../Pages/PrescriptionAdmin';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -95,7 +95,7 @@ const routerSource = (props) => [
     path: '/prescription',
     element: (
       <AdminLayout>
-        <Prescription />,
+        <PrescriptionAdmin />,
       </AdminLayout>
     ),
   },
