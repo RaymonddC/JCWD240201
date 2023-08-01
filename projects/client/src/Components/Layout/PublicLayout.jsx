@@ -18,10 +18,10 @@ export const PublicLayout = (props) => {
   // if (!user) return <Navigate to={'/login'} />;
 
   return (
-    <div className="min-h-[100vh]">
+    <div className="min-h-[100vh] flex flex-col">
       <Navbar></Navbar>
-      <div className="relative md:px-[3em] md:py-[2em]">
-        <div className="z-10">{props.children[0]}</div>
+      <div className="relative md:px-[3em] md:py-[2em] flex-grow">
+        <div className="z-10 ">{props.children[0]}</div>
         {/* <div className="z-50 hidden sm:block">
           <div className="avatar absolute right-0  -top-[10em]">
             <div className="w-[500px] rounded-full bg-gradient-radial from-[#D6F5F3]  to-white"></div>

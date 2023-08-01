@@ -29,7 +29,7 @@ export default function Address() {
   console.log(address);
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="flex flex-col items-center lg:flex-row lg:items-start lg:justify-center px-4 gap-4 pt-2">
         <MenuBarDesktop />
         <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">

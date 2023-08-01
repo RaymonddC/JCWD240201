@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutAddress from '../Components/Checkout/CheckoutAddress';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { getCartUserAsync } from '../Features/Cart/CartSlice';
 import ShippingMethod from '../Components/Checkout/ShippingMethod';
 import { toast } from 'react-hot-toast';
+import { checkoutTxSlice } from '../Features/Checkout/CheckoutSlice';
 
 export default function Checkout() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   let token = localStorage.getItem('token');
   const { shippingFee } = useSelector((state) => state.checkout);
   const { editAddressData, selectedAddress, cityUser, loadAddress } =
@@ -96,10 +98,18 @@ export default function Checkout() {
               <div className="orderNow  md:pt-5">
                 <button
                   className="btn btn-sm md:btn-md  btn-primary w-full text-white"
-                  onClick={() => {
-                    // checkoutAsync();
+                  onClick={async () => {
                     if (!shippingFee)
-                      toast.error('Please choose your shipping courier');
+                      return toast.error('Please choose your shipping courier');
+
+                    if (
+                      await dispatch(
+                        checkoutTxSlice({ shippingFee, discount, activeCart }),
+                      )
+                    )
+                      return navigate('/user/transaction');
+
+                    // Navigate({ to: '/' });
                   }}
                 >
                   Bayar ({activeCart})

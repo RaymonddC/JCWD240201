@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      cart_id: {
+      product_id: {
         type: Sequelize.INTEGER,
       },
       promotion_id: {
@@ -18,11 +18,17 @@ module.exports = {
       transaction_id: {
         type: Sequelize.INTEGER,
       },
+      product_name: {
+        type: Sequelize.STRING,
+      },
       price: {
         type: Sequelize.INTEGER,
       },
-      product_name: {
+      prescription_image: {
         type: Sequelize.STRING,
+      },
+      qty: {
+        type: Sequelize.INTEGER,
       },
       deletedAt: {
         type: Sequelize.DATE,
