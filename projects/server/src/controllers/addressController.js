@@ -38,6 +38,8 @@ const createAddress = async (req, res, next) => {
 
     validateForm({ ...data });
 
+    console.log(user_id);
+
     const is_first = await isFirstAddress(user_id);
 
     const result = await addressDB.create({
