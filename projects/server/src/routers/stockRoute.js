@@ -13,6 +13,6 @@ router.post(
   // isAdmin,
   stockController.createDataStock,
 );
-router.get('/', APIKey, stockController.getStockHistoryType)
-
+router.put('/unit-conversion', stockController.unitConversion);
+router.get('/', APIKey, stockController.getStockHistoryType);
 module.exports = router;
