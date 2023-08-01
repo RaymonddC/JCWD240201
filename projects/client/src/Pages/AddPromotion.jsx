@@ -4,15 +4,61 @@ import Select from '../Components/Products/Input/Select';
 import InputUserText from '../Components/Profile/Input/InputUserText';
 import { useEffect, useState } from 'react';
 import { getPromotionTypeAPI } from '../API/promotionAPI';
+import SelectProduct from '../Components/Promotion/Input/SelectProduct';
+import { useSearchParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import useDebounce from '../Hooks/useDebounce';
+import { getProducts } from '../Features/Product/ProductSlice';
 
 export default function AddPromotion() {
+  const dispatch = useDispatch();
+  const ProductsStore = useSelector((state) => state?.products?.products);
+  const limit = 5;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  let queryParams = {};
+  const productList = ProductsStore?.data?.rows;
+  const debouncedSearchValue = useDebounce(search, 1200);
   const [promotionType, setPromotionType] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [openProduct, setOpenProduct] = useState(false);
+  let productMap;
+
+  const onSelectedProduct = (value) => {
+    setSelectedProduct(value.name);
+    formik.setFieldValue('product_id', value.id);
+    setOpenProduct(false);
+  };
+
+  productMap = productList?.map((value, index) => {
+    return (
+      <div
+        onClick={() => onSelectedProduct(value)}
+        key={`product${index}`}
+        className="py-3 flex border w-full bg-white hover:bg-slate-100 hover:cursor-pointer"
+      >
+        {value.name}
+      </div>
+    );
+  });
 
   const formik = useFormik({
-    initialValues: {},
+    initialValues: {
+      product_id: '',
+      promotion_type_id: '',
+      discount: '',
+      buy: '',
+      get: '',
+      minimum_transaction: '',
+      maximum_discount_amount: '',
+      date_start: '',
+      date_end: '',
+      limit: '',
+    },
     // validate: validateAddProduct,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        console.log(values);
       } catch (error) {
         toast.error(error.message);
       }
@@ -27,32 +73,77 @@ export default function AddPromotion() {
   useEffect(() => {
     getPromotionType();
   }, []);
+
+  useEffect(() => {
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
+    setSearchParams(queryParams);
+    dispatch(getProducts({ page: 1, limit, search: debouncedSearchValue }));
+  }, [debouncedSearchValue]);
   return (
     <>
       <div className="font-bold text-xl">Add Discount</div>
       <form onSubmit={formik.handleSubmit}>
         <Select
-          id="primary unit"
-          name="product.packaging_type_id"
+          id="promotion_type"
+          name="promotion_type_id"
           handleChange={formik?.handleChange}
           onBlur={formik?.handleBlur}
-          errors={formik?.errors?.packaging_type_id}
-          value={formik?.values?.product?.packaging_type_id}
+          errors={formik?.errors?.promotion_type_id}
+          value={formik?.values?.promotion_type_id}
           data={promotionType}
           placeholder="Please select primary unit"
           label="Primary Unit"
-          touched={formik.touched?.product?.packaging_type_id}
+          touched={formik.touched?.promotion_type_id}
         />
+        <div className="relative">
+          <SelectProduct
+            id="product"
+            name="product_id"
+            setSearch={setSearch}
+            values={selectedProduct}
+            onClick={() => setOpenProduct(!openProduct)}
+            placeholder="Please select product"
+            label="Product"
+          />
+          <div className={openProduct ? 'absolute w-full' : 'hidden'}>
+            {productMap}
+          </div>
+        </div>
         <InputUserText
-          id="name"
-          label="Name"
-          name="product.name"
-          errors={formik?.errors?.name}
+          id="discount"
+          label="Discount"
+          name="discount"
+          errors={formik?.errors?.discount}
           handleChange={formik?.handleChange}
-          values={formik?.values?.product?.name}
-          touched={formik.touched?.product?.name}
-          disabled={true}
+          values={formik?.values?.discount}
+          touched={formik.touched?.discount}
         />
+        <div className="flex justify-between gap-3">
+          <div className='w-6/12'>
+            <InputUserText
+              id="buy"
+              label="Buy"
+              name="buy"
+              errors={formik?.errors?.buy}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.buy}
+              touched={formik.touched?.buy}
+            />
+          </div>
+          <div className='w-6/12'>
+            <InputUserText
+              id="get"
+              label="Get"
+              name="get"
+              errors={formik?.errors?.get}
+              handleChange={formik?.handleChange}
+              values={formik?.values?.get}
+              touched={formik.touched?.get}
+            />
+          </div>
+        </div>
         <button
           disabled={!formik.isValid || formik.isSubmitting}
           type="submit"

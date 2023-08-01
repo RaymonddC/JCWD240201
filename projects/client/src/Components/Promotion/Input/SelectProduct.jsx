@@ -1,37 +1,22 @@
 export default function SelectProduct(props) {
   return (
     <>
-      <label className="text-[14px]">{props.label}</label>
-      <select
-        className={
-          props?.errors && props?.touched
-            ? 'select w-full px-3 mb-2 border border-error rounded-md select-none focus:outline-none text-[14px]'
-            : 'select w-full px-3 mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]'
-        }
-        id={props.id}
+      <label htmlFor={props.id} className="text-[14px]">
+        {props.label}
+      </label>
+      <input
         name={props.name}
-        onBlur={props.onBlur}
-        onChange={props.handleChange}
+        placeholder={props?.placeholder ? props.placeholder : null}
+        id={props.id}
+        type="text"
+        className="input w-full px-3 mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
+        onChange={(e) => {
+          if (e.target.value.length > 2 || e.target.value.length === 0)
+            props?.setSearch(e.target.value);
+        }}
+        onClick={props.onClick}
         value={props.values}
-      >
-        <option value="0" hidden selected={props.selected ? false : true}>
-          {props.placeholder}
-        </option>
-        {props?.data?.map((value) => {
-          return (
-            <option
-              key={value.id}
-              value={value?.id}
-              selected={props.selected === value.id ? true : false}
-            >
-              {value?.type_name || value?.type || value?.promotion}
-            </option>
-          );
-        })}
-      </select>
-      {props.errors && props?.touched ? (
-        <p className="text-error text-[14px]">{props.errors}</p>
-      ) : null}
+      />
     </>
   );
 }

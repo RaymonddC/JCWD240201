@@ -12,9 +12,9 @@ export default function Select(props) {
         name={props.name}
         onBlur={props.onBlur}
         onChange={props.handleChange}
-        value={props.values}
+        value={props.value}
       >
-        <option value="0" hidden selected={props.selected ? false : true}>
+        <option value="0" hidden>
           {props.placeholder}
         </option>
         {props?.data?.map((value) => {
