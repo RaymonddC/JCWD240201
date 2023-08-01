@@ -109,8 +109,9 @@ export const addToCartAsync = (values) => async (dispatch) => {
     console.log(values);
     if (!token) throw { message: 'Please Login First' };
     if (!productId) throw { message: "Product doesn't exist" };
-    if (!prescriptionImage) throw { message: 'Please upload image' };
-    // if(!userId) throw{}
+    if ((productId === 1) & !prescriptionImage) {
+      throw { message: 'Please upload image' };
+    }
     const response = await postCart(token, {
       productId,
       qty,

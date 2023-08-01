@@ -2,7 +2,10 @@ import { useSearchParams } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { getProductDetailsAPI, updateProduct } from '../API/productAPI';
 import { useFormik } from 'formik';
-import { validateAddProduct, validateEditProduct } from '../Helper/productHelper';
+import {
+  validateAddProduct,
+  validateEditProduct,
+} from '../Helper/productHelper';
 import { toast } from 'react-hot-toast';
 import InputProductImage from '../Components/Products/Input/InputFile';
 import Multiselect from 'multiselect-react-dropdown';
@@ -15,12 +18,13 @@ import { getAllCategories } from '../Features/Category/CategorySlice';
 import { useNavigate } from 'react-router-dom';
 
 export default function EditProduct() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const productId = searchParams.get('productId');
   const [image, setImage] = useState(null);
   const [product, setProduct] = useState(null);
   const [selectedCategories, setSelectedCategories] = useState(null);
+  const [isChange, setIsChange] = useState(false);
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
   const category = useSelector((state) => state?.categories?.categories);
@@ -70,7 +74,7 @@ export default function EditProduct() {
         if (result.data.success) {
           toast.success(result.data.message);
           setSubmitting(false);
-          navigate('/products')
+          navigate('/products');
         } else {
           throw errorMessage;
         }
@@ -93,6 +97,7 @@ export default function EditProduct() {
   const onSelectOptions = (selectedList, selectedItem) => {
     setSelectedOptions([...selectedOptions, selectedItem]);
     setSelectedCategory([...selectedCategory, selectedItem.id]);
+    setIsChange(true);
   };
   const onRemoveOptions = (selectedList, removedItem) => {
     // setRemovedOptions([...removedOptions, removedItem]);
@@ -110,6 +115,7 @@ export default function EditProduct() {
     });
     setSelectedOptions(selectedItems);
     setSelectedCategory(selectedCategories);
+    setIsChange(true);
   };
 
   const setDefaultValue = () => {
@@ -127,7 +133,13 @@ export default function EditProduct() {
         price: product?.price,
       },
     });
+    setIsChange(false);
   };
+
+  const onInputImage = (image) => {
+    formik.setFieldValue('image.product', image);
+    setIsChange(true)
+  }
 
   useEffect(() => {
     getCurrentData();
@@ -173,14 +185,14 @@ export default function EditProduct() {
               label="Name"
               name="product.name"
               errors={formik?.errors?.name}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.name}
               touched={formik.touched?.product?.name}
             />
             <Select
               id="primary unit"
               name="product.packaging_type_id"
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               onBlur={formik?.handleBlur}
               errors={formik?.errors?.packaging_type_id}
               value={formik?.values?.product?.packaging_type_id}
@@ -193,7 +205,7 @@ export default function EditProduct() {
             <Select
               id="secondary unit"
               name="product.product_type_id"
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               onBlur={formik?.handleBlur}
               errors={formik?.errors?.product_type_id}
               value={formik?.values?.product?.product_type_id}
@@ -208,7 +220,7 @@ export default function EditProduct() {
               label="Net Content"
               name="product.net_content"
               errors={formik?.errors?.net_content}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.net_content}
               touched={formik.touched?.product?.net_content}
             />
@@ -217,7 +229,7 @@ export default function EditProduct() {
               label="Description"
               name="product.description"
               errors={formik?.errors?.description}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.description}
               touched={formik.touched?.product?.description}
             />
@@ -226,7 +238,7 @@ export default function EditProduct() {
               label="Dosing"
               name="product.dosing"
               errors={formik?.errors?.dosing}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.dosing}
               touched={formik.touched?.product?.dosing}
             />
@@ -235,7 +247,7 @@ export default function EditProduct() {
               label="Weight"
               name="product.weight"
               errors={formik?.errors?.weight}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.weight}
               touched={formik.touched?.product?.weight}
             />
@@ -246,14 +258,14 @@ export default function EditProduct() {
               label="BPOM Id"
               name="product.BPOM_id"
               errors={formik?.errors?.BPOM_id}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.BPOM_id}
               touched={formik.touched?.product?.BPOM_id}
             />
             <SelectPrescription
               id="prescreption"
               name="product.require_prescription"
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               onBlur={formik?.handleBlur}
               errors={formik?.errors?.require_prescription}
               value={formik?.values?.product?.require_prescription}
@@ -267,7 +279,7 @@ export default function EditProduct() {
               label="Price"
               name="product.price"
               errors={formik?.errors?.price}
-              handleChange={formik?.handleChange}
+              handleChange={() => setIsChange(true)}
               values={formik?.values?.product?.price}
               touched={formik.touched?.product?.price}
             />
@@ -295,7 +307,7 @@ export default function EditProduct() {
                 name="image.product"
                 id="product_image"
                 onChange={(e) => {
-                  formik.setFieldValue('image.product', e.target.files[0]);
+                  onInputImage(e.target.files[0]);
                 }}
                 label="Product Image"
                 refProp={fileInputRef}
@@ -303,10 +315,15 @@ export default function EditProduct() {
             </div>
           </div>
         </div>
-        <div className='grid grid-cols-2 gap-4 my-6 mb-6'>
-          <button className="btn w-full bg-primary text-white" onClick={() => navigate('/products')}>Cancel</button>
+        <div className="grid grid-cols-2 gap-4 my-6 mb-6">
           <button
-            disabled={!formik.isValid || formik.isSubmitting}
+            className="btn w-full bg-primary text-white"
+            onClick={() => navigate('/products')}
+          >
+            Cancel
+          </button>
+          <button
+            disabled={!isChange || !formik.isValid || formik.isSubmitting}
             type="submit"
             className="btn w-full bg-primary text-white"
           >
