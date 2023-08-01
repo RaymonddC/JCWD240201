@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const db = require('../models');
-const { getCart, getCartByPk } = require('../helpers/cartHelper');
+const { getCart, getCartByPk, getUserCarts } = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Product = db.product;
@@ -25,45 +25,15 @@ const getCarts = async (req, res, next) => {
     } = req.query;
 
     let whereQuery = { user_id: userId };
-    const today = new Date();
-    const { count, rows } = await Cart.findAndCountAll({
-      include: [
-        {
-          model: Product,
-          attributes: { exclude: ['description', 'dosing', 'BPOM_id'] },
-          include: [
-            { model: PackagingType, attributes: ['type_name'] },
-            {
-              model: Promotion,
-              where: {
-                [Op.and]: [
-                  { limit: { [Op.gt]: 0 } },
-                  { date_start: { [Op.lte]: today } },
-                  { date_end: { [Op.gte]: today } },
-                ],
-              },
-              required: false,
-            },
-            { model: ClosedStock },
-          ],
-        },
-        // {
-        //   model: User,
-        //   //   attributes: ['username', 'official', 'profilePicture', 'fullname'],
-        // },
-      ],
-      where: whereQuery,
-      order: [['createdAt', 'DESC']],
-      limit: Number(limitPage),
-      offset: (Number(page) - 1) * limitPage,
-    });
-    console.log(count);
+
+    const { count, rows } = await getUserCarts('', whereQuery);
+    console.log(count, 'cart');
 
     return res.status(200).send({
       success: true,
       message: 'getAll Cart',
       data: rows,
-      pageCount: count,
+      // pageCount: count,
     });
   } catch (error) {
     next(error);
@@ -175,6 +145,8 @@ const deleteCart = async (req, res, next) => {
     const deleted = await Cart.destroy({
       where: { id: id, user_id: userId },
     });
+
+    if (deleted === 0) throw { message: 'cart not found' };
 
     return res.status(200).send({
       success: true,
