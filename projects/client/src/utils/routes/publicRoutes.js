@@ -14,6 +14,8 @@ import Cart from '../../Pages/Cart';
 import { PublicLayout } from '../../Components/Layout/PublicLayout';
 import Products from '../../Pages/Products';
 import ProductDetails from '../../Pages/ProductDetails';
+import Transaction from '../../Pages/Transaction';
+import ProfileLayout from '../../Components/Layout/ProfileLayout';
 import Checkout from '../../Pages/Checkout';
 
 const routerSource = (props) => [
@@ -23,7 +25,11 @@ const routerSource = (props) => [
   },
   {
     path: '/user/profile',
-    element: <Profile />,
+    element: (
+      <PublicLayout>
+        <Profile />,
+      </PublicLayout>
+    ),
   },
   {
     path: '/login',
@@ -59,7 +65,11 @@ const routerSource = (props) => [
   },
   {
     path: '/user/address',
-    element: <Address />,
+    element: (
+      <PublicLayout>
+        <Address />,
+      </PublicLayout>
+    ),
   },
 
   {
@@ -87,6 +97,17 @@ const routerSource = (props) => [
     index: true,
     path: '/products/:id',
     element: <ProductDetails />,
+  },
+  {
+    path: '/user/transaction',
+    element: (
+      <PublicLayout>
+        <ProfileLayout>
+          <Transaction />
+        </ProfileLayout>
+        ,
+      </PublicLayout>
+    ),
   },
 
   { index: true, path: '/*', element: <>ERROR</> },

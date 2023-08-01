@@ -9,17 +9,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      transaction.hasMany(models.transaction_detail, {
+        foreignKey: 'transaction_id',
+      });
     }
   }
   transaction.init(
     {
       promotion_id: DataTypes.INTEGER,
+      user_id: DataTypes.INTEGER,
       image: DataTypes.STRING,
       city_id: DataTypes.INTEGER,
       notes: DataTypes.STRING,
       address: DataTypes.STRING,
       phone_number: DataTypes.STRING,
       receiver: DataTypes.STRING,
+      shipment_fee: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,
     },
     {

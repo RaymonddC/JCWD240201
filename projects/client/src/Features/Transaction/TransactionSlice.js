@@ -7,13 +7,11 @@ import {
   postCart,
   updateCart,
 } from '../../API/cartAPI';
+import { getUserTransactions } from '../../API/transactionAPI';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
-  carts: [],
-  totalCart: 0,
-  activeCart: 0,
-  totalPrice: 0,
+  transactions: [],
 };
 
 export const TransactionSlice = createSlice({
@@ -21,13 +19,22 @@ export const TransactionSlice = createSlice({
   initialState,
   reducers: {
     onGetData: (initialState, action) => {
-      initialState.carts = action.payload.data;
-      initialState.totalCart = action.payload.totalCart;
-      initialState.activeCart = action.payload.activeCart;
-      initialState.totalPrice = action.payload.totalPrice;
+      initialState.transactions = action.payload.data;
     },
   },
 });
+
+export const getAllTransactionSlice = (values) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+
+    const { data } = await getUserTransactions(token);
+
+    dispatch(onGetData(data));
+  } catch (error) {
+    return toast.error(error.message);
+  }
+};
 
 export const { onGetData } = TransactionSlice.actions;
 

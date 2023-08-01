@@ -26,18 +26,17 @@ export default function NavBar() {
           </Link>
         </div>
         <div className="hidden sm:block w-full">
-          <div className="flex justify-between pr-2">
-            <div className="flex items-center">
+          <div className="flex justify-between pr-2 items-center">
+            <div className="flex">
               <button className="btn btn-sm btn-ghost">
                 <Link to="/products">Shop</Link>
               </button>
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">QnA</Link>
               </button>
-              
             </div>
             <div className="flex items-center relative">
-            {user && Object.keys(user).length !== 0 ? (
+              {user && Object.keys(user).length !== 0 ? (
                 <button className="btn btn-sm btn-ghost absolute right-72">
                   <Link to={'/cart'}>
                     <SlBag size={25} />

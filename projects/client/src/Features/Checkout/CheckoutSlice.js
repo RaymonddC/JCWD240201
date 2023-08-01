@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { getCourierService } from '../../API/checkoutAPI';
+import { checkoutAPI, getCourierService } from '../../API/checkoutAPI';
 
 const initialState = {
   courierServices: [],
@@ -31,6 +31,19 @@ export const getCourierServiceSlice = (data) => async (dispatch) => {
   } catch (error) {
     if (error.response.data.message === 'jwt malformed')
       return toast.error('Please log in first');
+    return toast.error(error.message);
+  }
+};
+
+export const checkoutTxSlice = (values) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+
+    await checkoutAPI(values, token);
+
+    toast.success('Checkout Success');
+    return true;
+  } catch (error) {
     return toast.error(error.message);
   }
 };

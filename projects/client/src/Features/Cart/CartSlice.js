@@ -7,6 +7,7 @@ import {
   postCart,
   updateCart,
 } from '../../API/cartAPI';
+import { processData } from '../../Helper/cartHelper';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
@@ -23,7 +24,7 @@ export const CartSlice = createSlice({
   initialState,
   reducers: {
     onGetData: (initialState, action) => {
-      initialState.carts = action.payload.data;
+      initialState.carts = action.payload.carts;
       initialState.totalCart = action.payload.totalCart;
       initialState.activeCart = action.payload.activeCart;
       initialState.totalPrice = action.payload.totalPrice;
@@ -33,6 +34,29 @@ export const CartSlice = createSlice({
     },
   },
 });
+
+export const updateQtyAsync = (values) => async (dispatch) => {
+  const { newQty, calc, idx, carts } = values;
+  let newCarts = [...carts];
+  let cart = { ...carts[idx] };
+  newCarts[idx] = cart;
+  let stock = cart.product.closed_stocks[0]?.total_stock;
+
+  if (calc) {
+    if (calc === '+')
+      if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
+      else cart.qty = cart.qty + 1;
+    else {
+      if (cart.qty <= 0) return toast.error('cart deleted');
+      else cart.qty--;
+    }
+  } else {
+    if (newQty > stock) return toast.error('Out Of Stock');
+    else cart.qty = newQty;
+  }
+  newCarts[idx] = cart;
+  dispatch(onGetData(await processData(newCarts)));
+};
 
 export const getCartUserAsync = () => async (dispatch) => {
   try {
@@ -64,7 +88,7 @@ export const getCartUserAsync = () => async (dispatch) => {
 
     dispatch(
       onGetData({
-        data: data.data,
+        carts: data.data,
         totalCart,
         totalPrice,
         activeCart,
@@ -126,9 +150,9 @@ export const deleteCartAsync = (values) => async (dispatch) => {
       await dispatch(getCartUserAsync());
       return toast.success('Product removed from cart');
     }
-    return toast.error('Failed to remove product');
   } catch (error) {
-    toast.error(error.message);
+    return toast.error('Failed to remove product');
+    // toast.error(error.message);
   }
 };
 
@@ -158,6 +182,6 @@ export const deleteCartAsync = (values) => async (dispatch) => {
 //   } catch (error) {}
 // };
 
-export const { onGetData } = CartSlice.actions;
+export const { onGetData, getCurrentCart } = CartSlice.actions;
 
 export default CartSlice.reducer;
