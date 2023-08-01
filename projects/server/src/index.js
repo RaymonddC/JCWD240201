@@ -37,6 +37,7 @@ const {
   txStatusRoute,
   rajaOngkirRoute,
   stockRoute,
+  promotionRoute,
 } = require('./routers');
 
 app.use('/auth', authRoute);
@@ -51,6 +52,7 @@ app.use('/transactions', transactionRoute);
 app.use('/tx_status', txStatusRoute);
 app.use('/rajaongkir', rajaOngkirRoute);
 app.use('/stocks', stockRoute);
+app.use('/promotions', promotionRoute);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

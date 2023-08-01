@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -11,37 +11,32 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-     */
-    await queryInterface.bulkInsert('stock_history_types', [
+    */
+    await queryInterface.bulkInsert('promotion_types', [
       {
-        type: 'add stock',
+        promotion: 'Product Discount',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        type: 'stock opname',
+        promotion: 'Transaction Discount',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        type: 'unit convertion',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        type: 'sales',
+        promotion: 'Buy and Get Promotion',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
     ]);
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  },
+  }
 };
