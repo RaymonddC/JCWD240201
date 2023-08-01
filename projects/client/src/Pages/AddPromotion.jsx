@@ -11,7 +11,7 @@ import useDebounce from '../Hooks/useDebounce';
 import { getProducts } from '../Features/Product/ProductSlice';
 import InputNumber from '../Components/Stocks/Input/InputNumber';
 import InputUserDate from '../Components/Profile/Input/InputUserDate';
-import { validateProductDiscount } from '../Helper/promotionHelper';
+import { validatePromotion } from '../Helper/promotionHelper';
 
 export default function AddPromotion() {
   const dispatch = useDispatch();
@@ -58,9 +58,12 @@ export default function AddPromotion() {
       date_end: '',
       limit: '',
     },
-    validate: validateProductDiscount,
+    validate: validatePromotion,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        const dateError = { message: 'Date is not valid' };
+        if (new Date(values.date_start) > new Date(values.date_end))
+          throw dateError;
         const result = await createPromotionAPI(values);
         const errorMessage = { message: result.data.message };
         if (result.data.success) {

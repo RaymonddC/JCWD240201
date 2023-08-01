@@ -1,4 +1,4 @@
-export const validateProductDiscount = (values) => {
+export const validatePromotion = (values) => {
   const errors = {};
   if (
     !values.product_id &&
