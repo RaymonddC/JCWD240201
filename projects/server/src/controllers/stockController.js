@@ -102,10 +102,15 @@ const getStockHistoryType = async (req, res, next) => {
 };
 
 const unitConversion = async (req, res, next) => {
-  // const t = await sequelize.transaction();
+  const t = await sequelize.transaction();
   try {
     console.log('>>> unit conversion');
     const { product_id, qty } = req.body;
+    let openedStock;
+    let resOpenedStock1;
+    let stock;
+    if (!product_id) throw { message: 'please provide a product' };
+    if (!qty) throw { message: 'please provide quantity' };
     const resOpenedStock = await openedStockDB.findOne({
       where: { product_id: product_id },
     });
@@ -116,18 +121,64 @@ const unitConversion = async (req, res, next) => {
       include: [packagingDB, productTypeDB],
       where: { id: product_id },
     });
-    // const openedStock = response.data.opened_stock.qty;
-    // const closedStock = resClosedStock.data.closed_stock.qty;
-    // const netContent = response.data.net_content;
 
-    // while (openedStock > qty) {}
+    if (resOpenedStock !== null) {
+      openedStock = resOpenedStock.qty;
+    } else {
+      openedStock = 0;
+    }
 
-    console.log('unit conversion', response);
-    // await t.commit();
+    const closedStock = resClosedStock.total_stock;
+    const netContent = response.net_content;
+
+    while (openedStock < qty) {
+      if (openedStock === null) {
+        resOpenedStock1 = await openedStockDB.create(
+          {
+            product_id,
+            qty: netContent,
+          },
+          { transaction: t },
+        );
+        openedStock = resOpenedStock1.qty;
+      } else {
+        const newOpenedStock = netContent + openedStock;
+        resOpenedStock1 = await openedStockDB.update(
+          { qty: newOpenedStock },
+          { where: { product_id } },
+          { transaction: t },
+        );
+        const openedStockCheck = await openedStockDB.findOne({
+          where: { product_id },
+        });
+        openedStock = openedStockCheck.qty;
+      }
+      const newClosedStock = closedStock - 1;
+      updateStock = await closedStockDB.update(
+        { total_stock: newClosedStock },
+        { where: { product_id } },
+        { transaction: t },
+      );
+      // const resUpdated = await closedStockDB.findOne({ where: { product_id } });
+      // stock = resUpdated.total_stock;
+    }
+    const newUpdateStock = openedStock - qty;
+    const updateStock = await openedStockDB.update(
+      { qty: newUpdateStock },
+      { where: { product_id } },
+      { transaction: t },
+    );
+
+    // console.log('unit conversion', response);
+    await t.commit();
     return res.status(200).send({
       success: true,
       message: 'unit conversion completed successfully',
       data: response,
+      net_content: netContent,
+      closed_stock: closedStock,
+      opened_stock: resOpenedStock1,
+      updateStock: stock,
     });
   } catch (error) {
     // await t.rollback();
