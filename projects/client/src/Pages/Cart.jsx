@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkoutAsync, getCartUserAsync } from '../Features/Cart/CartSlice';
+import {
+  checkoutAsync,
+  getCartUserAsync,
+  updateQtyAsync,
+} from '../Features/Cart/CartSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
 import {
   getProvinceAsync,
@@ -22,7 +26,16 @@ const Cart = () => {
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
 
-  // console.log(address, loadAddress);
+  const handleQty = (e, calc, idx) => {
+    dispatch(
+      updateQtyAsync({
+        newQty: Number(e.currentTarget.value),
+        calc,
+        idx,
+        carts,
+      }),
+    );
+  };
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -64,6 +77,8 @@ const Cart = () => {
                     cart={value}
                     check={isCheck}
                     setCheck={setIsCheck}
+                    setQty={handleQty}
+                    idx={idx}
                     // isForceCheck={isForceCheck}
                   />
                 );

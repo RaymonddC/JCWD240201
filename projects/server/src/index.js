@@ -34,6 +34,7 @@ const {
   categoryRoute,
   labelRoute,
   transactionRoute,
+  txStatusRoute,
   rajaOngkirRoute,
   stockRoute,
 } = require('./routers');
@@ -47,6 +48,7 @@ app.use('/products', productRoute);
 app.use('/categories', categoryRoute);
 app.use('/labels', labelRoute);
 app.use('/transactions', transactionRoute);
+app.use('/tx_status', txStatusRoute);
 app.use('/rajaongkir', rajaOngkirRoute);
 app.use('/stocks', stockRoute);
 

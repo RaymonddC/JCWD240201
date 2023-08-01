@@ -33,6 +33,16 @@ export default function MenuBarDesktop() {
       >
         Change Passsword
       </Link>
+      <Link
+        to="/user/transaction"
+        className={
+          window.location.pathname === '/user/transaction'
+            ? 'p-3 text-[#00A8B5] font-bold'
+            : 'p-3'
+        }
+      >
+        Transaction
+      </Link>
     </div>
   );
 }

@@ -15,3 +15,20 @@ export const getCourierService = (data, token) => {
     },
   );
 };
+
+export const checkoutAPI = (values, token) => {
+  try {
+    return axios.post(
+      `${URL}/transactions/`,
+      { ...values },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      },
+    );
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};

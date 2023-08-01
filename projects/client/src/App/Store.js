@@ -7,6 +7,7 @@ import ProductReducer from '.././Features/Product/ProductSlice';
 import CategoryReducer from '.././Features/Category/CategorySlice';
 import AddressReducer from '../Features/Address/AddressSlice';
 import TransactionReducer from '../Features/Transaction/TransactionSlice';
+import TransactionStatusReducer from '../Features/TransactionStatus/TransactionStatusSlice';
 import CheckoutReducer from '../Features/Checkout/CheckoutSlice';
 
 export const Store = configureStore({
@@ -18,6 +19,7 @@ export const Store = configureStore({
     categories: CategoryReducer,
     address: AddressReducer,
     transaction: TransactionReducer,
+    txStatus: TransactionStatusReducer,
     checkout: CheckoutReducer,
   },
 });
