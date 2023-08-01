@@ -3,19 +3,19 @@ import NavBar from '../Components/Layout/Navbar';
 import { getAnswers, submitQuestion } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
+import { useSearchParams } from 'react-router-dom';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
   const disabled = Object.keys(user).length?false:true
   const placeholder = disabled?'Please login to ask a question': 'Type your question here...'
-  console.log(user)
+  const [searchParams, setSearchParams] = useSearchParams();
+  let queryParams = {};
   const question = useRef();
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
-  console.log('QnAStore', QnAStore.answers?.data);
   const totalPages = QnAStore?.answers?.totalPage;
-  console.log('Total pages', totalPages);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(searchParams.get('page') || 1);
   const next = () => {
     const nextPage = page >= totalPages ? totalPages : (page + 1);
     setPage(nextPage);
@@ -26,6 +26,10 @@ export default function QnAUser() {
   };
 
   useEffect(() => {
+    if (page) {
+      queryParams['page'] = page;
+    }
+    setSearchParams(queryParams);
     dispatch(getAnswers({ page, limit: 2 }));
     // console.log('><><><><><')
   }, [dispatch, page]);

@@ -2,6 +2,10 @@ const db = require('../models');
 const stockHistoryDB = db.stock_history;
 const stockHistoryTypeDB = db.stock_history_type;
 const closedStockDB = db.closed_stock;
+const openedStockDB = db.opened_stock;
+const productDB = db.product;
+const productTypeDB = db.product_type;
+const packagingDB = db.packaging_type;
 const { sequelize } = require('../models');
 
 const createDataStock = async (req, res, next) => {
@@ -26,7 +30,7 @@ const createDataStock = async (req, res, next) => {
           { transaction: t },
         );
         data.unit = false;
-        data.product_id = productId
+        data.product_id = productId;
         data.total_stock = addStock;
         await stockHistoryDB.create(data);
       } else {
@@ -38,8 +42,8 @@ const createDataStock = async (req, res, next) => {
           { transaction: t },
         );
         data.unit = false;
-        data.product_id = productId
-        data.total_stock = data.qty
+        data.product_id = productId;
+        data.total_stock = data.qty;
         await stockHistoryDB.create(data, { transaction: t });
       }
     } else if (data.action.toLowerCase() === 'out') {
@@ -56,7 +60,7 @@ const createDataStock = async (req, res, next) => {
           { transaction: t },
         );
         data.unit = false;
-        data.product_id = productId
+        data.product_id = productId;
         data.total_stock = addStock;
         await stockHistoryDB.create(data, { transaction: t });
       } else if (!productStock || !productStock.total_stock) {
@@ -64,7 +68,7 @@ const createDataStock = async (req, res, next) => {
       }
     }
 
-    await t.commit()
+    await t.commit();
 
     return res.send({
       success: true,
@@ -73,7 +77,7 @@ const createDataStock = async (req, res, next) => {
       data: updateStock,
     });
   } catch (error) {
-    await t.rollback()
+    await t.rollback();
     return res.send({
       success: false,
       message: error.message,
@@ -97,11 +101,42 @@ const getStockHistoryType = async (req, res, next) => {
   }
 };
 
-const unitConsversion= async (req, res, next) => {
-   
-}
+const unitConversion = async (req, res, next) => {
+  // const t = await sequelize.transaction();
+  try {
+    console.log('>>> unit conversion');
+    const { product_id, qty } = req.body;
+    const resOpenedStock = await openedStockDB.findOne({
+      where: { product_id: product_id },
+    });
+    const resClosedStock = await closedStockDB.findOne({
+      where: { product_id: product_id },
+    });
+    const response = await productDB.findOne({
+      include: [packagingDB, productTypeDB],
+      where: { id: product_id },
+    });
+    // const openedStock = response.data.opened_stock.qty;
+    // const closedStock = resClosedStock.data.closed_stock.qty;
+    // const netContent = response.data.net_content;
+
+    // while (openedStock > qty) {}
+
+    console.log('unit conversion', response);
+    // await t.commit();
+    return res.status(200).send({
+      success: true,
+      message: 'unit conversion completed successfully',
+      data: response,
+    });
+  } catch (error) {
+    // await t.rollback();
+    next(error);
+  }
+};
 
 module.exports = {
   createDataStock,
   getStockHistoryType,
+  unitConversion,
 };
