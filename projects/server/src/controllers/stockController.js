@@ -208,7 +208,7 @@ const unitConversion = async (req, res, next) => {
       },
       { transaction: t },
     );
-    // console.log('unit conversion', response);
+
     await t.commit();
     return res.status(200).send({
       success: true,
