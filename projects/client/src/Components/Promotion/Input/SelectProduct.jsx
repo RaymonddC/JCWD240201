@@ -1,4 +1,15 @@
+import { useEffect, useState } from "react";
+
 export default function SelectProduct(props) {
+  const [value, setValue] = useState(null)
+
+  useEffect(() => {
+    setValue(props.values)
+  }, [props.values])
+
+  useEffect(() => {
+    setValue(null)
+  }, [value])
   return (
     <>
       <label htmlFor={props.id} className="text-[14px]">
@@ -15,7 +26,7 @@ export default function SelectProduct(props) {
             props?.setSearch(e.target.value);
         }}
         onClick={props.onClick}
-        value={props.values}
+        value={value}
       />
     </>
   );
