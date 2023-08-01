@@ -15,7 +15,7 @@ module.exports = {
     await queryInterface.bulkInsert('closed_stocks', [
       {
         product_id: 1,
-        // exp_date: 45165,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -23,7 +23,7 @@ module.exports = {
       },
       {
         product_id: 2,
-        // exp_date: 45166,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -31,7 +31,7 @@ module.exports = {
       },
       {
         product_id: 3,
-        // exp_date: 45167,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -39,7 +39,7 @@ module.exports = {
       },
       {
         product_id: 4,
-        // exp_date: 45168,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -47,7 +47,7 @@ module.exports = {
       },
       {
         product_id: 5,
-        // exp_date: 45169,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -55,7 +55,7 @@ module.exports = {
       },
       {
         product_id: 6,
-        // exp_date: 45170,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -63,7 +63,7 @@ module.exports = {
       },
       {
         product_id: 7,
-        // exp_date: 45171,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -71,7 +71,7 @@ module.exports = {
       },
       {
         product_id: 8,
-        // exp_date: 45172,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -79,7 +79,7 @@ module.exports = {
       },
       {
         product_id: 9,
-        // exp_date: 45173,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -87,7 +87,7 @@ module.exports = {
       },
       {
         product_id: 10,
-        // exp_date: 45174,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -95,7 +95,7 @@ module.exports = {
       },
       {
         product_id: 11,
-        // exp_date: 45175,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -103,7 +103,7 @@ module.exports = {
       },
       {
         product_id: 12,
-        // exp_date: 45176,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -111,7 +111,7 @@ module.exports = {
       },
       {
         product_id: 13,
-        // exp_date: 45177,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -119,7 +119,7 @@ module.exports = {
       },
       {
         product_id: 14,
-        // exp_date: 45178,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -127,7 +127,7 @@ module.exports = {
       },
       {
         product_id: 15,
-        // exp_date: 45179,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -135,7 +135,7 @@ module.exports = {
       },
       {
         product_id: 16,
-        // exp_date: 45180,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -143,7 +143,7 @@ module.exports = {
       },
       {
         product_id: 17,
-        // exp_date: 45181,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -151,7 +151,7 @@ module.exports = {
       },
       {
         product_id: 18,
-        // exp_date: 45182,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -159,7 +159,7 @@ module.exports = {
       },
       {
         product_id: 19,
-        // exp_date: 45183,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -167,7 +167,7 @@ module.exports = {
       },
       {
         product_id: 20,
-        // exp_date: 45184,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -175,7 +175,7 @@ module.exports = {
       },
       {
         product_id: 21,
-        // exp_date: 45185,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -183,7 +183,7 @@ module.exports = {
       },
       {
         product_id: 22,
-        // exp_date: 45186,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -191,7 +191,7 @@ module.exports = {
       },
       {
         product_id: 23,
-        // exp_date: 45187,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -199,7 +199,7 @@ module.exports = {
       },
       {
         product_id: 24,
-        // exp_date: 45188,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -207,7 +207,7 @@ module.exports = {
       },
       {
         product_id: 25,
-        // exp_date: 45189,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -215,7 +215,7 @@ module.exports = {
       },
       {
         product_id: 26,
-        // exp_date: 45190,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -223,7 +223,7 @@ module.exports = {
       },
       {
         product_id: 27,
-        // exp_date: 45191,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -231,7 +231,7 @@ module.exports = {
       },
       {
         product_id: 28,
-        // exp_date: 45192,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -239,7 +239,7 @@ module.exports = {
       },
       {
         product_id: 29,
-        // exp_date: 45193,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -247,7 +247,7 @@ module.exports = {
       },
       {
         product_id: 30,
-        // exp_date: 45194,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -255,7 +255,7 @@ module.exports = {
       },
       {
         product_id: 31,
-        // exp_date: 45195,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -263,7 +263,7 @@ module.exports = {
       },
       {
         product_id: 32,
-        // exp_date: 45196,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -271,7 +271,7 @@ module.exports = {
       },
       {
         product_id: 33,
-        // exp_date: 45197,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -279,7 +279,7 @@ module.exports = {
       },
       {
         product_id: 34,
-        // exp_date: 45198,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -287,7 +287,7 @@ module.exports = {
       },
       {
         product_id: 35,
-        // exp_date: 45199,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -295,7 +295,7 @@ module.exports = {
       },
       {
         product_id: 36,
-        // exp_date: 45200,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -303,7 +303,7 @@ module.exports = {
       },
       {
         product_id: 37,
-        // exp_date: 45201,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -311,7 +311,7 @@ module.exports = {
       },
       {
         product_id: 38,
-        // exp_date: 45202,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -319,7 +319,7 @@ module.exports = {
       },
       {
         product_id: 39,
-        // exp_date: 45203,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -327,7 +327,7 @@ module.exports = {
       },
       {
         product_id: 40,
-        // exp_date: 45204,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -335,7 +335,7 @@ module.exports = {
       },
       {
         product_id: 41,
-        // exp_date: 45205,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -343,7 +343,7 @@ module.exports = {
       },
       {
         product_id: 42,
-        // exp_date: 45206,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -351,7 +351,7 @@ module.exports = {
       },
       {
         product_id: 43,
-        // exp_date: 45207,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -359,7 +359,7 @@ module.exports = {
       },
       {
         product_id: 44,
-        // exp_date: 45208,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -367,7 +367,7 @@ module.exports = {
       },
       {
         product_id: 45,
-        // exp_date: 45209,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -375,7 +375,7 @@ module.exports = {
       },
       {
         product_id: 46,
-        // exp_date: 45210,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -383,7 +383,7 @@ module.exports = {
       },
       {
         product_id: 47,
-        // exp_date: 45211,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -391,7 +391,7 @@ module.exports = {
       },
       {
         product_id: 48,
-        // exp_date: 45212,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -399,7 +399,7 @@ module.exports = {
       },
       {
         product_id: 49,
-        // exp_date: 45213,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -407,7 +407,7 @@ module.exports = {
       },
       {
         product_id: 50,
-        // exp_date: 45214,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -415,7 +415,7 @@ module.exports = {
       },
       {
         product_id: 51,
-        // exp_date: 45215,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -423,7 +423,7 @@ module.exports = {
       },
       {
         product_id: 52,
-        // exp_date: 45216,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -431,7 +431,7 @@ module.exports = {
       },
       {
         product_id: 53,
-        // exp_date: 45217,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -439,7 +439,7 @@ module.exports = {
       },
       {
         product_id: 54,
-        // exp_date: 45218,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -447,7 +447,7 @@ module.exports = {
       },
       {
         product_id: 55,
-        // exp_date: 45219,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -455,7 +455,7 @@ module.exports = {
       },
       {
         product_id: 56,
-        // exp_date: 45220,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -463,7 +463,7 @@ module.exports = {
       },
       {
         product_id: 57,
-        // exp_date: 45221,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -471,7 +471,7 @@ module.exports = {
       },
       {
         product_id: 58,
-        // exp_date: 45222,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),
@@ -479,7 +479,7 @@ module.exports = {
       },
       {
         product_id: 59,
-        // exp_date: 45223,
+        exp_date: null,
         total_stock: 200,
         deletedAt: null,
         createdAt: new Date(),

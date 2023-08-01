@@ -10,6 +10,7 @@ import AddProduct from '../../Pages/AddProduct';
 import EditProduct from '../../Pages/EditProduct';
 import StockPageAdmin from '../../Pages/StockPageAdmin';
 import PrescriptionAdmin from '../../Pages/PrescriptionAdmin';
+import AddPromotion from '../../Pages/AddPromotion';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -96,6 +97,15 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <PrescriptionAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/promotions',
+    element: (
+      <AdminLayout>
+        <AddPromotion />,
       </AdminLayout>
     ),
   },

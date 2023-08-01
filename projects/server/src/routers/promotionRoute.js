@@ -1,18 +1,23 @@
 const express = require('express');
 const router = express.Router();
-
-const { stockController } = require('../controllers');
+const { promotionController } = require('../controllers');
 const { APIKey } = require('../middleware/APIKey');
 const { verifyToken } = require('../middleware/auth');
 const { isAdmin } = require('../middleware/checkRole');
 
 router.post(
-  '/:productId',
+  '/',
   APIKey,
-  // verifyToken,
-  // isAdmin,
-  stockController.createDataStock,
+    verifyToken,
+    isAdmin,
+  promotionController.createDiscount,
 );
-router.put('/unit-conversion', stockController.unitConversion);
-router.get('/', APIKey, stockController.getStockHistoryType);
+router.get(
+  '/types',
+  APIKey,
+  verifyToken,
+  isAdmin,
+  promotionController.getPromotionType,
+);
+
 module.exports = router;

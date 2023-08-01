@@ -111,7 +111,6 @@ export const addToCartAsync = (values) => async (dispatch) => {
     console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
-    console.log(values);
     if (!token) throw { message: 'Please Login First' };
     if (!productId) throw { message: "Product doesn't exist" };
     if ((productId === 1) & !prescriptionImage) {

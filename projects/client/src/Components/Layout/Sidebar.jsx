@@ -11,6 +11,8 @@ import { MdQuestionAnswer } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
 import { MdOutlineInventory2 } from 'react-icons/md';
 import { FaPrescriptionBottleMedical } from 'react-icons/fa6';
+import { MdInventory } from 'react-icons/md';
+import { MdDiscount } from 'react-icons/md';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
@@ -44,8 +46,14 @@ export const Sidebar = () => {
         </Link>
         <Link to={'/stocks'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
-            <MdOutlineInventory2 />
+            <MdInventory />
             <p className="hidden lg:block">Stock</p>
+          </div>
+        </Link>
+        <Link to={'/promotions'} className="w-full">
+          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
+            <MdDiscount />
+            <p className="hidden lg:block">Promotion</p>
           </div>
         </Link>
         <Link to={'/discussions'} className="w-full">
@@ -56,7 +64,7 @@ export const Sidebar = () => {
         </Link>
         <Link to={'/prescription'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
-           <FaPrescriptionBottleMedical />
+            <FaPrescriptionBottleMedical />
             <p className="hidden lg:block">Prescription</p>
           </div>
         </Link>

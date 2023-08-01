@@ -12,9 +12,9 @@ export default function Select(props) {
         name={props.name}
         onBlur={props.onBlur}
         onChange={props.handleChange}
-        value={props.values}
+        value={props.value}
       >
-        <option value="0" hidden selected={props.selected ? false : true}>
+        <option value="0" hidden>
           {props.placeholder}
         </option>
         {props?.data?.map((value) => {
@@ -24,7 +24,7 @@ export default function Select(props) {
               value={value?.id}
               selected={props.selected === value.id ? true : false}
             >
-              {value?.type_name || value?.type}
+              {value?.type_name || value?.type || value?.promotion}
             </option>
           );
         })}

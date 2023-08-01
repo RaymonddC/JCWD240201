@@ -54,7 +54,7 @@ const uploadMultiple = (req, res, next) => {
         deleteFiles(error.fileToDelete);
       }
       return res.status(404).send({
-        isError: true,
+        success: false,
         message: error.message,
         data: null,
       });
@@ -80,7 +80,7 @@ const uploadProfile = (req, res, next) => {
         deleteFiles(error.fileToDelete);
       }
       return res.status(404).send({
-        isError: true,
+        success: false,
         message: error.message,
         data: null,
       });
@@ -112,7 +112,7 @@ const uploadProduct = (req, res, next) => {
       }
 
       return res.status(404).send({
-        isError: true,
+        success: false,
         message: error.message,
         data: null,
       });
@@ -146,7 +146,7 @@ const uploadUpdateProduct = (req, res, next) => {
       }
 
       return res.status(404).send({
-        isError: true,
+        success: false,
         message: error.message,
         data: null,
       });

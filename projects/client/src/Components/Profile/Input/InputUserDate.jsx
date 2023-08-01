@@ -15,6 +15,7 @@ export default function InputUserDate(props) {
         type="date"
         onChange={props.handleChange}
         value={props.values}
+        disabled={props.isDisabled}
       />
       <p className="text-error text-[14px]">{props?.errors}</p>
     </>
