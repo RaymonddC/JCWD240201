@@ -6,11 +6,26 @@ import { Link } from 'react-router-dom';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
+  const dateTime = new Date(props.tx.createdAt);
+  const date = dateTime
+    .toLocaleDateString('EN-us', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+    .split(',');
+
+  const time = dateTime.toLocaleTimeString();
+
+  const txDetail = props.tx.transaction_details[0];
 
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3">
-        <p>Jumat, 5 April 2022, 15:45</p>
+        <p>
+          {date[0]}, {date[1]} {date[2]}, {time} WIB
+        </p>
         <p>Menunggu</p>
       </div>
       <div className="product flex justify-between  border border-x-0 py-3">
@@ -23,10 +38,14 @@ const TransactionCard = (props) => {
         </div>
         <div className="detail flex-grow px-5">
           <Link>
-            <p>Bisolvon</p>
+            <p>{txDetail.product_name}</p>
           </Link>
-          <p>1 Strip</p>
-          <p>produk lainnya</p>
+          <p>{txDetail.qty} Strip</p>
+          {props.tx.transaction_details.length <= 1 ? (
+            ''
+          ) : (
+            <p>+ {props.tx.transaction_details.length - 1} produk lainnya</p>
+          )}
         </div>
         <div className="price w-[20%] text-center">
           <p>Total Belanja</p>

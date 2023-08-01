@@ -15,6 +15,9 @@ module.exports = {
       city_id: {
         type: Sequelize.INTEGER,
       },
+      province_id: {
+        type: Sequelize.INTEGER,
+      },
       notes: {
         type: Sequelize.STRING,
       },

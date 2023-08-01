@@ -49,22 +49,6 @@ const CartCard = (props) => {
     // };
   }, [debouncedQtyValue, isCheckCart]);
 
-  // useEffect(() => {
-  //   console.log('test', props.cart.qty);
-  //   return () => {
-  //     console.log('test', props.cart.qty);
-  //     dispatch(
-  //       updateCartAsync({
-  //         cartId: props.cart.id,
-  //         qty: 100,
-  //         isCheck: isCheckCart,
-  //         stock,
-  //       }),
-  //     );
-  //   };
-  //   // };
-  // }, []);
-
   const handleCheck = () => {
     setIsCheckCart(!isCheckCart);
   };
@@ -74,8 +58,9 @@ const CartCard = (props) => {
       <DeleteModal
         open={openDeleteModal}
         closeModal={() => setOpenDeletemodal(false)}
-        id={props?.data?.id}
+        id={props?.cart?.id}
         model={'Cart'}
+        delFunc={deleteCartAsync}
       />
       <div className="product flex justify-between ">
         <div className="check">

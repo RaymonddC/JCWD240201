@@ -6,8 +6,6 @@ import {
   getCartUserAsync,
   updateQtyAsync,
 } from '../Features/Cart/CartSlice';
-import { Navigate } from 'react-router-dom';
-import { checkoutAsync, getCartUserAsync } from '../Features/Cart/CartSlice';
 import { Navigate, useNavigate } from 'react-router-dom';
 import {
   getProvinceAsync,
@@ -29,16 +27,6 @@ const Cart = () => {
   // const [isForceCheck, setIsForceCheck] = useState(false);;
 
   const handleQty = (e, calc, idx) => {
-    // if (calc) {
-    //   if (calc === '+')
-    //     if (qty + 1 > stock) return toast.error('Out Of Stock');
-    //     else setQty(qty + 1);
-    //   else setQty(qty - 1);
-    // } else {
-    //   if (Number(e.currentTarget.value) > stock)
-    //     return toast.error('Out Of Stock');
-    //   else setQty(Number(e.currentTarget.value));
-
     dispatch(
       updateQtyAsync({
         newQty: Number(e.currentTarget.value),
@@ -47,9 +35,7 @@ const Cart = () => {
         carts,
       }),
     );
-    // }
   };
-  // console.log(address, loadAddress);
 
   useEffect(() => {
     dispatch(getCartUserAsync());

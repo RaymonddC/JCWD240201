@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../Components/Transaction/SearchBar';
 import TransactionCard from '../Components/Transaction/TransactionCard';
@@ -8,21 +8,33 @@ import { getAllTxStatus } from '../Features/TransactionStatus/TransactionStatusS
 import DateRangePicker from '../Components/Transaction/DateRangePicker';
 import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
+import { getAllTransactionSlice } from '../Features/Transaction/TransactionSlice';
 
-const Transaction = () => {
+export default function Transaction() {
   let token = localStorage.getItem('token');
   const dispatch = useDispatch();
 
   const { txStatuses } = useSelector((state) => state.txStatus);
-  console.log(txStatuses, '1');
-  const windowLoc = window.location.pathname;
-  if (!token) return <Navigate to={'/login'} />;
+  const { transactions } = useSelector((state) => state.transaction);
+
   const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedStatus, setSelectedStatus] = useState(txStatuses[0]?.status);
+  let queryParams = {};
+
   const debouncedSearchValue = useDebounce(search, 1500);
 
   useEffect(() => {
     dispatch(getAllTxStatus());
+    dispatch(getAllTransactionSlice());
   }, [debouncedSearchValue]);
+
+  useEffect(() => {
+    if (selectedStatus) queryParams['status'] = selectedStatus;
+    setSearchParams(queryParams);
+  }, [selectedStatus]);
+
+  if (!token) return <Navigate to={'/login'} />;
 
   return (
     <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
@@ -47,30 +59,32 @@ const Transaction = () => {
             />
             <DateRangePicker />
           </div>
-          <div className="status flex overflow-scroll">
+          <div className="status flex overflow-x-auto">
             {/* <span className="font-bold">Status</span> */}
             {txStatuses.map((value) => {
               return (
-                <div
-                  className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center ${
-                    windowLoc === value.status ? 'border-blue-500' : ''
-                  }`}
-                  onClick={() => (queryParams['status'] = value.status)}
+                <button
+                  className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center  transition ease-in-out ${
+                    selectedStatus === value.status
+                      ? 'border-blue-500 font-bold hover:border-blue-500 '
+                      : ''
+                  } hover:border-blue-200 hover:font-bold`}
+                  onClick={() => {
+                    setSelectedStatus(value.status);
+                  }}
                 >
                   <div className="status items-center">{value.status}</div>
-                </div>
+                </button>
               );
             })}
           </div>
         </div>
         <div className="div ">
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
+          {transactions.map((value) => {
+            return <TransactionCard tx={value} />;
+          })}
         </div>
       </div>
     </div>
   );
-};
-
-export default Transaction;
+}

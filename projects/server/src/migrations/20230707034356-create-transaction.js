@@ -12,6 +12,9 @@ module.exports = {
       promotion_id: {
         type: Sequelize.INTEGER,
       },
+      user_id: {
+        type: Sequelize.INTEGER,
+      },
       image: {
         type: Sequelize.STRING,
       },
@@ -29,6 +32,9 @@ module.exports = {
       },
       receiver: {
         type: Sequelize.STRING,
+      },
+      shipment_fee: {
+        type: Sequelize.INTEGER,
       },
       deletedAt: {
         type: Sequelize.DATE,

@@ -149,9 +149,9 @@ export const deleteCartAsync = (values) => async (dispatch) => {
       await dispatch(getCartUserAsync());
       return toast.success('Product removed from cart');
     }
-    return toast.error('Failed to remove product');
   } catch (error) {
-    toast.error(error.message);
+    return toast.error('Failed to remove product');
+    // toast.error(error.message);
   }
 };
 

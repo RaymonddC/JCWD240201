@@ -11,11 +11,8 @@ const DeleteModal = (props) => {
 
   const deleteHandler = async () => {
     try {
-      const response = await deleteCategory(
-        localStorage.getItem('token'),
-        props.id,
-      );
-      if (response?.data?.success) {
+      const response = dispatch(props.delFunc({ id: props.id }));
+      if (response?.success) {
         props?.closeModal();
         toast.success(response.data.message);
         dispatch(getAllCategories(search));
