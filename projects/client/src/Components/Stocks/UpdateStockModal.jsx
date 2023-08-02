@@ -62,14 +62,12 @@ export default function UpdateStockModal(props) {
       notes: '',
     });
   };
-  console.log(formik.values);
   const getHistoryType = async () => {
     const result = await getHistoryTypeAPI();
     setHistoryType(result?.data?.data);
   };
 
   useEffect(() => {
-    console.log('masuk modal');
     getHistoryType();
   }, []);
   return (
