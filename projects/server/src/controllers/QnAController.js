@@ -6,17 +6,24 @@ const fs = require('fs');
 const db = require('../models');
 const questionDB = db.question;
 const answerDB = db.answer;
+const questionCategoryDB = db.question_category;
 const transporter = require('../helpers/transporter');
 
 const getQuestions = async (req, res, next) => {
   try {
-    const { page, search, sort, limit } = req.query;
+    const { page, search, sort, limit, question_category_id } = req.query;
+    // console.log(">>>",question_category_id);
+    let where = {};
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
+    if (question_category_id) {
+      where.question_category_id = { question_category_id };
+    }
     let response = await questionDB.findAndCountAll({
       include: answerDB,
       limit: pageLimit,
       offset: offset,
+      where: where,
       order: [['updatedAt', 'DESC']],
     });
     const totalPage = Math.ceil(response.count / pageLimit);
@@ -54,12 +61,22 @@ const getQuestionDetails = async (req, res, next) => {
 
 const getAnswers = async (req, res, next) => {
   try {
-    const { page, search, sort, limit } = req.query;
+    const { page, search, sort, limit, question_category_id } = req.query;
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
+    let where = {};
+    console.log('>>> answer', question_category_id);
+    if (question_category_id) {
+      where.id = question_category_id;
+    }
     console.log(req.body);
     let response = await answerDB.findAndCountAll({
-      include: db.question,
+      include: [
+        {
+          model: db.question,
+          include: [{ model: db.question_category, where: where }],
+        },
+      ],
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
@@ -106,7 +123,7 @@ const createQuestion = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
-   next(error);
+    next(error);
   }
 };
 
@@ -115,7 +132,7 @@ const updateAnswer = async (req, res, next) => {
   console.log(req.body);
   // process.exit()
   try {
-    let result = await answerDB.update(
+    const result = await answerDB.update(
       { answer, user_id, question_id },
       { where: { id } },
     );
@@ -130,11 +147,26 @@ const updateAnswer = async (req, res, next) => {
   }
 };
 
+const getQuestionCategory = async (req, res, next) => {
+  try {
+    const response = await questionCategoryDB.findAll();
+    // console.log('q cat ', response);
+    return res.status(200).send({
+      success: true,
+      message: 'Get question category success',
+      data: response,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createQuestion,
   getQuestions,
   getAnswers,
   getQuestionDetails,
   postAnswer,
-  updateAnswer
+  updateAnswer,
+  getQuestionCategory,
 };

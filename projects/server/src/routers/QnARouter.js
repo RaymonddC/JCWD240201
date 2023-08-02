@@ -10,5 +10,6 @@ router.get('/questions', APIKey, QnAController.getQuestions);
 router.post('/answers',  QnAController.postAnswer)
 router.get('/answers', APIKey, QnAController.getAnswers);
 router.put('/answers', APIKey, QnAController.updateAnswer);
+router.get('/question-categories', APIKey, QnAController.getQuestionCategory);
 
 module.exports = router;

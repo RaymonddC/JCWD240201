@@ -18,6 +18,9 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER
       },
+      question_category_id: {
+        type: Sequelize.INTEGER
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

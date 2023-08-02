@@ -44,7 +44,7 @@ export default function Products() {
   if (category) {
     productMap = productList?.map((value, index) => {
       return (
-        <div key={`product${index}`} className="py-3 flex justify-center">
+        <div key={`product${index}`} className="py-3 mx-5 flex justify-center">
           <ProductCard data={value.product} />
         </div>
       );
@@ -126,12 +126,18 @@ export default function Products() {
           </div>
           {categoriesMap}
         </div>
-        <div className="flex flex-col w-full justify-center ">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 w-full px-5">
-            {productMap}
-          </div>
-          <div className="my-5">
-            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+        <div className="flex justify-center w-full">
+          <div className="flex flex-col max-w-fit justify-center ">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+              {productMap}
+            </div>
+            <div className="my-5">
+              <Pagination
+                setPage={setPage}
+                page={page}
+                totalPages={totalPages}
+              />
+            </div>
           </div>
         </div>
       </div>
