@@ -67,16 +67,12 @@ const getAnswers = async (req, res, next) => {
     let where = {};
     console.log('>>> answer', question_category_id);
     if (question_category_id) {
-      where.id = question_category_id;
+      where.question_category_id = question_category_id;
     }
     console.log(req.body);
     let response = await answerDB.findAndCountAll({
-      include: [
-        {
-          model: db.question,
-          include: [{ model: db.question_category, where: where }],
-        },
-      ],
+      include: [{ model: questionDB, where: where }],
+
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
