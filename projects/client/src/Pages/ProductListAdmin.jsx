@@ -9,6 +9,7 @@ import { MdAdd } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import DeleteModal from '../Components/Products/DeleteModal';
 import { useSearchParams } from 'react-router-dom';
+import DetailProductAdmin from '../Components/DetailProductModal/DetailProductModal';
 
 export default function ProductListAdmin() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ export default function ProductListAdmin() {
     if (sortOrder) {
       queryParams['sortOrder'] = sortOrder;
     }
-  
+
     setSearchParams(queryParams);
     dispatch(
       getProducts({
@@ -62,12 +63,25 @@ export default function ProductListAdmin() {
       }),
     );
     setIsDeleted(false);
-  }, [debouncedSearchValue, dispatch, page, isDeleted]);
+  }, [
+    debouncedSearchValue,
+    dispatch,
+    page,
+    isDeleted,
+    sortType,
+    sortOrder,
+    category,
+  ]);
   return (
     <>
       <div className="relative">
         <div className="sticky top-3 mb-3">
-          <FilterBar setSearch={setSearch} />
+          <FilterBar
+            setSearch={setSearch}
+            setSortType={setSortType}
+            setSortOrder={setSortOrder}
+            sortBy={true}
+          />
         </div>
         <div>{productMap}</div>
         <div className="py-5">
@@ -81,6 +95,7 @@ export default function ProductListAdmin() {
         </div>
       </div>
       <DeleteModal productId={productId} isDeleted={setIsDeleted} />
+      <DetailProductAdmin productId={productId} />
     </>
   );
 }

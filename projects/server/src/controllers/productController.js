@@ -129,7 +129,7 @@ const createProduct = async (req, res, next) => {
     return res.send({
       success: true,
       status: 200,
-      message: 'create product success',
+      message: 'Create product success',
       data: postProduct,
     });
   } catch (error) {
@@ -176,7 +176,7 @@ const deleteProduct = async (req, res, next) => {
     return res.send({
       success: true,
       status: 200,
-      message: 'delete product success',
+      message: 'Delete product success',
       data: null,
     });
   } catch (error) {
@@ -266,7 +266,7 @@ const updateProduct = async (req, res, next) => {
     return res.send({
       success: true,
       status: 200,
-      message: 'Update Product Success',
+      message: 'Update product success',
       data: updateProduct,
     });
   } catch (error) {

@@ -8,11 +8,14 @@ export default function ProductCardAdmin(props) {
   const productId = props?.data.id;
   const stock = props?.data?.closed_stocks[0]?.total_stock;
   const packaging = props?.data?.packaging_type?.type_name;
-  console.log(props.data);
 
   return (
     <>
-      <div className=" flex bg-base-100  items-center w-full max-w-4xl shadow-xl">
+      <label
+        onClick={() => props.setProductId(productId)}
+        htmlFor="detail_product"
+        className="flex bg-base-100  items-center w-full max-w-4xl shadow-xl hover:cursor-pointer hover:bg-slate-100"
+      >
         <img
           className="h-24 hidden md:block px-5"
           src="https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_750,w_750/v1/production/pharmacy/products/1643869601_tolak_angin_sidomuncul_12_sachet_15_ml"
@@ -50,7 +53,7 @@ export default function ProductCardAdmin(props) {
                 </button>
                 <label
                   htmlFor="my_modal_6"
-                  className="btn btn-accent"
+                  className="btn btn-sm md:btn-md btn-accent"
                   onClick={() => props.setProductId(productId)}
                 >
                   <MdDeleteOutline size={30} />
@@ -59,7 +62,7 @@ export default function ProductCardAdmin(props) {
             )}
           </div>
         </div>
-      </div>
+      </label>
     </>
   );
 }
