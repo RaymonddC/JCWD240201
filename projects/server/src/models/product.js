@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
       product.hasMany(models.closed_stock, {
         foreignKey: 'product_id',
       });
+      product.belongsTo(models.product_type, {
+        foreignKey: 'product_type_id',
+      });
     }
   }
   product.init(
