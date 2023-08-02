@@ -7,6 +7,7 @@ import {
   getQuestionDetailsAPI,
   postAnswerAPI,
   updateAnswerAPI,
+  getQuestionsCategoriesAPI,
 } from '../../API/QnAAPI';
 
 const initialState = {
@@ -23,6 +24,9 @@ export const QnASlice = createSlice({
     },
     answers: (initialState, action) => {
       initialState.answers = action.payload;
+    },
+    questionCategory: (initialState, action) => {
+      initialState.categories = action.payload;
     },
   },
 });
@@ -70,6 +74,7 @@ export const getAnswers = (data) => async (dispatch) => {
     let response = await getAnswersAPI({
       page: data.page,
       limit: data.limit,
+      question_category_id: data.question_category_id,
     });
     console.log(response.data.data.rows);
     dispatch(answers(response?.data));
@@ -112,6 +117,14 @@ export const updateAnswer = (data) => async (dispatch) => {
     console.log(error);
   }
 };
+export const getQuestionCategory = () => async (dispatch) => {
+  try {
+    // console.log('>>> get question category')
+    const response = await getQuestionsCategoriesAPI();
+    // console.log(response);
+    dispatch(questionCategory(response.data));
+  } catch (error) {}
+};
 
-export const { questions, answers } = QnASlice.actions;
+export const { questions, answers, questionCategory } = QnASlice.actions;
 export default QnASlice.reducer;

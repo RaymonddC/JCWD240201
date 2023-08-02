@@ -19,6 +19,7 @@ export default function QuestionDetails() {
   const { id } = params;
   const questionId = Number(id);
   const question = QnAStore?.questions?.question;
+  const title = QnAStore?.questions?.title;
   const answer = QnAStore?.questions?.answers?.[0]?.answer;
   const answerId = QnAStore?.questions?.answers?.[0]?.id;
   const answerText = useRef();
@@ -26,7 +27,7 @@ export default function QuestionDetails() {
 
   // const [question, setQuestion] = useState();
   // const[ answer , setAnswer] = useState();
-  console.log(user);
+  console.log(title);
 
   useEffect(() => {
     dispatch(getQuestionDetail({ id: Number(id) }));
@@ -41,7 +42,7 @@ export default function QuestionDetails() {
           </div>
           <div className="card-body ">
             <article className="prose">
-              <h3> Question: </h3>
+              <h3>{title}</h3>
               <p>{question}</p>
             </article>
           </div>
@@ -121,14 +122,14 @@ export default function QuestionDetails() {
     return (
       <>
         <NavBar />
-        <div className='flex flex-col items-center w-full'>
+        <div className="flex flex-col items-center w-full">
           <div className="card card-compact max-w-3xl w-full my-5 bg-base-100 shadow-xl">
             <div className="flex justify-end px-3">
               <div className="label">{date}</div>
             </div>
             <div className="card-body ">
               <article className="prose">
-                <h3> Question: </h3>
+                <h3>{title} </h3>
                 <p>{question}</p>
               </article>
             </div>

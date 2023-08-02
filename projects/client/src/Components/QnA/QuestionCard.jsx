@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 export default function QuestionCard(props) {
   const date = props?.data?.createdAt?.split('T')[0];
   const question = props?.data?.question?.question;
+  const title = props?.data?.question?.title;
   const id = props?.data?.question?.id;
   return (
     <>
@@ -14,7 +15,8 @@ export default function QuestionCard(props) {
           </div>
           <div className="card-body ">
             <article className="prose">
-              <h4 className=" truncate">{question}</h4>
+              <h4 className="truncate"> {title}</h4>
+              <p className="truncate">{question}</p>
             </article>
           </div>
         </div>
