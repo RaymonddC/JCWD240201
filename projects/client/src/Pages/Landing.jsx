@@ -29,7 +29,7 @@ export default function Landing() {
   });
   const addToCart = async() => {
     try {
-      const  response =  dispatch(
+      const  response = await dispatch(
         addToCartAsync({
           productId: 1,
           qty: 1,

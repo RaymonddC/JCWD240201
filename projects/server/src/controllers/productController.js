@@ -11,9 +11,10 @@ const productDB = db.product;
 const productImageDB = db.product_image;
 const packagingDB = db.packaging_type;
 const productTypeDB = db.product_type;
+const openedStockDB = db.opened_stock;
+const closedStockDB = db.closed_stock;
 const { sequelize } = require('../models');
 const deleteFiles = require('../helpers/deleteFiles');
-const closedStockDB = db.closed_stock;
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -32,15 +33,9 @@ const getAllProducts = async (req, res, next) => {
     console.log(sortType, sortOrder, search, order);
     const response = await productDB.findAndCountAll({
       include: [
-        {
-          model: labelDB
-        },
-        {
-          model: closedStockDB
-        },
-        {
-          model: packagingDB
-        }
+        { model: labelDB },
+        { model: closedStockDB },
+        { model: packagingDB },
       ],
       limit: pageLimit,
       offset: offset,
@@ -70,16 +65,8 @@ const getProductDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
     console.log('id', req.params);
-
     const response = await productDB.findOne({
-      include: [
-        {
-          model: packagingDB
-        },
-        {
-          model: productTypeDB
-        }
-      ],
+      include: [packagingDB, productTypeDB],
       where: { id },
     });
     const labels = await labelDB.findAll({
@@ -89,12 +76,20 @@ const getProductDetails = async (req, res, next) => {
     const image = await productImageDB.findOne({
       where: { product_id: id },
     });
+    const openedStock = await openedStockDB.findOne({
+      where: { product_id: id },
+    });
+    const closedStock = await closedStockDB.findOne({
+      where: { product_id: id },
+    });
     return res.status(200).send({
       success: true,
       message: 'get product details success',
       labels: labels,
       data: response,
       image: image,
+      opened_stock: openedStock,
+      closed_stock: closedStock,
     });
   } catch (error) {
     next(error);
