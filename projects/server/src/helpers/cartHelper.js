@@ -36,6 +36,10 @@ const getUserCarts = async (includes, whereQuery) => {
         },
       ],
       attributes: {
+        include: [
+          [sequelize.literal('CAST(price*discount/100 AS FLOAT)'), 'disc'],
+          // [sequelize.literal('CAST(SUM(price) AS FLOAT)'), 'totalll'],
+        ],
         // include: [[sequelize.fn('sum', sequelize.col('qty')), 'cartQty']],
       },
       where: whereQuery,

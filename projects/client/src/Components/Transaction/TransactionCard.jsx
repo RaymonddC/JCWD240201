@@ -22,11 +22,11 @@ const TransactionCard = (props) => {
 
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
-      <div className="headerStatus flex justify-between py-3">
+      <div className="headerStatus flex justify-between py-3 px-2">
         <p>
           {date[0]}, {date[1]} {date[2]}, {time} WIB
         </p>
-        <p>Menunggu</p>
+        <p>{props.tx.transaction_histories[0].transaction_status.status}</p>
       </div>
       <div className="product flex justify-between  border border-x-0 py-3">
         <div className="img">
@@ -37,10 +37,15 @@ const TransactionCard = (props) => {
           />
         </div>
         <div className="detail flex-grow px-5">
-          <Link>
+          <Link to={''}>
             <p>{txDetail.product_name}</p>
           </Link>
-          <p>{txDetail.qty} Strip</p>
+          <p>
+            {txDetail.qty}{' '}
+            {txDetail.product_id !== 1
+              ? txDetail.product.packaging_type.type_name
+              : txDetail.product.product_type.unit}
+          </p>
           {props.tx.transaction_details.length <= 1 ? (
             ''
           ) : (
@@ -49,7 +54,7 @@ const TransactionCard = (props) => {
         </div>
         <div className="price w-[20%] text-center">
           <p>Total Belanja</p>
-          <p>Rp. 100.000</p>
+          {/* <p>Rp. {props.tx.totalPrice}</p> */}
         </div>
       </div>
       <div className="action flex justify-end gap-5 items-center text-primary py-2">
