@@ -22,7 +22,7 @@ export default function ProductCard(props) {
 
   return (
     <>
-      <div className="card card-compact w-32 h-68 md:w-40 bg-base-100 shadow-xl">
+      <div className="card card-compact w-32 h-68 md:w-40 bg-base-100 shadow-xl mx-2">
         <figure>
           <Link to={`/products/${productId}`}>
             <img

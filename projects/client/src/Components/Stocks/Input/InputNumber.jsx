@@ -18,6 +18,7 @@ export default function InputNumber(props) {
           type="number"
           onChange={props.handleChange}
           value={props.values}
+          disabled={props.isDisabled}
         />
         {props.errors && props?.touched ? (
           <p className="text-error text-[14px]">{props.errors}</p>
