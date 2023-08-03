@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       type_name: DataTypes.STRING,
       unit: DataTypes.STRING,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,

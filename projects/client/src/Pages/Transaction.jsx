@@ -20,14 +20,33 @@ export default function Transaction() {
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedStatus, setSelectedStatus] = useState(txStatuses[0]?.status);
+  const [selectedStatusId, setSelectedStatusId] = useState(1);
+  const [range, setRange] = useState([
+    {
+      startDate: null,
+      endDate: null,
+      key: 'selection',
+    },
+  ]);
+
   let queryParams = {};
 
   const debouncedSearchValue = useDebounce(search, 1500);
 
   useEffect(() => {
     dispatch(getAllTxStatus());
-    dispatch(getAllTransactionSlice());
-  }, [debouncedSearchValue]);
+    setSelectedStatus(txStatuses[0]?.status);
+  }, []);
+
+  useEffect(() => {
+    dispatch(
+      getAllTransactionSlice({
+        selectedStatusId,
+        debouncedSearchValue,
+        date: range[0],
+      }),
+    );
+  }, [debouncedSearchValue, selectedStatusId, range]);
 
   useEffect(() => {
     if (selectedStatus) queryParams['status'] = selectedStatus;
@@ -57,7 +76,7 @@ export default function Transaction() {
                 setSearch(e.target.value);
               }}
             />
-            <DateRangePicker />
+            <DateRangePicker range={range} setRange={setRange} />
           </div>
           <div className="status flex overflow-x-auto">
             {/* <span className="font-bold">Status</span> */}
@@ -70,6 +89,7 @@ export default function Transaction() {
                       : ''
                   } hover:border-blue-200 hover:font-bold`}
                   onClick={() => {
+                    setSelectedStatusId(value.id);
                     setSelectedStatus(value.status);
                   }}
                 >
