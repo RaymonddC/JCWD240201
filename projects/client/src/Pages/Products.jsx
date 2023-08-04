@@ -14,7 +14,7 @@ export default function Products() {
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
-  const limit = 20;
+  const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
   const [page, setPage] = useState(searchParams.get('page') || 1);
@@ -59,6 +59,9 @@ export default function Products() {
     });
   }
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchValue, sortType, sortOrder, category]);
   useEffect(() => {
     dispatch(getAllCategories());
   }, []);

@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
@@ -9,6 +8,7 @@ const TxStatus = db.transaction_status;
 const transporter = require('../helpers/transporter');
 
 const getAllTxStatus = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     // console.log('Getting all categories');
     const txStatus = await TxStatus.findAll();

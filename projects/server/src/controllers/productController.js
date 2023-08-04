@@ -42,7 +42,7 @@ const getAllProducts = async (req, res, next) => {
       where: where,
       order: order,
     });
-    const totalPage = Math.ceil((response.count - 1) / pageLimit);
+    const totalPage = Math.ceil((response.count - 1) / pageLimit)||1;
     // console.log(pageLimit, '<<');
     // console.log(response);
     // console.log(offset);

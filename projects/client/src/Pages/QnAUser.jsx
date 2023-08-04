@@ -3,12 +3,12 @@ import NavBar from '../Components/Layout/Navbar';
 import {
   getAnswers,
   getQuestionCategory,
-  questionCategory,
   submitQuestion,
 } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 import { useSearchParams } from 'react-router-dom';
+import Pagination from '../Components/Layout/Pagination';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
@@ -19,23 +19,34 @@ export default function QnAUser() {
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
   const question = useRef();
+  const title = useRef();
+  // let option = 0;
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
   const totalPages = QnAStore?.answers?.totalPage;
   const questionCategories = QnAStore?.categories;
   const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [category, setCategory] = useState(0);
+
   const [questionCategory, setQuestionCategory] = useState(
     searchParams.get('category') || '',
   );
-  console.log(QnAStore?.answers?.data);
-  const next = () => {
-    const nextPage = page >= totalPages ? totalPages : page + 1;
-    setPage(nextPage);
-  };
-  const prev = () => {
-    const prevPage = page <= 1 ? 1 : page - 1;
-    setPage(prevPage);
-  };
+  // console.log(QnAStore?.answers?.data);
+  // const next = () => {
+  //   const nextPage = page >= totalPages ? totalPages : page + 1;
+  //   setPage(nextPage);
+  // };
+  // const prev = () => {
+  //   const prevPage = page <= 1 ? 1 : page - 1;
+  //   setPage(prevPage);
+  // };
+  const selectOptions = questionCategories?.data?.map((value, index) => {
+    return (
+      <option key={`opt${index}`} value={value.id}>
+        {value.name}
+      </option>
+    );
+  });
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
@@ -50,6 +61,24 @@ export default function QnAUser() {
       );
     },
   );
+
+  const onSubmit = () => {
+    const select = document.getElementById('category');
+    const option = select.options[select.selectedIndex].value;
+    console.log(option);
+
+    dispatch(
+      submitQuestion({
+        title: title.current.value,
+        question: question.current.value,
+        question_category_id: Number(option),
+        user,
+      }),
+    );
+    title.current.value = '';
+    question.current.value = '';
+    select.selectedIndex = 0;
+  };
   useEffect(() => {
     if (page) {
       queryParams['page'] = page;
@@ -62,7 +91,10 @@ export default function QnAUser() {
       getAnswers({ page, limit: 2, question_category_id: questionCategory }),
     );
     dispatch(getQuestionCategory());
-  }, [dispatch, page, questionCategory]);
+  }, [page, questionCategory]);
+  useEffect(() => {
+    setPage(1);
+  }, [questionCategory]);
 
   return (
     <>
@@ -78,7 +110,23 @@ export default function QnAUser() {
                 <article className="prose">
                   <h2 className="label-text">Ask a question</h2>
                 </article>
-
+                <div className="flex justify-between">
+                  <input
+                    type="text"
+                    ref={title}
+                    placeholder="Insert title here"
+                    className="input input-bordered w-full max-w-xs"
+                    disabled={disabled}
+                  />
+                  <select
+                    name="category"
+                    id="category"
+                    className="select select-bordered "
+                  >
+                    <option value={0}>Please select a category</option>
+                    {selectOptions}
+                  </select>
+                </div>
                 <textarea
                   ref={question}
                   className="textarea my-5 textarea-bordered h-24"
@@ -89,12 +137,7 @@ export default function QnAUser() {
               <div className="flex justify-end">
                 <button
                   onClick={() => {
-                    dispatch(
-                      submitQuestion({
-                        question: question.current.value,
-                        user,
-                      }),
-                    );
+                    onSubmit();
                   }}
                   className={`btn ${disabled ? 'btn-disabled' : 'btn-accent'}`}
                 >
@@ -106,7 +149,9 @@ export default function QnAUser() {
               </article>
               <div className="flex justify-center items-center">
                 <div
-                  onClick={() => setQuestionCategory('')}
+                  onClick={() => {
+                    setQuestionCategory('');
+                  }}
                   className="btn btn-outline btn-accent btn-xs mx-3"
                 >
                   all
@@ -124,21 +169,12 @@ export default function QnAUser() {
                 </div>
               </div>
             </div>
-            <div className="flex justify-center">
-              <div className="join w-64 grid grid-cols-2">
-                <button
-                  onClick={() => prev()}
-                  className="join-item btn btn-outline"
-                >
-                  {'<< Previous'}
-                </button>
-                <button
-                  onClick={() => next()}
-                  className="join-item btn btn-outline"
-                >
-                  {'Next >>'}
-                </button>
-              </div>
+            <div className="my-5">
+              <Pagination
+                setPage={setPage}
+                page={page}
+                totalPages={totalPages}
+              />
             </div>
           </div>
         </div>

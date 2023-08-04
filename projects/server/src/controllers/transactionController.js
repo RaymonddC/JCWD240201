@@ -158,4 +158,18 @@ const getAllTransaction = async (req, res, next) => {
   }
 };
 
-module.exports = { checkout, getAllTransaction };
+const uploadPayment = async (req, res, next) => {
+  try {
+    const { transaction_id } = req.body;
+    const image = req.file;
+    const imagePath = image ? image.path : undefined;
+    if (!image) throw { message: 'Please upload image' };
+
+    const updateTransaction = await Transaction.update(
+      { image: imagePath },
+      { where: { id: transaction_id } },
+    );
+  } catch (error) {}
+};
+
+module.exports = { checkout, getAllTransaction,uploadPayment };

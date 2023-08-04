@@ -5,7 +5,12 @@ const APIKey = `${process.env.REACT_APP_API_KEY}`;
 export function createQuestionAPI(data) {
   return axios.post(
     `${URL}/discussions/questions`,
-    { question: data.question, id: data.id },
+    {
+      title: data.title,
+      question: data.question,
+      user_id: data.user.id,
+      question_category_id: data.question_category_id,
+    },
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }
@@ -25,7 +30,7 @@ export function getQuestionDetailsAPI(data) {
   });
 }
 export function getAnswersAPI(data) {
-  console.log(data)
+  console.log(data);
   return axios.get(`${URL}/discussions/answers`, {
     params: {
       page: data.page,
