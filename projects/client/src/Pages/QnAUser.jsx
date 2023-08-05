@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
+import QuestionModal from '../Components/QnA/QuestionModal';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
@@ -26,20 +27,10 @@ export default function QnAUser() {
   const totalPages = QnAStore?.answers?.totalPage;
   const questionCategories = QnAStore?.categories;
   const [page, setPage] = useState(searchParams.get('page') || 1);
-  const [category, setCategory] = useState(0);
-
   const [questionCategory, setQuestionCategory] = useState(
     searchParams.get('category') || '',
   );
-  // console.log(QnAStore?.answers?.data);
-  // const next = () => {
-  //   const nextPage = page >= totalPages ? totalPages : page + 1;
-  //   setPage(nextPage);
-  // };
-  // const prev = () => {
-  //   const prevPage = page <= 1 ? 1 : page - 1;
-  //   setPage(prevPage);
-  // };
+
   const selectOptions = questionCategories?.data?.map((value, index) => {
     return (
       <option key={`opt${index}`} value={value.id}>
@@ -106,6 +97,7 @@ export default function QnAUser() {
               <h2>QnA</h2>
             </article>
             <div>
+              <QuestionModal></QuestionModal>
               <div className="form-control py-5">
                 <article className="prose">
                   <h2 className="label-text">Ask a question</h2>
@@ -122,8 +114,9 @@ export default function QnAUser() {
                     name="category"
                     id="category"
                     className="select select-bordered "
+                    disabled={disabled}
                   >
-                    <option value={0}>Please select a category</option>
+                    <option value={0} >Please select a category</option>
                     {selectOptions}
                   </select>
                 </div>
@@ -161,7 +154,6 @@ export default function QnAUser() {
               <div>
                 <div>
                   {QnAStore?.answers?.data?.rows.map((value, index) => {
-                    // console.log(value)
                     return (
                       <QuestionCard data={value} key={`question${index}`} />
                     );
