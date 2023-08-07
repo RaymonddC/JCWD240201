@@ -169,6 +169,11 @@ const uploadPayment = async (req, res, next) => {
       { image: imagePath },
       { where: { id: transaction_id } },
     );
+    return res.status(200).send({
+      success: true,
+      message: 'Upload payment Success',
+      data: [],
+    });
   } catch (error) {}
 };
 

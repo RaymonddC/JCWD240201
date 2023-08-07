@@ -47,7 +47,7 @@ const addToCart = async (req, res, next) => {
     const userId = req.user.id;
     const image = req.file;
     const imagePath = image ? image.path : undefined;
-
+    console.log(productId, qty, userId, imagePath);
     // const product = await getProduct()
     // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
     // if(product. === true) throw({message:'butuh resep bro'})

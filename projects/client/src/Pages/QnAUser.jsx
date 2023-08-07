@@ -10,6 +10,7 @@ import QuestionCard from '../Components/QnA/QuestionCard';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
 import QuestionModal from '../Components/QnA/QuestionModal';
+import FilterBar from '../Components/Products/FilterBar';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
@@ -31,13 +32,13 @@ export default function QnAUser() {
     searchParams.get('category') || '',
   );
 
-  const selectOptions = questionCategories?.data?.map((value, index) => {
-    return (
-      <option key={`opt${index}`} value={value.id}>
-        {value.name}
-      </option>
-    );
-  });
+  // const selectOptions = questionCategories?.data?.map((value, index) => {
+  //   return (
+  //     <option key={`opt${index}`} value={value.id}>
+  //       {value.name}
+  //     </option>
+  //   );
+  // });
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
@@ -53,23 +54,23 @@ export default function QnAUser() {
     },
   );
 
-  const onSubmit = () => {
-    const select = document.getElementById('category');
-    const option = select.options[select.selectedIndex].value;
-    console.log(option);
+  // const onSubmit = () => {
+  //   const select = document.getElementById('category');
+  //   const option = select.options[select.selectedIndex].value;
+  //   console.log(option);
 
-    dispatch(
-      submitQuestion({
-        title: title.current.value,
-        question: question.current.value,
-        question_category_id: Number(option),
-        user,
-      }),
-    );
-    title.current.value = '';
-    question.current.value = '';
-    select.selectedIndex = 0;
-  };
+  //   dispatch(
+  //     submitQuestion({
+  //       title: title.current.value,
+  //       question: question.current.value,
+  //       question_category_id: Number(option),
+  //       user,
+  //     }),
+  //   );
+  //   title.current.value = '';
+  //   question.current.value = '';
+  //   select.selectedIndex = 0;
+  // };
   useEffect(() => {
     if (page) {
       queryParams['page'] = page;
@@ -89,16 +90,17 @@ export default function QnAUser() {
 
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
+      <FilterBar/>
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">
           <div className="w-full max-w-3xl">
             <article className="prose">
-              <h2>QnA</h2>
+              <h2>Dicussions</h2>
             </article>
             <div>
-              <QuestionModal></QuestionModal>
-              <div className="form-control py-5">
+              <QuestionModal/>
+              {/* <div className="form-control py-5">
                 <article className="prose">
                   <h2 className="label-text">Ask a question</h2>
                 </article>
@@ -136,7 +138,7 @@ export default function QnAUser() {
                 >
                   SUBMIT
                 </button>
-              </div>
+              </div> */}
               <article className="prose">
                 <h2>Categories:</h2>
               </article>

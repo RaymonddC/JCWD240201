@@ -27,7 +27,7 @@ app.use('/public', express.static('public'));
 const {
   authRoute,
   userRoute,
-  QnARouter,
+  QnARoute,
   cartRoute,
   productRoute,
   addressRoute,
@@ -42,7 +42,7 @@ const {
 } = require('./routers');
 
 app.use('/auth', authRoute);
-app.use('/discussions', QnARouter);
+app.use('/discussions', QnARoute);
 app.use('/users', userRoute);
 app.use('/addresses', addressRoute);
 app.use('/carts', cartRoute);

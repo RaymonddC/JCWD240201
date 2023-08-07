@@ -11,10 +11,24 @@ import { keepLoginAsync } from './Features/User/UserSlice';
 import AdminRoute from './utils/routes/adminRoute';
 import PublicRoute from './utils/routes/publicRoutes';
 import { getCartUserAsync } from './Features/Cart/CartSlice';
+import NavBar from './Components/Layout/Navbar';
+import Footer from './Components/Layout/Footer';
 
 function App() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const location = window.location.pathname;
+  let navbar = false;
+  let footer = false;
+
+  if (
+    location === '/' ||
+    location === '/dicussions' ||
+    location === '/profile'
+  ) {
+    navbar = true;
+    footer = true;
+  }
 
   // useEffect(() => {
   //   (async () => {
@@ -33,7 +47,9 @@ function App() {
     <>
       <div className="">
         <Toaster />
+        {navbar ? <NavBar /> : ''}
         {user.role?.role_name === 'admin' ? <AdminRoute /> : <PublicRoute />}
+        {footer ? <Footer /> : ''}
       </div>
     </>
   );

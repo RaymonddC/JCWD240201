@@ -1,6 +1,6 @@
 const authRoute = require('./authRoute');
 const userRoute = require('./userRoute');
-const QnARouter = require('./QnARouter');
+const QnARoute = require('./QnARoute');
 const cartRoute = require('./cartRoute');
 const productRoute = require('./productRoute');
 const addressRoute = require('./addressRoute');
@@ -16,7 +16,7 @@ const txHistoryRoute = require('./transactionHistoryRoute');
 module.exports = {
   authRoute,
   userRoute,
-  QnARouter,
+  QnARoute,
   cartRoute,
   productRoute,
   addressRoute,

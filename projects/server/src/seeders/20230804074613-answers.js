@@ -12,7 +12,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    await queryInterface.bulkInsert('questions', [
+    await queryInterface.bulkInsert('answers', [
       {
         answer:'asnwer 1 Alo, terimakasih atas pertanyaannya./n Bengkak di mata memang bisa saja terjadi karena timbilen (bintitan, hordeolum). Timbilen sendiri muncul akibat meradangnya kelenjar minyak di kelopak mata. Selain bengkak, timbilen juga bisa membuat kelopak mata tampak kemerahan, terasa nyeri dan mengganjal, teraba hangat, muncul benjolan, bahkan bisa pecah dan mengeluarkan nanah, lendir, atau darah./n/n Bukan hanya timbilen, bengkak di mata Anda bisa juga muncul akibat hal lain, contohnya habis menangis atau tidur terlalu lama, dermatitis kontak, digigit serangga, selulitis, alergi terhadap substansi tertentu, cidera di sekitar mata, kalazion, dan sebagainya./n/n Saran kami, mengingat sudah seminggu keluhan Anda muncul, cobalah periksa langsung ke dokter agar diberi penanganan optimal. Sembari itu, Anda bisa lakukan dulu:/n/n/n Rajin mencuci muka dan bersihkan area sekitar mata Anda dengan sabun yang lembut/n Kompres hangat mata yang bengkak/n Tidak memegang-megang area sekitar mata dengan tangan kotor/n Tidak dulu menggunakan lensa kontak dan kosmetika berlebihan di sekitar mata/n Hindari memencet, menusuk, atau mengobati sembarangan mata yang bengkak/n Semoga membantu ya..',
         question_id: 1,

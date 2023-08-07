@@ -53,7 +53,7 @@ export default function QuestionModal() {
   return (
     <>
       <button
-        className="input input-bordered w-full md:max-w-xs my-3 flex items-center"
+        className="input input-bordered w-full my-3 flex items-center"
         disabled={disabled}
         onClick={() => setOpen(true)}
       >
@@ -97,12 +97,12 @@ export default function QuestionModal() {
             ></textarea>
             <button
               className="btn btn-primary text-white my-2"
-              onClick={() => setOpen(false)}
+              onClick={() => onSubmit()}
             >
               SUBMIT
             </button>
             <button
-              className="btn btn-primary btn-outline text-white my-2"
+              className="btn btn-outline border-primary text-primary hover:bg-primary hover:border-primary my-2"
               onClick={() => setOpen(false)}
             >
               CLOSE

@@ -44,7 +44,7 @@ export default function Landing() {
   }, [dispatch]);
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="flex  justify-center">
         <article className="prose">
           <h2 className="mx-5 text-center lg:hidden">
@@ -102,7 +102,7 @@ export default function Landing() {
               </article>
             </div>
             <button onClick={addToCart} className="btn btn-accent mx-5">
-              <div>Upload Prescription</div>
+              <div>SUBMIT</div>
             </button>
           </div>
         </div>
@@ -119,9 +119,9 @@ export default function Landing() {
           {productMap}
         </div>
       </div>
-      <div className="w-full">
+      {/* <div className="w-full">
         <Footer />
-      </div>
+      </div> */}
     </>
   );
 }
