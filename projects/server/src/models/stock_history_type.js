@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      stock_history_type.hasOne(models.stock_history, {
+        foreignKey: 'stock_history_type_id',
+      });
     }
   }
   stock_history_type.init({

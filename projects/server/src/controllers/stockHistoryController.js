@@ -9,12 +9,50 @@ const { sequelize } = require('../models');
 
 const stockHistoryList = async (req, res, next) => {
   try {
+    const { page, limit, product_id, sortOrder, date_start, date_end } =
+      req.query;
+    const pageLimit = Number(limit);
+    const offset = (Number(page) - 1) * pageLimit;
+    const startDate = new Date(date_start);
+    const endDate = new Date(date_end);
+    let where = {};
+    let order = [];
+
+    if (product_id) {
+      where.product_id = product_id;
+    }
+
+    if (date_start && date_end) {
+      where.createdAt = {
+        [Op.between]: [
+          startDate.setDate(startDate.getDate() - 1),
+          endDate.setDate(endDate.getDate() + 1),
+        ],
+      };
+    }
+
+    if (sortOrder) {
+      order = [['createdAt', sortOrder]];
+    } else {
+      order = [['createdAt', 'DESC']];
+    }
+
+    const result = await stockHistoryDB.findAll({
+      include: stockHistoryTypeDB,
+      where: where,
+      order: order,
+      offset: offset,
+      limit: pageLimit,
+    });
 
     return res.send({
       success: true,
       message: 'get data success',
+      data: result,
     });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = {
