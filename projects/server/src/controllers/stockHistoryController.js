@@ -58,7 +58,7 @@ const stockHistoryList = async (req, res, next) => {
     }
 
     const result = await stockHistoryDB.findAll({
-      include: stockHistoryTypeDB,
+      include: [stockHistoryTypeDB, productDB],
       where: where,
       order: order,
       offset: offset,
