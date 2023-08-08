@@ -18,11 +18,11 @@ export default function DeclinePrescriptionModal(props) {
       updateConfirmationPrescriptionCartSlice(
         id,
         false,
+        navigate,
         reasonRef?.current?.value,
       ),
     );
     setOpen(false);
-    navigate('/prescription');
   };
 
   return (

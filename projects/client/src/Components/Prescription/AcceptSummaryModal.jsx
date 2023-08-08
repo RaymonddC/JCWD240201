@@ -1,11 +1,6 @@
-import { toast } from 'react-hot-toast';
-import { deleteAddress } from '../../API/addressAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserAddressAsync } from '../../Features/Address/AddressSlice';
 import { useState } from 'react';
-import { deletePrescriptionCartProductSlice } from '../../Features/PrescriptionCart/PrescriptionCartSlice';
 import { useNavigate, useParams } from 'react-router-dom';
-import { MdDeleteOutline, MdModeEdit } from 'react-icons/md';
 import ProductListCard from './ProductListCard';
 import { updateConfirmationPrescriptionCartSlice } from '../../Features/Cart/CartSlice';
 
@@ -19,9 +14,8 @@ export default function AcceptSummaryModal(props) {
   );
 
   const acceptHandler = async () => {
-    dispatch(updateConfirmationPrescriptionCartSlice(id, true));
+    dispatch(updateConfirmationPrescriptionCartSlice(id, true, navigate));
     setOpen(false);
-    navigate('/prescription');
   };
 
   return (

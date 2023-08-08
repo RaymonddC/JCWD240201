@@ -220,7 +220,7 @@ export const getPrescriptionCartSlice = (id) => async (dispatch) => {
 };
 
 export const updateConfirmationPrescriptionCartSlice =
-  (id, confirmation, notes) => async (dispatch) => {
+  (id, confirmation, navigate, notes) => async (dispatch) => {
     try {
       const token = localStorage.getItem('token');
       const response = await updateConfirmationPrescriptionCartAPI(
@@ -232,6 +232,7 @@ export const updateConfirmationPrescriptionCartSlice =
 
       if (response.data.success) {
         dispatch(getAllPrescriptionsCartsSlice());
+        navigate('/prescription');
       }
     } catch (error) {
       console.log(error);
