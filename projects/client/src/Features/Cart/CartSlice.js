@@ -35,7 +35,7 @@ export const CartSlice = createSlice({
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
       initialState.weight = action.payload.weight;
-      console.log('masuk');
+      // console.log('masuk');
     },
     setPrescriptionCarts: (initialState, action) => {
       initialState.prescriptionCarts = action.payload;
@@ -114,7 +114,7 @@ export const getCartUserAsync = () => async (dispatch) => {
 
 export const addToCartAsync = (values) => async (dispatch) => {
   try {
-    console.log('>>>>>>>', values);
+    // console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
     if (!token) throw { message: 'Please Login First' };
@@ -127,7 +127,7 @@ export const addToCartAsync = (values) => async (dispatch) => {
       qty,
       prescription_images: prescriptionImage,
     });
-    console.log(response);
+    // console.log(response);
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');

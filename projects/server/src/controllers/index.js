@@ -11,6 +11,7 @@ const txStatusController = require('./transactionStatusController');
 const rajaongkircController = require('./rajaOngkirController');
 const stockController = require('./stockController');
 const promotionController = require('./promotionController');
+const txHistoryController = require('./transactionHistoryController');
 const prescriptionCartController = require('./prescriptionCartController');
 
 module.exports = {
@@ -28,4 +29,5 @@ module.exports = {
   stockController,
   promotionController,
   prescriptionCartController,
+  txHistoryController
 };

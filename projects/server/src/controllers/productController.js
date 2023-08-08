@@ -45,11 +45,8 @@ const getAllProducts = async (req, res, next) => {
       where: where,
       order: order,
     });
-    const totalPage = Math.ceil((response.count - 1) / pageLimit);
-    // console.log(pageLimit, '<<');
-    // console.log(response);
-    // console.log(offset);
-    // console.log(totalPage);
+    const totalPage = Math.ceil(response.count / pageLimit);
+
     return res.status(200).send({
       success: true,
       message: 'get all products success',

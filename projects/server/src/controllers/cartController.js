@@ -54,7 +54,7 @@ const addToCart = async (req, res, next) => {
     const userId = req.user.id;
     const image = req.file;
     const imagePath = image ? image.path : undefined;
-
+    console.log(productId, qty, userId, imagePath);
     // const product = await getProduct()
     // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
     // if(product. === true) throw({message:'butuh resep bro'})
@@ -63,9 +63,9 @@ const addToCart = async (req, res, next) => {
       user_id: userId,
     });
     // if (!result) throw { message: 'Invalid Credentials', code: 400 };
-    if (productId === 1 && !image) throw { message: 'Please upload a file' };
+    if (productId === 1 && !image) throw { message: 'Please upload image' };
     if (isCart && isCart.qty === qty) '';
-    else if (isCart)
+    else if (isCart && productId !== 1)
       await Cart.update(
         {
           user_id: isCart.user_id,
