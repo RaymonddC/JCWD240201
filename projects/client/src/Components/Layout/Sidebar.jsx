@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import TransactionIcon from '../../utils/images/Transaction.svg';
-import SalesIcon from '../../utils/images/Sales.svg';
+import { BiSolidReport } from 'react-icons/bi';
 import { GiMedicines } from 'react-icons/gi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
@@ -66,10 +66,10 @@ export const Sidebar = () => {
             <p className="hidden lg:block">Transaction</p>
           </div>
         </Link>
-        <Link to={'/sales'} className="w-full">
+        <Link to={'/report'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
-            <img className="" src={SalesIcon} alt="" />
-            <p className="hidden lg:block">Sales & Revenue</p>
+            <BiSolidReport />
+            <p className="hidden lg:block">Report</p>
           </div>
         </Link>
       </div>

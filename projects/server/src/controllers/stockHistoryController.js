@@ -9,20 +9,12 @@ const { sequelize } = require('../models');
 
 const stockHistoryList = async (req, res, next) => {
   try {
-    const {
-      page,
-      limit,
-      product_id,
-      sort_date,
-      sortOrder,
-      date_start,
-      date_end,
-    } = req.query;
+    const { page, limit, product_id, sortOrder, date_start, date_end } =
+      req.query;
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
     const startDate = new Date(date_start);
     const endDate = new Date(date_end);
-    const sortDate = new Date(sort_date)
     let where = {};
     let order = [];
 
@@ -30,8 +22,7 @@ const stockHistoryList = async (req, res, next) => {
       where.product_id = product_id;
     }
 
-    if(date_start && date_end && sort_date) throw {message: "Date is not valid"}
-    if((!date_start && date_end) || (!date_end && date_start)) throw {message: "Complete the date"}
+    if (!date_start || !date_end) throw { message: 'Complete the date' };
 
     if (date_start && date_end) {
       where.createdAt = {
@@ -42,33 +33,30 @@ const stockHistoryList = async (req, res, next) => {
       };
     }
 
-    if (sort_date) {
-      where.createdAt = {
-        [Op.between]: [
-          sortDate.setDate(sortDate.getDate()),
-          sortDate.setDate(sortDate.getDate() + 1),
-        ],
-      };
-    }
-
     if (sortOrder) {
       order = [['createdAt', sortOrder]];
     } else {
       order = [['createdAt', 'DESC']];
     }
 
-    const result = await stockHistoryDB.findAll({
-      include: [stockHistoryTypeDB, productDB],
+    const result = await stockHistoryDB.findAndCountAll({
+      include: [
+        { model: stockHistoryTypeDB },
+        { model: productDB, include: [packagingDB, productTypeDB] },
+      ],
       where: where,
       order: order,
       offset: offset,
       limit: pageLimit,
     });
 
+    const totalPage = Math.ceil((result.count) / pageLimit);
+
     return res.send({
       success: true,
       message: 'get data success',
       data: result,
+      totalPage: totalPage
     });
   } catch (error) {
     next(error);

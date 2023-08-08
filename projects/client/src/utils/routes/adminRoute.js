@@ -10,6 +10,8 @@ import AddProduct from '../../Pages/AddProduct';
 import EditProduct from '../../Pages/EditProduct';
 import StockPageAdmin from '../../Pages/StockPageAdmin';
 import AddPromotion from '../../Pages/AddPromotion';
+import ReportPage from '../../Components/Report/ReportPage';
+import StockHistory from '../../Pages/StockHistory';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -96,6 +98,24 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <AddPromotion />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/report',
+    element: (
+      <AdminLayout>
+        <ReportPage />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/report/stock_history',
+    element: (
+      <AdminLayout>
+        <StockHistory />,
       </AdminLayout>
     ),
   },

@@ -17,12 +17,15 @@ export default function DeleteModal(props) {
           <h3 className="font-bold text-lg">Delete Product</h3>
           <p className="py-4">Are you sure want to delete product?</p>
           <div className="modal-action">
-            <label htmlFor="my_modal_6" className="btn">
+            <label
+              htmlFor="my_modal_6"
+              className="btn btn-outline border-primary hover:border-primary hover:bg-primary"
+            >
               Close
             </label>
             <label
               htmlFor="my_modal_6"
-              className="btn btn-accent"
+              className="btn btn-primary text-white"
               onClick={() => onDelete(props.productId)}
             >
               Delete
