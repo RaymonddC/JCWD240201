@@ -9,7 +9,9 @@ import CategoryAdmin from '../../Pages/CategoryAdmin';
 import AddProduct from '../../Pages/AddProduct';
 import EditProduct from '../../Pages/EditProduct';
 import StockPageAdmin from '../../Pages/StockPageAdmin';
+import PrescriptionAdmin from '../../Pages/PrescriptionAdmin';
 import AddPromotion from '../../Pages/AddPromotion';
+import PrescriptionCopyAdmin from '../../Pages/PrescriptionCopyAdmin';
 import ReportPage from '../../Components/Report/ReportPage';
 import StockHistory from '../../Pages/StockHistory';
 
@@ -94,10 +96,28 @@ const routerSource = (props) => [
   },
   {
     index: true,
+    path: '/prescription',
+    element: (
+      <AdminLayout>
+        <PrescriptionAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
     path: '/promotions',
     element: (
       <AdminLayout>
         <AddPromotion />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/prescription/:id',
+    element: (
+      <AdminLayout>
+        <PrescriptionCopyAdmin />,
       </AdminLayout>
     ),
   },

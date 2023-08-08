@@ -108,10 +108,10 @@ const postAnswer = async (req, res, next) => {
 };
 
 const createQuestion = async (req, res, next) => {
-  const { question, user_id } = req.body;
+  const { question, user_id, title, question_category_id } = req.body;
   console.log('question');
   try {
-    let result = await questionDB.create({ question, user_id });
+    let result = await questionDB.create({ title, question, user_id, question_category_id });
 
     return res.status(201).send({
       success: true,

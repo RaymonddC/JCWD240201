@@ -29,10 +29,10 @@ export default function NavBar() {
           <div className="flex justify-between pr-2 items-center">
             <div className="flex">
               <button className="btn btn-sm btn-ghost">
-                <Link to="/products">Shop</Link>
+                <Link to="/products">SHOP</Link>
               </button>
               <button className="btn btn-sm btn-ghost">
-                <Link to="/discussions">QnA</Link>
+                <Link to="/discussions">DISCUSSIONS</Link>
               </button>
             </div>
             <div className="flex items-center relative">
@@ -106,7 +106,7 @@ export default function NavBar() {
                 <Link to="/products">SHOP</Link>
               </li>
               <li>
-                <Link to="/discussions">QNA</Link>
+                <Link to="/discussions">DISCUSSIONS</Link>
               </li>
             </ul>
           </div>

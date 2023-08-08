@@ -14,10 +14,10 @@ export default function Products() {
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
-  const limit = 20;
+  const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
-  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
   const [sortOrder, setSortOrder] = useState(
@@ -59,6 +59,9 @@ export default function Products() {
     });
   }
 
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchValue, sortType, sortOrder, category]);
   useEffect(() => {
     dispatch(getAllCategories());
   }, []);
@@ -104,7 +107,7 @@ export default function Products() {
   }, [page, debouncedSearchValue, sortType, sortOrder, category]);
   return (
     <>
-      <NavBar />
+      {/* <NavBar /> */}
       <div className="sticky top-3 mb-3 z-10">
         <FilterBar
           setSearch={setSearch}
@@ -141,7 +144,7 @@ export default function Products() {
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

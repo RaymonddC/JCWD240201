@@ -27,6 +27,9 @@ module.exports = {
       is_check: {
         type: Sequelize.BOOLEAN,
       },
+      notes: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

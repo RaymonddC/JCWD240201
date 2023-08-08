@@ -3,9 +3,12 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import {
   deleteCart,
+  getAllPrescriptionsCartsAPI,
+  getPrescriptionCartAPI,
   getUserCarts,
   postCart,
   updateCart,
+  updateConfirmationPrescriptionCartAPI,
 } from '../../API/cartAPI';
 import { processData } from '../../Helper/cartHelper';
 // import UrlApi from '../../Supports/Constants/URLAPI';
@@ -17,6 +20,8 @@ const initialState = {
   totalPrice: 0,
   discount: 0,
   weight: 0,
+  prescriptionCarts: [],
+  detailprescriptionCart: {},
 };
 
 export const CartSlice = createSlice({
@@ -30,7 +35,13 @@ export const CartSlice = createSlice({
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
       initialState.weight = action.payload.weight;
-      console.log('masuk');
+      // console.log('masuk');
+    },
+    setPrescriptionCarts: (initialState, action) => {
+      initialState.prescriptionCarts = action.payload;
+    },
+    setDetailprescriptionCart: (initialState, action) => {
+      initialState.detailprescriptionCart = action.payload;
     },
   },
 });
@@ -103,7 +114,7 @@ export const getCartUserAsync = () => async (dispatch) => {
 
 export const addToCartAsync = (values) => async (dispatch) => {
   try {
-    console.log('>>>>>>>', values);
+    // console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
     if (!token) throw { message: 'Please Login First' };
@@ -116,7 +127,7 @@ export const addToCartAsync = (values) => async (dispatch) => {
       qty,
       prescription_images: prescriptionImage,
     });
-    console.log(response);
+    // console.log(response);
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');
@@ -181,6 +192,58 @@ export const deleteCartAsync = (values) => async (dispatch) => {
 //   } catch (error) {}
 // };
 
-export const { onGetData, getCurrentCart } = CartSlice.actions;
+export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
+  try {
+    // const { search } = params;
+    const token = localStorage.getItem('token');
+    const response = await getAllPrescriptionsCartsAPI(token, params);
+
+    if (response.data.success) {
+      dispatch(setPrescriptionCarts(response.data.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getPrescriptionCartSlice = (id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await getPrescriptionCartAPI(token, id);
+
+    if (response.data.success) {
+      dispatch(setDetailprescriptionCart(response.data.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateConfirmationPrescriptionCartSlice =
+  (id, confirmation, navigate, notes) => async (dispatch) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await updateConfirmationPrescriptionCartAPI(
+        token,
+        id,
+        confirmation,
+        notes,
+      );
+
+      if (response.data.success) {
+        dispatch(getAllPrescriptionsCartsSlice());
+        navigate('/prescription');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const {
+  onGetData,
+  getCurrentCart,
+  setPrescriptionCarts,
+  setDetailprescriptionCart,
+} = CartSlice.actions;
 
 export default CartSlice.reducer;
