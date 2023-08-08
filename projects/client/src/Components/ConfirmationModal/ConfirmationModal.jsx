@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories } from '../../Features/Category/CategorySlice';
 import { deleteCategory } from '../../API/categoryAPI';
 
-const DeleteModal = (props) => {
+const ConfirmationModal = (props) => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => state.categories);
 
@@ -33,11 +33,11 @@ const DeleteModal = (props) => {
       />
       <div className="modal">
         <div className="modal-box w-fit flex flex-col items-center">
-          <h3 className="font-bold text-lg mb-4">Delete {props?.model}</h3>
+          <h3 className="font-bold text-lg mb-4">{props?.title}</h3>
           <p className="font-normal">
-            Are you sure want to Delete This {props?.model}?
+            {props?.text}?
           </p>
-          <p className="font-normal">
+          <p className="font-normal ">
             You cannot restore an {props?.model} that <br />
             has been deleted.
           </p>
@@ -61,4 +61,4 @@ const DeleteModal = (props) => {
   );
 };
 
-export default DeleteModal;
+export default ConfirmationModal;

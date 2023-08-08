@@ -20,7 +20,6 @@ export const UserSlice = createSlice({
   reducers: {
     onSaveUser: (initialState, action) => {
       initialState.user = action.payload;
-      console.log(initialState.user, action.payload);
     },
     setUser: (initialState, action) => {
       initialState.user = action.payload;

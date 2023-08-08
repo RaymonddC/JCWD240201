@@ -80,9 +80,10 @@ export default function Transaction() {
           </div>
           <div className="status flex overflow-x-auto">
             {/* <span className="font-bold">Status</span> */}
-            {txStatuses.map((value) => {
+            {txStatuses.map((value,index) => {
               return (
                 <button
+                key={`stats${index}`}
                   className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center  transition ease-in-out ${
                     selectedStatus === value.status
                       ? 'border-blue-500 font-bold hover:border-blue-500 '

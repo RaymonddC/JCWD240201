@@ -58,7 +58,7 @@ const addToCart = async (req, res, next) => {
     // if (!result) throw { message: 'Invalid Credentials', code: 400 };
     if (productId === 1 && !image) throw { message: 'Please upload image' };
     if (isCart && isCart.qty === qty) '';
-    else if (isCart)
+    else if (isCart && productId !== 1)
       await Cart.update(
         {
           user_id: isCart.user_id,

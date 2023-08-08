@@ -7,7 +7,11 @@ import {
   postCart,
   updateCart,
 } from '../../API/cartAPI';
-import { getUserTransactions } from '../../API/transactionAPI';
+import {
+  getUserTransactions,
+  updateUserTransactionHistoryAPI,
+  uploadPaymentAPI,
+} from '../../API/transactionAPI';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
@@ -28,7 +32,7 @@ export const getAllTransactionSlice = (values) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
 
-    console.log(values);
+    // console.log(values);
     const { data } = await getUserTransactions(token, values);
 
     dispatch(onGetData(data));
@@ -36,7 +40,22 @@ export const getAllTransactionSlice = (values) => async (dispatch) => {
     return toast.error(error.message);
   }
 };
-
+export const updateTransactionHistorySlice = (data) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+    const response = await updateUserTransactionHistoryAPI(token, data);
+  } catch (error) {
+    return toast.error(error.message);
+  }
+};
+export const uploadPaymentSlice = (data) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+    await uploadPaymentAPI(token, data);
+  } catch (error) {
+    return toast.error(error.message);
+  }
+};
 export const { onGetData } = TransactionSlice.actions;
 
 export default TransactionSlice.reducer;

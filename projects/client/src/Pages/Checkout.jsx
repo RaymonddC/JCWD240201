@@ -103,7 +103,7 @@ export default function Checkout() {
                       return toast.error('Please choose your shipping courier');
 
                     if (
-                      await dispatch(
+                      dispatch(
                         checkoutTxSlice({ shippingFee, discount, activeCart }),
                       )
                     )

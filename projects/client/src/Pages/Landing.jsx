@@ -13,7 +13,7 @@ import { addToCartAsync } from '../Features/Cart/CartSlice';
 
 export default function Landing() {
   const dispatch = useDispatch();
-  const fileTypes = ['JPEG', 'PNG'];
+  const fileTypes = ['JPEG', 'PNG', 'JPG'];
   const ProductsStore = useSelector((state) => state?.products?.products);
   console.log(ProductsStore);
   const [file, setFile] = useState(null);
@@ -29,7 +29,7 @@ export default function Landing() {
   });
   const addToCart = async () => {
     try {
-      const response = await dispatch(
+     dispatch(
         addToCartAsync({
           productId: 1,
           qty: 1,

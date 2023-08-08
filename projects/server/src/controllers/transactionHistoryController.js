@@ -9,9 +9,10 @@ const transporter = require('../helpers/transporter');
 const { sequelize } = require('../models');
 
 const updateTxHistory = async (req, res, next) => {
+  console.log('>>>> update tx history')
   // const t = await sequelize.transaction();
   try {
-    const { transaction_id, transaction_status_id, is_active } = req.body;
+    const { transaction_id, transaction_status_id } = req.body;
     let txCreate;
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },

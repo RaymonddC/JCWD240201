@@ -6,9 +6,10 @@ const fs = require('fs');
 const db = require('../models');
 const TxStatus = db.transaction_status;
 const transporter = require('../helpers/transporter');
+const { sequelize } = require('../models');
 
 const getAllTxStatus = async (req, res, next) => {
-  const t = await sequelize.transaction();
+  // const t = await sequelize.transaction();
   try {
     // console.log('Getting all categories');
     const txStatus = await TxStatus.findAll();
