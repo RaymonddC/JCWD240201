@@ -16,7 +16,7 @@ export default function Transaction() {
 
   const { txStatuses } = useSelector((state) => state.txStatus);
   const { transactions } = useSelector((state) => state.transaction);
-
+  const [togle, setTogle] = useState(false);
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedStatus, setSelectedStatus] = useState(txStatuses[0]?.status);
@@ -39,6 +39,7 @@ export default function Transaction() {
   }, []);
 
   useEffect(() => {
+    console.log('>>>> ')
     dispatch(
       getAllTransactionSlice({
         selectedStatusId,
@@ -46,7 +47,7 @@ export default function Transaction() {
         date: range[0],
       }),
     );
-  }, [debouncedSearchValue, selectedStatusId, range]);
+  }, [debouncedSearchValue, selectedStatusId, range, togle]);
 
   useEffect(() => {
     if (selectedStatus) queryParams['status'] = selectedStatus;
@@ -80,10 +81,10 @@ export default function Transaction() {
           </div>
           <div className="status flex overflow-x-auto">
             {/* <span className="font-bold">Status</span> */}
-            {txStatuses.map((value,index) => {
+            {txStatuses.map((value, index) => {
               return (
                 <button
-                key={`stats${index}`}
+                  key={`stats${index}`}
                   className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center  transition ease-in-out ${
                     selectedStatus === value.status
                       ? 'border-blue-500 font-bold hover:border-blue-500 '
@@ -101,8 +102,8 @@ export default function Transaction() {
           </div>
         </div>
         <div className="div ">
-          {transactions.map((value) => {
-            return <TransactionCard tx={value} />;
+          {transactions.map((value, index) => {
+            return <TransactionCard key={`txCard${index}`} tx={value} setTogle={setTogle} togle={togle} />;
           })}
         </div>
       </div>

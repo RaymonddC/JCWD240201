@@ -12,6 +12,7 @@ import {
   updateUserTransactionHistoryAPI,
   uploadPaymentAPI,
 } from '../../API/transactionAPI';
+import { getAllTxStatus } from '../TransactionStatus/TransactionStatusSlice';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
@@ -44,6 +45,8 @@ export const updateTransactionHistorySlice = (data) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
     const response = await updateUserTransactionHistoryAPI(token, data);
+    // dispatch(getAllTransactionSlice())
+    dispatch(getAllTxStatus());
   } catch (error) {
     return toast.error(error.message);
   }

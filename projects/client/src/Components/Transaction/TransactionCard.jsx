@@ -31,21 +31,25 @@ const TransactionCard = (props) => {
   const transactionStatus =
     props?.tx?.transaction_histories[0]?.transaction_status?.status;
   // console.log(props);
-  const transactionId = props?.tx?.id
+  const transactionId = props?.tx?.id;
   const txDetail = props?.tx.transaction_details[0];
   const onSubmit = () => {
     dispatch(
       uploadPaymentSlice({
-        transaction_status_id: transactionStatusId+1,
+        transaction_status_id: transactionStatusId + 1,
         transaction_id: transactionId,
       }),
     );
+    // props?.setTogle(!props?.togle);
   };
   const onDelivered = () => {
-    dispatch(updateTransactionHistorySlice({
-      transaction_status_id: transactionStatusId+1,
-      transaction_id: transactionId,
-    }));
+    dispatch(
+      updateTransactionHistorySlice({
+        transaction_status_id: transactionStatusId + 1,
+        transaction_id: transactionId,
+      }),
+    );
+    props?.setTogle(!props?.togle);
   };
 
   return (
@@ -120,12 +124,24 @@ const TransactionCard = (props) => {
         ) : transactionStatus === 'Process' || transactionStatusId === 3 ? (
           <button className="btn btn-sm btn-primary text-white">Process</button>
         ) : transactionStatus === 'On the way' || transactionStatusId === 4 ? (
-          <button className="btn btn-sm btn-primary text-white">
-            Lacak OTW
-          </button>
+          <>
+            <button className="btn btn-sm btn-primary text-white">
+              Lacak OTW
+            </button>
+            <button
+              className="btn btn-sm btn-primary text-white"
+              onClick={() => onDelivered()}
+            >
+              Confirm Arrival
+            </button>
+          </>
         ) : transactionStatus === 'Arrived' || transactionStatusId === 5 ? (
-          <button className="btn btn-sm btn-primary text-white"
-          onClick={() => onDelivered()}>Arrived</button>
+          <button
+            className="btn btn-sm btn-primary text-white"
+            onClick={() => onDelivered()}
+          >
+            Confirm Arrival
+          </button>
         ) : transactionStatus === 'Complete' || transactionStatusId === 6 ? (
           <button className="btn btn-sm btn-primary text-white">
             complete
