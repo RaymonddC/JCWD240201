@@ -59,13 +59,13 @@ export default function StockHistory() {
       try {
         const result = await getStockHistoryAPI(values);
         setStockHistory(result?.data?.data?.rows);
-        setTotalPages(result?.data?.totalPages);
+        setTotalPages(result?.data?.totalPage);
       } catch (error) {
         toast.error(error.message);
       }
     },
   });
-
+console.log(totalPages);
   useEffect(() => {
     if (debouncedSearchValue) {
       queryParams['search'] = debouncedSearchValue;
