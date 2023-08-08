@@ -28,9 +28,8 @@ export const getAllTransactionSlice = (values) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
 
-    console.log(values);
     const { data } = await getUserTransactions(token, values);
-
+    console.log(data);
     dispatch(onGetData(data));
   } catch (error) {
     return toast.error(error.message);

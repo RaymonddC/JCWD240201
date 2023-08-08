@@ -42,6 +42,9 @@ module.exports = {
       total_price: {
         type: Sequelize.INTEGER,
       },
+      shipment: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

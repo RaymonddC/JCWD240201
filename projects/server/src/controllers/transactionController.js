@@ -12,6 +12,7 @@ const ClosedStockDB = db.closed_stock;
 const Product = db.product;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
+const UserDB = db.user;
 const { sequelize } = require('../models');
 const { getOldIsSelected } = require('../helpers/addressHelper');
 const { getUserTransactions } = require('../helpers/transactionHelper');
@@ -118,32 +119,41 @@ const checkout = async (req, res, next) => {
 
 const getAllTransaction = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const user = await UserDB.findByPk(req.user.id);
 
     let {
-      searchStatusId,
-      ordered,
-      orderedBy,
+      searchStatusId = '',
+      sortType,
+      sortOrder,
       search = '',
       page = 1,
       startDate,
       endDate,
-      limitPage = 10,
+      limitPage,
     } = req.query;
 
     let whereQuery = {};
     whereQuery.dates = { startDate, endDate };
-    whereQuery.transaction = {
-      user_id: userId,
-    };
+    whereQuery.transaction = {};
+
+    if (user.role_id !== 1) whereQuery.transaction.user_id = user.id;
+
     whereQuery.transactionHistory = {
       transaction_status_id: { [Op.like]: `%${searchStatusId}%` },
     };
     whereQuery.transactionDetail = {
       product_name: { [Op.like]: `%${search}%` },
     };
+    if (limitPage)
+      whereQuery.pagination = {
+        limit: Number(limitPage),
+        offset: (Number(page) - 1) * limitPage,
+      };
 
-    const { count, rows } = await getUserTransactions('', whereQuery);
+    const { count, rows } = await getUserTransactions(whereQuery, {
+      sortType,
+      sortOrder,
+    });
     console.log(whereQuery);
     console.log(startDate);
 
@@ -154,6 +164,7 @@ const getAllTransaction = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

@@ -38,7 +38,23 @@ export default function StockPageAdmin() {
     <>
       <div className="relative">
         <div className="sticky top-3 mb-3">
-          <FilterBar setSearch={setSearch} />
+          <FilterBar
+            setSearch={setSearch}
+            option={[
+              { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+              { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+              {
+                text: 'Price low to high',
+                sortType: 'price',
+                sortOrder: 'ASC',
+              },
+              {
+                text: 'Price high to low',
+                sortType: 'price',
+                sortOrder: 'DESC',
+              },
+            ]}
+          />
         </div>
         <div>{productMap}</div>
         <div className="py-5">

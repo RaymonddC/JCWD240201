@@ -29,7 +29,7 @@ const DateRangePicker = (props) => {
     <div className="hidden md:block min-w-[40%] ">
       <div className="flex gap-2 relative justify-end">
         <div
-          className="bg-white rounded-lg p-3 cursor-pointer border w-full "
+          className={`bg-white rounded-lg p-3 cursor-pointer border w-full ${props.styleInput}`}
           onClick={() => setOpen((open) => !open)}
         >
           {!props.range[0].startDate ? (

@@ -49,46 +49,20 @@ export default function FilterBar(props) {
             tabIndex={0}
             className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
           >
-            <li>
-              <div
-                onClick={() => {
-                  props?.setSortType('name');
-                  props?.setSortOrder('ASC');
-                }}
-              >
-                Name A to Z
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => {
-                  props?.setSortType('name');
-                  props?.setSortOrder('DESC');
-                }}
-              >
-                Name Z to A
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => {
-                  props?.setSortType('price');
-                  props?.setSortOrder('ASC');
-                }}
-              >
-                Price low to high
-              </div>
-            </li>
-            <li>
-              <div
-                onClick={() => {
-                  props?.setSortType('price');
-                  props?.setSortOrder('DESC');
-                }}
-              >
-                Price high to low
-              </div>
-            </li>
+            {props.option.map((value) => {
+              return (
+                <li>
+                  <div
+                    onClick={() => {
+                      props?.setSortType(value.sortType);
+                      props?.setSortOrder(value.sortOrder);
+                    }}
+                  >
+                    {value.text}
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

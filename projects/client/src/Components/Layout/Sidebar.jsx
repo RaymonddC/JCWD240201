@@ -60,7 +60,7 @@ export const Sidebar = () => {
             <p className="hidden lg:block">QnA</p>
           </div>
         </Link>
-        <Link to={'/transaction'} className="w-full">
+        <Link to={'/transactions'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <img className="" src={TransactionIcon} alt="" />
             <p className="hidden lg:block">Transaction</p>

@@ -16,12 +16,12 @@ const TransactionCard = (props) => {
     })
     .split(',');
 
-  const time = dateTime.toLocaleTimeString();
+  const time = dateTime.toLocaleTimeString([], { hour12: false });
 
   const txDetail = props.tx.transaction_details[0];
 
   return (
-    <div className="div border-t border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
+    <div className="div border-b border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3 px-2">
         <p>
           {date[0]}, {date[1]} {date[2]}, {time} WIB

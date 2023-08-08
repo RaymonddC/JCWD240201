@@ -111,6 +111,12 @@ export default function Products() {
           setSortType={setSortType}
           setSortOrder={setSortOrder}
           sortBy={true}
+          option={[
+            { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+            { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+            { text: 'Price low to high', sortType: 'price', sortOrder: 'ASC' },
+            { text: 'Price high to low', sortType: 'price', sortOrder: 'DESC' },
+          ]}
         />
       </div>
       <div className="flex ">
