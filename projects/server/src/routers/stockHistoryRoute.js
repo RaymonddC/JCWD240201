@@ -9,8 +9,8 @@ const { isAdmin } = require('../middleware/checkRole');
 router.get(
   '/',
   APIKey,
-//   verifyToken,
-//   isAdmin,
+  verifyToken,
+  isAdmin,
   stockHistoryController.stockHistoryList,
 );
 
