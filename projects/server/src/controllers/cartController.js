@@ -1,7 +1,14 @@
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const db = require('../models');
-const { getCart, getCartByPk, getUserCarts } = require('../helpers/cartHelper');
+const {
+  getCart,
+  getCartByPk,
+  getUserCarts,
+  updateConfirmation,
+  isPrescriptionCartProductListEmpty,
+  getAllPrescriptions,
+} = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Product = db.product;
@@ -160,13 +167,81 @@ const deleteCart = async (req, res, next) => {
 
 const getAllPrescriptionsCarts = async (req, res, next) => {
   try {
-    const getAllPrescriptions = await getUserCarts('', { product_id: 1 });
+    const { search_user, confirmation, sort, page, limit } = req.query;
 
-    // res.send(getAllPrescriptions);
+    let full_name = search_user || '';
+    let where = {
+      product_id: 1,
+      confirmation:
+        confirmation === 'true'
+          ? true
+          : confirmation === 'false'
+          ? false
+          : null,
+    };
+    let order = [['createdAt', sort || 'ASC']];
+
+    let response = await getAllPrescriptions(
+      { model: User, where: { full_name: { [Op.substring]: full_name } } },
+      where,
+      order,
+      limit,
+      page,
+    );
+    const totalPage = Math.ceil(response.count / Number(limit));
+
     return res.status(200).send({
       success: true,
       message: 'Get all prescriptions carts successfully',
-      data: getAllPrescriptions,
+      data: { ...response, totalPage },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPrescriptionCart = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const getPrescription = await getCart('', { id: id });
+
+    return res.status(200).send({
+      success: true,
+      message: 'Get prescriptions cart successfully',
+      data: getPrescription,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateConfirmationPrescriptionCart = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { confirmation, notes } = req.body;
+
+    const checkPrescriptionCartProductListEmpty =
+      await isPrescriptionCartProductListEmpty(id);
+
+    if (confirmation && checkPrescriptionCartProductListEmpty) {
+      throw { message: 'prescription cart product list is empty', code: 403 };
+    }
+
+    if (!confirmation && !notes) {
+      throw { message: 'Please input reason', code: 400 };
+    }
+
+    let message;
+    confirmation
+      ? (message = 'Prescription is confirmed')
+      : (message = 'Prescription is declined');
+
+    const data = await updateConfirmation(id, confirmation, notes);
+
+    return res.status(200).send({
+      success: true,
+      message: message,
+      data: data,
     });
   } catch (error) {
     next(error);
@@ -179,4 +254,6 @@ module.exports = {
   updateCart,
   deleteCart,
   getAllPrescriptionsCarts,
+  getPrescriptionCart,
+  updateConfirmationPrescriptionCart,
 };

@@ -106,6 +106,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
     toast.success('Login Success!');
     return true;
   } catch (error) {
+    console.log(error);
     toast.error(error.message);
   }
 };

@@ -4,9 +4,11 @@ import toast from 'react-hot-toast';
 import {
   deleteCart,
   getAllPrescriptionsCartsAPI,
+  getPrescriptionCartAPI,
   getUserCarts,
   postCart,
   updateCart,
+  updateConfirmationPrescriptionCartAPI,
 } from '../../API/cartAPI';
 import { processData } from '../../Helper/cartHelper';
 // import UrlApi from '../../Supports/Constants/URLAPI';
@@ -19,6 +21,7 @@ const initialState = {
   discount: 0,
   weight: 0,
   prescriptionCarts: [],
+  detailprescriptionCart: {},
 };
 
 export const CartSlice = createSlice({
@@ -36,6 +39,9 @@ export const CartSlice = createSlice({
     },
     setPrescriptionCarts: (initialState, action) => {
       initialState.prescriptionCarts = action.payload;
+    },
+    setDetailprescriptionCart: (initialState, action) => {
+      initialState.detailprescriptionCart = action.payload;
     },
   },
 });
@@ -186,20 +192,57 @@ export const deleteCartAsync = (values) => async (dispatch) => {
 //   } catch (error) {}
 // };
 
-export const getAllPrescriptionsCartsSlice = () => async (dispatch) => {
+export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
   try {
+    // const { search } = params;
     const token = localStorage.getItem('token');
-    const response = await getAllPrescriptionsCartsAPI(token);
+    const response = await getAllPrescriptionsCartsAPI(token, params);
 
     if (response.data.success) {
-      dispatch(setPrescriptionCarts(response.data.data.rows));
+      dispatch(setPrescriptionCarts(response.data.data));
     }
   } catch (error) {
     console.log(error);
   }
 };
 
-export const { onGetData, getCurrentCart, setPrescriptionCarts } =
-  CartSlice.actions;
+export const getPrescriptionCartSlice = (id) => async (dispatch) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await getPrescriptionCartAPI(token, id);
+
+    if (response.data.success) {
+      dispatch(setDetailprescriptionCart(response.data.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateConfirmationPrescriptionCartSlice =
+  (id, confirmation, notes) => async (dispatch) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await updateConfirmationPrescriptionCartAPI(
+        token,
+        id,
+        confirmation,
+        notes,
+      );
+
+      if (response.data.success) {
+        dispatch(getAllPrescriptionsCartsSlice());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+export const {
+  onGetData,
+  getCurrentCart,
+  setPrescriptionCarts,
+  setDetailprescriptionCart,
+} = CartSlice.actions;
 
 export default CartSlice.reducer;

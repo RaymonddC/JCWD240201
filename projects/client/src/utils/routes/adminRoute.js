@@ -11,6 +11,7 @@ import EditProduct from '../../Pages/EditProduct';
 import StockPageAdmin from '../../Pages/StockPageAdmin';
 import PrescriptionAdmin from '../../Pages/PrescriptionAdmin';
 import AddPromotion from '../../Pages/AddPromotion';
+import PrescriptionCopyAdmin from '../../Pages/PrescriptionCopyAdmin';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -106,6 +107,15 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <AddPromotion />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/prescription/:id',
+    element: (
+      <AdminLayout>
+        <PrescriptionCopyAdmin />,
       </AdminLayout>
     ),
   },

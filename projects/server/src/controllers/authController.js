@@ -21,7 +21,10 @@ const sendVerifyEmail = async (req, res, next) => {
     const { email } = req.body;
     let payload = { email: email };
     const token = jwt.sign(payload, 'verification-account');
-    const data = fs.readFileSync('./src/helpers/verifyEmailTemplate.html', 'utf-8');
+    const data = fs.readFileSync(
+      './src/helpers/verifyEmailTemplate.html',
+      'utf-8',
+    );
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 
@@ -224,7 +227,10 @@ const sendResetPasswordForm = async (req, res) => {
     if (!findUser) throw { message: 'Account is not found', status: 400 };
 
     //send reset password form
-    const data = fs.readFileSync('./src/helpers/resetPasswordForm.html', 'utf-8');
+    const data = fs.readFileSync(
+      './src/helpers/resetPasswordForm.html',
+      'utf-8',
+    );
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 

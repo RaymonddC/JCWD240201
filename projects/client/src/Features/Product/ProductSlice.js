@@ -12,6 +12,9 @@ const initialState = {
   isSubmitting: false,
   packagingType: null,
   productType: null,
+  isLoad: false,
+  productDropdown: [],
+  productDetail: [],
 };
 
 export const ProductSlice = createSlice({
@@ -31,6 +34,15 @@ export const ProductSlice = createSlice({
     productType: (initialState, action) => {
       initialState.productType = action.payload;
     },
+    setProductDropdown: (initialState, action) => {
+      initialState.productDropdown = action.payload;
+    },
+    setProductDetail: (initialState, action) => {
+      initialState.productDetail = action.payload;
+    },
+    setIsLoad: (initialState, action) => {
+      initialState.isLoad = action.payload;
+    },
   },
 });
 
@@ -44,7 +56,11 @@ export const getProducts = (data) => async (dispatch) => {
       sortOrder: data.sortOrder,
     });
     // console.log(response?.data.data);
-    dispatch(products(response?.data));
+    if (response.data.success) {
+      dispatch(products(response?.data));
+      dispatch(setProductDropdown(response?.data));
+      dispatch(setIsLoad(false));
+    }
   } catch (error) {
     console.log(error);
   }
@@ -53,6 +69,7 @@ export const getProductDetails = (data) => async (dispatch) => {
   try {
     let response = await getProductDetailsAPI({ id: data.id });
     dispatch(products(response?.data));
+    dispatch(setProductDetail(response?.data));
   } catch (error) {
     console.log(error);
   }
@@ -97,6 +114,13 @@ export const getType = () => async (dispatch) => {
   dispatch(productType(result.data.data));
 };
 
-export const { products, page, packagingType, productType } =
-  ProductSlice.actions;
+export const {
+  products,
+  page,
+  packagingType,
+  productType,
+  setProductDropdown,
+  setProductDetail,
+  setIsLoad,
+} = ProductSlice.actions;
 export default ProductSlice.reducer;
