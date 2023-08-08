@@ -15,4 +15,5 @@ router.post(
 );
 router.put('/unit-conversion',APIKey, stockController.unitConversion);
 router.get('/', APIKey, stockController.getStockHistoryType);
+
 module.exports = router;
