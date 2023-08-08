@@ -65,7 +65,7 @@ export default function StockHistory() {
       }
     },
   });
-console.log(totalPages);
+
   useEffect(() => {
     if (debouncedSearchValue) {
       queryParams['search'] = debouncedSearchValue;
