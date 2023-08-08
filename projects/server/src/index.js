@@ -38,6 +38,7 @@ const {
   rajaOngkirRoute,
   stockRoute,
   promotionRoute,
+  prescriptionCartRoute,
   txHistoryRoute,
 } = require('./routers');
 
@@ -55,6 +56,7 @@ app.use('/rajaongkir', rajaOngkirRoute);
 app.use('/stocks', stockRoute);
 app.use('/promotions', promotionRoute);
 app.use('/tx-histories', txHistoryRoute);
+app.use('/prescriptioncarts', prescriptionCartRoute);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

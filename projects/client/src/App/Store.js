@@ -9,6 +9,7 @@ import AddressReducer from '../Features/Address/AddressSlice';
 import TransactionReducer from '../Features/Transaction/TransactionSlice';
 import TransactionStatusReducer from '../Features/TransactionStatus/TransactionStatusSlice';
 import CheckoutReducer from '../Features/Checkout/CheckoutSlice';
+import PrescriptionCartReducer from '../Features/PrescriptionCart/PrescriptionCartSlice';
 
 export const Store = configureStore({
   reducer: {
@@ -21,5 +22,6 @@ export const Store = configureStore({
     transaction: TransactionReducer,
     txStatus: TransactionStatusReducer,
     checkout: CheckoutReducer,
+    PrescriptionCart: PrescriptionCartReducer,
   },
 });

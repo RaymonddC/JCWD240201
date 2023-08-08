@@ -9,6 +9,8 @@ import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
 import { MdQuestionAnswer } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
+import { MdOutlineInventory2 } from 'react-icons/md';
+import { FaPrescriptionBottleMedical } from 'react-icons/fa6';
 import { MdInventory } from 'react-icons/md';
 import { MdDiscount } from 'react-icons/md';
 
@@ -58,6 +60,12 @@ export const Sidebar = () => {
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <MdQuestionAnswer />
             <p className="hidden lg:block">QnA</p>
+          </div>
+        </Link>
+        <Link to={'/prescription'} className="w-full">
+          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
+            <FaPrescriptionBottleMedical />
+            <p className="hidden lg:block">Prescription</p>
           </div>
         </Link>
         <Link to={'/transaction'} className="w-full">

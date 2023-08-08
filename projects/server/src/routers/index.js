@@ -11,6 +11,7 @@ const txStatusRoute = require('./transactionStatusRoute');
 const rajaOngkirRoute = require('./rajaOngkirRoute');
 const stockRoute = require('./stockRoute');
 const promotionRoute = require('./promotionRoute');
+const prescriptionCartRoute = require('./prescriptionCartRoute');
 const txHistoryRoute = require('./transactionHistoryRoute');
 
 module.exports = {
@@ -27,5 +28,6 @@ module.exports = {
   rajaOngkirRoute,
   stockRoute,
   promotionRoute,
+  prescriptionCartRoute,
   txHistoryRoute,
 };

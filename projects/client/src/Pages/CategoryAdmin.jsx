@@ -16,20 +16,22 @@ export default function CategoryAdmin() {
   const { categories, search } = useSelector((state) => state.categories);
   const debouncedSearchValue = useDebounce(search, 1000);
 
-  console.log(queryCategory.get('search'));
-
   useEffect(() => {
-    if (!search?.length && queryCategory.get('search')) {
-      dispatch(getAllCategories(queryCategory.get('search')));
-      dispatch(setSearch(queryCategory.get('search')));
+    if (!search?.length) {
+      dispatch(getAllCategories());
+      setQueryCategory(``);
     } else if (search?.length >= 3) {
       dispatch(getAllCategories(search));
       setQueryCategory(`search=${search}`);
-    } else if (!search?.length) {
-      dispatch(getAllCategories());
-      setQueryCategory(``);
     }
   }, [debouncedSearchValue]);
+
+  useEffect(() => {
+    if (!search?.length && queryCategory.get('search')?.length >= 3) {
+      dispatch(getAllCategories(queryCategory.get('search')));
+      dispatch(setSearch(queryCategory.get('search')));
+    }
+  }, []);
 
   return (
     <div>

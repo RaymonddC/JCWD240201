@@ -48,3 +48,46 @@ export function updateCart(token, id, data) {
     },
   );
 }
+
+export function getAllPrescriptionsCartsAPI(token, params) {
+  return axios.get(`${URL}/carts/prescription`, {
+    params: {
+      search_user: params?.search_user,
+      confirmation: params?.confirmation,
+      sort: params?.sort,
+      page: params?.page,
+      limit: params?.limit,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apiKey: APIKey,
+    },
+  });
+}
+
+export function getPrescriptionCartAPI(token, id) {
+  return axios.get(`${URL}/carts/prescription/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      apiKey: APIKey,
+    },
+  });
+}
+
+export function updateConfirmationPrescriptionCartAPI(
+  token,
+  id,
+  confirmation,
+  notes,
+) {
+  return axios.patch(
+    `${URL}/carts/${id}`,
+    { confirmation, notes: confirmation === false ? notes : null },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        apiKey: APIKey,
+      },
+    },
+  );
+}
