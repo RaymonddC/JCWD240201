@@ -2,33 +2,30 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('carts', {
+    await queryInterface.createTable('prescription_carts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      user_id: {
+      cart_id: {
         type: Sequelize.INTEGER,
       },
       product_id: {
         type: Sequelize.INTEGER,
       },
+      unit_conversion: {
+        type: Sequelize.BOOLEAN,
+      },
       qty: {
         type: Sequelize.INTEGER,
       },
-      prescription_image: {
-        type: Sequelize.STRING,
+      price: {
+        type: Sequelize.INTEGER,
       },
-      confirmation: {
-        type: Sequelize.BOOLEAN,
-      },
-      is_check: {
-        type: Sequelize.BOOLEAN,
-      },
-      notes: {
-        type: Sequelize.STRING,
+      weight: {
+        type: Sequelize.INTEGER,
       },
       deletedAt: {
         type: Sequelize.DATE,
@@ -44,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('carts');
+    await queryInterface.dropTable('prescription_carts');
   },
 };

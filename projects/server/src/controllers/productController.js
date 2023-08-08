@@ -34,8 +34,11 @@ const getAllProducts = async (req, res, next) => {
     const response = await productDB.findAndCountAll({
       include: [
         { model: labelDB },
-        { model: closedStockDB },
         { model: packagingDB },
+        { model: productTypeDB },
+        { model: closedStockDB },
+        { model: openedStockDB },
+        // TOdo : Tambahin model openstock
       ],
       limit: pageLimit,
       offset: offset,
@@ -82,6 +85,8 @@ const getProductDetails = async (req, res, next) => {
     const closedStock = await closedStockDB.findOne({
       where: { product_id: id },
     });
+
+    console.log(closedStock);
     return res.status(200).send({
       success: true,
       message: 'get product details success',

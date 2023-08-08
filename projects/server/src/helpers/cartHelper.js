@@ -5,14 +5,16 @@ const User = db.user;
 const PackagingType = db.packaging_type;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
+const prescriptionCartDB = db.prescription_cart;
 const { Op } = require('sequelize');
 const { sequelize } = require('../models');
 
-const getUserCarts = async (includes, whereQuery) => {
+const getUserCarts = async (includes, whereQuery, order) => {
   try {
     const today = new Date();
     return await Cart.findAndCountAll({
       include: [
+        // includes,
         {
           model: Product,
           attributes: {
@@ -76,8 +78,63 @@ const getCartByPk = async (primaryKey, excludes) => {
   }
 };
 
+const updateConfirmation = async (id, confirmation, notes) => {
+  try {
+    if (confirmation === false) {
+      prescriptionCartDB.destroy({ where: { cart_id: id } });
+      await Cart.update(
+        { confirmation: confirmation, notes: notes },
+        { where: { id: id } },
+      );
+    } else {
+      await Cart.update({ confirmation: confirmation }, { where: { id: id } });
+    }
+  } catch (error) {
+    throw { message: error.message, code: 500 };
+  }
+};
+
+const isPrescriptionCartProductListEmpty = async (cart_id) => {
+  try {
+    const getAllPrescriptionCartProductList = await prescriptionCartDB.findAll({
+      where: { cart_id: cart_id },
+    });
+
+    console.log(getAllPrescriptionCartProductList.length);
+
+    if (getAllPrescriptionCartProductList.length) return false;
+    return true;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getAllPrescriptions = async (
+  includes,
+  whereQuery,
+  order,
+  limit,
+  page,
+) => {
+  try {
+    let pageLimit = Number(limit);
+    return await Cart.findAndCountAll({
+      include: [includes],
+      where: whereQuery,
+      order: order || [['createdAt', 'DESC']],
+      limit: pageLimit,
+      offset: (Number(page) - 1) * pageLimit,
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserCarts,
   getCart,
   getCartByPk,
+  updateConfirmation,
+  isPrescriptionCartProductListEmpty,
+  getAllPrescriptions,
 };
