@@ -12,7 +12,10 @@ export function createQuestionAPI(data) {
 
 export function getQuestionsAPI(data) {
   return axios.get(`${URL}/discussions/questions`, {
-    params: { page: data.page, limit: data.limit },
+    params: {
+      page: data.page,
+      limit: data.limit,
+    },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
 }
@@ -22,8 +25,13 @@ export function getQuestionDetailsAPI(data) {
   });
 }
 export function getAnswersAPI(data) {
+  console.log(data)
   return axios.get(`${URL}/discussions/answers`, {
-    params: { page: data.page, limit: data.limit },
+    params: {
+      page: data.page,
+      limit: data.limit,
+      question_category_id: data.question_category_id,
+    },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
 }
@@ -49,4 +57,9 @@ export function updateAnswerAPI(data) {
     },
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
+}
+export function getQuestionsCategoriesAPI() {
+  return axios.get(`${URL}/discussions/question-categories`, {
+    headers: { apikey: APIKey },
+  });
 }

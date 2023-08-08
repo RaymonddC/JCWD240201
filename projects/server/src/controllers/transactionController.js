@@ -8,7 +8,8 @@ const Cart = db.cart;
 const Transaction = db.transaction;
 const TransactionDetail = db.transaction_detail;
 const TransactionHistory = db.transaction_history;
-const PackagingType = db.packaging_type;
+const ClosedStockDB = db.closed_stock;
+const Product = db.product;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
 const { sequelize } = require('../models');
@@ -32,7 +33,6 @@ const checkout = async (req, res, next) => {
 
     //checkDiscount
     const address = await getOldIsSelected(userId);
-    console.log(userId);
 
     //create transaction
     const transaction = await Transaction.create(
@@ -49,23 +49,44 @@ const checkout = async (req, res, next) => {
     );
 
     //create transactionDetail
-    const txDetailData = rows.map((value) => {
-      return {
-        product_id: value.product_id,
-        promotion_id: null,
-        transaction_id: transaction.id,
-        product_name: value.product.name,
-        price: value.product.price,
-        // prescription_image:value.product_id === 1? ,
-        qty: value.qty,
-      };
-    });
-    console.log(txDetailData);
+    const txDetailData = await Promise.all(
+      rows.map(async (value) => {
+        //cekStock
+        let closeStock = await ClosedStockDB.findOne({
+          where: { product_id: value.product_id },
+        });
 
-    await TransactionDetail.bulkCreate(txDetailData, {
-      transaction: t,
-      ignoreDuplicate: true,
-    });
+        if (!closeStock || closeStock.total_stock < value.qty)
+          throw { message: 'not enough stocks', code: 400 };
+
+        closeStock.total_stock -= value.qty;
+
+        //updateStock
+        // let updateStock =
+        await ClosedStockDB.update(
+          {
+            total_stock: closeStock.total_stock,
+          },
+          { where: { product_id: value.product_id } },
+          { transaction: t },
+        );
+
+        return {
+          product_id: value.product_id,
+          promotion_id: null,
+          transaction_id: transaction.id,
+          product_name: value.product.name,
+          price: value.product.price - (value.disc ? value.disc : 0),
+          // prescription_image:value.product_id === 1? ,
+          qty: value.qty,
+        };
+      }),
+    );
+    console.log(await txDetailData, 'awdiaokwdoakwdok==================');
+
+    // return res.send(txDetailData);
+
+    await TransactionDetail.bulkCreate(txDetailData, { transaction: t });
 
     const cartIds = rows.map((value) => {
       return value.id;
@@ -100,17 +121,31 @@ const getAllTransaction = async (req, res, next) => {
     const userId = req.user.id;
 
     let {
-      searchCategory,
+      searchStatusId,
       ordered,
       orderedBy,
-      search,
+      search = '',
       page = 1,
+      startDate,
+      endDate,
       limitPage = 10,
     } = req.query;
 
-    let whereQuery = { user_id: userId };
+    let whereQuery = {};
+    whereQuery.dates = { startDate, endDate };
+    whereQuery.transaction = {
+      user_id: userId,
+    };
+    whereQuery.transactionHistory = {
+      transaction_status_id: { [Op.like]: `%${searchStatusId}%` },
+    };
+    whereQuery.transactionDetail = {
+      product_name: { [Op.like]: `%${search}%` },
+    };
 
     const { count, rows } = await getUserTransactions('', whereQuery);
+    console.log(whereQuery);
+    console.log(startDate);
 
     return res.status(200).send({
       success: true,

@@ -42,7 +42,7 @@ export default function FilterBar(props) {
           </ul>
         </div> */}
         <div className="dropdown dropdown-end hidden md:block">
-          <label tabIndex={0} className="btn btn-secondary">
+          <label tabIndex={0} className="btn btn-primary text-white">
             Sort by <MdArrowDropDown size={25} />
           </label>
           <ul

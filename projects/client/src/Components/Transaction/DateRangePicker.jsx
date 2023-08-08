@@ -9,16 +9,8 @@ import 'react-date-range/dist/theme/default.css';
 import { useDispatch } from 'react-redux';
 // import { getDataGraph } from '../../Features/Transaction/transactionSlice';
 
-const DateRangePicker = () => {
+const DateRangePicker = (props) => {
   const dispatch = useDispatch();
-
-  const [range, setRange] = useState([
-    {
-      startDate: new Date('2023-06-01'),
-      endDate: new Date('2023-06-12'),
-      key: 'selection',
-    },
-  ]);
 
   const [open, setOpen] = useState(false);
 
@@ -26,7 +18,7 @@ const DateRangePicker = () => {
 
   const clickHandler = () => {
     setOpen(false);
-    dispatch();
+    // dispatch();
     //   getDataGraph({
     //     start: formatDate(range[0].startDate),
     //     end: formatDate(range[0].endDate),
@@ -34,34 +26,47 @@ const DateRangePicker = () => {
   };
 
   return (
-    <div className="hidden md:block">
-      <div className="flex gap-2 relative">
+    <div className="hidden md:block min-w-[40%] ">
+      <div className="flex gap-2 relative justify-end">
         <div
-          className="bg-white rounded-lg p-3 cursor-pointer border"
+          className="bg-white rounded-lg p-3 cursor-pointer border w-full "
           onClick={() => setOpen((open) => !open)}
         >
-          {/* <p>{range[0].startDate}</p> */}
-          {/* <input type="date" /> */}
-          <span>{`${format(range[0].startDate, 'dd MMM yyyy')}`}</span> -
-          <span>{` ${format(range[0].endDate, 'dd MMM yyyy')}`}</span>
+          {!props.range[0].startDate ? (
+            <span> All</span>
+          ) : (
+            <>
+              <span>{`${format(
+                props.range[0].startDate,
+                'dd MMM yyyy',
+              )}`}</span>
+              <span> - </span>
+            </>
+          )}
+
+          {props.range[0].endDate ? (
+            <span>{` ${format(props.range[0].endDate, 'dd MMM yyyy')}`}</span>
+          ) : (
+            ''
+          )}
         </div>
         <div className="flex items-center">
-          <button
+          {/* <button
             className="btn btn-md bg-primary text-white"
             onClick={() => clickHandler()}
           >
             SEARCH
-          </button>
+          </button> */}
         </div>
       </div>
 
       {open === true && (
         <div className="absolute z-10">
           <DateRange
-            onChange={(item) => setRange([item.selection])}
+            onChange={(item) => props.setRange([item.selection])}
             editableDateInputs={true}
             moveRangeOnFirstSelection={false}
-            ranges={range}
+            ranges={props.range}
             months={1}
             direction="horizontal"
             className="calendarElement"

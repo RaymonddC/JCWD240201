@@ -19,7 +19,7 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="flex relative gap-2 items-center p-3 ">
+      <div className="flex relative gap-2 items-center p-5 ">
         <div className="w-72">
           <Link to="/">
             <img className="px-2" src={Logo} alt="" />
@@ -82,7 +82,7 @@ export default function NavBar() {
                 </div>
               ) : (
                 <div className="flex gap-3">
-                  <button className="btn btn-sm btn-primary">
+                  <button className="btn btn-sm btn-primary text-white">
                     <Link to="/login">Login</Link>
                   </button>
                   <button className="btn btn-sm btn-outline btn-primary">

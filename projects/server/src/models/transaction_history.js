@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      transaction_history.belongsTo(models.transaction, {
+        foreignKey: 'transaction_id',
+      });
+      transaction_history.belongsTo(models.transaction_status, {
+        foreignKey: 'transaction_status_id',
+      });
     }
   }
   transaction_history.init(
@@ -16,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       transaction_id: DataTypes.INTEGER,
       transaction_status_id: DataTypes.INTEGER,
       is_active: DataTypes.BOOLEAN,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     },
     {
       sequelize,

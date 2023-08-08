@@ -36,6 +36,12 @@ module.exports = {
       shipment_fee: {
         type: Sequelize.INTEGER,
       },
+      total_discount: {
+        type: Sequelize.INTEGER,
+      },
+      total_price: {
+        type: Sequelize.INTEGER,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

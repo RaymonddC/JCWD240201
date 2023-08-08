@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       transaction.hasMany(models.transaction_detail, {
         foreignKey: 'transaction_id',
       });
+      transaction.hasMany(models.transaction_history, {
+        foreignKey: 'transaction_id',
+      });
     }
   }
   transaction.init(
@@ -25,6 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       phone_number: DataTypes.STRING,
       receiver: DataTypes.STRING,
       shipment_fee: DataTypes.INTEGER,
+      total_discount: DataTypes.INTEGER,
+      total_price: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,
     },
     {
