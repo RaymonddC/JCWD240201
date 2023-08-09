@@ -57,7 +57,7 @@ export default function StockHistory() {
     initialValues: {
       page: 1,
       limit: 7,
-      product_id: '',
+      product_id: 0,
       sortOrder: '',
       date_start: '',
       date_end: '',
