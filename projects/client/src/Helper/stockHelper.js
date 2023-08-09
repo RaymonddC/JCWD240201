@@ -14,7 +14,7 @@ export const validateUpdateStock = (values) => {
 
 export const validateFilterStockHistory = (values) => {
   const errors = {};
-  if (!values.product_id) {
+  if (values.product_id === 0) {
     errors.product_id = 'Product is required';
   }
   if (!values.sortOrder) {
