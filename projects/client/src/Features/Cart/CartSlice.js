@@ -52,9 +52,15 @@ export const updateQtyAsync = (values) => async (dispatch) => {
     let newCarts = [...carts];
     let cart = { ...carts[idx] };
     newCarts[idx] = cart;
-    let stock = cart.product?.closed_stocks[0]?.total_stock;
-    console.log(calc, newQty, checked);
-    console.log(cart, cart.is_check, cart.qty);
+    let prodStock = cart.product?.closed_stocks[0]?.total_stock;
+    let promoStock = cart.product?.promotions[0]?.limit || prodStock * 100;
+    let stock = prodStock < promoStock ? prodStock : promoStock;
+    console.log(
+      stock,
+      cart.product?.closed_stocks[0]?.total_stock,
+      cart.product?.promotions[0]?.limit,
+    );
+
     if (calc) {
       console.log('calc');
       if (calc === '+')

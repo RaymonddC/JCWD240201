@@ -16,6 +16,7 @@ const CartCard = (props) => {
   const dispatch = useDispatch();
   const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
   const stock = props.cart.product?.closed_stocks[0]?.total_stock;
+  const isRacik = props.cart.product.id === 1;
 
   const debouncedQtyValue = useDebounce(props.cart.qty, 500);
 
@@ -87,6 +88,7 @@ const CartCard = (props) => {
               checked={props.cart.is_check}
               onClick={() => setIsCheckCart(!isCheckCart)}
               readOnly
+              disabled={!props.cart.confirmation}
             />
           </div>
         </div>
@@ -141,6 +143,7 @@ const CartCard = (props) => {
         <div className="join join-horizontal">
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            disabled={isRacik}
             onClick={(e) => props.setQty(e, '-', props.idx)}
           >
             -
@@ -148,6 +151,7 @@ const CartCard = (props) => {
           <input
             className="join-item bg-[#daf8ff]  min-w-[50px] w-[10px] text-[#009B90] text-center"
             type="number"
+            disabled={isRacik}
             onChange={(e) => {
               props.setQty(e, null, props.idx);
             }}
@@ -155,6 +159,7 @@ const CartCard = (props) => {
           />
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            disabled={isRacik}
             onClick={(e) => props.setQty(e, '+', props.idx)}
           >
             +

@@ -47,7 +47,7 @@ const Cart = () => {
   useEffect(() => {
     if (activeCart === totalCart && totalCart !== 0) setIsCheck(true);
     else setIsCheck(false);
-  }, [carts]);
+  }, [carts, isCheck]);
 
   return (
     <div className="min-h-[50vh]">
@@ -65,7 +65,9 @@ const Cart = () => {
               <input
                 type="checkbox"
                 className="h-3 w-3"
-                onChange={() => setIsCheck(!isCheck)}
+                onChange={() => {
+                  setIsCheck(!isCheck);
+                }}
                 checked={isCheck}
               />
               <p>Pilih Semua</p>
@@ -106,7 +108,8 @@ const Cart = () => {
               <div className="details py-3 border-b border-[#D5D7DD]">
                 <div className="detailPrice flex justify-between text-[16px]">
                   <p>
-                    Total Harga <br /> ({activeCart} barang)
+                    Total Harga <br /> ({activeCart}
+                    {totalCart} barang)
                   </p>
                   <span>Rp{totalPrice.toLocaleString(['id'])}</span>
                 </div>
