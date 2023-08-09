@@ -9,6 +9,7 @@ import {
   updateTransactionHistorySlice,
   uploadPaymentSlice,
 } from '../../Features/Transaction/TransactionSlice';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
@@ -34,22 +35,26 @@ const TransactionCard = (props) => {
   const transactionId = props?.tx?.id;
   const txDetail = props?.tx.transaction_details[0];
   const onSubmit = () => {
+    console.log(paymentProofFile.type.split('/')[1]);
+    const imageType=paymentProofFile.type.split('/')[1]
+    if(imageType !== 'jpeg' && imageType !== 'png'&& imageType !== 'jpg'){return toast.error('Image type must be JPEG or JPG or PNG');}
     dispatch(
       uploadPaymentSlice({
         transaction_status_id: transactionStatusId + 1,
         transaction_id: transactionId,
+        payment_images: paymentProofFile,
       }),
     );
     // props?.setTogle(!props?.togle);
   };
-  const onDelivered = () => {
+  const confirm = () => {
+    props.setTogle(!props.togle);
     dispatch(
       updateTransactionHistorySlice({
         transaction_status_id: transactionStatusId + 1,
         transaction_id: transactionId,
       }),
     );
-    props?.setTogle(!props?.togle);
   };
 
   return (
@@ -130,22 +135,30 @@ const TransactionCard = (props) => {
             </button>
             <button
               className="btn btn-sm btn-primary text-white"
-              onClick={() => onDelivered()}
+              onClick={() => confirm()}
             >
               Confirm Arrival
             </button>
           </>
         ) : transactionStatus === 'Arrived' || transactionStatusId === 5 ? (
-          <button
-            className="btn btn-sm btn-primary text-white"
-            onClick={() => onDelivered()}
-          >
-            Confirm Arrival
-          </button>
+          <>
+            <ConfirmationModal
+              title="Confirmation"
+              textLine1="Are you sure you want to confirm the arrival of this order?"
+              label="CONFIRM ARRIVAL"
+              styling="btn btn-primary btn-sm"
+              confirm={confirm}
+            />
+
+            <button
+              className="btn btn-sm btn-primary text-white"
+              onClick={() => confirm()}
+            >
+              Confirm Arrival
+            </button>
+          </>
         ) : transactionStatus === 'Complete' || transactionStatusId === 6 ? (
-          <button className="btn btn-sm btn-primary text-white">
-            complete
-          </button>
+          <div className="badge badge-primary">Completed</div>
         ) : (
           ''
         )}

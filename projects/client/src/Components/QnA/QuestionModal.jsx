@@ -17,8 +17,6 @@ export default function QuestionModal() {
   const placeholder = disabled
     ? 'Please login to ask a question'
     : 'Type your question here...';
-  const [searchParams, setSearchParams] = useSearchParams();
-  let queryParams = {};
   const question = useRef();
   const title = useRef();
   // let option = 0;

@@ -11,14 +11,14 @@ const uploadPrescription = (req, res, next) => {
       console.log('masuk try upload', req.file);
       console.log(req.body.productId);
       // if (req.body.productId !== 1) {
-        if (err) throw err;
-        // Validate each file size
-        // if (!req.file) throw { message: 'please upload image' };
-        if (req.file && req.file.size > 1000000)
-          throw {
-            message: `${value.originalname} is Too Large`,
-            fileToDelete: [req.file],
-          };
+      if (err) throw err;
+      // Validate each file size
+      // if (!req.file) throw { message: 'please upload image' };
+      if (req.file && req.file.size > 1000000)
+        throw {
+          message: `${value.originalname} is Too Large`,
+          fileToDelete: [req.file],
+        };
       // }
       next();
     } catch (error) {
@@ -155,20 +155,18 @@ const uploadUpdateProduct = (req, res, next) => {
 };
 
 const uploadPayment = (req, res, next) => {
+  console.log('masuk try upload', req.file);
   const multerResult = multerUpload.single('payment_images');
   multerResult(req, res, function (err) {
     try {
-      console.log('masuk try upload', req.file);
-      console.log(req.body.productId);
-      // if (req.body.productId !== 1) {
-        if (err) throw err;
-        // Validate each file size
-        if (!req.file) throw { message: 'please upload image' };
-        if (req.file && req.file.size > 1000000)
-          throw {
-            message: `${value.originalname} is Too Large`,
-            fileToDelete: [req.file],
-          };
+      if (err) throw err;
+      // Validate each file size
+      if (!req.file) throw { message: 'please upload image' };
+      if (req.file && req.file.size > 1000000)
+        throw {
+          message: `${value.originalname} is Too Large`,
+          fileToDelete: [req.file],
+        };
       // }
       next();
     } catch (error) {
@@ -185,11 +183,11 @@ const uploadPayment = (req, res, next) => {
   });
 };
 
-
 module.exports = {
   uploadPrescription,
   uploadMultiple,
   uploadProfile,
   uploadProduct,
   uploadUpdateProduct,
+  uploadPayment,
 };
