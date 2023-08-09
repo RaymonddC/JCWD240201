@@ -11,3 +11,20 @@ export const validateUpdateStock = (values) => {
   }
   return errors;
 };
+
+export const validateFilterStockHistory = (values) => {
+  const errors = {};
+  if (!values.product_id) {
+    errors.product_id = 'Product is required';
+  }
+  if (!values.sortOrder) {
+    errors.sortOrder = 'Sort order is required';
+  }
+  if (!values.date_start) {
+    errors.date_start = 'Date start is required';
+  }
+  if (!values.date_end) {
+    errors.date_end = 'Date end is required';
+  }
+  return errors;
+};
