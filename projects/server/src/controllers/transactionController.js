@@ -175,12 +175,12 @@ const uploadPayment = async (req, res, next) => {
       { transaction: t },
     );
 
-    const txFind = await txHistoryDB.findOne({
+    const txFind = await TransactionHistory.findOne({
       where: { is_active: true, transaction_id },
     });
 
     if (txFind !== null) {
-      const txUpdate = await txHistoryDB.update(
+      const txUpdate = await TransactionHistory.update(
         { is_active: false },
         {
           where: { is_active: true, transaction_id },
@@ -189,7 +189,7 @@ const uploadPayment = async (req, res, next) => {
       );
     }
 
-    const txCreate = await txHistoryDB.create(
+    const txCreate = await TransactionHistory.create(
       {
         is_active: true,
         transaction_id,
@@ -204,6 +204,8 @@ const uploadPayment = async (req, res, next) => {
       data: [],
     });
   } catch (error) {
+    console.log(error);
+
     await t.rollback();
     next(error);
   }

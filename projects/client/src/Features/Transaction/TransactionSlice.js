@@ -54,7 +54,9 @@ export const updateTransactionHistorySlice = (data) => async (dispatch) => {
 export const uploadPaymentSlice = (data) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
-    await uploadPaymentAPI(token, data);
+    const response = await uploadPaymentAPI(token, data);
+    console.log(response)
+    toast.success(response.data.message);
   } catch (error) {
     return toast.error(error.message);
   }

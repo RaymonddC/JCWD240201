@@ -38,7 +38,7 @@ export function updateUserTransactionHistoryAPI(token, data) {
 export function uploadPaymentAPI(token, data) {
   return axios.post(
     `${URL}/transactions/upload`,
-    { transaction_id: data.transaction_id },
+    { ...data },
     {
       headers: {
         Authorization: `Bearer ${token}`,
