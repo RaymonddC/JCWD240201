@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { Link } from 'react-router-dom';
+import TransactionModal from './TransactionModal';
 import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
@@ -13,6 +14,9 @@ import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
+
+  const [openTransactionModal, setOpenTransactionModal] = useState(false);
+
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState('dissabled');
@@ -26,7 +30,7 @@ const TransactionCard = (props) => {
     })
     .split(',');
 
-  const time = dateTime.toLocaleTimeString();
+  const time = dateTime.toLocaleTimeString([], { hour12: false });
   const transactionStatusId =
     props?.tx?.transaction_histories[0]?.transaction_status_id;
   const transactionStatus =
@@ -36,8 +40,10 @@ const TransactionCard = (props) => {
   const txDetail = props?.tx.transaction_details[0];
   const onSubmit = () => {
     console.log(paymentProofFile.type.split('/')[1]);
-    const imageType=paymentProofFile.type.split('/')[1]
-    if(imageType !== 'jpeg' && imageType !== 'png'&& imageType !== 'jpg'){return toast.error('Image type must be JPEG or JPG or PNG');}
+    const imageType = paymentProofFile.type.split('/')[1];
+    if (imageType !== 'jpeg' && imageType !== 'png' && imageType !== 'jpg') {
+      return toast.error('Image type must be JPEG or JPG or PNG');
+    }
     dispatch(
       uploadPaymentSlice({
         transaction_status_id: transactionStatusId + 1,
@@ -58,7 +64,7 @@ const TransactionCard = (props) => {
   };
 
   return (
-    <div className="div border-t border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
+    <div className="div border-b border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3 px-2">
         <p>
           {date[0]}, {date[1]} {date[2]}, {time} WIB
@@ -95,7 +101,14 @@ const TransactionCard = (props) => {
         </div>
       </div>
       <div className="action flex justify-end gap-5 items-center text-primary py-2">
-        <p>Lihat Detail Transaksi</p>
+        <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
+          <label
+            htmlFor="my_modal_6"
+            onClick={() => setOpenTransactionModal(true)}
+          >
+            Lihat Detail Transaksi
+          </label>
+        </button>
         {transactionStatus === 'Waiting for payment' ||
         transactionStatusId === 1 ? (
           <>
@@ -163,6 +176,13 @@ const TransactionCard = (props) => {
           ''
         )}
       </div>
+      {openTransactionModal ? (
+        <TransactionModal
+          openTransactionModal={openTransactionModal}
+          closeModal={() => setOpenTransactionModal(false)}
+          id={props?.tx.id}
+        />
+      ) : null}
     </div>
   );
 };

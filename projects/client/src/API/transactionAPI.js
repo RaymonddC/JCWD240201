@@ -7,14 +7,26 @@ export function getUserTransactions(token, values) {
   console.log(values);
   return axios.get(`${URL}/transactions`, {
     params: {
-      searchStatusId: values.selectedStatusId,
+      searchStatusId: values?.selectedStatusId,
       search: values.debouncedSearchValue,
-      startDate: values.date.startDate,
-      endDate: values.date.endDate,
+      startDate: values.date?.startDate,
+      endDate: values.date?.endDate,
+      page: values.page,
+      limitPage: values.limitPage,
+      sortType: values.sortType,
+      sortOrder: values.sortOrder,
     },
     headers: {
       Authorization: `Bearer ${token}`,
       apiKey: APIKey,
+    },
+  });
+}
+
+export function getTransaction(token, id) {
+  return axios.get(`${URL}/transactions/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   });
 }
