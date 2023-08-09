@@ -5,16 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBar from '../Components/Products/FilterBar';
 import Pagination from '../Components/Layout/Pagination';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import UpdateStockModal from '../Components/Stocks/UpdateStockModal';
 
 export default function StockPageAdmin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  let queryParams = {};
+
+  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [search, setSearch] = useState(searchParams.get('search') || '');
   const [productId, setProductId] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
+  const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
+  const [sortOrder, setSortOrder] = useState(
+    searchParams.get('sortOrder') || '',
+  );
   const ProductsStore = useSelector((state) => state?.products?.products);
   const totalPages = ProductsStore?.totalPage;
   const productList = ProductsStore?.data?.rows;
@@ -30,10 +37,33 @@ export default function StockPageAdmin() {
       </div>
     );
   });
+
   useEffect(() => {
-    dispatch(getProducts({ page, limit: 9, search: debouncedSearchValue }));
+    if (page) {
+      queryParams['page'] = page;
+    }
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
+    if (sortType) {
+      queryParams['sortType'] = sortType;
+    }
+    if (sortOrder) {
+      queryParams['sortOrder'] = sortOrder;
+    }
+
+    setSearchParams(queryParams);
+    dispatch(
+      getProducts({
+        page,
+        limit: 9,
+        search: debouncedSearchValue,
+        sortOrder,
+        sortType,
+      }),
+    );
     setIsUpdated(false);
-  }, [debouncedSearchValue, dispatch, page, isUpdated]);
+  }, [debouncedSearchValue, dispatch, page, sortType, sortOrder, isUpdated]);
   return (
     <>
       <div className="relative">
@@ -54,6 +84,9 @@ export default function StockPageAdmin() {
                 sortOrder: 'DESC',
               },
             ]}
+            setSortType={setSortType}
+            setSortOrder={setSortOrder}
+            sortBy={true}
           />
         </div>
         <div>{productMap}</div>

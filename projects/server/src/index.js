@@ -27,7 +27,7 @@ app.use('/public', express.static('public'));
 const {
   authRoute,
   userRoute,
-  QnARouter,
+  QnARoute,
   cartRoute,
   productRoute,
   addressRoute,
@@ -38,10 +38,13 @@ const {
   rajaOngkirRoute,
   stockRoute,
   promotionRoute,
+  prescriptionCartRoute,
+  txHistoryRoute,
+  stockHistoryRoute,
 } = require('./routers');
 
 app.use('/auth', authRoute);
-app.use('/discussions', QnARouter);
+app.use('/discussions', QnARoute);
 app.use('/users', userRoute);
 app.use('/addresses', addressRoute);
 app.use('/carts', cartRoute);
@@ -53,6 +56,9 @@ app.use('/tx_status', txStatusRoute);
 app.use('/rajaongkir', rajaOngkirRoute);
 app.use('/stocks', stockRoute);
 app.use('/promotions', promotionRoute);
+app.use('/tx-histories', txHistoryRoute);
+app.use('/prescriptioncarts', prescriptionCartRoute);
+app.use('/stock_histories', stockHistoryRoute);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

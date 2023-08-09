@@ -16,7 +16,7 @@ export default function Transaction() {
 
   const { txStatuses } = useSelector((state) => state.txStatus);
   const { transactions } = useSelector((state) => state.transaction);
-
+  const [togle, setTogle] = useState(false);
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedStatus, setSelectedStatus] = useState('Waiting for payment');
@@ -39,6 +39,7 @@ export default function Transaction() {
   }, []);
 
   useEffect(() => {
+    console.log('>>>> ');
     dispatch(
       getAllTransactionSlice({
         selectedStatusId,
@@ -46,7 +47,7 @@ export default function Transaction() {
         date: range[0],
       }),
     );
-  }, [debouncedSearchValue, selectedStatusId, range]);
+  }, [debouncedSearchValue, selectedStatusId, range, togle]);
 
   useEffect(() => {
     if (selectedStatus) queryParams['status'] = selectedStatus;
@@ -80,7 +81,7 @@ export default function Transaction() {
           </div>
           <div className="status flex overflow-x-auto">
             {/* <span className="font-bold">Status</span> */}
-            {txStatuses.map((value) => {
+            {txStatuses.map((value, index) => {
               return (
                 <button
                   key={'txStatus' + value.id}
@@ -102,7 +103,14 @@ export default function Transaction() {
         </div>
         <div className="div ">
           {transactions.map((value) => {
-            return <TransactionCard tx={value} key={'tx' + value.id} />;
+            return (
+              <TransactionCard
+                tx={value}
+                key={'tx' + value.id}
+                setTogle={setTogle}
+                togle={togle}
+              />
+            );
           })}
         </div>
       </div>

@@ -7,7 +7,13 @@ import {
   postCart,
   updateCart,
 } from '../../API/cartAPI';
-import { getTransaction, getUserTransactions } from '../../API/transactionAPI';
+import {
+  getTransaction,
+  getUserTransactions,
+  updateUserTransactionHistoryAPI,
+  uploadPaymentAPI,
+} from '../../API/transactionAPI';
+import { getAllTxStatus } from '../TransactionStatus/TransactionStatusSlice';
 // import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
@@ -43,7 +49,26 @@ export const getAllTransactionSlice = (values) => async (dispatch) => {
     return toast.error(error.message);
   }
 };
-
+export const updateTransactionHistorySlice = (data) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+    const response = await updateUserTransactionHistoryAPI(token, data);
+    // dispatch(getAllTransactionSlice())
+    dispatch(getAllTxStatus());
+  } catch (error) {
+    return toast.error(error.message);
+  }
+};
+export const uploadPaymentSlice = (data) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+    const response = await uploadPaymentAPI(token, data);
+    console.log(response);
+    toast.success(response.data.message);
+  } catch (error) {
+    return toast.error(error.message);
+  }
+};
 export const getTransactionSlice = (values) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');

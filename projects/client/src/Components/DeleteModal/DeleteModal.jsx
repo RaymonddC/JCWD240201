@@ -37,7 +37,7 @@ const DeleteModal = (props) => {
           <p className="font-normal">
             Are you sure want to Delete This {props?.model}?
           </p>
-          <p className="font-normal text-center">
+          <p className="font-normal">
             You cannot restore an {props?.model} that <br />
             has been deleted.
           </p>

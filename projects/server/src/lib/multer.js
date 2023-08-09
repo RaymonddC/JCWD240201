@@ -34,6 +34,9 @@ var storage = multer.diskStorage({
     if (file.fieldname === 'product_images') {
       cb(null, `${defaultPath}/${file.fieldname}`);
     }
+    if (file.fieldname === 'payment_images') {
+      cb(null, `${defaultPath}/${file.fieldname}`);
+    }
   },
   filename: (req, file, cb) => {
     cb(

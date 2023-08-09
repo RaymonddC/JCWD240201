@@ -21,6 +21,7 @@ const {
 } = require('../helpers/transactionHelper');
 
 const checkout = async (req, res, next) => {
+  console.log('masuk checkout');
   const t = await sequelize.transaction();
   try {
     const userId = req.user.id;
@@ -37,7 +38,7 @@ const checkout = async (req, res, next) => {
 
     //checkDiscount
     const address = await getOldIsSelected(userId);
-
+    console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
       {
@@ -116,6 +117,7 @@ const checkout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -143,6 +145,7 @@ const getAllTransaction = async (req, res, next) => {
 
     whereQuery.transactionHistory = {
       transaction_status_id: { [Op.like]: `%${searchStatusId}%` },
+      is_active: true,
     };
     whereQuery.transactionDetail = {
       product_name: { [Op.like]: `%${search}%` },
@@ -190,4 +193,54 @@ const getTransaction = async (req, res, next) => {
   }
 };
 
-module.exports = { checkout, getAllTransaction, getTransaction };
+const uploadPayment = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    const { transaction_id, transaction_status_id } = req.body;
+    const image = req.file;
+    const imagePath = image ? image.path : undefined;
+    if (!image) throw { message: 'Please upload image' };
+
+    const updateTransaction = await Transaction.update(
+      { image: imagePath },
+      { where: { id: transaction_id } },
+      { transaction: t },
+    );
+
+    const txFind = await TransactionHistory.findOne({
+      where: { is_active: true, transaction_id },
+    });
+
+    if (txFind !== null) {
+      const txUpdate = await TransactionHistory.update(
+        { is_active: false },
+        {
+          where: { is_active: true, transaction_id },
+        },
+        { transaction: t },
+      );
+    }
+
+    const txCreate = await TransactionHistory.create(
+      {
+        is_active: true,
+        transaction_id,
+        transaction_status_id,
+      },
+      { transaction: t },
+    );
+    await t.commit();
+    return res.status(200).send({
+      success: true,
+      message: 'Upload payment Success',
+      data: [],
+    });
+  } catch (error) {
+    console.log(error);
+
+    await t.rollback();
+    next(error);
+  }
+};
+
+module.exports = { checkout, getAllTransaction, getTransaction, uploadPayment };

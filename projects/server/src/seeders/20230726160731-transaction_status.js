@@ -29,7 +29,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        status: 'On The Way',
+        status: 'On the way',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

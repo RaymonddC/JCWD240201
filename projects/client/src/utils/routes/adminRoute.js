@@ -9,8 +9,12 @@ import CategoryAdmin from '../../Pages/CategoryAdmin';
 import AddProduct from '../../Pages/AddProduct';
 import EditProduct from '../../Pages/EditProduct';
 import StockPageAdmin from '../../Pages/StockPageAdmin';
+import PrescriptionAdmin from '../../Pages/PrescriptionAdmin';
 import AddPromotion from '../../Pages/AddPromotion';
 import TransactionAdmin from '../../Pages/TransactionAdmin';
+import PrescriptionCopyAdmin from '../../Pages/PrescriptionCopyAdmin';
+import ReportPage from '../../Components/Report/ReportPage';
+import StockHistory from '../../Pages/StockHistory';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -93,6 +97,15 @@ const routerSource = (props) => [
   },
   {
     index: true,
+    path: '/prescription',
+    element: (
+      <AdminLayout>
+        <PrescriptionAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
     path: '/promotions',
     element: (
       <AdminLayout>
@@ -106,6 +119,33 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <TransactionAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/prescription/:id',
+    element: (
+      <AdminLayout>
+        <PrescriptionCopyAdmin />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/report',
+    element: (
+      <AdminLayout>
+        <ReportPage />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/report/stock_history',
+    element: (
+      <AdminLayout>
+        <StockHistory />,
       </AdminLayout>
     ),
   },

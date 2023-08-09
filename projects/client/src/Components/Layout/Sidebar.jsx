@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import TransactionIcon from '../../utils/images/Transaction.svg';
-import SalesIcon from '../../utils/images/Sales.svg';
+import { BiSolidReport } from 'react-icons/bi';
 import { GiMedicines } from 'react-icons/gi';
 import { AiOutlineHome } from 'react-icons/ai';
 import { IoIosLogOut } from 'react-icons/io';
 import { MdQuestionAnswer } from 'react-icons/md';
 import { MdCategory } from 'react-icons/md';
+import { MdOutlineInventory2 } from 'react-icons/md';
+import { FaPrescriptionBottleMedical } from 'react-icons/fa6';
 import { MdInventory } from 'react-icons/md';
 import { MdDiscount } from 'react-icons/md';
 
@@ -60,16 +62,22 @@ export const Sidebar = () => {
             <p className="hidden lg:block">QnA</p>
           </div>
         </Link>
+        <Link to={'/prescription'} className="w-full">
+          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
+            <FaPrescriptionBottleMedical />
+            <p className="hidden lg:block">Prescription</p>
+          </div>
+        </Link>
         <Link to={'/transactions'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <img className="" src={TransactionIcon} alt="" />
             <p className="hidden lg:block">Transaction</p>
           </div>
         </Link>
-        <Link to={'/sales'} className="w-full">
+        <Link to={'/report'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
-            <img className="" src={SalesIcon} alt="" />
-            <p className="hidden lg:block">Sales & Revenue</p>
+            <BiSolidReport />
+            <p className="hidden lg:block">Report</p>
           </div>
         </Link>
       </div>

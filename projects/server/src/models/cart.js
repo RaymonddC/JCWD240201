@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       cart.belongsTo(models.user, {
         foreignKey: 'user_id',
       });
+      // cart.hasMany(models.user, {
+      //   foreignKey: 'cart_id',
+      // });
     }
   }
   cart.init(
@@ -22,9 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       user_id: DataTypes.INTEGER,
       product_id: DataTypes.INTEGER,
       qty: DataTypes.INTEGER,
-      prescription_image: DataTypes.INTEGER,
+      prescription_image: DataTypes.STRING,
       confirmation: DataTypes.BOOLEAN,
       is_check: DataTypes.BOOLEAN,
+      notes: DataTypes.STRING,
       deletedAt: DataTypes.DATE,
     },
     {

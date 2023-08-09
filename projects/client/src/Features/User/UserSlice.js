@@ -20,7 +20,6 @@ export const UserSlice = createSlice({
   reducers: {
     onSaveUser: (initialState, action) => {
       initialState.user = action.payload;
-      console.log(initialState.user, action.payload);
     },
     setUser: (initialState, action) => {
       initialState.user = action.payload;
@@ -106,6 +105,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
     toast.success('Login Success!');
     return true;
   } catch (error) {
+    console.log(error);
     toast.error(error.message);
   }
 };

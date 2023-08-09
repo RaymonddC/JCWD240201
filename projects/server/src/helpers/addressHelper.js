@@ -36,9 +36,10 @@ const manipulateArray = (data) => {
 
 const isFirstAddress = async (user_id) => {
   const getAddress = await address.findAll({
-    where: user_id,
+    where: { user_id },
   });
 
+  // console.log(getAddress);
   if (getAddress.length) {
     return false;
   }

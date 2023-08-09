@@ -1,7 +1,6 @@
 import { useFormik } from 'formik';
 import { toast } from 'react-hot-toast';
 import Select from '../Components/Products/Input/Select';
-import InputUserText from '../Components/Profile/Input/InputUserText';
 import { useEffect, useState } from 'react';
 import { createPromotionAPI, getPromotionTypeAPI } from '../API/promotionAPI';
 import SelectProduct from '../Components/Promotion/Input/SelectProduct';
