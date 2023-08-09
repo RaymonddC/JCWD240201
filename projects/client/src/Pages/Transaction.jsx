@@ -19,7 +19,7 @@ export default function Transaction() {
 
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedStatus, setSelectedStatus] = useState(txStatuses[0]?.status);
+  const [selectedStatus, setSelectedStatus] = useState('Waiting for payment');
   const [selectedStatusId, setSelectedStatusId] = useState(1);
   const [range, setRange] = useState([
     {
@@ -35,7 +35,7 @@ export default function Transaction() {
 
   useEffect(() => {
     dispatch(getAllTxStatus());
-    setSelectedStatus(txStatuses[0]?.status);
+    // setSelectedStatus('Waiting for payment');
   }, []);
 
   useEffect(() => {
@@ -83,6 +83,7 @@ export default function Transaction() {
             {txStatuses.map((value) => {
               return (
                 <button
+                  key={'txStatus' + value.id}
                   className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center  transition ease-in-out ${
                     selectedStatus === value.status
                       ? 'border-blue-500 font-bold hover:border-blue-500 '
@@ -101,7 +102,7 @@ export default function Transaction() {
         </div>
         <div className="div ">
           {transactions.map((value) => {
-            return <TransactionCard tx={value} />;
+            return <TransactionCard tx={value} key={'tx' + value.id} />;
           })}
         </div>
       </div>

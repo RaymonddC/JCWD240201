@@ -4,9 +4,13 @@ import { useDispatch } from 'react-redux';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { Link } from 'react-router-dom';
 import { BiReceipt } from 'react-icons/bi';
+import TransactionModal from './TransactionModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
+
+  const [openTransactionModal, setOpenTransactionModal] = useState(false);
+
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -38,7 +42,7 @@ const TransactionCardAdmin = (props) => {
           'Waiting for payment' ? (
             <p className="text-sm">
               <span>Action required </span>
-              <span className="bg-[#FFF6D3] p-1">
+              <span className="bg-[#FFF6D3] rounded-lg p-1 px-2">
                 {dateTime.getHours() + 2}:{dateTime.getMinutes()} WIB
                 {/* {dateTime.()} */}
               </span>
@@ -81,7 +85,7 @@ const TransactionCardAdmin = (props) => {
           <div className="userInfo flex w-[60%] gap-1">
             <div className="user w-[30%]">
               <p className="font-bold">Buyer</p>
-              <p>{props.tx.user.full_name}</p>
+              <p>{props.tx.user?.full_name}</p>
             </div>
             <div className="address w-[40%]">
               <p className="font-bold">Address</p>
@@ -101,16 +105,30 @@ const TransactionCardAdmin = (props) => {
             </span>
           </div>
           <p className="font-bold">
-            Rp {props.tx.total_price.toLocaleString(['id'])}
+            Rp {props.tx.total_price?.toLocaleString(['id'])}
           </p>
         </div>
         <div className="action flex justify-end gap-5 items-center text-primary px-2 py-2">
           <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg">
             <BiReceipt size={'1.5em'} />
-            <span className="font-bold">Transaction Details</span>
+            <label
+              className="font-bold"
+              htmlFor="my_modal_6"
+              onClick={() => setOpenTransactionModal(true)}
+            >
+              Transaction Details
+            </label>
           </button>
         </div>
       </div>
+      {openTransactionModal ? (
+        <TransactionModal
+          admin
+          openTransactionModal={openTransactionModal}
+          closeModal={() => setOpenTransactionModal(false)}
+          id={props?.tx.id}
+        />
+      ) : null}
     </div>
   );
 };

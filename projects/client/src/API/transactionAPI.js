@@ -20,3 +20,11 @@ export function getUserTransactions(token, values) {
     },
   });
 }
+
+export function getTransaction(token, id) {
+  return axios.get(`${URL}/transactions/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

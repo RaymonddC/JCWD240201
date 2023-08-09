@@ -15,7 +15,10 @@ const ClosedStock = db.closed_stock;
 const UserDB = db.user;
 const { sequelize } = require('../models');
 const { getOldIsSelected } = require('../helpers/addressHelper');
-const { getUserTransactions } = require('../helpers/transactionHelper');
+const {
+  getUserTransactions,
+  getTransactionById,
+} = require('../helpers/transactionHelper');
 
 const checkout = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -121,7 +124,7 @@ const getAllTransaction = async (req, res, next) => {
   try {
     const user = await UserDB.findByPk(req.user.id);
 
-    let {
+    const {
       searchStatusId = '',
       sortType,
       sortOrder,
@@ -159,9 +162,9 @@ const getAllTransaction = async (req, res, next) => {
 
     return res.status(200).send({
       success: true,
-      message: 'Checkout Success',
+      message: 'Get All Transaction Success',
       data: rows,
-      // pageCount: count,
+      pageCount: count,
     });
   } catch (error) {
     console.log(error);
@@ -169,4 +172,22 @@ const getAllTransaction = async (req, res, next) => {
   }
 };
 
-module.exports = { checkout, getAllTransaction };
+const getTransaction = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await UserDB.findByPk(req.user.id);
+
+    const transaction = await getTransactionById(id, user.role_id === 1);
+
+    return res.status(200).send({
+      success: true,
+      message: 'Get Transaction Success',
+      data: transaction,
+      // pageCount: count,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { checkout, getAllTransaction, getTransaction };

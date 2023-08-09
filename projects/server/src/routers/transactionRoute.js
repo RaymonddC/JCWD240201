@@ -16,5 +16,6 @@ const { uploadProfile } = require('../middleware/upload');
 // sementara
 router.post('/', verifyToken, transactionController.checkout);
 router.get('/', verifyToken, transactionController.getAllTransaction);
+router.get('/:id', verifyToken, transactionController.getTransaction);
 
 module.exports = router;

@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { Link } from 'react-router-dom';
+import TransactionModal from './TransactionModal';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
+
+  const [openTransactionModal, setOpenTransactionModal] = useState(false);
+
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -58,9 +62,23 @@ const TransactionCard = (props) => {
         </div>
       </div>
       <div className="action flex justify-end gap-5 items-center text-primary py-2">
-        <p>Lihat Detail Transaksi</p>
+        <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
+          <label
+            htmlFor="my_modal_6"
+            onClick={() => setOpenTransactionModal(true)}
+          >
+            Lihat Detail Transaksi
+          </label>
+        </button>
         <button className="btn btn-sm btn-primary text-white">Lacak</button>
       </div>
+      {openTransactionModal ? (
+        <TransactionModal
+          openTransactionModal={openTransactionModal}
+          closeModal={() => setOpenTransactionModal(false)}
+          id={props?.tx.id}
+        />
+      ) : null}
     </div>
   );
 };

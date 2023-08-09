@@ -35,7 +35,7 @@ const getUserTransactions = async (whereQuery, orderBy) => {
 
     let includes = [];
     if (!whereQuery.transaction.hasOwnProperty('user_id')) {
-      includes = [{ model: User, include: [{ model: AddressDB }] }];
+      includes = [{ model: User }];
     }
 
     let order = [['createdAt', 'DESC']];
@@ -75,6 +75,11 @@ const getUserTransactions = async (whereQuery, orderBy) => {
               ],
             },
           ],
+          attributes: {
+            include: [
+              // [sequelize.literal('COUNT(transaction_details.id)'), 'txDetail'],
+            ],
+          },
           where: whereQuery.transactionDetail,
           right: true,
         },
@@ -86,11 +91,61 @@ const getUserTransactions = async (whereQuery, orderBy) => {
       ...whereQuery.pagination,
     });
   } catch (error) {
-    console.log(error);
+    throw error;
+  }
+};
+
+const getTransactionById = async (id, admin) => {
+  try {
+    let includes = [];
+    if (admin) {
+      includes = [{ model: User }];
+    }
+    return await Transaction.findByPk(id, {
+      include: [
+        ...includes,
+        {
+          model: TransactionHistory,
+          include: [
+            {
+              model: TransactionStatus,
+              attributes: ['status'],
+            },
+          ],
+        },
+        {
+          model: TransactionDetail,
+          include: [
+            {
+              model: Product,
+              attributes: ['packaging_type_id', 'product_type_id'],
+              include: [
+                {
+                  model: PackagingType,
+                  attributes: ['type_name'],
+                },
+                {
+                  model: ProductType,
+                  attributes: ['unit'],
+                },
+              ],
+            },
+          ],
+          // attributes: {
+          //   include: [
+          //     // [sequelize.literal('COUNT(transaction_details.id)'), 'txDetail'],
+          //   ],
+          // },
+          // right: true,
+        },
+      ],
+    });
+  } catch (error) {
     throw error;
   }
 };
 
 module.exports = {
   getUserTransactions,
+  getTransactionById,
 };

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import DateRangePicker from '../Components/Transaction/DateRangePicker';
-
-import { AiOutlineSearch } from 'react-icons/ai';
 import FilterBar from '../Components/Products/FilterBar';
 import { useSearchParams } from 'react-router-dom';
 import useDebounce from '../Hooks/useDebounce';
@@ -40,9 +37,6 @@ const TransactionAdmin = () => {
     if (sortOrder) {
       queryParams['sortOrder'] = sortOrder;
     }
-    // if (category) {
-    //   queryParams['category'] = category;
-    // }
     setSearchParams(queryParams);
     dispatch(
       getAllTransactionSlice({
@@ -54,14 +48,6 @@ const TransactionAdmin = () => {
         sortOrder,
       }),
     );
-    // dispatch();
-    // getProducts({
-    //   page,
-    //   limit,
-    //   search: debouncedSearchValue,
-    //   sortType,
-    //   sortOrder,
-    // }),
   }, [page, debouncedSearchValue, sortType, sortOrder]);
 
   return (
@@ -96,7 +82,7 @@ const TransactionAdmin = () => {
         />
       </div>
       <div className="AllTransaction px-3">
-        <div className="top flex justify-between my-3">
+        <div className="top flex  my-3 justify-end">
           <div className="selectAll flex gap-5 items-center justify-between hidden">
             <input
               type="checkbox"
@@ -106,7 +92,7 @@ const TransactionAdmin = () => {
             />
             <p>Pilih Semua</p>
           </div>
-          <div className="pagination">
+          <div className="pagination ">
             <Pagination setPage={setPage} page={page} totalPages={totalPages} />
           </div>
         </div>
