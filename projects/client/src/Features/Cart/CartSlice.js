@@ -47,26 +47,37 @@ export const CartSlice = createSlice({
 });
 
 export const updateQtyAsync = (values) => async (dispatch) => {
-  const { newQty, calc, idx, carts } = values;
-  let newCarts = [...carts];
-  let cart = { ...carts[idx] };
-  newCarts[idx] = cart;
-  let stock = cart.product.closed_stocks[0]?.total_stock;
-
-  if (calc) {
-    if (calc === '+')
-      if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
-      else cart.qty = cart.qty + 1;
-    else {
-      if (cart.qty <= 0) return toast.error('cart deleted');
-      else cart.qty--;
+  try {
+    const { newQty, calc, idx, carts, checked = '' } = values;
+    let newCarts = [...carts];
+    let cart = { ...carts[idx] };
+    newCarts[idx] = cart;
+    let stock = cart.product?.closed_stocks[0]?.total_stock;
+    console.log(calc, newQty, checked);
+    console.log(cart, cart.is_check, cart.qty);
+    if (calc) {
+      console.log('calc');
+      if (calc === '+')
+        if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
+        else cart.qty = cart.qty + 1;
+      else {
+        if (cart.qty <= 0) return toast.error('cart deleted');
+        else cart.qty--;
+      }
+    } else if (checked !== '') {
+      console.log('check', checked, idx);
+      cart.is_check = checked;
+    } else {
+      console.log('newQty');
+      if (newQty > stock) return toast.error('Out Of Stock');
+      else cart.qty = newQty;
     }
-  } else {
-    if (newQty > stock) return toast.error('Out Of Stock');
-    else cart.qty = newQty;
+    newCarts[idx] = cart;
+    console.log(newCarts);
+    dispatch(onGetData(await processData(newCarts)));
+  } catch (error) {
+    console.log(error);
   }
-  newCarts[idx] = cart;
-  dispatch(onGetData(await processData(newCarts)));
 };
 
 export const getCartUserAsync = () => async (dispatch) => {

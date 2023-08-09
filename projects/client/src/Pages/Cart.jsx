@@ -26,10 +26,11 @@ const Cart = () => {
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
 
-  const handleQty = (e, calc, idx) => {
+  const handleQty = (e, calc, idx, checked) => {
     dispatch(
       updateQtyAsync({
-        newQty: Number(e.currentTarget.value),
+        checked,
+        newQty: Number(e?.currentTarget.value),
         calc,
         idx,
         carts,

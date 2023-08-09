@@ -22,20 +22,40 @@ const CartCard = (props) => {
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
 
   const discount = () => {
-    let tempDisc = 0;
-    props.cart.product.promotions?.map((promo) => {
+    let discount = 0,
+      buy = 0,
+      get = 0;
+    props.cart.product.promotions?.some((promo) => {
       if (promo?.discount)
-        tempDisc += props.cart.product.price * (promo.discount / 100);
+        discount = props.cart.product.price * (promo.discount / 100);
+
+      buy = promo?.buy;
+      get = promo?.get;
+
+      return promo.discount || promo.buy || promo.get;
     });
-    return tempDisc;
+    return { discount, buy, get };
   };
   const [disc, setDisc] = useState(discount());
 
   useEffect(() => {
+    // const setCheck = async () => {
+    //   await props.setQty(null, null, props.idx, true);
+    // };
     if (props.check) {
-      if (!isCheckCart) handleCheck();
+      if (!props.cart.is_check) {
+        setIsCheckCart(true);
+        // props.setQty(null, null, props.idx, true);
+        // console.log('check');
+
+        // setCheck().catch(console.error);
+      }
     }
   }, [props.check]);
+
+  useEffect(() => {
+    props.setQty(null, null, props.idx, isCheckCart);
+  }, [isCheckCart]);
 
   useEffect(() => {
     dispatch(
@@ -48,10 +68,6 @@ const CartCard = (props) => {
     );
     // };
   }, [debouncedQtyValue, isCheckCart]);
-
-  const handleCheck = () => {
-    setIsCheckCart(!isCheckCart);
-  };
 
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2">
@@ -68,8 +84,8 @@ const CartCard = (props) => {
             <input
               type="checkbox"
               className="h-3 w-3"
-              checked={isCheckCart}
-              onClick={handleCheck}
+              checked={props.cart.is_check}
+              onClick={() => setIsCheckCart(!isCheckCart)}
               readOnly
             />
           </div>
@@ -85,17 +101,27 @@ const CartCard = (props) => {
               {props.cart.qty}{' '}
               {props?.cart?.product?.packaging_type?.type_name || 'buah'}
             </p>
+            {disc.buy ? (
+              <p className="text-primary">
+                Buy {disc.buy} Get {disc.get}
+              </p>
+            ) : (
+              ''
+            )}
           </div>
           <div className="summary flex gap-2 leading-6 h-fit items-center">
             <p
               className={`text-[#737A8D] text-[14px] line-through ${
-                disc === 0 ? 'hidden' : ''
+                disc.discount === 0 ? 'hidden' : ''
               }`}
             >
               Rp {props.cart.product.price.toLocaleString(['id'])}
             </p>
             <p className={``}>
-              Rp {(props.cart.product.price - disc).toLocaleString(['id'])}
+              Rp{' '}
+              {(props.cart.product.price - disc.discount).toLocaleString([
+                'id',
+              ])}
             </p>
           </div>
         </div>
