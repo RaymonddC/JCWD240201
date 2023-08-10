@@ -48,7 +48,8 @@ const checkout = async (req, res, next) => {
 
     // cek promoTransaction
     // console.log(promotionActive);
-    let totalDiscount = 0;
+    let totalDiscount = 0,
+      totalAllPriceDB = shipmentFee;
     const promoTx = await Promotion.findByPk(promotionActive);
     if (promoTx && promoTx.minimum_transaction <= totalPrice) {
       let disc = (totalPrice * promoTx.discount) / 100;
@@ -99,6 +100,7 @@ const checkout = async (req, res, next) => {
     //create transactionDetail Data Model
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
+        totalAllPriceDB += value.qty * value.product.price;
         if (rows.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
@@ -115,7 +117,7 @@ const checkout = async (req, res, next) => {
             await Promotion.update(
               {
                 ...value.product.promotions[0],
-                limit: value.product.promotions[0].limit - 1,
+                limit: value.product.promotions[0].limit - value.qty,
               },
               { where: { id: value.product.promotions[0].id }, transaction: t },
             );
@@ -133,7 +135,7 @@ const checkout = async (req, res, next) => {
         //updateStock
         await ClosedStockDB.update(
           {
-            total_stock: value.product.closed_stocks.total_stock - value.qty,
+            total_stock: value.product.closed_stocks[0].total_stock - value.qty,
           },
           { where: { product_id: value.product_id }, transaction: t },
         );
@@ -161,6 +163,13 @@ const checkout = async (req, res, next) => {
         data: { totalDiscount, discount },
       };
 
+    if (totalAllPriceDB !== Number(totalPrice))
+      throw {
+        code: 400,
+        message: 'Total changed',
+        data: { totalAllPriceDB, totalPrice },
+      };
+
     console.log(await txDetailData, 'awdiaokwdoakwdok==================');
 
     // return res.send(txDetailData);
@@ -171,7 +180,7 @@ const checkout = async (req, res, next) => {
       return value.id;
     });
 
-    // await Cart.destroy({ where: { id: [...cartIds] } }, { transaction: t });
+    await Cart.destroy({ where: { id: [...cartIds] } }, { transaction: t });
 
     await TransactionHistory.create(
       {
@@ -181,7 +190,7 @@ const checkout = async (req, res, next) => {
       },
       { transaction: t },
     );
-    throw { message: 'sabar' };
+    // throw { message: 'sabar' };
     await t.commit();
 
     return res.status(200).send({

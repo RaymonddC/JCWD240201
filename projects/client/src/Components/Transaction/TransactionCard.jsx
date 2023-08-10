@@ -19,7 +19,7 @@ const TransactionCard = (props) => {
 
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
-  const [disabled, setdisabled] = useState('dissabled');
+  const [disabled, setdisabled] = useState(true);
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -121,17 +121,24 @@ const TransactionCard = (props) => {
                 ref={paymentProofRef}
                 onChange={(e) => {
                   setPaymentProofFile(e.target.files[0]);
-                  setdisabled('');
+                  setdisabled(false);
                 }}
               />
               <label htmlFor="paymentProof">Upload payment proof</label>
             </button>
             <button
               className="btn btn-sm btn-primary text-white "
-              disabled={`${disabled}`}
+              disabled={disabled}
               onClick={() => onSubmit()}
             >
               Submit
+            </button>
+            <button
+              className="btn btn-sm btn-error text-white "
+              disabled={false}
+              // onClick={() => onSubmit()}
+            >
+              Cancel Order
             </button>
           </>
         ) : transactionStatus === 'Waiting for confirmation' ||

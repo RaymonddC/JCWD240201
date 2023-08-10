@@ -119,6 +119,13 @@ const TransactionCardAdmin = (props) => {
               Transaction Details
             </label>
           </button>
+          <button
+            className="btn btn-sm btn-error text-white "
+            disabled={false}
+            // onClick={() => onSubmit()}
+          >
+            Cancel Order
+          </button>
         </div>
       </div>
       {openTransactionModal ? (
