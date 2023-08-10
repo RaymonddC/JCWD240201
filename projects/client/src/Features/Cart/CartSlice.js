@@ -22,6 +22,7 @@ const initialState = {
   weight: 0,
   prescriptionCarts: [],
   detailprescriptionCart: {},
+  promotionActive: 3,
 };
 
 export const CartSlice = createSlice({
@@ -62,7 +63,6 @@ export const updateQtyAsync = (values) => async (dispatch) => {
     );
 
     if (calc) {
-      console.log('calc');
       if (calc === '+')
         if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
         else cart.qty = cart.qty + 1;
@@ -71,15 +71,12 @@ export const updateQtyAsync = (values) => async (dispatch) => {
         else cart.qty--;
       }
     } else if (checked !== '') {
-      console.log('check', checked, idx);
       cart.is_check = checked;
     } else {
-      console.log('newQty');
       if (newQty > stock) return toast.error('Out Of Stock');
       else cart.qty = newQty;
     }
     newCarts[idx] = cart;
-    console.log(newCarts);
     dispatch(onGetData(await processData(newCarts)));
   } catch (error) {
     console.log(error);
@@ -95,35 +92,7 @@ export const getCartUserAsync = () => async (dispatch) => {
 
     let { data } = await getUserCarts(token);
 
-    let totalPrice = 0,
-      totalCart = 0,
-      activeCart = 0,
-      weight = 0,
-      discount = 0;
-    data.data.map((value) => {
-      totalCart += value.qty;
-      if (value.is_check) {
-        activeCart += value.qty;
-        totalPrice += value.qty * value.product.price;
-        weight += value.product.weight;
-        value.product.promotions?.map((promo) => {
-          if (promo?.discount)
-            discount +=
-              value.qty * value.product.price * (promo.discount / 100);
-        });
-      }
-    });
-
-    dispatch(
-      onGetData({
-        carts: data.data,
-        totalCart,
-        totalPrice,
-        activeCart,
-        discount,
-        weight,
-      }),
-    );
+    dispatch(onGetData(await processData(data.data)));
   } catch (error) {
     console.log(error);
   }

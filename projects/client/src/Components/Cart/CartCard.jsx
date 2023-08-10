@@ -104,9 +104,12 @@ const CartCard = (props) => {
               {props?.cart?.product?.packaging_type?.type_name || 'buah'}
             </p>
             {disc.buy ? (
-              <p className="text-primary">
-                Buy {disc.buy} Get {disc.get}
-              </p>
+              <>
+                <span className="text-primary">
+                  Buy {disc.buy} Get {disc.get}
+                </span>
+                <p className="text-warning">*only applied once/transaction</p>
+              </>
             ) : (
               ''
             )}

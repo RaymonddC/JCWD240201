@@ -14,9 +14,19 @@ export default function Checkout() {
   const { shippingFee } = useSelector((state) => state.checkout);
   const { editAddressData, selectedAddress, cityUser, loadAddress } =
     useSelector((state) => state.address);
-  const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
-    (state) => state?.cart,
-  );
+  const {
+    carts,
+    totalCart,
+    totalPrice,
+    activeCart,
+    discount,
+    promotionActive,
+  } = useSelector((state) => state?.cart);
+
+  const [shipping, setShipping] = useState({
+    courier: null,
+    duration: null,
+  });
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -34,7 +44,7 @@ export default function Checkout() {
       <div className="flex justify-between">
         <div className="w-full max-w-[1000px] flex flex-col gap-4">
           <CheckoutAddress />
-          <ShippingMethod />
+          <ShippingMethod setShipping={setShipping} />
 
           <div className="flex flex-col gap-4 shadow-md p-4 rounded-xl">
             {carts?.map((value) => {
@@ -104,7 +114,14 @@ export default function Checkout() {
 
                     if (
                       dispatch(
-                        checkoutTxSlice({ shippingFee, discount, activeCart }),
+                        checkoutTxSlice({
+                          shippingFee,
+                          discount,
+                          activeCart,
+                          promotionActive,
+                          ...shipping,
+                          totalPrice,
+                        }),
                       )
                     )
                       return navigate('/user/transaction');

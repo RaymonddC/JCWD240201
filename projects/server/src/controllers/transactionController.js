@@ -19,16 +19,26 @@ const {
   getUserTransactions,
   getTransactionById,
 } = require('../helpers/transactionHelper');
+const { getPromotionByProductId } = require('../helpers/promotionHelper');
 
 const checkout = async (req, res, next) => {
   console.log('masuk checkout');
   const t = await sequelize.transaction();
   try {
     const userId = req.user.id;
-    const { shipmentFee = 10000, discount, activeCart } = req.body;
+    const {
+      shipmentFee = 10000,
+      discount,
+      activeCart,
+      promotionActive,
+      courier,
+      duration,
+      totalPrice,
+    } = req.body;
 
     let whereQuery = { user_id: userId, is_check: true };
     const { rows, count } = await getUserCarts('', whereQuery);
+
     const cartQty = rows.reduce((accumulator, object) => {
       return accumulator + object.qty;
     }, 0);
@@ -36,49 +46,104 @@ const checkout = async (req, res, next) => {
     if (cartQty !== activeCart)
       throw { message: 'Check again your cart', code: 400 };
 
+    // cek promoTransaction
+    // console.log(promotionActive);
+    let totalDiscount = 0;
+    const promoTx = await Promotion.findByPk(promotionActive);
+    if (promoTx && promoTx.minimum_transaction <= totalPrice) {
+      let disc = (totalPrice * promoTx.discount) / 100;
+      totalDiscount +=
+        disc > promoTx.maximum_discount_amount
+          ? promoTx.maximum_discount_amount
+          : disc;
+
+      //update promo limit
+      await Promotion.update(
+        {
+          ...promoTx,
+          limit: promoTx.limit - 1,
+        },
+        { where: { id: promoTx.id }, transaction: t },
+      );
+    }
+
+    // return res.status(200).send({
+    //   success: true,
+    //   message: 'Checkout Success',
+    //   data: promoTx,
+    //   // pageCount: count,
+    // });
+
     //checkDiscount
     const address = await getOldIsSelected(userId);
-    console.log(address, '>>>>');
+    // console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
       {
+        promotion_id: promotionActive || null,
         user_id: userId,
+        // image
         city_id: address.city_id,
         notes: address.notes,
         address: address.address,
         phone_number: address.phone_number,
         receiver: address.receiver,
         shipment_fee: shipmentFee,
+        total_discount: totalDiscount,
+        total_price: totalPrice,
+        shipment: courier + ' ' + duration,
       },
       { transaction: t },
     );
 
-    //create transactionDetail
+    //create transactionDetail Data Model
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
-        //cekStock
-        let closeStock = await ClosedStockDB.findOne({
-          where: { product_id: value.product_id },
-        });
+        if (rows.product_id !== 1) {
+          //cekPromotion & promotionStock
+          if (value.product.promotions.length !== 0) {
+            // console.log(value);
+            totalDiscount += value.qty * value.dataValues.disc;
+            if (value.product.promotions[0].limit < value.qty)
+              throw {
+                message: 'not enough stocks (Promotion)',
+                code: 400,
+                data: value,
+              };
 
-        if (!closeStock || closeStock.total_stock < value.qty)
-          throw { message: 'not enough stocks', code: 400 };
+            //update promo limit
+            await Promotion.update(
+              {
+                ...value.product.promotions[0],
+                limit: value.product.promotions[0].limit - 1,
+              },
+              { where: { id: value.product.promotions[0].id }, transaction: t },
+            );
+          }
 
-        closeStock.total_stock -= value.qty;
+          // cekStock
+          if (
+            (value.product.closed_stocks.length !== 0,
+            value.product.closed_stocks[0].total_stock < value.qty)
+          ) {
+            throw { message: 'not enough stocks', code: 400, data: value };
+          }
+        }
 
         //updateStock
-        // let updateStock =
         await ClosedStockDB.update(
           {
-            total_stock: closeStock.total_stock,
+            total_stock: value.product.closed_stocks.total_stock - value.qty,
           },
-          { where: { product_id: value.product_id } },
-          { transaction: t },
+          { where: { product_id: value.product_id }, transaction: t },
         );
 
         return {
           product_id: value.product_id,
-          promotion_id: null,
+          promotion_id:
+            value.product.promotions.length !== 0
+              ? value.product.promotions[0].id
+              : null,
           transaction_id: transaction.id,
           product_name: value.product.name,
           price: value.product.price - (value.disc ? value.disc : 0),
@@ -87,6 +152,15 @@ const checkout = async (req, res, next) => {
         };
       }),
     );
+
+    console.log(totalDiscount, discount);
+    if (totalDiscount !== Number(discount))
+      throw {
+        code: 400,
+        message: 'promotion changed',
+        data: { totalDiscount, discount },
+      };
+
     console.log(await txDetailData, 'awdiaokwdoakwdok==================');
 
     // return res.send(txDetailData);
@@ -97,7 +171,7 @@ const checkout = async (req, res, next) => {
       return value.id;
     });
 
-    await Cart.destroy({ where: { id: [...cartIds] } }, { transaction: t });
+    // await Cart.destroy({ where: { id: [...cartIds] } }, { transaction: t });
 
     await TransactionHistory.create(
       {
@@ -107,7 +181,7 @@ const checkout = async (req, res, next) => {
       },
       { transaction: t },
     );
-
+    throw { message: 'sabar' };
     await t.commit();
 
     return res.status(200).send({
@@ -117,7 +191,8 @@ const checkout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
-    console.log(error);
+    await t.rollback();
+    // console.log(error);
     next(error);
   }
 };

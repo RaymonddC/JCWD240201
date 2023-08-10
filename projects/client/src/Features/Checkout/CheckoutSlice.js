@@ -39,6 +39,8 @@ export const checkoutTxSlice = (values) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
 
+    console.log(values);
+    process.exit();
     await checkoutAPI(values, token);
 
     toast.success('Checkout Success');

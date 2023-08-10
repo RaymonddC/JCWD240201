@@ -83,7 +83,7 @@ const addToCart = async (req, res, next) => {
         product_id: productId,
         qty: qty || 1,
         prescription_image: imagePath || null,
-        confirmation: Number(productId) === 1 ? false : true,
+        confirmation: Number(productId) === 1 ? null : true,
         is_check: Number(productId) === 1 ? false : true,
       });
     }

@@ -18,11 +18,17 @@ const Cart = () => {
   const navigate = useNavigate();
 
   const [openAddressModal, setOpenAddressModal] = useState(false);
+
   const { user } = useSelector((state) => state?.user);
   const { address, loadAddress } = useSelector((state) => state.address);
-  const { carts, totalCart, totalPrice, activeCart, discount } = useSelector(
-    (state) => state?.cart,
-  );
+  const {
+    carts,
+    totalCart,
+    totalPrice,
+    activeCart,
+    discount,
+    promotionActive,
+  } = useSelector((state) => state?.cart);
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
 
@@ -98,23 +104,22 @@ const Cart = () => {
           }`}
         >
           <div className="card-body">
-            <div className="promo">promo</div>
+            <div className="promo">{/* getAllPromo */}</div>
             <div className="summary hidden md:block">
               <div className="ringkasan ">
                 <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
-                  Ringkasan Belanja
+                  Order Summary
                 </p>
               </div>
               <div className="details py-3 border-b border-[#D5D7DD]">
                 <div className="detailPrice flex justify-between text-[16px]">
                   <p>
-                    Total Harga <br /> ({activeCart}
-                    {totalCart} barang)
+                    Total Price <br /> ({activeCart} item(s))
                   </p>
                   <span>Rp{totalPrice.toLocaleString(['id'])}</span>
                 </div>
                 <div className="detailDiscount flex justify-between text-[16px]">
-                  <p>Total Diskon Barang</p>
+                  <p>Total Product Discount</p>
                   <span>-Rp{discount.toLocaleString(['id'])}</span>
                 </div>
               </div>
@@ -122,7 +127,7 @@ const Cart = () => {
             <div className="total flex md:block items-center">
               <div className="lastPrice md:flex flex-grow justify-between  my-2 ">
                 <p className="md:font-bold text-[0.8em] md:text-[1.5em] lg:text-[2em]">
-                  Total Harga
+                  Total Price
                 </p>
                 <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
                   Rp{(totalPrice - discount).toLocaleString(['id'])}
@@ -138,7 +143,7 @@ const Cart = () => {
                     return navigate('/checkout');
                   }}
                 >
-                  Bayar ({activeCart})
+                  Proceed ({activeCart})
                 </button>
               </div>
             </div>
