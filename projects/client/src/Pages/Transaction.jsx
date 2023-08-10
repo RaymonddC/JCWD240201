@@ -39,7 +39,6 @@ export default function Transaction() {
   }, []);
 
   useEffect(() => {
-    console.log('>>>> ')
     dispatch(
       getAllTransactionSlice({
         selectedStatusId,

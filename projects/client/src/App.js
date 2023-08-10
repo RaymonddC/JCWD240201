@@ -20,7 +20,6 @@ function App() {
   const pathname = location.pathname;
   const [navbar, setNavbar] = useState(false);
   const [footer, setFooter] = useState(false);
-  // console.log('location', location);
 
   // useEffect(() => {
   //   (async () => {
@@ -40,9 +39,12 @@ function App() {
     ) {
       setNavbar(true);
       setFooter(true);
+    } else {
+      setNavbar(false);
+      setFooter(false);
     }
     dispatch(keepLoginAsync());
-  }, [location]);
+  }, [pathname]);
 
   return (
     <>

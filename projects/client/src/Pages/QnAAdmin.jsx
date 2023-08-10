@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import { getQuestions } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCardAdmin from '../Components/QnA/QuestionCardAdmin';
+import Pagination from '../Components/Layout/Pagination';
+import FilterBar from '../Components/Products/FilterBar';
+import { useSearchParams } from 'react-router-dom';
 
 export default function QnAAdmin() {
   const user = useSelector((state) => state?.user?.user);
@@ -15,14 +18,16 @@ export default function QnAAdmin() {
   // console.log('QnAStore', QnAStore.questions?.data?.rows);
   const totalPages = QnAStore?.questions?.totalPage;
   const [page, setPage] = useState(1);
-  const next = () => {
-    const nextPage = page >= totalPages ? totalPages : page + 1;
-    setPage(nextPage);
-  };
-  const prev = () => {
-    const prevPage = page <= 1 ? 1 : page - 1;
-    setPage(prevPage);
-  };
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState(searchParams.get('search') || '');
+  // const next = () => {
+  //   const nextPage = page >= totalPages ? totalPages : page + 1;
+  //   setPage(nextPage);
+  // };
+  // const prev = () => {
+  //   const prevPage = page <= 1 ? 1 : page - 1;
+  //   setPage(prevPage);
+  // };
 
   useEffect(() => {
     dispatch(getQuestions({ page, limit: 2 }));
@@ -34,14 +39,14 @@ export default function QnAAdmin() {
         <div className="px-5 flex w-full justify-center">
           <div className="w-full max-w-3xl">
             <div>
-              <div>
-                <article className="prose">
-                  <h2>QnA</h2>
-                </article>
-                <div>{questionMap}</div>
-              </div>
+              <article className="prose">
+                <h2>QnA</h2>
+              </article>
+              <FilterBar />
+              <div>{questionMap}</div>
             </div>
-            <div className="flex justify-center">
+            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+            {/* <div className="flex justify-center">
               <div className="join w-64 grid grid-cols-2">
                 <button
                   onClick={() => prev()}
@@ -56,7 +61,7 @@ export default function QnAAdmin() {
                   {'Next >>'}
                 </button>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

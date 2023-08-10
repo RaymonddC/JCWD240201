@@ -11,6 +11,7 @@ import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
 import QuestionModal from '../Components/QnA/QuestionModal';
 import FilterBar from '../Components/Products/FilterBar';
+import useDebounce from '../Hooks/useDebounce';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
@@ -28,9 +29,11 @@ export default function QnAUser() {
   const totalPages = QnAStore?.answers?.totalPage;
   const questionCategories = QnAStore?.categories;
   const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [search, setSearch] = useState(searchParams.get('search') || '');
   const [questionCategory, setQuestionCategory] = useState(
     searchParams.get('category') || '',
   );
+  const debouncedSearchValue = useDebounce(search, 1200);
 
   // const selectOptions = questionCategories?.data?.map((value, index) => {
   //   return (
@@ -78,12 +81,20 @@ export default function QnAUser() {
     if (questionCategory) {
       queryParams['category'] = questionCategory;
     }
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
     setSearchParams(queryParams);
     dispatch(
-      getAnswers({ page, limit: 2, question_category_id: questionCategory }),
+      getAnswers({
+        page,
+        limit: 2,
+        question_category_id: questionCategory,
+        search: debouncedSearchValue,
+      }),
     );
     dispatch(getQuestionCategory());
-  }, [page, questionCategory]);
+  }, [page, questionCategory, debouncedSearchValue]);
   useEffect(() => {
     setPage(1);
   }, [questionCategory]);
@@ -91,7 +102,7 @@ export default function QnAUser() {
   return (
     <>
       {/* <NavBar /> */}
-      <FilterBar/>
+      <FilterBar setSearch={setSearch} />
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">
           <div className="w-full max-w-3xl">
@@ -99,7 +110,7 @@ export default function QnAUser() {
               <h2>Dicussions</h2>
             </article>
             <div>
-              <QuestionModal/>
+              <QuestionModal />
               {/* <div className="form-control py-5">
                 <article className="prose">
                   <h2 className="label-text">Ask a question</h2>
