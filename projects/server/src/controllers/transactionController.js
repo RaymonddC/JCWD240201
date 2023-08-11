@@ -94,7 +94,8 @@ const checkout = async (req, res, next) => {
 
     //create transactionDetail Data Model
     let stockHistoryData = [],
-      closedStockData = [];
+      closedStockData = [],
+      promotionData = [];
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
@@ -114,15 +115,12 @@ const checkout = async (req, res, next) => {
             }
 
             //update promo limit
-            await Promotion.update(
-              {
-                ...value.product.promotions[0],
-                limit:
-                  value.product.promotions[0].limit -
-                  (value.disc == 0 ? 1 : value.qty),
-              },
-              { where: { id: value.product.promotions[0].id }, transaction: t },
-            );
+            promotionData.push({
+              ...value.product.promotions[0],
+              limit:
+                value.product.promotions[0].limit -
+                (value.disc == 0 ? 1 : value.qty),
+            });
           }
 
           // cekStock
@@ -183,7 +181,7 @@ const checkout = async (req, res, next) => {
           transaction_id: transaction.id,
           product_name: value.product.name,
           price: value.product.price - (value.disc ? value.disc : 0),
-          // prescription_image:value.product_id === 1? ,
+          prescription_image: value.prescription_image || null,
           qty: value.qty,
         };
       }),
@@ -193,17 +191,21 @@ const checkout = async (req, res, next) => {
       throw {
         code: 400,
         message: 'promotion changed',
-        data: { totalDiscount, discount },
+        // data: { totalDiscount, discount },
       };
 
     if (totalAllPriceDB !== Number(totalPrice))
       throw {
         code: 400,
         message: 'Total changed',
-        data: { totalAllPriceDB, totalPrice },
+        // data: { totalAllPriceDB, totalPrice },
       };
 
-    // return res.send(txDetailData);
+    //update To Database
+    await Promotion.bulkCreate(promotionData, {
+      updateOnDuplicate: ['limit'],
+      transaction: t,
+    });
     await ClosedStock.bulkCreate(closedStockData, {
       updateOnDuplicate: ['total_stock'],
       transaction: t,

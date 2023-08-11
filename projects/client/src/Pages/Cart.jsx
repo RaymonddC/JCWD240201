@@ -14,13 +14,14 @@ import {
 import AddressModal from '../Components/Address/addressModal';
 import { CiDiscount1 } from 'react-icons/ci';
 import { AiOutlineRight } from 'react-icons/ai';
+import PromotionModal from '../Components/Cart/PromotionModal';
 
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [openAddressModal, setOpenAddressModal] = useState(false);
-
+  const [openPromotionModal, setOpenPromotionnModal] = useState(false);
   const { user } = useSelector((state) => state?.user);
   const { address, loadAddress } = useSelector((state) => state.address);
   const {
@@ -106,13 +107,17 @@ const Cart = () => {
           }`}
         >
           <div className="card-body">
-            <div className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4">
-              <div className="promo flex items-center gap-2">
+            <button className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4">
+              <label
+                htmlFor="my_modal_6"
+                onClick={() => setOpenPromotionnModal(true)}
+                className="promo flex items-center gap-2 hover:cursor-pointer"
+              >
                 <CiDiscount1 size={'1.5em'} />
                 <p>Use Your Promo Here</p>
-              </div>
+              </label>
               <AiOutlineRight />
-            </div>
+            </button>
             <div className="summary hidden md:block">
               <div className="ringkasan ">
                 <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
@@ -164,6 +169,12 @@ const Cart = () => {
           navigate={'/checkout'}
           openAddressModal={openAddressModal}
           closeModal={() => setOpenAddressModal(false)}
+        />
+      ) : null}
+      {openPromotionModal ? (
+        <PromotionModal
+          openPromotionModal={openPromotionModal}
+          closeModal={() => setOpenPromotionnModal(false)}
         />
       ) : null}
     </div>
