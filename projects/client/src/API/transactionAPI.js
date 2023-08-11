@@ -34,10 +34,7 @@ export function getTransaction(token, id) {
 export function updateUserTransactionHistoryAPI(token, data) {
   return axios.post(
     `${URL}/tx-histories`,
-    {
-      transaction_id: data.transaction_id,
-      transaction_status_id: data.transaction_status_id,
-    },
+    { ...data },
     {
       headers: {
         Authorization: `Bearer ${token}`,
