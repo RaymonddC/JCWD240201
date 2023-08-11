@@ -28,7 +28,14 @@ export const processData = (values) => {
         // });
       }
     });
-    return { carts: values, totalCart, totalPrice, activeCart, discount };
+    return {
+      carts: values,
+      totalCart,
+      totalPrice,
+      activeCart,
+      discount,
+      weight,
+    };
   } catch (error) {
     console.log(error);
   }

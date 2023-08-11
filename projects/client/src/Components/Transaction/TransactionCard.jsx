@@ -101,7 +101,12 @@ const TransactionCard = (props) => {
         </div>
         <div className="price w-[20%] text-center">
           <p>Total Belanja</p>
-          {/* <p>Rp. {props.tx.totalPrice}</p> */}
+          <p className="font-bold">
+            Rp.{' '}
+            {(props.tx.total_price + props.tx.shipment_fee)?.toLocaleString([
+              'id',
+            ])}
+          </p>
         </div>
       </div>
       <div className="action flex justify-end gap-5 items-center text-primary py-2">

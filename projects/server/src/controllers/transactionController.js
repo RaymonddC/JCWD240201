@@ -12,6 +12,7 @@ const ClosedStockDB = db.closed_stock;
 const Product = db.product;
 const PrescriptionCartDB = db.prescription_cart;
 const Promotion = db.promotion;
+const StockHistoryDB = db.stock_history;
 const ClosedStock = db.closed_stock;
 const UserDB = db.user;
 const { sequelize } = require('../models');
@@ -21,6 +22,7 @@ const {
   getTransactionById,
 } = require('../helpers/transactionHelper');
 const { getPromotionByProductId } = require('../helpers/promotionHelper');
+const { unitConversionHelper } = require('../helpers/unitConversionHelper');
 
 const checkout = async (req, res, next) => {
   console.log('masuk checkout');
@@ -28,7 +30,7 @@ const checkout = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const {
-      shipmentFee = 10000,
+      shippingFee = 10000,
       discount,
       activeCart,
       promotionActive,
@@ -48,9 +50,8 @@ const checkout = async (req, res, next) => {
       throw { message: 'Check again your cart', code: 400 };
 
     // cek promoTransaction
-    // console.log(promotionActive);
     let totalDiscount = 0,
-      totalAllPriceDB = shipmentFee;
+      totalAllPriceDB = 0;
     const promoTx = await Promotion.findByPk(promotionActive);
     if (promoTx && promoTx.minimum_transaction <= totalPrice) {
       let disc = (totalPrice * promoTx.discount) / 100;
@@ -69,16 +70,9 @@ const checkout = async (req, res, next) => {
       );
     }
 
-    // return res.status(200).send({
-    //   success: true,
-    //   message: 'Checkout Success',
-    //   data: promoTx,
-    //   // pageCount: count,
-    // });
-
     //checkDiscount
     const address = await getOldIsSelected(userId);
-    // console.log(address, '>>>>');
+    console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
       {
@@ -90,7 +84,7 @@ const checkout = async (req, res, next) => {
         address: address.address,
         phone_number: address.phone_number,
         receiver: address.receiver,
-        shipment_fee: shipmentFee,
+        shipment_fee: shippingFee,
         total_discount: totalDiscount,
         total_price: totalPrice,
         shipment: courier + ' ' + duration,
@@ -99,6 +93,8 @@ const checkout = async (req, res, next) => {
     );
 
     //create transactionDetail Data Model
+    let stockHistoryData = [],
+      closedStockData = [];
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
@@ -136,29 +132,47 @@ const checkout = async (req, res, next) => {
           ) {
             throw { message: 'not enough stocks', code: 400, data: value };
           }
+
+          const newStock =
+            value.product.closed_stocks[0].total_stock -
+            (value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
+              ? value.qty +
+                (value.product.promotions[0].get -
+                  value.product.promotions[0].buy)
+              : //selisih, karna tdk berlaku kelipatan
+                value.qty);
+
+          closedStockData.push({
+            ...value.product.closed_stocks[0].dataValues,
+            total_stock: newStock,
+          });
+
+          // write stockHistory MODEL
+          stockHistoryData.push({
+            product_id: value.product_id,
+            transaction_id: transaction.id,
+            unit: 0,
+            stock_history_type_id: 4,
+            qty: value.qty,
+            action: 'out',
+            total_stock: newStock,
+          });
         } else {
           const prescriptionCarts = await PrescriptionCartDB.findAll({
             where: {
               cart_id: value.id,
             },
           });
-          // await
+          prescriptionCarts.map(async (prescCart) => {
+            await unitConversionHelper(
+              {
+                product_id: prescCart.product_id,
+                qty: value.qty,
+              },
+              t,
+            );
+          });
         }
-
-        //updateStock
-        await ClosedStockDB.update(
-          {
-            total_stock:
-              value.product.closed_stocks[0].total_stock -
-              (value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
-                ? value.qty +
-                  (value.product.promotions[0].get -
-                    value.product.promotions[0].buy)
-                : //selisih, karna tdk berlaku kelipatan
-                  value.qty),
-          },
-          { where: { product_id: value.product_id }, transaction: t },
-        );
 
         return {
           product_id: value.product_id,
@@ -175,7 +189,6 @@ const checkout = async (req, res, next) => {
       }),
     );
 
-    console.log(totalDiscount, discount);
     if (totalDiscount !== Number(discount))
       throw {
         code: 400,
@@ -191,14 +204,18 @@ const checkout = async (req, res, next) => {
       };
 
     // return res.send(txDetailData);
-    // bulkCreate([...], { updateOnDuplicate: ["id"] })
+    await ClosedStock.bulkCreate(closedStockData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
+    await StockHistoryDB.bulkCreate(stockHistoryData, { transaction: t });
     await TransactionDetail.bulkCreate(txDetailData, { transaction: t });
 
     const cartIds = rows.map((value) => {
       return value.id;
     });
 
-    await Cart.destroy({ where: { id: [...cartIds] } }, { transaction: t });
+    await Cart.destroy({ where: { id: [...cartIds] }, transaction: t });
 
     await TransactionHistory.create(
       {
@@ -219,7 +236,7 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    // console.log(error);
+    console.log(error);
     next(error);
   }
 };

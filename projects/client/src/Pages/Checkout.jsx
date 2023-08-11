@@ -112,19 +112,22 @@ export default function Checkout() {
                     if (!shippingFee)
                       return toast.error('Please choose your shipping courier');
 
-                    if (
-                      dispatch(
-                        checkoutTxSlice({
+                    // if (
+                    dispatch(
+                      checkoutTxSlice(
+                        {
                           shippingFee,
                           discount,
                           activeCart,
                           promotionActive,
                           ...shipping,
                           totalPrice,
-                        }),
-                      )
-                    )
-                      return navigate('/user/transaction');
+                        },
+                        navigate,
+                      ),
+                    );
+                    // )
+                    // return navigate('/user/transaction');
 
                     // Navigate({ to: '/' });
                   }}

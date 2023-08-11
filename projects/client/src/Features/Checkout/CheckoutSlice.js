@@ -29,21 +29,23 @@ export const getCourierServiceSlice = (data) => async (dispatch) => {
       dispatch(setCourierServices(result.data.data[0].costs));
     }
   } catch (error) {
+    // console.log(error);
     if (error.response.data.message === 'jwt malformed')
       return toast.error('Please log in first');
     return toast.error(error.message);
   }
 };
 
-export const checkoutTxSlice = (values) => async (dispatch) => {
+export const checkoutTxSlice = (values, navigate) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
 
     console.log(values);
-    process.exit();
+    // process.exit();
     await checkoutAPI(values, token);
 
     toast.success('Checkout Success');
+    navigate('/user/transaction');
     return true;
   } catch (error) {
     return toast.error(error.message);
