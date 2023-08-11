@@ -56,7 +56,7 @@ export const updateTransactionHistorySlice = (data) => async (dispatch) => {
     let token = localStorage.getItem('token');
     const response = await updateUserTransactionHistoryAPI(token, data);
     // dispatch(getAllTransactionSlice())
-    dispatch(getAllTxStatus());
+    // dispatch(getAllTxStatus());
   } catch (error) {
     return toast.error(error.message);
   }

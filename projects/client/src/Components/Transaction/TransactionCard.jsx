@@ -38,29 +38,33 @@ const TransactionCard = (props) => {
   // console.log(props);
   const transactionId = props?.tx?.id;
   const txDetail = props?.tx.transaction_details[0];
-  const onSubmit = () => {
+  const onSubmit = async () => {
     console.log(paymentProofFile.type.split('/')[1]);
     const imageType = paymentProofFile.type.split('/')[1];
     if (imageType !== 'jpeg' && imageType !== 'png' && imageType !== 'jpg') {
       return toast.error('Image type must be JPEG or JPG or PNG');
     }
-    dispatch(
-      uploadPaymentSlice({
-        transaction_status_id: transactionStatusId + 1,
-        transaction_id: transactionId,
-        payment_images: paymentProofFile,
-      }),
-    );
+    try {
+      await dispatch(
+        uploadPaymentSlice({
+          transaction_status_id: transactionStatusId + 1,
+          transaction_id: transactionId,
+          payment_images: paymentProofFile,
+        }),
+      );
+    } catch (error) {}
     // props?.setTogle(!props?.togle);
   };
-  const confirm = () => {
-    props.setTogle(!props.togle);
-    dispatch(
-      updateTransactionHistorySlice({
-        transaction_status_id: transactionStatusId + 1,
-        transaction_id: transactionId,
-      }),
-    );
+  const confirm = async () => {
+    try {
+      await dispatch(
+        updateTransactionHistorySlice({
+          transaction_status_id: transactionStatusId + 1,
+          transaction_id: transactionId,
+        }),
+      );
+      props.setTogle(!props.togle);
+    } catch (error) {}
   };
 
   return (

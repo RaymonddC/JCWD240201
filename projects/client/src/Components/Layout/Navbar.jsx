@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import { MdPerson } from 'react-icons/md';
-
 import { SlBag } from 'react-icons/sl';
 import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 
@@ -13,6 +12,7 @@ export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { totalCart } = useSelector((state) => state.cart);
+
   useEffect(() => {
     dispatch(getCartUserAsync());
   }, [user]);
