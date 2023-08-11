@@ -15,6 +15,7 @@ import TransactionAdmin from '../../Pages/TransactionAdmin';
 import PrescriptionCopyAdmin from '../../Pages/PrescriptionCopyAdmin';
 import ReportPage from '../../Components/Report/ReportPage';
 import StockHistory from '../../Pages/StockHistory';
+import PromotionPage from '../../Pages/PromotionPageAdmin';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -106,7 +107,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/promotions',
+    path: '/promotions/new',
     element: (
       <AdminLayout>
         <AddPromotion />,
@@ -146,6 +147,15 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <StockHistory />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/promotions',
+    element: (
+      <AdminLayout>
+        <PromotionPage />,
       </AdminLayout>
     ),
   },

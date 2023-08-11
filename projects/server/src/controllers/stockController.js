@@ -26,8 +26,7 @@ const createDataStock = async (req, res, next) => {
         const addStock = Number(productStock.total_stock) + Number(data.qty);
         updateStock = await closedStockDB.update(
           { total_stock: addStock },
-          { where: { product_id: productId } },
-          { transaction: t },
+          { where: { product_id: productId }, transaction: t },
         );
         data.unit = false;
         data.product_id = productId;
@@ -56,8 +55,7 @@ const createDataStock = async (req, res, next) => {
         if (addStock < 0) throw { message: 'stock is minus' };
         updateStock = await closedStockDB.update(
           { total_stock: addStock },
-          { where: { product_id: productId } },
-          { transaction: t },
+          { where: { product_id: productId }, transaction: t },
         );
         data.unit = false;
         data.product_id = productId;
