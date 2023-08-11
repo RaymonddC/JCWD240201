@@ -10,6 +10,7 @@ const TransactionDetail = db.transaction_detail;
 const TransactionHistory = db.transaction_history;
 const ClosedStockDB = db.closed_stock;
 const Product = db.product;
+const PrescriptionCartDB = db.prescription_cart;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
 const UserDB = db.user;
@@ -101,7 +102,7 @@ const checkout = async (req, res, next) => {
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
-        if (rows.product_id !== 1) {
+        if (value.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
             // console.log(value);
@@ -135,6 +136,13 @@ const checkout = async (req, res, next) => {
           ) {
             throw { message: 'not enough stocks', code: 400, data: value };
           }
+        } else {
+          const prescriptionCarts = await PrescriptionCartDB.findAll({
+            where: {
+              cart_id: value.id,
+            },
+          });
+          // await
         }
 
         //updateStock
