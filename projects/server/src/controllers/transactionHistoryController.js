@@ -5,14 +5,15 @@ const Handlebars = require('handlebars');
 const fs = require('fs');
 const db = require('../models');
 const txHistoryDB = db.transaction_history;
+const txDB = db.transaction
 const transporter = require('../helpers/transporter');
 const { sequelize } = require('../models');
 
 const updateTxHistory = async (req, res, next) => {
-  console.log('>>>> update tx history')
+  console.log('>>>> update tx history');
   // const t = await sequelize.transaction();
   try {
-    const { transaction_id, transaction_status_id } = req.body;
+    const { transaction_id, transaction_status_id, notes } = req.body;
     let txCreate;
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },
@@ -30,6 +31,9 @@ const updateTxHistory = async (req, res, next) => {
       transaction_id,
       transaction_status_id,
     });
+    if(notes){
+      const txNotes = await txDB.update({ notes: notes})
+    }
 
     // await t.commit();
     return res.status(200).send({
@@ -37,6 +41,12 @@ const updateTxHistory = async (req, res, next) => {
       message: 'Update transaction history success',
       data: txCreate,
     });
+  } catch (error) {}
+};
+
+const confirmPayment = async (req, res, next) => {
+  const { transaction_id, transaction_status } = req.body;
+  try {
   } catch (error) {}
 };
 
