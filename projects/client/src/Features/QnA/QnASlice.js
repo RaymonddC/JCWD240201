@@ -33,11 +33,12 @@ export const QnASlice = createSlice({
 
 export const submitQuestion = (data) => async (dispatch) => {
   try {
-    console.log(data)
-    if(!data.title)return toast.error('Title field id required');
-    if(!data.question)return toast.error('Please enter your question');
-    if(!data.question_category_id)return toast.error('Plesae select a category');
-    
+    console.log(data);
+    if (!data.title) return toast.error('Title field id required');
+    if (!data.question) return toast.error('Please enter your question');
+    if (!data.question_category_id)
+      return toast.error('Plesae select a category');
+
     let response = await createQuestionAPI(data);
     if (response.data.success === true) {
       toast.success(response.data.message);
@@ -76,11 +77,7 @@ export const getQuestionDetail = (data) => async (dispatch) => {
 
 export const getAnswers = (data) => async (dispatch) => {
   try {
-    let response = await getAnswersAPI({
-      page: data.page,
-      limit: data.limit,
-      question_category_id: data.question_category_id,
-    });
+    let response = await getAnswersAPI({ ...data });
     console.log(response.data.data.rows);
     dispatch(answers(response?.data));
   } catch (error) {
