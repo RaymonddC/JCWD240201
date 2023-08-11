@@ -13,6 +13,7 @@ import {
 } from '../Features/Address/AddressSlice';
 import AddressModal from '../Components/Address/addressModal';
 import { CiDiscount1 } from 'react-icons/ci';
+import { AiOutlineRight } from 'react-icons/ai';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -105,10 +106,12 @@ const Cart = () => {
           }`}
         >
           <div className="card-body">
-            <div className="promo border text-[1em] md:text-[1.5em]">
-              <CiDiscount1 />
-              Use Your Promo Here
-              {/* getAllPromo */}
+            <div className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4">
+              <div className="promo flex items-center gap-2">
+                <CiDiscount1 size={'1.5em'} />
+                <p>Use Your Promo Here</p>
+              </div>
+              <AiOutlineRight />
             </div>
             <div className="summary hidden md:block">
               <div className="ringkasan ">
