@@ -344,7 +344,6 @@ const uploadPayment = async (req, res, next) => {
     next(error);
   }
 };
-
 const cancelTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;

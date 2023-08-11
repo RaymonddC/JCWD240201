@@ -1,14 +1,13 @@
-import NavBar from '../Components/Layout/Navbar';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLabels, getProducts } from '../Features/Product/ProductSlice';
 import ProductCard from '../Components/Products/ProductCard';
 import FilterBar from '../Components/Products/FilterBar';
-import Footer from '../Components/Layout/Footer';
 import useDebounce from '../Hooks/useDebounce';
 import Pagination from '../Components/Layout/Pagination';
 import { getAllCategories } from '../Features/Category/CategorySlice';
 import { useSearchParams } from 'react-router-dom';
+import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -27,8 +26,9 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  // console.log(productList);
+  console.log(productList);
   let productMap;
+
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
       <div key={`cat${index}`} className="w-full">
@@ -44,7 +44,7 @@ export default function Products() {
   if (category) {
     productMap = productList?.map((value, index) => {
       return (
-        <div key={`product${index}`} className="py-3 mx-5 flex justify-center">
+        <div key={`product${index}`} className="py-3 flex justify-center">
           <ProductCard data={value.product} />
         </div>
       );
@@ -82,6 +82,7 @@ export default function Products() {
       queryParams['category'] = category;
     }
     setSearchParams(queryParams);
+
     if (category) {
       dispatch(
         getLabels({
@@ -107,7 +108,6 @@ export default function Products() {
   }, [page, debouncedSearchValue, sortType, sortOrder, category]);
   return (
     <>
-      {/* <NavBar /> */}
       <div className="sticky top-3 mb-3 z-10">
         <FilterBar
           setSearch={setSearch}
@@ -117,8 +117,16 @@ export default function Products() {
           option={[
             { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
             { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
-            { text: 'Price low to high', sortType: 'price', sortOrder: 'ASC' },
-            { text: 'Price high to low', sortType: 'price', sortOrder: 'DESC' },
+            {
+              text: 'Price low to high',
+              sortType: 'price',
+              sortOrder: 'ASC',
+            },
+            {
+              text: 'Price high to low',
+              sortType: 'price',
+              sortOrder: 'DESC',
+            },
           ]}
         />
       </div>
@@ -138,7 +146,11 @@ export default function Products() {
         <div className="flex justify-center w-full">
           <div className="flex flex-col max-w-fit justify-center ">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-              {productMap}
+              {productMap ? (
+                <>{productMap}</>
+              ) : (
+                <ProductListSkl limit={limit} />
+              )}
             </div>
             <div className="my-5">
               <Pagination
@@ -150,7 +162,7 @@ export default function Products() {
           </div>
         </div>
       </div>
-      {/* <Footer /> */}
+      <catalogSkl />
     </>
   );
 }

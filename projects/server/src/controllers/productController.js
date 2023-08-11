@@ -13,6 +13,7 @@ const packagingDB = db.packaging_type;
 const productTypeDB = db.product_type;
 const openedStockDB = db.opened_stock;
 const closedStockDB = db.closed_stock;
+const promotionDB = db.promotion;
 const { sequelize } = require('../models');
 const deleteFiles = require('../helpers/deleteFiles');
 
@@ -38,7 +39,7 @@ const getAllProducts = async (req, res, next) => {
         { model: productTypeDB },
         { model: closedStockDB },
         { model: openedStockDB },
-        // TOdo : Tambahin model openstock
+        { model: promotionDB },
       ],
       limit: pageLimit,
       offset: offset,
