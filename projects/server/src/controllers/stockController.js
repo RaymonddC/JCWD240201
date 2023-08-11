@@ -208,7 +208,7 @@ const unitConversion = async (req, res, next) => {
       },
       { transaction: t },
     );
-
+    throw { message: 'test' };
     await t.commit();
     return res.status(200).send({
       success: true,
@@ -220,7 +220,7 @@ const unitConversion = async (req, res, next) => {
       type: stock_history_type_id,
     });
   } catch (error) {
-    // await t.rollback();
+    await t.rollback();
     next(error);
   }
 };

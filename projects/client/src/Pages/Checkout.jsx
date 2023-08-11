@@ -81,7 +81,7 @@ export default function Checkout() {
               <div className="details py-3 border-b border-[#D5D7DD]">
                 <div className="detailPrice flex justify-between text-[16px]">
                   <p>
-                    Total Harga <br /> ({activeCart} barang)
+                    Total Price <br /> ({activeCart} item(s))
                   </p>
                   <span>Rp{totalPrice.toLocaleString(['id'])}</span>
                 </div>
@@ -90,7 +90,7 @@ export default function Checkout() {
                   <span>Rp{shippingFee.toLocaleString(['id'])}</span>
                 </div>
                 <div className="detailDiscount flex justify-between text-[16px]">
-                  <p>Total Diskon Barang</p>
+                  <p>Total Discount</p>
                   <span>-Rp{discount.toLocaleString(['id'])}</span>
                 </div>
               </div>
@@ -98,7 +98,7 @@ export default function Checkout() {
             <div className="total flex md:block items-center">
               <div className="lastPrice md:flex flex-grow justify-between  my-2 ">
                 <p className="md:font-bold text-[0.8em] md:text-[1.5em] lg:text-[2em]">
-                  Total Harga
+                  Total Price
                 </p>
                 <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
                   Rp
@@ -129,7 +129,7 @@ export default function Checkout() {
                     // Navigate({ to: '/' });
                   }}
                 >
-                  Bayar ({activeCart})
+                  Checkout ({activeCart})
                 </button>
               </div>
             </div>

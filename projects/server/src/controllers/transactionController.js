@@ -105,19 +105,24 @@ const checkout = async (req, res, next) => {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
             // console.log(value);
-            totalDiscount += value.qty * value.dataValues.disc;
-            if (value.product.promotions[0].limit < value.qty)
-              throw {
-                message: 'not enough stocks (Promotion)',
-                code: 400,
-                data: value,
-              };
+            if (value.dataValues.disc != 0) {
+              //promo disc
+              totalDiscount += value.qty * value.dataValues.disc;
+              if (value.product.promotions[0].limit < value.qty)
+                throw {
+                  message: 'not enough stocks (Promotion)',
+                  code: 400,
+                  data: value,
+                };
+            }
 
             //update promo limit
             await Promotion.update(
               {
                 ...value.product.promotions[0],
-                limit: value.product.promotions[0].limit - value.qty,
+                limit:
+                  value.product.promotions[0].limit -
+                  (value.disc == 0 ? 1 : value.qty),
               },
               { where: { id: value.product.promotions[0].id }, transaction: t },
             );
@@ -135,7 +140,14 @@ const checkout = async (req, res, next) => {
         //updateStock
         await ClosedStockDB.update(
           {
-            total_stock: value.product.closed_stocks[0].total_stock - value.qty,
+            total_stock:
+              value.product.closed_stocks[0].total_stock -
+              (value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
+                ? value.qty +
+                  (value.product.promotions[0].get -
+                    value.product.promotions[0].buy)
+                : //selisih, karna tdk berlaku kelipatan
+                  value.qty),
           },
           { where: { product_id: value.product_id }, transaction: t },
         );
@@ -170,10 +182,8 @@ const checkout = async (req, res, next) => {
         data: { totalAllPriceDB, totalPrice },
       };
 
-    console.log(await txDetailData, 'awdiaokwdoakwdok==================');
-
     // return res.send(txDetailData);
-
+    // bulkCreate([...], { updateOnDuplicate: ["id"] })
     await TransactionDetail.bulkCreate(txDetailData, { transaction: t });
 
     const cartIds = rows.map((value) => {
@@ -327,4 +337,28 @@ const uploadPayment = async (req, res, next) => {
   }
 };
 
-module.exports = { checkout, getAllTransaction, getTransaction, uploadPayment };
+const cancelTransaction = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const user = await UserDB.findByPk(req.user.id);
+
+    const transaction = await getTransactionById(id, user.role_id === 1);
+
+    return res.status(200).send({
+      success: true,
+      message: 'Get Transaction Success',
+      data: transaction,
+      // pageCount: count,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  checkout,
+  getAllTransaction,
+  getTransaction,
+  uploadPayment,
+  cancelTransaction,
+};

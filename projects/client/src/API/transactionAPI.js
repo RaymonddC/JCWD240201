@@ -30,6 +30,13 @@ export function getTransaction(token, id) {
     },
   });
 }
+export function deleteTransaction(token, id) {
+  return axios.delete(`${URL}/transactions/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
 
 export function updateUserTransactionHistoryAPI(token, data) {
   return axios.post(

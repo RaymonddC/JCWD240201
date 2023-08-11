@@ -12,6 +12,7 @@ import {
   getUserAddressAsync,
 } from '../Features/Address/AddressSlice';
 import AddressModal from '../Components/Address/addressModal';
+import { CiDiscount1 } from 'react-icons/ci';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -104,7 +105,11 @@ const Cart = () => {
           }`}
         >
           <div className="card-body">
-            <div className="promo">{/* getAllPromo */}</div>
+            <div className="promo border text-[1em] md:text-[1.5em]">
+              <CiDiscount1 />
+              Use Your Promo Here
+              {/* getAllPromo */}
+            </div>
             <div className="summary hidden md:block">
               <div className="ringkasan ">
                 <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
@@ -119,7 +124,7 @@ const Cart = () => {
                   <span>Rp{totalPrice.toLocaleString(['id'])}</span>
                 </div>
                 <div className="detailDiscount flex justify-between text-[16px]">
-                  <p>Total Product Discount</p>
+                  <p>Total Discount</p>
                   <span>-Rp{discount.toLocaleString(['id'])}</span>
                 </div>
               </div>
