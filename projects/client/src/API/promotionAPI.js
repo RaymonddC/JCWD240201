@@ -25,3 +25,14 @@ export function createPromotionAPI(values) {
     },
   );
 }
+
+export function getPromotionAPI(values) {
+  const token = localStorage.getItem('token');
+  return axios.get(`${URL}/promotions/list/`, {
+    params: values,
+    headers: {
+      apiKey: APIKey,
+      authorization: `Bearer ${token}`,
+    },
+  });
+}

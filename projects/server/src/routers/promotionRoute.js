@@ -8,8 +8,8 @@ const { isAdmin } = require('../middleware/checkRole');
 router.post(
   '/',
   APIKey,
-    verifyToken,
-    isAdmin,
+  verifyToken,
+  isAdmin,
   promotionController.createDiscount,
 );
 router.get(
@@ -18,6 +18,13 @@ router.get(
   verifyToken,
   isAdmin,
   promotionController.getPromotionType,
+);
+router.get(
+  '/list',
+  APIKey,
+  verifyToken,
+  isAdmin,
+  promotionController.getPromotionList,
 );
 
 module.exports = router;

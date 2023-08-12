@@ -5,11 +5,14 @@ import Logo from '../../utils/images/logoHealthyMed.svg';
 import { Link } from 'react-router-dom';
 import { BiReceipt } from 'react-icons/bi';
 import TransactionModal from './TransactionModal';
+import { MdOutlineAttachment } from "react-icons/md";
+import AttachmentModal from './AttachmentModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
 
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
+  const [openAttachmentModal, setOpenAttachmentModal] = useState(false);
 
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
@@ -108,8 +111,18 @@ const TransactionCardAdmin = (props) => {
             Rp {props.tx.total_price?.toLocaleString(['id'])}
           </p>
         </div>
-        <div className="action flex justify-end gap-5 items-center text-primary px-2 py-2">
-          <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg">
+        <div className="action flex justify-end gap-5 items-center px-2 py-2">
+          <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-secondary">
+            <MdOutlineAttachment size={'1.5em'} />
+            <label
+              className="font-bold"
+              htmlFor="see_attachment"
+              onClick={() => setOpenAttachmentModal(true)}
+            >
+              See Attachment
+            </label>
+          </button>
+          <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-primary">
             <BiReceipt size={'1.5em'} />
             <label
               className="font-bold"
@@ -126,6 +139,14 @@ const TransactionCardAdmin = (props) => {
           admin
           openTransactionModal={openTransactionModal}
           closeModal={() => setOpenTransactionModal(false)}
+          id={props?.tx.id}
+        />
+      ) : null}
+      {openAttachmentModal ? (
+        <AttachmentModal
+          admin
+          openAttachmentModal={openAttachmentModal}
+          closeModal={() => setOpenAttachmentModal(false)}
           id={props?.tx.id}
         />
       ) : null}
