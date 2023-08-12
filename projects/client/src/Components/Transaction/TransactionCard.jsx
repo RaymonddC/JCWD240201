@@ -19,7 +19,7 @@ const TransactionCard = (props) => {
 
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
-  const [disabled, setdisabled] = useState('dissabled');
+  const [disabled, setdisabled] = useState(true);
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -101,7 +101,12 @@ const TransactionCard = (props) => {
         </div>
         <div className="price w-[20%] text-center">
           <p>Total Belanja</p>
-          {/* <p>Rp. {props.tx.totalPrice}</p> */}
+          <p className="font-bold">
+            Rp.{' '}
+            {(props.tx.total_price + props.tx.shipment_fee)?.toLocaleString([
+              'id',
+            ])}
+          </p>
         </div>
       </div>
       <div className="action flex justify-end gap-5 items-center text-primary py-2">
@@ -125,17 +130,24 @@ const TransactionCard = (props) => {
                 ref={paymentProofRef}
                 onChange={(e) => {
                   setPaymentProofFile(e.target.files[0]);
-                  setdisabled('');
+                  setdisabled(false);
                 }}
               />
               <label htmlFor="paymentProof">Upload payment proof</label>
             </button>
             <button
               className="btn btn-sm btn-primary text-white "
-              disabled={`${disabled}`}
+              disabled={disabled}
               onClick={() => onSubmit()}
             >
               Submit
+            </button>
+            <button
+              className="btn btn-sm btn-error text-white "
+              disabled={false}
+              // onClick={() => onSubmit()}
+            >
+              Cancel Order
             </button>
           </>
         ) : transactionStatus === 'Waiting for confirmation' ||
