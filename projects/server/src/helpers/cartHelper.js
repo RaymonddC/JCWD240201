@@ -45,7 +45,10 @@ const getUserCarts = async (includes, whereQuery, order) => {
         // include: [[sequelize.fn('sum', sequelize.col('qty')), 'cartQty']],
       },
       where: whereQuery,
-      order: [['createdAt', 'DESC']],
+      order: [
+        ['createdAt', 'DESC'],
+        [Product, Promotion, 'createdAt', 'ASC'],
+      ],
       // limit: Number(limitPage),
       // offset: (Number(page) - 1) * limitPage,
     });

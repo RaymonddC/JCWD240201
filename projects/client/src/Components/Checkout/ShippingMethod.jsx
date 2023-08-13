@@ -5,7 +5,7 @@ import {
   setShippingFee,
 } from '../../Features/Checkout/CheckoutSlice';
 
-export default function ShippingMethod() {
+export default function ShippingMethod(props) {
   const [courier, setCourier] = useState();
   const dispatch = useDispatch();
   const { weight } = useSelector((state) => state?.cart);
@@ -27,6 +27,10 @@ export default function ShippingMethod() {
       dispatch(setShippingFee(0));
     }
   }, [courier, selectedAddress]);
+
+  useEffect(() => {
+    props.setShipping({ courier: courier });
+  }, [courier]);
 
   return (
     <div className="shadow-md p-4 rounded-xl">

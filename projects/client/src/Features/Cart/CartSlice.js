@@ -22,6 +22,7 @@ const initialState = {
   weight: 0,
   prescriptionCarts: [],
   detailprescriptionCart: {},
+  promotionActive: 3,
 };
 
 export const CartSlice = createSlice({
@@ -47,26 +48,39 @@ export const CartSlice = createSlice({
 });
 
 export const updateQtyAsync = (values) => async (dispatch) => {
-  const { newQty, calc, idx, carts } = values;
-  let newCarts = [...carts];
-  let cart = { ...carts[idx] };
-  newCarts[idx] = cart;
-  let stock = cart.product.closed_stocks[0]?.total_stock;
+  try {
+    const { newQty, calc, idx, carts, checked = '' } = values;
+    let newCarts = [...carts];
+    let cart = { ...carts[idx] };
+    newCarts[idx] = cart;
+    let prodStock = cart.product?.closed_stocks[0]?.total_stock;
+    let promoStock = cart.product?.promotions[0]?.limit || prodStock * 100;
+    let stock = prodStock < promoStock ? prodStock : promoStock;
+    console.log(
+      stock,
+      cart.product?.closed_stocks[0]?.total_stock,
+      cart.product?.promotions[0]?.limit,
+    );
 
-  if (calc) {
-    if (calc === '+')
-      if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
-      else cart.qty = cart.qty + 1;
-    else {
-      if (cart.qty <= 0) return toast.error('cart deleted');
-      else cart.qty--;
+    if (calc) {
+      if (calc === '+')
+        if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
+        else cart.qty = cart.qty + 1;
+      else {
+        if (cart.qty <= 0) return toast.error('cart deleted');
+        else cart.qty--;
+      }
+    } else if (checked !== '') {
+      cart.is_check = checked;
+    } else {
+      if (newQty > stock) return toast.error('Out Of Stock');
+      else cart.qty = newQty;
     }
-  } else {
-    if (newQty > stock) return toast.error('Out Of Stock');
-    else cart.qty = newQty;
+    newCarts[idx] = cart;
+    dispatch(onGetData(await processData(newCarts)));
+  } catch (error) {
+    console.log(error);
   }
-  newCarts[idx] = cart;
-  dispatch(onGetData(await processData(newCarts)));
 };
 
 export const getCartUserAsync = () => async (dispatch) => {
@@ -78,35 +92,7 @@ export const getCartUserAsync = () => async (dispatch) => {
 
     let { data } = await getUserCarts(token);
 
-    let totalPrice = 0,
-      totalCart = 0,
-      activeCart = 0,
-      weight = 0,
-      discount = 0;
-    data.data.map((value) => {
-      totalCart += value.qty;
-      if (value.is_check) {
-        activeCart += value.qty;
-        totalPrice += value.qty * value.product.price;
-        weight += value.product.weight;
-        value.product.promotions?.map((promo) => {
-          if (promo?.discount)
-            discount +=
-              value.qty * value.product.price * (promo.discount / 100);
-        });
-      }
-    });
-
-    dispatch(
-      onGetData({
-        carts: data.data,
-        totalCart,
-        totalPrice,
-        activeCart,
-        discount,
-        weight,
-      }),
-    );
+    dispatch(onGetData(await processData(data.data)));
   } catch (error) {
     console.log(error);
   }

@@ -10,6 +10,7 @@ import TransactionReducer from '../Features/Transaction/TransactionSlice';
 import TransactionStatusReducer from '../Features/TransactionStatus/TransactionStatusSlice';
 import CheckoutReducer from '../Features/Checkout/CheckoutSlice';
 import PrescriptionCartReducer from '../Features/PrescriptionCart/PrescriptionCartSlice';
+import PromotionReducer from '../Features/Promotion/PromotionSlice';
 
 export const Store = configureStore({
   reducer: {
@@ -23,5 +24,6 @@ export const Store = configureStore({
     txStatus: TransactionStatusReducer,
     checkout: CheckoutReducer,
     PrescriptionCart: PrescriptionCartReducer,
+    promotion: PromotionReducer,
   },
 });
