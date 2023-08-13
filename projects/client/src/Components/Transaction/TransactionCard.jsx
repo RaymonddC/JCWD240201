@@ -175,6 +175,7 @@ const TransactionCard = (props) => {
               title="Confirmation"
               textLine1="Are you sure you want to confirm the arrival of this order?"
               label="CONFIRM ARRIVAL"
+              labelStyle="text-white"
               styling="btn btn-primary btn-sm"
               confirm={confirm}
             />

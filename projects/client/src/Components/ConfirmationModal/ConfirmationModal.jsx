@@ -18,7 +18,7 @@ const ConfirmationModal = (props) => {
   return (
     <>
       <button className={`${props.styling}`} onClick={() => setOpen(true)}>
-        <p className=" text-white">{props.label}</p>
+        <p className={`${props.labelStyle}`}>{props.label}</p>
       </button>
       <input
         readOnly

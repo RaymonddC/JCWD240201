@@ -4,7 +4,7 @@ const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function getUserTransactions(token, values) {
-  console.log(values);
+  // console.log(values);
   return axios.get(`${URL}/transactions`, {
     params: {
       searchStatusId: values?.selectedStatusId,
@@ -41,10 +41,7 @@ export function deleteTransaction(token, id) {
 export function updateUserTransactionHistoryAPI(token, data) {
   return axios.post(
     `${URL}/tx-histories`,
-    {
-      transaction_id: data.transaction_id,
-      transaction_status_id: data.transaction_status_id,
-    },
+    { ...data },
     {
       headers: {
         Authorization: `Bearer ${token}`,
