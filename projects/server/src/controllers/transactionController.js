@@ -94,7 +94,7 @@ const checkout = async (req, res, next) => {
         phone_number: address.phone_number,
         receiver: address.receiver,
         shipment_fee: shippingFee,
-        total_discount: totalDiscount,
+        total_discount: discount,
         total_price: totalPrice,
         shipment: courier + ' ' + duration,
       },
