@@ -19,7 +19,6 @@ const TransactionAdmin = () => {
     searchParams.get('sortOrder') || '',
   );
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
-  const totalPages = transactions?.totalPage;
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
 
