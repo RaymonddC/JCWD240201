@@ -35,13 +35,13 @@ function App() {
   //   })();
   // }, []);
 
-  useLayoutEffect(() => {
-    if (bodyScrollable) {
-      document.body.style.paddingRight = '0px';
-    } else {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
-    }
-  }, [bodyScrollable]);
+  // useLayoutEffect(() => {
+  //   if (bodyScrollable) {
+  //     document.body.style.paddingRight = '0px';
+  //   } else {
+  //     document.body.style.paddingRight = `${scrollbarWidth}px`;
+  //   }
+  // }, [bodyScrollable]);
   useEffect(() => {
     if (pathname === '/login' || pathname === '/register') {
       setNavbar(false);
