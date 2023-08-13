@@ -84,7 +84,7 @@ export default function Transaction() {
               return (
                 <button
                   key={'txStatus' + value.id}
-                  className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center  transition ease-in-out ${
+                  className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center min-w-[50%] md:min-w-[18%]  ${
                     selectedStatus === value.status
                       ? 'border-blue-500 font-bold hover:border-blue-500 '
                       : ''
