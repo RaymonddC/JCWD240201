@@ -8,13 +8,13 @@ export function getUserTransactions(token, values) {
   return axios.get(`${URL}/transactions`, {
     params: {
       searchStatusId: values?.selectedStatusId,
-      search: values.debouncedSearchValue,
-      startDate: values.date?.startDate,
-      endDate: values.date?.endDate,
-      page: values.page,
-      limitPage: values.limitPage,
-      sortType: values.sortType,
-      sortOrder: values.sortOrder,
+      search: values?.debouncedSearchValue,
+      startDate: values?.date?.startDate,
+      endDate: values?.date?.endDate,
+      page: values?.page || 1,
+      limitPage: values?.limitPage,
+      sortType: values?.sortType,
+      sortOrder: values?.sortOrder,
     },
     headers: {
       Authorization: `Bearer ${token}`,
