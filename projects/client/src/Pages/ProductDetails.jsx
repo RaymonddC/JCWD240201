@@ -43,8 +43,6 @@ export default function ProductDetails() {
     );
   });
 
-  console.log(user);
-
   const setActiveTab = (tab) => {
     if (tab === 'desc') {
       setDescTab('tab-active');
@@ -71,7 +69,7 @@ export default function ProductDetails() {
   } else {
     return (
       <>
-        <NavBar />
+        {/* <NavBar /> */}
         <div className="flex justify-center">
           <div className="grid md:grid-cols-[1fr,2fr] max-w-6xl">
             <div className="py-3 justify-self-center ">

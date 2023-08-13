@@ -61,11 +61,19 @@ function App() {
           <AdminRoute />
         ) : (
           <>
-            {navbar ? <NavBar /> : ''}
-            <PublicRoute />
+            {navbar ? (
+              <>
+                <NavBar />
+                <div className="relative md:px-[3em] md:py-[2em] flex-grow">
+                  <PublicRoute />
+                </div>
+              </>
+            ) : (
+              <PublicRoute />
+            )}
             {footer ? (
               <div className="hidden md:block">
-                <Footer />
+                <Footer /> 
               </div>
             ) : (
               ''
