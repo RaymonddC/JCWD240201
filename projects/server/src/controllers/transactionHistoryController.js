@@ -20,7 +20,7 @@ const updateTxHistory = async (req, res, next) => {
     });
     if (txFind !== null) {
       const txUpdate = await txHistoryDB.update(
-        { is_active: false },
+        { is_active: false, notes },
         {
           where: { is_active: true, transaction_id },
           transacton: t,
@@ -30,20 +30,21 @@ const updateTxHistory = async (req, res, next) => {
     txCreate = await txHistoryDB.create(
       {
         is_active: true,
+        notes,
         transaction_id,
         transaction_status_id,
       },
       { transacton: t },
     );
-    if (notes) {
-      const txNotes = await txDB.update(
-        { notes: notes },
-        {
-          where: { id: transaction_id },
-          transaction: t,
-        },
-      );
-    }
+    // if (notes) {
+    //   const txNotes = await txDB.update(
+    //     { notes: notes },
+    //     {
+    //       where: { id: transaction_id },
+    //       transaction: t,
+    //     },
+    //   );
+    // }
 
     await t.commit();
     return res.status(200).send({

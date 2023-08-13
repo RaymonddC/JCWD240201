@@ -5,13 +5,16 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
 import AdminRoute from './utils/routes/adminRoute';
 import PublicRoute from './utils/routes/publicRoutes';
 import NavBar from './Components/Layout/Navbar';
 import Footer from './Components/Layout/Footer';
 import { useLocation } from 'react-router-dom';
+import getScrollbarWidth from './Helper/getScrollbarWidth';
+import useBodyScrollable from './Helper/useBodyScrollable';
+import { PublicLayout } from './Components/Layout/PublicLayout';
 
 function App() {
   const dispatch = useDispatch();
@@ -20,6 +23,8 @@ function App() {
   const pathname = location.pathname;
   const [navbar, setNavbar] = useState(false);
   const [footer, setFooter] = useState(false);
+  const bodyScrollable = useBodyScrollable();
+  const scrollbarWidth = getScrollbarWidth();
 
   // useEffect(() => {
   //   (async () => {
@@ -30,25 +35,27 @@ function App() {
   //   })();
   // }, []);
 
-  useEffect(() => {
-    if (
-      pathname === '/' ||
-      pathname === '/discussions' ||
-      pathname === '/profile' ||
-      pathname === '/products'
-    ) {
-      setNavbar(true);
-      setFooter(true);
+  useLayoutEffect(() => {
+    if (bodyScrollable) {
+      document.body.style.paddingRight = '0px';
     } else {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+  }, [bodyScrollable]);
+  useEffect(() => {
+    if (pathname === '/login' || pathname === '/register') {
       setNavbar(false);
       setFooter(false);
+    } else {
+      setNavbar(true);
+      setFooter(true);
     }
     dispatch(keepLoginAsync());
   }, [pathname]);
 
   return (
     <>
-      <div className="">
+      <div className="min-h-[100vh] flex flex-col">
         <Toaster />
         {user.role?.role_name === 'admin' ? (
           <AdminRoute />
@@ -56,7 +63,13 @@ function App() {
           <>
             {navbar ? <NavBar /> : ''}
             <PublicRoute />
-            {footer ? <Footer /> : ''}
+            {footer ? (
+              <div className="hidden md:block">
+                <Footer />
+              </div>
+            ) : (
+              ''
+            )}
           </>
         )}
       </div>

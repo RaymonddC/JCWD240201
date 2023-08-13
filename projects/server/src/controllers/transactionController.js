@@ -161,7 +161,7 @@ const getAllTransaction = async (req, res, next) => {
       sortOrder,
     });
     console.log(whereQuery);
-    console.log(startDate);
+    // console.log(startDate);
 
     return res.status(200).send({
       success: true,
