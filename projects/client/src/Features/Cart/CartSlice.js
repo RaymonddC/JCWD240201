@@ -22,7 +22,7 @@ const initialState = {
   weight: 0,
   prescriptionCarts: [],
   detailprescriptionCart: {},
-  promotionActive: 3,
+  promotionActive: null,
 };
 
 export const CartSlice = createSlice({

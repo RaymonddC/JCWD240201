@@ -7,10 +7,12 @@ import TransactionModal from './TransactionModal';
 import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
+  cancelTransaction,
   updateTransactionHistorySlice,
   uploadPaymentSlice,
 } from '../../Features/Transaction/TransactionSlice';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import DeleteModal from '../DeleteModal/DeleteModal';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
@@ -20,6 +22,7 @@ const TransactionCard = (props) => {
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(true);
+  const [openDeleteModal, setOpenDeletemodal] = useState(false);
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -142,10 +145,18 @@ const TransactionCard = (props) => {
             >
               Submit
             </button>
+            {/* <ConfirmationModal
+              title="Confirmation"
+              textLine1="Are you sure you want to confirm the arrival of this order?"
+              label="CONFIRM ARRIVAL"
+              styling="btn btn-primary btn-sm"
+              confirm={confirm}
+            /> */}
+
             <button
               className="btn btn-sm btn-error text-white "
               disabled={false}
-              // onClick={() => onSubmit()}
+              onClick={() => setOpenDeletemodal(true)}
             >
               Cancel Order
             </button>
@@ -200,6 +211,13 @@ const TransactionCard = (props) => {
           id={props?.tx.id}
         />
       ) : null}
+      <DeleteModal
+        open={openDeleteModal}
+        closeModal={() => setOpenDeletemodal(false)}
+        id={props?.tx?.id}
+        model={'Transaction'}
+        delFunc={cancelTransaction}
+      />
     </div>
   );
 };

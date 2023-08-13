@@ -14,6 +14,7 @@ const PrescriptionCartDB = db.prescription_cart;
 const Promotion = db.promotion;
 const StockHistoryDB = db.stock_history;
 const ClosedStock = db.closed_stock;
+const OpenStock = db.opened_stock;
 const UserDB = db.user;
 const { sequelize } = require('../models');
 const { getOldIsSelected } = require('../helpers/addressHelper');
@@ -52,24 +53,32 @@ const checkout = async (req, res, next) => {
     // cek promoTransaction
     let totalDiscount = 0,
       totalAllPriceDB = 0;
-    const promoTx = await Promotion.findByPk(promotionActive);
-    if (promoTx && promoTx.minimum_transaction <= totalPrice) {
-      let disc = (totalPrice * promoTx.discount) / 100;
-      totalDiscount +=
-        disc > promoTx.maximum_discount_amount
-          ? promoTx.maximum_discount_amount
-          : disc;
+    if (promotionActive) {
+      const promoTx = await Promotion.findByPk(promotionActive);
+      if (!promoTx)
+        throw {
+          message: 'Promotion not Found!',
+          code: 400,
+          data: promotionActive,
+        };
+      if (promoTx && promoTx.minimum_transaction <= totalPrice) {
+        if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
+        let disc = (totalPrice * promoTx.discount) / 100;
+        totalDiscount +=
+          disc > promoTx.maximum_discount_amount
+            ? promoTx.maximum_discount_amount
+            : disc;
 
-      //update promo limit
-      await Promotion.update(
-        {
-          ...promoTx,
-          limit: promoTx.limit - 1,
-        },
-        { where: { id: promoTx.id }, transaction: t },
-      );
+        //update promo limit
+        await Promotion.update(
+          {
+            ...promoTx,
+            limit: promoTx.limit - 1,
+          },
+          { where: { id: promoTx.id }, transaction: t },
+        );
+      }
     }
-
     //checkDiscount
     const address = await getOldIsSelected(userId);
     console.log(address, '>>>>');
@@ -85,7 +94,7 @@ const checkout = async (req, res, next) => {
         phone_number: address.phone_number,
         receiver: address.receiver,
         shipment_fee: shippingFee,
-        total_discount: totalDiscount,
+        total_discount: discount,
         total_price: totalPrice,
         shipment: courier + ' ' + duration,
       },
@@ -289,6 +298,7 @@ const getAllTransaction = async (req, res, next) => {
       message: 'Get All Transaction Success',
       data: rows,
       pageCount: count,
+      totalPage: Math.ceil(count / (limitPage || 1)),
     });
   } catch (error) {
     console.log(error);
@@ -364,19 +374,145 @@ const uploadPayment = async (req, res, next) => {
   }
 };
 const cancelTransaction = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     const { id } = req.params;
     const user = await UserDB.findByPk(req.user.id);
 
     const transaction = await getTransactionById(id, user.role_id === 1);
 
+    if (!transaction) throw { message: 'transaction not found', code: 400 };
+    if (user.role_id !== 1 && user.id !== transaction.user_id)
+      throw { message: 'transaction not found', code: 400 };
+
+    const status = await TransactionHistory.findOne({
+      where: { transaction_id: transaction.id, is_active: true },
+    });
+
+    if (status.status === 'Cancelled') throw { message: 'Already Cancelled' };
+
+    let promoUpdateData = [],
+      stockUpdateData = [],
+      openStockUpdateData = [];
+    //cek promotion
+    if (transaction.promotion_id) {
+      const promoTx = await Promotion.findByPk(transaction.promotion_id);
+      if (promoTx)
+        promoUpdateData.push({
+          ...promoTx.dataValues,
+          limit: promoTx.limit + 1,
+        });
+    }
+
+    let isPrescription = false;
+    await Promise.all(
+      transaction.transaction_details.map(async (value) => {
+        //getPromotionData
+        if (value.product_id !== 1) {
+          if (value.promotion_id) {
+            const promoProd = await Promotion.findByPk(value.promotion_id);
+            // throw { message: 'testtt', data: promoProd };
+            promoUpdateData.push({
+              ...promoProd.dataValues,
+              limit: promoProd.limit + 1,
+            });
+          }
+
+          //getStockData
+          const stockProduct = await ClosedStock.findOne({
+            where: { product_id: value.product_id },
+          });
+          stockUpdateData.push({
+            ...stockProduct.dataValues,
+            total_stock: stockProduct.total_stock + value.qty,
+          });
+        } else {
+          isPrescription = true;
+        }
+      }),
+    );
+    if (isPrescription) {
+      // kalo dalam 1 cart ada 2 resep
+      const prescriptionDetail = await StockHistoryDB.findAll({
+        where: { transaction_id: transaction.id, stock_history_type_id: 4 },
+      });
+      await Promise.all(
+        prescriptionDetail.map(async (value) => {
+          if (unit === 0) {
+            const stockProduct = await ClosedStock.findOne({
+              where: { product_id: value.product_id },
+            });
+            stockUpdateData.push({
+              ...stockProduct.dataValues,
+              total_stock: stockProduct.total_stock + value.qty,
+            });
+          } else {
+            // unit conversion
+            const stockProduct = await OpenStock.findOne({
+              where: { product_id: value.product_id },
+            });
+            openStockUpdateData.push({
+              ...stockProduct.dataValues,
+              total_stock: stockProduct.total_stock + value.qty,
+            });
+          }
+        }),
+      );
+    }
+
+    await Promotion.bulkCreate(promoUpdateData, {
+      updateOnDuplicate: ['limit'],
+      transaction: t,
+    });
+    await ClosedStock.bulkCreate(stockUpdateData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
+    await OpenStock.bulkCreate(openStockUpdateData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
+    //stockHistory
+    await StockHistoryDB.destroy({
+      where: { transaction_id: transaction.id },
+      transaction: t,
+    });
+
+    //transactionDetail
+    //none
+
+    //transactionHistory
+    // const
+    await TransactionHistory.update(
+      {
+        is_active: false,
+      },
+      {
+        where: { transaction_id: transaction.id, is_active: true },
+        transaction: t,
+      },
+    );
+    await TransactionHistory.create(
+      {
+        transaction_id: transaction.id,
+        transaction_status_id: 7,
+        is_active: true,
+      },
+      { transaction: t },
+    );
+
+    await t.commit();
+
+    // const updatedTransaction = await Transaction.findByPk(id);
+
     return res.status(200).send({
       success: true,
-      message: 'Get Transaction Success',
+      message: 'Transaction Cancelled',
       data: transaction,
-      // pageCount: count,
     });
   } catch (error) {
+    console.log(error);
+    await t.rollback();
     next(error);
   }
 };

@@ -5,12 +5,15 @@ import Logo from '../../utils/images/logoHealthyMed.svg';
 import { Link } from 'react-router-dom';
 import { BiReceipt } from 'react-icons/bi';
 import TransactionModal from './TransactionModal';
+import DeleteModal from '../DeleteModal/DeleteModal';
+import { cancelTransaction } from '../../Features/Transaction/TransactionSlice';
 import { MdOutlineAttachment } from 'react-icons/md';
 import AttachmentModal from './AttachmentModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
+  const [openDeleteModal, setOpenDeletemodal] = useState(false);
   const [openAttachmentModal, setOpenAttachmentModal] = useState(false);
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
@@ -147,13 +150,18 @@ const TransactionCardAdmin = (props) => {
               Transaction Details
             </label>
           </button>
-          <button
-            className="btn btn-sm btn-error text-white "
-            disabled={false}
-            // onClick={() => onSubmit()}
-          >
-            Cancel Order
-          </button>
+          {props?.tx?.transaction_histories[0]?.transaction_status?.status !==
+          'Cancelled' ? (
+            <button
+              className="btn btn-sm btn-error text-white "
+              disabled={false}
+              onClick={() => setOpenDeletemodal(true)}
+            >
+              Cancel Order
+            </button>
+          ) : (
+            ''
+          )}
         </div>
       </div>
       {openTransactionModal ? (
@@ -163,7 +171,14 @@ const TransactionCardAdmin = (props) => {
           closeModal={() => setOpenTransactionModal(false)}
           id={props?.tx.id}
         />
-      ) : null}
+      ) : null}{' '}
+      <DeleteModal
+        open={openDeleteModal}
+        closeModal={() => setOpenDeletemodal(false)}
+        id={props?.tx?.id}
+        model={'Transaction'}
+        delFunc={cancelTransaction}
+      />
       {openAttachmentModal ? (
         <AttachmentModal
           admin
