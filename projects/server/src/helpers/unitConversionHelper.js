@@ -51,8 +51,9 @@ const unitConversionHelper = async (data, t) => {
       while (newOpenedStock < qty) {
         newClosedStock--;
         openedFromStock++;
-        newOpenedStock = newOpenedStock + openedFromStock * netContent;
+        newOpenedStock = newOpenedStock + netContent;
       }
+      console.log('stock', newOpenedStock);
 
       if (openedStock === 0) {
         resOpenedStock1 = await openedStockDB.create(

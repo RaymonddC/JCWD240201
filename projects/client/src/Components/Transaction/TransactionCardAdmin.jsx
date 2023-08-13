@@ -7,13 +7,14 @@ import { BiReceipt } from 'react-icons/bi';
 import TransactionModal from './TransactionModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
 import { cancelTransaction } from '../../Features/Transaction/TransactionSlice';
+import { MdOutlineAttachment } from 'react-icons/md';
+import AttachmentModal from './AttachmentModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
-
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
-
+  const [openAttachmentModal, setOpenAttachmentModal] = useState(false);
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -31,8 +32,15 @@ const TransactionCardAdmin = (props) => {
   });
 
   //   const actionDateTime = new Date(props.tx.createdAt);
-
   const txDetail = props.tx.transaction_details[0];
+  const activeStatus = props?.tx?.transaction_histories?.map((value, index) => {
+    if (value.is_active === true) {
+      return value;
+    }
+  });
+  const transactionStatus = activeStatus[0]?.transaction_status?.status;
+  // console.log(activeStatus);
+  // console.log(transactionStatus);
 
   return (
     <div className="div border border-[#D5D7DD] text-[16px]  card card-compact bg-base-100 shadow-md my-2 ">
@@ -40,19 +48,26 @@ const TransactionCardAdmin = (props) => {
         <p>
           {date[0]}, {date[1]} {date[2]}, {time} WIB
         </p>
-        <div className="div">
-          {props.tx.transaction_histories[0].transaction_status.status ===
-          'Waiting for payment' ? (
-            <p className="text-sm">
-              <span>Action required </span>
-              <span className="bg-[#FFF6D3] rounded-lg p-1 px-2">
-                {dateTime.getHours() + 2}:{dateTime.getMinutes()} WIB
-                {/* {dateTime.()} */}
-              </span>
-            </p>
-          ) : (
-            <p>{props.tx.transaction_histories[0].transaction_status.status}</p>
-          )}
+        <div className="flex items-center">
+          <div className="badge badge-accent badge-lg p-2 mx-3">
+            {transactionStatus}
+          </div>
+          <div className="div">
+            {props.tx.transaction_histories[0].transaction_status.status ===
+            'Waiting for payment' ? (
+              <p className="">
+                <span>Action required </span>
+                <span className="bg-[#FFF6D3] rounded-lg p-1 px-2">
+                  {dateTime.getHours() + 2}:{dateTime.getMinutes()} WIB
+                  {/* {dateTime.()} */}
+                </span>
+              </p>
+            ) : (
+              <p>
+                {props.tx.transaction_histories[0].transaction_status.status}
+              </p>
+            )}
+          </div>
         </div>
       </div>
       <div className="detailtx px-5">
@@ -73,7 +88,7 @@ const TransactionCardAdmin = (props) => {
                 {txDetail.qty}{' '}
                 {txDetail.product_id !== 1
                   ? txDetail.product.packaging_type.type_name
-                  : txDetail.product.product_type?.unit}
+                  : txDetail?.product?.product_type?.unit}
               </p>
               {props.tx.transaction_details.length <= 1 ? (
                 ''
@@ -84,7 +99,6 @@ const TransactionCardAdmin = (props) => {
               )}
             </div>
           </div>
-
           <div className="userInfo flex w-[60%] gap-1">
             <div className="user w-[30%]">
               <p className="font-bold">Buyer</p>
@@ -111,8 +125,22 @@ const TransactionCardAdmin = (props) => {
             Rp {props.tx.total_price?.toLocaleString(['id'])}
           </p>
         </div>
-        <div className="action flex justify-end gap-5 items-center text-primary px-2 py-2">
-          <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg">
+        <div className="action flex justify-end gap-5 items-center px-2 py-2">
+          {transactionStatus === 'Waiting for confirmation' ? (
+            <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-secondary">
+              <MdOutlineAttachment size={'1.5em'} />
+              <label
+                className="font-bold"
+                htmlFor="see_attachment"
+                onClick={() => setOpenAttachmentModal(true)}
+              >
+                See Attachment
+              </label>
+            </button>
+          ) : (
+            ''
+          )}
+          <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-primary">
             <BiReceipt size={'1.5em'} />
             <label
               className="font-bold"
@@ -151,6 +179,14 @@ const TransactionCardAdmin = (props) => {
         model={'Transaction'}
         delFunc={cancelTransaction}
       />
+      {openAttachmentModal ? (
+        <AttachmentModal
+          admin
+          openAttachmentModal={openAttachmentModal}
+          closeModal={() => setOpenAttachmentModal(false)}
+          id={props?.tx.id}
+        />
+      ) : null}
     </div>
   );
 };

@@ -82,7 +82,7 @@ export default function StockHistory() {
     setSearchParams(queryParams);
     dispatch(getProducts({ page: 1, limit, search: debouncedSearchValue }));
   }, [debouncedSearchValue]);
-console.log(formik?.errors?.product_id);
+
   useEffect(() => {
     if (page) {
       formik.setFieldValue('page', page);
@@ -155,11 +155,7 @@ console.log(formik?.errors?.product_id);
               touched={formik.touched?.sortOrder}
             />
             <button
-              //   disabled={
-              //     !formik?.values?.promotion_type_id ||
-              //     !formik.isValid ||
-              //     formik.isSubmitting
-              //   }
+              disabled={!formik.isValid || formik.isSubmitting}
               type="submit"
               className="btn w-full bg-primary text-white"
             >

@@ -291,7 +291,7 @@ const getAllTransaction = async (req, res, next) => {
       sortOrder,
     });
     console.log(whereQuery);
-    console.log(startDate);
+    // console.log(startDate);
 
     return res.status(200).send({
       success: true,
@@ -331,7 +331,6 @@ const uploadPayment = async (req, res, next) => {
     const image = req.file;
     const imagePath = image ? image.path : undefined;
     if (!image) throw { message: 'Please upload image' };
-
     const updateTransaction = await Transaction.update(
       { image: imagePath },
       { where: { id: transaction_id } },
@@ -360,6 +359,7 @@ const uploadPayment = async (req, res, next) => {
       },
       { transaction: t },
     );
+
     await t.commit();
     return res.status(200).send({
       success: true,

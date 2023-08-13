@@ -19,6 +19,7 @@ const TransactionAdmin = () => {
     searchParams.get('sortOrder') || '',
   );
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
+  const totalPages = transactions?.totalPage;
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
 
@@ -97,8 +98,8 @@ const TransactionAdmin = () => {
           </div>
         </div>
         <div className="transactions">
-          {transactions.map((value) => {
-            return <TransactionCardAdmin tx={value} />;
+          {transactions.map((value, index) => {
+            return <TransactionCardAdmin key={`tCard${index}`} tx={value} />;
           })}
         </div>
       </div>

@@ -164,7 +164,7 @@ const uploadPayment = (req, res, next) => {
       if (!req.file) throw { message: 'please upload image' };
       if (req.file && req.file.size > 1000000)
         throw {
-          message: `${value.originalname} is Too Large`,
+          message: `${req.file.originalname} is Too Large`,
           fileToDelete: [req.file],
         };
       // }
