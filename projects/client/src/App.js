@@ -43,7 +43,7 @@ function App() {
   //   }
   // }, [bodyScrollable]);
   useEffect(() => {
-    if (pathname === '/login' || pathname === '/register') {
+    if (pathname === '/login' || pathname === '/register'|| pathname === '/verification') {
       setNavbar(false);
       setFooter(false);
     } else {

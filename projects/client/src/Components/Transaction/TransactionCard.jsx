@@ -8,6 +8,7 @@ import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
   cancelTransaction,
+  getAllTransactionSlice,
   updateTransactionHistorySlice,
   uploadPaymentSlice,
 } from '../../Features/Transaction/TransactionSlice';
@@ -55,8 +56,10 @@ const TransactionCard = (props) => {
           payment_images: paymentProofFile,
         }),
       );
+      dispatch(getAllTransactionSlice())
+      // props?.setTogle(!props?.togle);
+      // props.togle
     } catch (error) {}
-    // props?.setTogle(!props?.togle);
   };
   const confirm = async () => {
     try {
