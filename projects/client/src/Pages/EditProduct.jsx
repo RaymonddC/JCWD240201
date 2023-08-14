@@ -139,7 +139,7 @@ export default function EditProduct() {
   const onInputImage = (image) => {
     formik.setFieldValue('image.product', image);
     // setIsChange(true)
-  }
+  };
 
   useEffect(() => {
     getCurrentData();
@@ -164,19 +164,6 @@ export default function EditProduct() {
   return (
     <>
       <div className="font-bold text-xl">Edit Product</div>
-      {formik?.values?.image?.product ? (
-        <img
-          className="w-3/12"
-          src={URL.createObjectURL(formik.values.image.product)}
-          alt="product_image"
-        />
-      ) : (
-        <img
-          className="w-3/12"
-          src={`http://localhost:8000/${image}`}
-          alt="product_image"
-        />
-      )}
       <form onSubmit={formik.handleSubmit}>
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
@@ -313,6 +300,19 @@ export default function EditProduct() {
                 refProp={fileInputRef}
               />
             </div>
+            {formik?.values?.image?.product ? (
+              <img
+                className="w-6/12"
+                src={URL.createObjectURL(formik.values.image.product)}
+                alt="product_image"
+              />
+            ) : (
+              <img
+                className="w-6/12"
+                src={`http://localhost:8000/${image}`}
+                alt="product_image"
+              />
+            )}
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4 my-6 mb-6">

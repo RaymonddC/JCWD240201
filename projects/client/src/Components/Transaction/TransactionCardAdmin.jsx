@@ -208,6 +208,7 @@ const TransactionCardAdmin = (props) => {
           openSendOrderModal={openSendOrderModal}
           closeModal={() => setOpenSendOrderModal(false)}
           id={props?.tx.id}
+          setToggle={()=>props.setToggle()}
         />
       ) : null}
     </div>
