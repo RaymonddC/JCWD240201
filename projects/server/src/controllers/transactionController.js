@@ -81,7 +81,7 @@ const checkout = async (req, res, next) => {
     }
     //checkDiscount
     const address = await getOldIsSelected(userId);
-    console.log(address, '>>>>');
+    // console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
       {
@@ -171,13 +171,17 @@ const checkout = async (req, res, next) => {
             },
           });
           prescriptionCarts.map(async (prescCart) => {
-            await unitConversionHelper(
-              {
-                product_id: prescCart.product_id,
-                qty: value.qty,
-              },
-              t,
-            );
+            try {
+              await unitConversionHelper(
+                {
+                  product_id: prescCart.product_id,
+                  qty: value.qty,
+                },
+                t,
+              );
+            } catch (error) {
+              console.log (error)
+            }
           });
         }
 
@@ -247,7 +251,7 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    console.log(error);
+    // console.log(error);
     next(error);
   }
 };
