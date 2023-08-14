@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { GrClose } from 'react-icons/gr';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getTransactionSlice,
   updateTransactionHistorySlice,
 } from '../../Features/Transaction/TransactionSlice';
-import TxProductCard from './TxProductCard';
-import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
-import TransactionStatusCard from './TransactionStatusCard';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { MdZoomIn, MdZoomOut } from 'react-icons/md';
-import { TbZoomReset } from 'react-icons/tb';
-import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 const SendOrderModal = (props) => {
   const dispatch = useDispatch();
