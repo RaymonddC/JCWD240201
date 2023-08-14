@@ -275,6 +275,7 @@ module.exports = {
       },
       // obat flu ----------------------------------------------------------------------------
       {
+        //17
         name: 'Ceteme 4 Mg 12 Tablet',
         packaging_type_id: 2,
         product_type_id: 1,
@@ -290,6 +291,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //18
       {
         name: 'Cerini 10mg/ml Drop 20ml',
         packaging_type_id: 1,
@@ -306,6 +308,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //19
       {
         name: 'Panadol Anak-Anak Rasa Cherry 10 Tablet',
         packaging_type_id: 2,
@@ -322,6 +325,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //20
       {
         name: 'Trisela 10 Mg 10 Tablet',
         packaging_type_id: 2,
@@ -338,6 +342,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //21
       {
         name: 'Tolak Angin Cair Flu Sido Muncul 15 Ml',
         packaging_type_id: 3,
@@ -354,6 +359,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // obat vitamin ------------------------------------------------------------------------------------------------
+      //22
       {
         name: 'Vitacimin Lemon 2 Tablet',
         packaging_type_id: 2,
@@ -369,6 +375,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //23
       {
         name: 'Vitamin C IPI 50 Mg 90 Tablet',
         packaging_type_id: 1,
@@ -384,6 +391,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //24
       {
         name: 'Vitamin A IPI 45 Tablet',
         packaging_type_id: 1,
@@ -399,6 +407,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //25
       {
         name: 'Vitamin A 200000 IU 50 Kapsul',
         packaging_type_id: 1,
@@ -414,6 +423,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //26
       {
         name: 'Vitamin B Complex IPI 45 Tablet',
         packaging_type_id: 1,
@@ -430,6 +440,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // Obat Demam --------------------------------------------------------------
+      //27
       {
         name: 'Bodrexin 80 Mg 6 Tablet',
         packaging_type_id: 1,
@@ -446,6 +457,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //28
       {
         name: 'Biogesic 500 Mg 4 Tablet',
         packaging_type_id: 5,
@@ -462,6 +474,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //29
       {
         name: 'Dumin 500 Mg 10 Tablet',
         packaging_type_id: 5,
@@ -478,6 +491,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //30
       {
         name: 'Farsifen 400 Mg 10 Tablet',
         packaging_type_id: 2,
@@ -494,6 +508,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //31
       {
         name: 'Inzana 4 Tablet',
         packaging_type_id: 2,
@@ -511,6 +526,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // jamu -------------------------------------------------------------------------------
+      //32
       {
         name: 'Tolak Angin Plus Madu Sido Muncul 15 Ml 5 Sachet',
         packaging_type_id: 3,
@@ -527,6 +543,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //33
       {
         name: 'Antangin Good Night 4 Tablet',
         packaging_type_id: 3,
@@ -542,6 +559,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //34
       {
         name: 'Lelap 4 Kaplet',
         packaging_type_id: 3,
@@ -557,6 +575,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //35
       {
         name: 'Kunyit Asam Sido Muncul 5 Sachet',
         packaging_type_id: 3,
@@ -588,6 +607,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // antibiotik ---------------------------------------------------------------
+      //36
       {
         name: 'Clinmas 150 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -604,6 +624,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //37
       {
         name: 'Zithrolic 500 Mg 6 Kaplet',
         packaging_type_id: 2,
@@ -615,11 +636,12 @@ module.exports = {
           'Kondisi: Pneumonia \nDewasa: 500 mg, 1 kali sehari pada hari pertama. Dilanjutkan dengan 250 mg, 1 kali sehari pada hari kedua sampai kelima.\nKondisi: Sinusitis\nDewasa: 500 mg, 1 kali sehari selama 3 hari. \nKondisi: Infeksi saluran pernapasan, infeksi kulit, dan infeksi jaringan lunak\nDewasa: 500 mg, 1 kali sehari, selama 3 hari. Dosis alternatif 500 mg pada hari pertama. Dilanjutkan dengan 250 mg pada hari kedua sampai kelima.\nKondisi: Infeksi genital akibat chlamydia trachomatis atau Haemophilus ducreyi (chancroid)\nDewasa: 1.000 mg sebagai dosis tunggal.\nKondisi: Gonore tanpa komplikasi\nDewasa: 1.000-2.000 mg sebagai dosis tunggal, dikombinasikan dengan ceftriaxone. ',
         BPOM_id: 'DKL2010811309A1',
         require_prescription: true,
-        price: 0,
+        price: 311553,
         weight: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //38
       {
         name: 'Ciflos 500 Mg 10 Tablet',
         packaging_type_id: 2,
@@ -636,6 +658,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //39
       {
         name: 'Pritalinc 500 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -652,6 +675,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //40
       {
         name: 'Nomika 50 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -669,6 +693,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // susu------------------------------------------------------------------------
+      //41
       {
         name: 'Ensure Vanilla 900 gr',
         packaging_type_id: 7,
@@ -685,6 +710,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //42
       {
         name: 'Nutribaby Royal Pepti Junior 400 gr',
         packaging_type_id: 7,
@@ -701,6 +727,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //43
       {
         name: 'PediaComplete Vanila 400 gr',
         packaging_type_id: 7,
@@ -712,11 +739,12 @@ module.exports = {
           'Anak usia 1–3 tahun: 5 sendok takar (49 gr) PediaComplete Vanilla dimasukkan ke dalam 190 ml air bersuhu ruangan atau air hangat. Konsumsi minuman ini 2 kali sehari.\nAnak usia 4–10 tahun: 5 sendok takar PediaComplete Vanilla dimasukkan ke dalam 190 ml air bersuhu ruangan atau air hangat. Konsumsi minuman ini 3 kali sehari. ',
         BPOM_id: 'ML562409057512',
         require_prescription: false,
-        price: 0,
+        price: 231000,
         weight: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //44
       {
         name: 'Diabetasol Rasa Vanila 180 gr',
         packaging_type_id: 2,
@@ -733,21 +761,23 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //45
       {
         name: 'Entrasol Gold Vanila 185 gr',
         packaging_type_id: 3,
         product_type_id: 8,
         net_content: 4,
-        description: '',
-        dosing: '',
-        BPOM_id: '',
+        description: 'Entrasol Gold Vanila mengandung kalsium, vitamin D, magnesium, serat, omega 3 dan 6, yang dilengkapi dengan ekstrak buah zaitun serta 10 vitamin dan 5 mineral. Kombinasi nutrisi dalam susu ini berguna untuk menguatkan tulang dan gigi, mencegah osteoporosis, serta memelihara kesehatan tubuh secara keseluruhan. Dengan begitu, tubuh tetap sehat dan aktif di masa tua.',
+        dosing: 'Larutkan 3 sendok makan (35 gram) Entrasol Gold Vanila ke dalam 200 ml air matang hangat, aduk hingga larut dan susu siap untuk diminum. Setelah dibuka, lipat polybag dan tutup rapat-rapat. Habiskan Entrasol Gold Vanila dalam waktu kurang dari satu bulan setelah kemasan dibuka.',
+        BPOM_id: 'MD 805010329281',
         require_prescription: false,
-        price: 0,
+        price: 45100,
         weight: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       // obat batuk
+      //46
       {
         name: 'Acetin 200 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -764,6 +794,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //47
       {
         name: 'Benadryl Batuk Berdahak Sirup 50 Ml',
         packaging_type_id: 1,
@@ -780,6 +811,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //48
       {
         name: 'Bisolvon 8 Mg 10 Tablet',
         packaging_type_id: 5,
@@ -796,6 +828,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //49
       {
         name: 'Cohistan Ekspektoran Sirup 60 Ml',
         packaging_type_id: 1,
@@ -812,6 +845,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //50
       {
         name: 'Epexol Drops 20 Ml',
         packaging_type_id: 1,
@@ -829,6 +863,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // obat sakit kepala
+      //51
       {
         name: 'Antrain 500 Mg 10 Tablet',
         packaging_type_id: 2,
@@ -845,6 +880,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //52
       {
         name: 'Biogesic 500 Mg 4 Tablet',
         packaging_type_id: 5,
@@ -861,6 +897,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //53
       {
         name: 'Bodrex Extra 4 Kaplet',
         packaging_type_id: 5,
@@ -876,6 +913,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //54
       {
         name: 'Cargesik 500 Mg 10 Kaplet',
         packaging_type_id: 2,
@@ -892,6 +930,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      //55
       {
         name: 'Exedra Rema 10 Kaplet',
         packaging_type_id: 5,

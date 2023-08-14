@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-
 import { useDispatch } from 'react-redux';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,7 @@ import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
   cancelTransaction,
+  getAllTransactionSlice,
   updateTransactionHistorySlice,
   uploadPaymentSlice,
 } from '../../Features/Transaction/TransactionSlice';
@@ -16,9 +16,7 @@ import DeleteModal from '../DeleteModal/DeleteModal';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
-
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
-
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(true);
@@ -38,11 +36,10 @@ const TransactionCard = (props) => {
     props?.tx?.transaction_histories[0]?.transaction_status_id;
   const transactionStatus =
     props?.tx?.transaction_histories[0]?.transaction_status?.status;
-  // console.log(props);
   const transactionId = props?.tx?.id;
   const txDetail = props?.tx.transaction_details[0];
   const onSubmit = async () => {
-    console.log(paymentProofFile.type.split('/')[1]);
+    // console.log(paymentProofFile.type.split('/')[1]);
     const imageType = paymentProofFile.type.split('/')[1];
     if (imageType !== 'jpeg' && imageType !== 'png' && imageType !== 'jpg') {
       return toast.error('Image type must be JPEG or JPG or PNG');
@@ -50,19 +47,21 @@ const TransactionCard = (props) => {
     try {
       await dispatch(
         uploadPaymentSlice({
-          transaction_status_id: transactionStatusId + 1,
+          transaction_status_id: 2,
           transaction_id: transactionId,
           payment_images: paymentProofFile,
         }),
       );
+      dispatch(getAllTransactionSlice())
+      // props?.setTogle(!props?.togle);
+      // props.togle
     } catch (error) {}
-    // props?.setTogle(!props?.togle);
   };
   const confirm = async () => {
     try {
       await dispatch(
         updateTransactionHistorySlice({
-          transaction_status_id: transactionStatusId + 1,
+          transaction_status_id: 5,
           transaction_id: transactionId,
         }),
       );
