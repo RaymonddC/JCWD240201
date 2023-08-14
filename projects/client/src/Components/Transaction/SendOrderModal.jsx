@@ -15,6 +15,8 @@ const SendOrderModal = (props) => {
         transaction_status_id: 4,
       }),
     );
+    props.setToggle();
+    props.closeModal();
   };
 
   useEffect(() => {
@@ -22,7 +24,13 @@ const SendOrderModal = (props) => {
   }, []);
   return (
     <div>
-      <input type="checkbox" id="send_order" className="modal-toggle" />
+      <input
+        readOnly
+        checked={props.openAttachmentModal}
+        type="checkbox"
+        id="send_order"
+        className="modal-toggle"
+      />
       <div className="modal">
         <div className="modal-box">
           <h3 className="font-bold text-lg">Send Order</h3>
