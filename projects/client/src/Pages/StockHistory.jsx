@@ -121,39 +121,43 @@ export default function StockHistory() {
                 {productMap}
               </div>
             </div>
-            <div className="flex justify-between gap-3">
-              <div className="w-6/12">
-                <InputUserDate
-                  id="date_start"
-                  label="Date Start"
-                  name="date_start"
-                  errors={formik?.errors?.date_start}
-                  handleChange={formik.handleChange}
-                  values={formik?.values?.date_start}
-                />
+            <div className='md:flex md:justify-evenly'>
+              <div className="flex justify-between gap-3">
+                <div className="w-6/12 md:w-full">
+                  <InputUserDate
+                    id="date_start"
+                    label="Date Start"
+                    name="date_start"
+                    errors={formik?.errors?.date_start}
+                    handleChange={formik.handleChange}
+                    values={formik?.values?.date_start}
+                  />
+                </div>
+                <div className="w-6/12 md:w-full">
+                  <InputUserDate
+                    id="date_end"
+                    label="Date End"
+                    name="date_end"
+                    errors={formik?.errors?.date_end}
+                    handleChange={formik.handleChange}
+                    values={formik?.values?.date_end}
+                  />
+                </div>
               </div>
-              <div className="w-6/12">
-                <InputUserDate
-                  id="date_end"
-                  label="Date End"
-                  name="date_end"
-                  errors={formik?.errors?.date_end}
-                  handleChange={formik.handleChange}
-                  values={formik?.values?.date_end}
+              <div className='md:w-full md:ml-3'>
+                <SelectSortOrder
+                  id="sortOrder"
+                  name="sortOrder"
+                  handleChange={formik?.handleChange}
+                  onBlur={formik?.handleBlur}
+                  errors={formik?.errors?.sortOrder}
+                  value={formik?.values?.sortOrder}
+                  placeholder="Please select one"
+                  label="Sort by"
+                  touched={formik.touched?.sortOrder}
                 />
               </div>
             </div>
-            <SelectSortOrder
-              id="sortOrder"
-              name="sortOrder"
-              handleChange={formik?.handleChange}
-              onBlur={formik?.handleBlur}
-              errors={formik?.errors?.sortOrder}
-              value={formik?.values?.sortOrder}
-              placeholder="Please select one"
-              label="Sort by"
-              touched={formik.touched?.sortOrder}
-            />
             <button
               disabled={!formik.isValid || formik.isSubmitting}
               type="submit"
