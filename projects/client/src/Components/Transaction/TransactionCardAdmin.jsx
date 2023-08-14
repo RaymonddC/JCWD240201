@@ -9,7 +9,7 @@ import DeleteModal from '../DeleteModal/DeleteModal';
 import { cancelTransaction } from '../../Features/Transaction/TransactionSlice';
 import { MdOutlineAttachment } from 'react-icons/md';
 import AttachmentModal from './AttachmentModal';
-import { TbTruckDelivery } from "react-icons/tb";
+import { TbTruckDelivery } from 'react-icons/tb';
 import SendOrderModal from './SendOrderModal';
 
 const TransactionCardAdmin = (props) => {
@@ -140,10 +140,7 @@ const TransactionCardAdmin = (props) => {
                 See Attachment
               </label>
             </button>
-          ) : (
-            ''
-          )}
-          {transactionStatus === 'Process' ? (
+          ) : transactionStatus === 'Process' ? (
             <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-secondary">
               <TbTruckDelivery size={'1.5em'} />
               <label
@@ -202,6 +199,7 @@ const TransactionCardAdmin = (props) => {
           openAttachmentModal={openAttachmentModal}
           closeModal={() => setOpenAttachmentModal(false)}
           id={props?.tx.id}
+          setToggle={()=>props.setToggle()}
         />
       ) : null}
       {openSendOrderModal ? (
