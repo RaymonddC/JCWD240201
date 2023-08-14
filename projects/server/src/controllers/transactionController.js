@@ -180,7 +180,7 @@ const checkout = async (req, res, next) => {
                 t,
               );
             } catch (error) {
-              console.log (error)
+            //   console.log (error)
             }
           });
         }
