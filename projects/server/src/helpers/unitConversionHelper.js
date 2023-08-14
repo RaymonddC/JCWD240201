@@ -10,7 +10,7 @@ const { sequelize } = require('../models');
 
 const unitConversionHelper = async (data, t) => {
   try {
-    console.log('>>> unit conversion');
+    console.log('>>> unit conversion', data);
     const { product_id, qty } = data;
     let newOpenedStock;
     let openedStock;
@@ -37,8 +37,7 @@ const unitConversionHelper = async (data, t) => {
       openedStock = resOpenedStock.qty;
     } else {
       openedStock = 0;
-    }
-
+    } 
     const packaging_type = response.packaging_type.type_name;
     const unit = response.product_type.unit;
     const closedStock = resClosedStock.total_stock;

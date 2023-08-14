@@ -5,10 +5,11 @@ import { getPromotionAPI, getPromotionTypeAPI } from '../API/promotionAPI';
 import { useEffect, useState } from 'react';
 import SelectSortOrder from '../Components/Report/StockHistory/SelectSortOrder';
 import ProductDiscTable from '../Components/Promotion/Table/ProductDiscTable';
-import Pagination from '../Components/Layout/Pagination';
+import { MdAdd } from 'react-icons/md';
 import { validateGetPromotion } from '../Helper/promotionHelper';
 import TransactionDiscTable from '../Components/Promotion/Table/TransactionDiscTable';
 import BuyGetTable from '../Components/Promotion/Table/BuyGetTable';
+import { useNavigate } from 'react-router-dom';
 
 export default function PromotionPage() {
   const [promotionType, setPromotionType] = useState(null);
@@ -16,6 +17,7 @@ export default function PromotionPage() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPromoType, setCurrentPromoType] = useState(null);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -52,7 +54,7 @@ export default function PromotionPage() {
       formik.setFieldValue('page', page);
       formik?.handleSubmit();
     }
-  }, [page]);
+  }, [formik?.values?.page]);
   return (
     <>
       <div className="font-bold text-xl">Promotion</div>
@@ -86,30 +88,44 @@ export default function PromotionPage() {
             />
           </div>
         </div>
-        <button
-          disabled={!formik.isValid || formik.isSubmitting}
-          type="submit"
-          className="btn w-full bg-primary text-white"
-        >
-          SEARCH
-        </button>
+        <div className='grid grid-cols-2 gap-4 mb-6'>
+          <button
+            disabled={!formik.isValid || formik.isSubmitting}
+            type="submit"
+            className="btn btn-primary w-full text-white"
+          >
+            SEARCH
+          </button>
+          <button
+            className="btn btn-primary w-full text-white"
+            onClick={() => navigate('/promotions/new')}
+          >
+            Add new promo
+          </button>
+        </div>
       </form>
-      <div className='mt-5'>
+      <div className="mt-5">
         {currentPromoType === 1 && data.length > 0 ? (
-          <ProductDiscTable data={data} />
+          <ProductDiscTable
+            setPage={setPage}
+            page={page}
+            totalPages={totalPages}
+            data={data}
+          />
         ) : currentPromoType === 2 && data.length > 0 ? (
-          <TransactionDiscTable data={data} />
+          <TransactionDiscTable
+            setPage={setPage}
+            page={page}
+            totalPages={totalPages}
+            data={data}
+          />
         ) : currentPromoType === 3 && data.length > 0 ? (
-          <BuyGetTable data={data} />
-        ) : null}
-        {data.length > 0 ? (
-          <div className="py-5">
-            <Pagination
-              setPage={setPage}
-              page={page || 1}
-              totalPages={totalPages}
-            />
-          </div>
+          <BuyGetTable
+            setPage={setPage}
+            page={page}
+            totalPages={totalPages}
+            data={data}
+          />
         ) : null}
       </div>
     </>

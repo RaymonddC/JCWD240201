@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getProductDetailsAPI } from '../../API/productAPI';
+import { GrClose } from 'react-icons/gr';
 
 export default function DetailProductAdmin(props) {
   const [image, setImage] = useState(null);
@@ -27,7 +28,10 @@ export default function DetailProductAdmin(props) {
     <>
       <input type="checkbox" id="detail_product" className="modal-toggle" />
       <div className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <label htmlFor="detail_product" className="absolute right-3 top-3">
+            <GrClose size={'24px'} />
+          </label>
           <div className="flex flex-col gap-3">
             <div className="flex justify-evenly gap-3">
               <img
@@ -76,11 +80,6 @@ export default function DetailProductAdmin(props) {
                 <div>{product?.dosing}</div>
               </div>
             </div>
-          </div>
-          <div className="modal-action">
-            <label htmlFor="detail_product" className="btn">
-              Close
-            </label>
           </div>
         </div>
       </div>

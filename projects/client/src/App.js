@@ -43,12 +43,21 @@ function App() {
   //   }
   // }, [bodyScrollable]);
   useEffect(() => {
-    if (pathname === '/login' || pathname === '/register') {
-      setNavbar(false);
-      setFooter(false);
-    } else {
+    if (
+      pathname === '/' ||
+      pathname === '/discussions' ||
+      pathname === '/products' ||
+      pathname === '/cart'||
+      pathname === '/user/profile'||
+      pathname === '/user/address' ||
+      pathname === '/user/change-password'||
+      pathname === '/user/transaction'
+    ) {
       setNavbar(true);
       setFooter(true);
+    } else {
+      setNavbar(false);
+      setFooter(false);
     }
     dispatch(keepLoginAsync());
   }, [pathname]);
@@ -61,8 +70,16 @@ function App() {
           <AdminRoute />
         ) : (
           <>
-            {navbar ? <NavBar /> : ''}
-            <PublicRoute />
+            {navbar ? (
+              <>
+                <NavBar />
+                <div className="relative md:px-[3em] md:py-[2em] flex-grow">
+                  <PublicRoute />
+                </div>
+              </>
+            ) : (
+              <PublicRoute />
+            )}
             {footer ? (
               <div className="hidden md:block">
                 <Footer />

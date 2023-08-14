@@ -8,13 +8,18 @@ export default function ProductCard(props) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const productName = props?.data?.name;
-  const productId = props?.data?.id
+  const productId = props?.data?.id;
   const price = props?.data?.price?.toLocaleString(['id']);
+  const reqPrescripton = props?.data?.require_prescription;
   // console.log(props?.data)
+  // console.log(reqPrescripton)
 
   const handleAddToCart = () => {
+    if (reqPrescripton) {
+      return toast.error('This product requires prescription');
+    }
     if (Object.keys(user).length === 0) {
-      return toast.error('Login First before adding product to cart');
+      return toast.error('Login first before adding product to cart');
       // return navigate('/login');
     }
     dispatch(addToCartAsync({ productId: productId }));
@@ -22,7 +27,7 @@ export default function ProductCard(props) {
 
   return (
     <>
-      <div className="card card-compact w-32 h-68 md:w-40 bg-base-100 shadow-xl mx-2">
+      <div className="card card-compact w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2">
         <figure>
           <Link to={`/products/${productId}`}>
             <img
@@ -33,7 +38,7 @@ export default function ProductCard(props) {
           </Link>
         </figure>
         <div className="card-body">
-          <p className="font-bold line-clamp-2">{productName}</p>
+          <div className="font-bold line-clamp-2">{productName}</div>
           <p>Rp. {price}</p>
           <div className="card-actions justify-end">
             <button
@@ -42,7 +47,7 @@ export default function ProductCard(props) {
               }}
               className="btn btn-xs md:btn-sm btn-accent"
             >
-              add to cart
+              {reqPrescripton ? 'prescription' : 'add to cart'}
             </button>
           </div>
         </div>

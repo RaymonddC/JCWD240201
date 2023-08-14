@@ -9,12 +9,15 @@ import DeleteModal from '../DeleteModal/DeleteModal';
 import { cancelTransaction } from '../../Features/Transaction/TransactionSlice';
 import { MdOutlineAttachment } from 'react-icons/md';
 import AttachmentModal from './AttachmentModal';
+import { TbTruckDelivery } from 'react-icons/tb';
+import SendOrderModal from './SendOrderModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
   const [openAttachmentModal, setOpenAttachmentModal] = useState(false);
+  const [openSendOrderModal, setOpenSendOrderModal] = useState(false);
   const dateTime = new Date(props.tx.createdAt);
   const date = dateTime
     .toLocaleDateString('EN-us', {
@@ -137,6 +140,17 @@ const TransactionCardAdmin = (props) => {
                 See Attachment
               </label>
             </button>
+          ) : transactionStatus === 'Process' ? (
+            <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-secondary">
+              <TbTruckDelivery size={'1.5em'} />
+              <label
+                className="font-bold"
+                htmlFor="send_order"
+                onClick={() => setOpenSendOrderModal(true)}
+              >
+                Send Order
+              </label>
+            </button>
           ) : (
             ''
           )}
@@ -185,6 +199,16 @@ const TransactionCardAdmin = (props) => {
           openAttachmentModal={openAttachmentModal}
           closeModal={() => setOpenAttachmentModal(false)}
           id={props?.tx.id}
+          setToggle={()=>props.setToggle()}
+        />
+      ) : null}
+      {openSendOrderModal ? (
+        <SendOrderModal
+          admin
+          openSendOrderModal={openSendOrderModal}
+          closeModal={() => setOpenSendOrderModal(false)}
+          id={props?.tx.id}
+          setToggle={()=>props.setToggle()}
         />
       ) : null}
     </div>

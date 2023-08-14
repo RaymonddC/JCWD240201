@@ -4,7 +4,7 @@ import Select from '../Components/Products/Input/Select';
 import { useEffect, useState } from 'react';
 import { createPromotionAPI, getPromotionTypeAPI } from '../API/promotionAPI';
 import SelectProduct from '../Components/Promotion/Input/SelectProduct';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
 import { getProducts } from '../Features/Product/ProductSlice';
@@ -25,6 +25,7 @@ export default function AddPromotion() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
   let productMap;
+  const navigate = useNavigate()
 
   const onSelectedProduct = (value) => {
     setSelectedProduct(value.name);
@@ -250,17 +251,25 @@ export default function AddPromotion() {
             />
           </div>
         </div>
-        <button
-          disabled={
-            !formik?.values?.promotion_type_id ||
-            !formik.isValid ||
-            formik.isSubmitting
-          }
-          type="submit"
-          className="btn w-full bg-primary text-white"
-        >
-          SAVE
-        </button>
+        <div className="grid grid-cols-2 gap-4 my-6 mb-6">
+          <button
+            className="btn w-full bg-primary text-white"
+            onClick={() => navigate('/promotions')}
+          >
+            Cancel
+          </button>
+          <button
+            disabled={
+              !formik?.values?.promotion_type_id ||
+              !formik.isValid ||
+              formik.isSubmitting
+            }
+            type="submit"
+            className="btn w-full bg-primary text-white"
+          >
+            SAVE
+          </button>
+        </div>
       </form>
     </>
   );
