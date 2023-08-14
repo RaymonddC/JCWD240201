@@ -55,8 +55,15 @@ const addToCart = async (req, res, next) => {
     const image = req.file;
     const imagePath = image ? image.path : undefined;
     console.log(productId, qty, userId, imagePath);
-    // const product = await getProduct()
-    // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
+    const promotion = await Promotion.findOne({
+      where: { product_id: productId },
+    });
+    if (promotion && promotion.limit < qty)
+      throw { message: 'kebanyakan bro belinya' };
+    const stock = await ClosedStock.findOne({
+      where: { product_id: productId },
+    });
+    if (stock.total_stock < qty) throw { message: 'kebanyakan bro belinya' };
     // if(product. === true) throw({message:'butuh resep bro'})
     const isCart = await getCart('', {
       product_id: productId,

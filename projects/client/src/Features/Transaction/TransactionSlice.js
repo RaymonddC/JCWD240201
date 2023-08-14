@@ -103,7 +103,7 @@ export const cancelTransaction = (values) => async (dispatch) => {
 
     const { data } = await deleteTransaction(token, values.id);
 
-    dispatch(getAllTransactionSlice());
+    dispatch(getAllTransactionSlice({ selectedStatusId: 1 }));
   } catch (error) {
     return toast.error(error.message);
   }
