@@ -10,12 +10,14 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
+import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 
 export default function Landing() {
   const dispatch = useDispatch();
   const fileTypes = ['JPEG', 'PNG', 'JPG'];
+  const limit = 9;
   const ProductsStore = useSelector((state) => state?.products?.products);
-  console.log(ProductsStore);
+  // console.log(ProductsStore);
   const [file, setFile] = useState(null);
   const handleChange = (file) => {
     setFile(file);
@@ -29,7 +31,7 @@ export default function Landing() {
   });
   const addToCart = async () => {
     try {
-     dispatch(
+      dispatch(
         addToCartAsync({
           productId: 1,
           qty: 1,
@@ -40,7 +42,7 @@ export default function Landing() {
     } catch (error) {}
   };
   useEffect(() => {
-    dispatch(getProducts({ page: 1, limit: 9, search: '' }));
+    dispatch(getProducts({ page: 1, limit, search: '' }));
   }, [dispatch]);
   return (
     <>
@@ -116,7 +118,7 @@ export default function Landing() {
       </div>
       <div className="flex mb-20 justify-center">
         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
-          {productMap}
+          {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
         </div>
       </div>
       {/* <div className="w-full">

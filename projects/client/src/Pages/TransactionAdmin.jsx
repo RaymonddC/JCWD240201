@@ -9,8 +9,9 @@ import TransactionCardAdmin from '../Components/Transaction/TransactionCardAdmin
 
 const TransactionAdmin = () => {
   const dispatch = useDispatch();
-  const { transactions } = useSelector((state) => state.transaction);
-
+  const { transactions, totalPages } = useSelector(
+    (state) => state.transaction,
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
@@ -18,7 +19,6 @@ const TransactionAdmin = () => {
     searchParams.get('sortOrder') || '',
   );
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
-  const totalPages = transactions?.totalPage;
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
 
@@ -97,8 +97,8 @@ const TransactionAdmin = () => {
           </div>
         </div>
         <div className="transactions">
-          {transactions.map((value) => {
-            return <TransactionCardAdmin tx={value} />;
+          {transactions.map((value, index) => {
+            return <TransactionCardAdmin key={`tCard${index}`} tx={value} />;
           })}
         </div>
       </div>

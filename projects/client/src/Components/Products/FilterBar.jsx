@@ -46,9 +46,9 @@ export default function FilterBar(props) {
               tabIndex={0}
               className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
-              {props.option.map((value) => {
+              {props.option.map((value, index) => {
                 return (
-                  <li>
+                  <li key={`DD${index}`}>
                     <div
                       onClick={() => {
                         props?.setSortType(value.sortType);

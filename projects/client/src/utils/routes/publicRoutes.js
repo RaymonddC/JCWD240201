@@ -26,9 +26,9 @@ const routerSource = (props) => [
   {
     path: '/user/profile',
     element: (
-      <PublicLayout>
-        <Profile />,
-      </PublicLayout>
+      // <PublicLayout>
+        <Profile />
+      // </PublicLayout>
     ),
   },
   {
@@ -66,26 +66,26 @@ const routerSource = (props) => [
   {
     path: '/user/address',
     element: (
-      <PublicLayout>
-        <Address />,
-      </PublicLayout>
+      // <PublicLayout>
+        <Address />
+      // </PublicLayout>
     ),
   },
 
   {
     path: '/cart',
     element: (
-      <PublicLayout>
-        <Cart />,
-      </PublicLayout>
+      // <PublicLayout>
+        <Cart />
+      // </PublicLayout>
     ),
   },
   {
     path: '/checkout',
     element: (
-      <PublicLayout>
-        <Checkout />,
-      </PublicLayout>
+      // <PublicLayout>
+        <Checkout />
+      // </PublicLayout>
     ),
   },
   {
@@ -101,12 +101,12 @@ const routerSource = (props) => [
   {
     path: '/user/transaction',
     element: (
-      <PublicLayout>
+      // <PublicLayout>
         <ProfileLayout>
           <Transaction />
         </ProfileLayout>
-        ,
-      </PublicLayout>
+        
+      // </PublicLayout>
     ),
   },
 

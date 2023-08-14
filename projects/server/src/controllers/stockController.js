@@ -104,7 +104,6 @@ const unitConversion = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const response = await unitConversionHelper(req.body, t);
-// throw ('test')
     await t.commit();
     return res.status(200).send(response);
   } catch (error) {

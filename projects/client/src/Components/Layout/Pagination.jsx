@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export default function Pagination(props) {
   const next = () => {
@@ -11,10 +11,10 @@ export default function Pagination(props) {
     props?.setPage(prevPage);
   };
   useEffect(() => {
-    if(props?.page>props?.totalPages){
-      props?.setPage(props?.totalPages)
+    if (props?.page > props?.totalPages) {
+      props?.setPage(props?.totalPages);
     }
-  },[])
+  }, []);
   return (
     <>
       <div className="flex justify-center">

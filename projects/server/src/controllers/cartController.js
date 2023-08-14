@@ -73,7 +73,7 @@ const addToCart = async (req, res, next) => {
           qty: qty || isCart.qty + 1,
           prescription_image: imagePath || null,
           confirmation: isCart.confirmation,
-          is_check: true,
+          is_check: isCart.confirmation,
         },
         { where: { id: isCart.id } },
       );
@@ -83,8 +83,8 @@ const addToCart = async (req, res, next) => {
         product_id: productId,
         qty: qty || 1,
         prescription_image: imagePath || null,
-        confirmation: null,
-        is_check: true,
+        confirmation: Number(productId) === 1 ? null : true,
+        is_check: Number(productId) === 1 ? false : true,
       });
     }
 
@@ -126,8 +126,8 @@ const updateCart = async (req, res, next) => {
           product_id: isCart.product_id,
           qty: qty || isCart.qty + 1,
           prescription_image: isCart.prescription_image,
-          confirmation: confirmation,
-          is_check: isCheck,
+          confirmation: isCart.confirmation,
+          is_check: isCart.confirmation && isCheck,
         },
         { where: { id: isCart.id } },
       );
