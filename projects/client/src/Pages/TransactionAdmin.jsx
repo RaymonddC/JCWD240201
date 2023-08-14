@@ -21,10 +21,11 @@ const TransactionAdmin = () => {
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
-
+  const [toggle, setToggle] = useState(false);
   let queryParams = {};
 
   useEffect(() => {
+    console.log('.>> masuk use effect');
     if (page) {
       queryParams['page'] = page;
     }
@@ -48,7 +49,7 @@ const TransactionAdmin = () => {
         sortOrder,
       }),
     );
-  }, [page, debouncedSearchValue, sortType, sortOrder]);
+  }, [page, debouncedSearchValue, sortType, sortOrder, toggle]);
 
   return (
     <div>
@@ -98,7 +99,13 @@ const TransactionAdmin = () => {
         </div>
         <div className="transactions">
           {transactions.map((value, index) => {
-            return <TransactionCardAdmin key={`tCard${index}`} tx={value} />;
+            return (
+              <TransactionCardAdmin
+                key={`tCard${index}`}
+                tx={value}
+                setToggle={() => setToggle(!toggle)}
+              />
+            );
           })}
         </div>
       </div>

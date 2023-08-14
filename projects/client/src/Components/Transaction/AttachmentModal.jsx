@@ -18,24 +18,28 @@ const AttachmentModal = (props) => {
 
   const { transaction } = useSelector((state) => state.transaction);
   const image = transaction?.image;
-  console.log(transaction);
+  console.log('props',props);
   const [openStatus, setOpenStatus] = useState(false);
 
-  const acceptPayment = () => {
-    dispatch(
+  const acceptPayment = async() => {
+    await dispatch(
       updateTransactionHistorySlice({
         transaction_id: props.id,
         transaction_status_id: 3,
       }),
     );
+    props.setToggle()
+    props.closeModal()
   };
-  const rejectPayment = () => {
+  const rejectPayment = async() => {
     dispatch(
       updateTransactionHistorySlice({
         transaction_id: props.id,
         transaction_status_id: 1,
       }),
     );
+    props.setToggle()
+    props.closeModal()
   };
 
 

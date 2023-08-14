@@ -49,7 +49,9 @@ function App() {
       pathname === '/products' ||
       pathname === '/cart'||
       pathname === '/user/profile'||
-      pathname === '/user/address'
+      pathname === '/user/address' ||
+      pathname === '/user/change-password'||
+      pathname === '/user/transaction'
     ) {
       setNavbar(true);
       setFooter(true);
