@@ -52,7 +52,7 @@ export default function PromotionPage() {
       formik.setFieldValue('page', page);
       formik?.handleSubmit();
     }
-  }, [page]);
+  }, [formik?.values?.page]);
   return (
     <>
       <div className="font-bold text-xl">Promotion</div>
@@ -96,20 +96,11 @@ export default function PromotionPage() {
       </form>
       <div className='mt-5'>
         {currentPromoType === 1 && data.length > 0 ? (
-          <ProductDiscTable data={data} />
+          <ProductDiscTable setPage={setPage} page={page} totalPages={totalPages} data={data} />
         ) : currentPromoType === 2 && data.length > 0 ? (
-          <TransactionDiscTable data={data} />
+          <TransactionDiscTable setPage={setPage} page={page} totalPages={totalPages} data={data} />
         ) : currentPromoType === 3 && data.length > 0 ? (
-          <BuyGetTable data={data} />
-        ) : null}
-        {data.length > 0 ? (
-          <div className="py-5">
-            <Pagination
-              setPage={setPage}
-              page={page || 1}
-              totalPages={totalPages}
-            />
-          </div>
+          <BuyGetTable setPage={setPage} page={page} totalPages={totalPages} data={data} />
         ) : null}
       </div>
     </>

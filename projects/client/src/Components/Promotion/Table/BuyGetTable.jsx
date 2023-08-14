@@ -1,3 +1,5 @@
+import Pagination from '../../Layout/Pagination';
+
 export default function BuyGetTable(props) {
   return (
     <>
@@ -31,6 +33,13 @@ export default function BuyGetTable(props) {
           })}
         </tbody>
       </table>
+      <div className="py-5">
+        <Pagination
+          setPage={props.setPage}
+          page={props.page || 1}
+          totalPages={props.totalPages}
+        />
+      </div>
     </>
   );
 }
