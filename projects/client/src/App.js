@@ -43,12 +43,19 @@ function App() {
   //   }
   // }, [bodyScrollable]);
   useEffect(() => {
-    if (pathname === '/login' || pathname === '/register'|| pathname === '/verification') {
-      setNavbar(false);
-      setFooter(false);
-    } else {
+    if (
+      pathname === '/' ||
+      pathname === '/discussions' ||
+      pathname === '/products' ||
+      pathname === '/cart'||
+      pathname === '/user/profile'||
+      pathname === '/user/address'
+    ) {
       setNavbar(true);
       setFooter(true);
+    } else {
+      setNavbar(false);
+      setFooter(false);
     }
     dispatch(keepLoginAsync());
   }, [pathname]);
@@ -73,7 +80,7 @@ function App() {
             )}
             {footer ? (
               <div className="hidden md:block">
-                <Footer /> 
+                <Footer />
               </div>
             ) : (
               ''
