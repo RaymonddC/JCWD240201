@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
+import { getPromotionAPI } from '../../API/promotionAPI';
 
 const initialState = {
   promotions: [],
-  promotion: {},
+  promotion: null,
 };
 
 export const PromotionSlice = createSlice({
@@ -11,29 +12,22 @@ export const PromotionSlice = createSlice({
   initialState,
   reducers: {
     onGetData: (initialState, action) => {
-      initialState.promotions = action.payload;
+      initialState.promotions = action.payload.data.rows;
     },
   },
 });
 
-export const getPromotionsSlice = () => async (dispatch) => {
+export const getPromotionsSlice = (values) => async (dispatch) => {
   try {
-    // let token = localStorage.getItem('token');
-    // if (!token) {
-    //   throw { message: 'No User' };
-    // }
-    // let { data } = await getUserCarts(token);
-    // dispatch(onGetData(data));
+    let { data } = await getPromotionAPI(values);
+    dispatch(onGetData(data));
+    console.log(data);
   } catch (error) {
     console.log(error);
+    toast.error(error.message);
   }
 };
 
-export const {
-  onGetData,
-  getCurrentCart,
-  setPrescriptionCarts,
-  setDetailprescriptionCart,
-} = PromotionSlice.actions;
+export const { onGetData } = PromotionSlice.actions;
 
 export default PromotionSlice.reducer;
