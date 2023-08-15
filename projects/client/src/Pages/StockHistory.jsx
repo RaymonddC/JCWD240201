@@ -32,6 +32,9 @@ export default function StockHistory() {
     name: 'All products',
     id: '',
   };
+  const startDate = new Date()
+  startDate.setDate(startDate.getDate() - 7)
+  const endDate = new Date()
 
   const onSelectedProduct = (value) => {
     setSelectedProduct(value.name);
@@ -57,10 +60,10 @@ export default function StockHistory() {
     initialValues: {
       page: 1,
       limit: 7,
-      product_id: 0,
-      sortOrder: '',
-      date_start: '',
-      date_end: '',
+      product_id: '',
+      sortOrder: 'ASC',
+      date_start: startDate.toISOString().split('T')[0],
+      date_end: endDate.toISOString().split('T')[0],
     },
     validate: validateFilterStockHistory,
     onSubmit: async (values, { setSubmitting }) => {
@@ -155,6 +158,7 @@ export default function StockHistory() {
                   placeholder="Please select one"
                   label="Sort by"
                   touched={formik.touched?.sortOrder}
+                  selected="ASC"
                 />
               </div>
             </div>
