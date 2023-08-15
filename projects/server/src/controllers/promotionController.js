@@ -6,8 +6,8 @@ const productDB = db.product;
 const createDiscount = async (req, res, next) => {
   try {
     const { data } = req.body;
+    console.log('data>>>>>',data);
     const result = await promotionDB.create(data);
-
     return res.send({
       success: true,
       status: 200,
@@ -15,6 +15,7 @@ const createDiscount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

@@ -39,6 +39,9 @@ module.exports = (sequelize, DataTypes) => {
       product.hasOne(models.stock_history, {
         foreignKey: 'product_id',
       });
+      product.hasMany(models.product_image, {
+        foreignKey: 'product_id',
+      });
     }
   }
   product.init(

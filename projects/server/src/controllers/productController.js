@@ -40,6 +40,7 @@ const getAllProducts = async (req, res, next) => {
         { model: closedStockDB },
         { model: openedStockDB },
         { model: promotionDB },
+        { model: productImageDB },
       ],
       limit: pageLimit,
       offset: offset,

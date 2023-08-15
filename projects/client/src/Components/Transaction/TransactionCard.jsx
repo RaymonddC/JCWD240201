@@ -52,7 +52,7 @@ const TransactionCard = (props) => {
           payment_images: paymentProofFile,
         }),
       );
-      dispatch(getAllTransactionSlice())
+      dispatch(getAllTransactionSlice());
       // props?.setTogle(!props?.togle);
       // props.togle
     } catch (error) {}
@@ -112,14 +112,6 @@ const TransactionCard = (props) => {
         </div>
       </div>
       <div className="action flex justify-end gap-5 items-center text-primary py-2">
-        <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
-          <label
-            htmlFor="my_modal_6"
-            onClick={() => setOpenTransactionModal(true)}
-          >
-            Lihat Detail Transaksi
-          </label>
-        </button>
         {transactionStatus === 'Waiting for payment' ||
         transactionStatusId === 1 ? (
           <>
@@ -162,22 +154,19 @@ const TransactionCard = (props) => {
           </>
         ) : transactionStatus === 'Waiting for confirmation' ||
           transactionStatusId === 2 ? (
-          <button className="btn btn-sm btn-primary text-white">
-            waiting confirmation
-          </button>
+          <div className="badge badge-primary">Waiting confirmation</div>
         ) : transactionStatus === 'Process' || transactionStatusId === 3 ? (
-          <button className="btn btn-sm btn-primary text-white">Process</button>
+          <div className="badge badge-primary">Processing</div>
         ) : transactionStatus === 'On the way' || transactionStatusId === 4 ? (
           <>
-            <button className="btn btn-sm btn-primary text-white">
-              Lacak OTW
-            </button>
-            <button
-              className="btn btn-sm btn-primary text-white"
-              onClick={() => confirm()}
-            >
-              Confirm Arrival
-            </button>
+            <ConfirmationModal
+              title="Confirmation"
+              textLine1="Are you sure you want to confirm the arrival of this order?"
+              label="CONFIRM ARRIVAL"
+              labelStyle="text-white"
+              styling="btn btn-primary btn-sm"
+              confirm={confirm}
+            />
           </>
         ) : transactionStatus === 'Arrived' || transactionStatusId === 5 ? (
           <>
@@ -189,19 +178,20 @@ const TransactionCard = (props) => {
               styling="btn btn-primary btn-sm"
               confirm={confirm}
             />
-
-            <button
-              className="btn btn-sm btn-primary text-white"
-              onClick={() => confirm()}
-            >
-              Confirm Arrival
-            </button>
           </>
         ) : transactionStatus === 'Complete' || transactionStatusId === 6 ? (
           <div className="badge badge-primary">Completed</div>
         ) : (
           ''
         )}
+        <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
+          <label
+            htmlFor="my_modal_6"
+            onClick={() => setOpenTransactionModal(true)}
+          >
+            Transaction Details
+          </label>
+        </button>
       </div>
       {openTransactionModal ? (
         <TransactionModal

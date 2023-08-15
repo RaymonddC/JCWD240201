@@ -12,6 +12,7 @@ import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 export default function Products() {
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
+  // console.log(ProductsStore);
   const totalPages = ProductsStore?.totalPage;
   const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -26,9 +27,8 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  // console.log(productList);
+  // console.log('>>>', CategoryStore);
   let productMap;
-
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
       <div key={`cat${index}`} className="w-full">
@@ -59,11 +59,37 @@ export default function Products() {
     });
   }
 
+  const getCat = async () => {
+    await dispatch(getAllCategories());
+  };
+  const getProductsAsync = async () => {
+    await dispatch(
+      getProducts({
+        page,
+        limit,
+        search: debouncedSearchValue,
+        sortType,
+        sortOrder,
+      }),
+    );
+  };
+  const getLabelsAsync = async () => {
+    await dispatch(
+      getLabels({
+        page,
+        limit,
+        search: debouncedSearchValue,
+        category,
+        sortType,
+        sortOrder,
+      }),
+    );
+  };
   useEffect(() => {
     setPage(1);
   }, [debouncedSearchValue, sortType, sortOrder, category]);
   useEffect(() => {
-    dispatch(getAllCategories());
+    getCat();
   }, []);
   useEffect(() => {
     if (page) {
@@ -82,28 +108,13 @@ export default function Products() {
       queryParams['category'] = category;
     }
     setSearchParams(queryParams);
-
-    if (category) {
-      dispatch(
-        getLabels({
-          page,
-          limit,
-          search: debouncedSearchValue,
-          category,
-          sortType,
-          sortOrder,
-        }),
-      );
+    if (debouncedSearchValue) {
+      getProductsAsync();
+      setCategory('')
+    } else if (category) {
+      getLabelsAsync();
     } else {
-      dispatch(
-        getProducts({
-          page,
-          limit,
-          search: debouncedSearchValue,
-          sortType,
-          sortOrder,
-        }),
-      );
+      getProductsAsync();
     }
   }, [page, debouncedSearchValue, sortType, sortOrder, category]);
   return (
