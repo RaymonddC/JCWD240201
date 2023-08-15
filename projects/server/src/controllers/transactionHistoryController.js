@@ -16,31 +16,47 @@ const {
   getTopSaleProductQuery,
   validateIsValueExist,
 } = require('../helpers/transactionHistoryHelper');
+const txDB = db.transaction;
+const { sequelize } = require('../models');
 
 const updateTxHistory = async (req, res, next) => {
   console.log('>>>> update tx history');
-  // const t = await sequelize.transaction();
+  const t = await sequelize.transaction();
   try {
-    const { transaction_id, transaction_status_id } = req.body;
+    const { transaction_id, transaction_status_id, notes } = req.body;
     let txCreate;
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },
     });
     if (txFind !== null) {
       const txUpdate = await txHistoryDB.update(
-        { is_active: false },
+        { is_active: false, notes },
         {
           where: { is_active: true, transaction_id },
+          transacton: t,
         },
       );
     }
-    txCreate = await txHistoryDB.create({
-      is_active: true,
-      transaction_id,
-      transaction_status_id,
-    });
+    txCreate = await txHistoryDB.create(
+      {
+        is_active: true,
+        notes,
+        transaction_id,
+        transaction_status_id,
+      },
+      { transacton: t },
+    );
+    // if (notes) {
+    //   const txNotes = await txDB.update(
+    //     { notes: notes },
+    //     {
+    //       where: { id: transaction_id },
+    //       transaction: t,
+    //     },
+    //   );
+    // }
 
-    // await t.commit();
+    await t.commit();
     return res.status(200).send({
       success: true,
       message: 'Update transaction history success',
@@ -61,32 +77,7 @@ const getRevenue = async (req, res, next) => {
       sort_type,
       sort_order,
     });
-
-    /**
-     * 1. get sekarang bulan berapa
-     * 2. pake library untuk dapet tanggal2 bulan ini
-     * 3. looping hasil getRevenueQuery, di dalam loopnya
-     *      masukkin hasil getRevenueQuery ke output dari tanggal2 bulan ini dari library
-     */
     const generatedDate = generateDate(startDate, endDate, sort_order);
-    /**
-     * processSortByTotalRevenue[
-     *
-     *
-     * ]
-     *
-     * processSortByDate[
-     * "2023-01-01": {totalRevenue:0},
-     * "2023-01-02": {totalRevenue:0},
-     * "2023-01-03": {totalRevenue:0},
-     *
-     * loop data
-     * data.forEach(d => {
-     *    generatedDate[d.date].totalRevenue = d.total_revenue
-     * })
-     * ]
-     */
-
     let newData = validateIsValueExist({
       data,
       generatedDate,

@@ -11,6 +11,7 @@ import TransactionStatusReducer from '../Features/TransactionStatus/TransactionS
 import CheckoutReducer from '../Features/Checkout/CheckoutSlice';
 import PrescriptionCartReducer from '../Features/PrescriptionCart/PrescriptionCartSlice';
 import SalesReportReducer from '../Features/SalesReport/SalesReportSlice';
+import PromotionReducer from '../Features/Promotion/PromotionSlice';
 
 export const Store = configureStore({
   reducer: {
@@ -25,5 +26,6 @@ export const Store = configureStore({
     checkout: CheckoutReducer,
     PrescriptionCart: PrescriptionCartReducer,
     salesReport: SalesReportReducer,
+    promotion: PromotionReducer,
   },
 });

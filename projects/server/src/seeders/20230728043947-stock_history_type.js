@@ -24,7 +24,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        type: 'unit convertion',
+        type: 'unit conversion',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

@@ -5,7 +5,7 @@ import {
   getPrescriptionCartSlice,
   setDetailprescriptionCart,
 } from '../Features/Cart/CartSlice';
-import Select from 'react-dropdown-select';
+// import Select from 'react-dropdown-select';
 import PrescriptionForm from '../Components/Prescription/PrescriptionForm';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import ProductListCard from '../Components/Prescription/ProductListCard';

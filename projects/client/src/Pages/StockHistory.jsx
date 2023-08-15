@@ -57,7 +57,7 @@ export default function StockHistory() {
     initialValues: {
       page: 1,
       limit: 7,
-      product_id: '',
+      product_id: 0,
       sortOrder: '',
       date_start: '',
       date_end: '',
@@ -82,7 +82,7 @@ export default function StockHistory() {
     setSearchParams(queryParams);
     dispatch(getProducts({ page: 1, limit, search: debouncedSearchValue }));
   }, [debouncedSearchValue]);
-console.log(formik?.errors?.product_id);
+
   useEffect(() => {
     if (page) {
       formik.setFieldValue('page', page);
@@ -121,45 +121,45 @@ console.log(formik?.errors?.product_id);
                 {productMap}
               </div>
             </div>
-            <div className="flex justify-between gap-3">
-              <div className="w-6/12">
-                <InputUserDate
-                  id="date_start"
-                  label="Date Start"
-                  name="date_start"
-                  errors={formik?.errors?.date_start}
-                  handleChange={formik.handleChange}
-                  values={formik?.values?.date_start}
-                />
+            <div className='md:flex md:justify-evenly'>
+              <div className="flex justify-between gap-3">
+                <div className="w-6/12 md:w-full">
+                  <InputUserDate
+                    id="date_start"
+                    label="Date Start"
+                    name="date_start"
+                    errors={formik?.errors?.date_start}
+                    handleChange={formik.handleChange}
+                    values={formik?.values?.date_start}
+                  />
+                </div>
+                <div className="w-6/12 md:w-full">
+                  <InputUserDate
+                    id="date_end"
+                    label="Date End"
+                    name="date_end"
+                    errors={formik?.errors?.date_end}
+                    handleChange={formik.handleChange}
+                    values={formik?.values?.date_end}
+                  />
+                </div>
               </div>
-              <div className="w-6/12">
-                <InputUserDate
-                  id="date_end"
-                  label="Date End"
-                  name="date_end"
-                  errors={formik?.errors?.date_end}
-                  handleChange={formik.handleChange}
-                  values={formik?.values?.date_end}
+              <div className='md:w-full md:ml-3'>
+                <SelectSortOrder
+                  id="sortOrder"
+                  name="sortOrder"
+                  handleChange={formik?.handleChange}
+                  onBlur={formik?.handleBlur}
+                  errors={formik?.errors?.sortOrder}
+                  value={formik?.values?.sortOrder}
+                  placeholder="Please select one"
+                  label="Sort by"
+                  touched={formik.touched?.sortOrder}
                 />
               </div>
             </div>
-            <SelectSortOrder
-              id="sortOrder"
-              name="sortOrder"
-              handleChange={formik?.handleChange}
-              onBlur={formik?.handleBlur}
-              errors={formik?.errors?.sortOrder}
-              value={formik?.values?.sortOrder}
-              placeholder="Please select one"
-              label="Sort by"
-              touched={formik.touched?.sortOrder}
-            />
             <button
-              //   disabled={
-              //     !formik?.values?.promotion_type_id ||
-              //     !formik.isValid ||
-              //     formik.isSubmitting
-              //   }
+              disabled={!formik.isValid || formik.isSubmitting}
               type="submit"
               className="btn w-full bg-primary text-white"
             >

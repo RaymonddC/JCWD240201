@@ -30,24 +30,15 @@ export function getQuestionDetailsAPI(data) {
   });
 }
 export function getAnswersAPI(data) {
-  console.log(data);
   return axios.get(`${URL}/discussions/answers`, {
-    params: {
-      page: data.page,
-      limit: data.limit,
-      question_category_id: data.question_category_id,
-    },
+    params: { ...data },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
 }
 export function postAnswerAPI(data) {
   return axios.post(
     `${URL}/discussions/answers`,
-    {
-      answer: data.answer,
-      question_id: data.question_id,
-      user_id: data.user_id,
-    },
+    {...data},
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }

@@ -11,6 +11,7 @@ import { getProductDetails } from '../Features/Product/ProductSlice';
 import axios from 'axios';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import { toast } from 'react-hot-toast';
+import { MdOutlineWarningAmber } from 'react-icons/md';
 
 export default function ProductDetails() {
   const user = useSelector((state) => state?.user?.user);
@@ -22,8 +23,10 @@ export default function ProductDetails() {
   const productDosing = productsStore?.data?.dosing;
   const productPrice = productsStore?.data?.price?.toLocaleString(['id']);
   const productLabels = productsStore?.labels;
-  console.log(productLabels);
-  console.log(productsStore?.data);
+  const reqPrescription = productsStore?.data?.require_prescription;
+  // console.log(productLabels);
+  // console.log(productsStore?.data);
+  // console.log(reqPrescription)
   const dispatch = useDispatch();
   const params = useParams();
   const { id } = params;
@@ -42,8 +45,6 @@ export default function ProductDetails() {
       </div>
     );
   });
-
-  console.log(user);
 
   const setActiveTab = (tab) => {
     if (tab === 'desc') {
@@ -71,7 +72,7 @@ export default function ProductDetails() {
   } else {
     return (
       <>
-        <NavBar />
+        {/* <NavBar /> */}
         <div className="flex justify-center">
           <div className="grid md:grid-cols-[1fr,2fr] max-w-6xl">
             <div className="py-3 justify-self-center ">
@@ -102,6 +103,14 @@ export default function ProductDetails() {
                   <div>{labelsMap}</div>
                 </article>
               </div>
+              {reqPrescription ? (
+                <div className="alert alert-warning mt-5">
+                  <MdOutlineWarningAmber size={25} />
+                  <span>This product requires prescription</span>
+                </div>
+              ) : (
+                <div className=''></div>
+              )}
               <div className="tabs justify-center py-5">
                 <div
                   onClick={() => setActiveTab('desc')}

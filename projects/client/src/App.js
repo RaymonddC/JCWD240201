@@ -5,13 +5,16 @@ import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Toaster } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { keepLoginAsync } from './Features/User/UserSlice';
 import AdminRoute from './utils/routes/adminRoute';
 import PublicRoute from './utils/routes/publicRoutes';
 import NavBar from './Components/Layout/Navbar';
 import Footer from './Components/Layout/Footer';
 import { useLocation } from 'react-router-dom';
+import getScrollbarWidth from './Helper/getScrollbarWidth';
+import useBodyScrollable from './Helper/useBodyScrollable';
+import { PublicLayout } from './Components/Layout/PublicLayout';
 
 function App() {
   const dispatch = useDispatch();
@@ -20,7 +23,8 @@ function App() {
   const pathname = location.pathname;
   const [navbar, setNavbar] = useState(false);
   const [footer, setFooter] = useState(false);
-  // console.log('location', location);
+  const bodyScrollable = useBodyScrollable();
+  const scrollbarWidth = getScrollbarWidth();
 
   // useEffect(() => {
   //   (async () => {
@@ -31,30 +35,58 @@ function App() {
   //   })();
   // }, []);
 
+  // useLayoutEffect(() => {
+  //   if (bodyScrollable) {
+  //     document.body.style.paddingRight = '0px';
+  //   } else {
+  //     document.body.style.paddingRight = `${scrollbarWidth}px`;
+  //   }
+  // }, [bodyScrollable]);
   useEffect(() => {
     if (
       pathname === '/' ||
       pathname === '/discussions' ||
-      pathname === '/profile' ||
-      pathname === '/products'
+      pathname === '/products' ||
+      pathname === '/cart'||
+      pathname === '/user/profile'||
+      pathname === '/user/address' ||
+      pathname === '/user/change-password'||
+      pathname === '/user/transaction'
     ) {
       setNavbar(true);
       setFooter(true);
+    } else {
+      setNavbar(false);
+      setFooter(false);
     }
     dispatch(keepLoginAsync());
-  }, [location]);
+  }, [pathname]);
 
   return (
     <>
-      <div className="">
+      <div className="min-h-[100vh] flex flex-col">
         <Toaster />
         {user.role?.role_name === 'admin' ? (
           <AdminRoute />
         ) : (
           <>
-            {navbar ? <NavBar /> : ''}
-            <PublicRoute />
-            {footer ? <Footer /> : ''}
+            {navbar ? (
+              <>
+                <NavBar />
+                <div className="relative md:px-[3em] md:py-[2em] flex-grow">
+                  <PublicRoute />
+                </div>
+              </>
+            ) : (
+              <PublicRoute />
+            )}
+            {footer ? (
+              <div className="hidden md:block">
+                <Footer />
+              </div>
+            ) : (
+              ''
+            )}
           </>
         )}
       </div>

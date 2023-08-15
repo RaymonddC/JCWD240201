@@ -199,7 +199,7 @@ export default function AddProduct() {
               <label htmlFor={category} className="text-[14px]">
                 Categories
               </label>
-              {console.log(category)}
+              {/* {console.log(category)} */}
               <Multiselect
                 id="category"
                 name="category.category_id"

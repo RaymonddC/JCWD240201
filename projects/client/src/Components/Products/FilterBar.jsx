@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MdArrowDropDown } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,8 +6,10 @@ import { getAllCategories } from '../../Features/Category/CategorySlice';
 
 export default function FilterBar(props) {
   const dispatch = useDispatch();
-  const location = window.location.pathname;
-  console.log(location);
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  // console.log(location);
   // const CategoryStore = useSelector((state) => state?.categories.categories);
   // console.log(CategoryStore?.data);
   // const categoriesMap = CategoryStore?.data?.map((value, index) => {
@@ -28,11 +30,12 @@ export default function FilterBar(props) {
           placeholder="Search"
           className="input input-bordered w-full md:w-96 mx-3"
           onChange={(e) => {
+            console.log(e.target.value);
             if (e.target.value.length > 2 || e.target.value.length === 0)
               props?.setSearch(e.target.value);
           }}
         />
-        {location ==="/discussions" ? (
+        {pathname === '/discussions' ? (
           ''
         ) : (
           <div className="dropdown dropdown-end hidden md:block">
@@ -43,46 +46,20 @@ export default function FilterBar(props) {
               tabIndex={0}
               className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
-              <li>
-                <div
-                  onClick={() => {
-                    props?.setSortType('name');
-                    props?.setSortOrder('ASC');
-                  }}
-                >
-                  Name A to Z
-                </div>
-              </li>
-              <li>
-                <div
-                  onClick={() => {
-                    props?.setSortType('name');
-                    props?.setSortOrder('DESC');
-                  }}
-                >
-                  Name Z to A
-                </div>
-              </li>
-              <li>
-                <div
-                  onClick={() => {
-                    props?.setSortType('price');
-                    props?.setSortOrder('ASC');
-                  }}
-                >
-                  Price low to high
-                </div>
-              </li>
-              <li>
-                <div
-                  onClick={() => {
-                    props?.setSortType('price');
-                    props?.setSortOrder('DESC');
-                  }}
-                >
-                  Price high to low
-                </div>
-              </li>
+              {props.option.map((value, index) => {
+                return (
+                  <li key={`DD${index}`}>
+                    <div
+                      onClick={() => {
+                        props?.setSortType(value.sortType);
+                        props?.setSortOrder(value.sortOrder);
+                      }}
+                    >
+                      {value.text}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}

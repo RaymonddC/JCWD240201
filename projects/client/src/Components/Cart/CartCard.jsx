@@ -16,26 +16,47 @@ const CartCard = (props) => {
   const dispatch = useDispatch();
   const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
   const stock = props.cart.product?.closed_stocks[0]?.total_stock;
+  const isRacik = props.cart.product.id === 1;
 
   const debouncedQtyValue = useDebounce(props.cart.qty, 500);
 
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
 
   const discount = () => {
-    let tempDisc = 0;
-    props.cart.product.promotions?.map((promo) => {
+    let discount = 0,
+      buy = 0,
+      get = 0;
+    props.cart.product.promotions?.some((promo) => {
       if (promo?.discount)
-        tempDisc += props.cart.product.price * (promo.discount / 100);
+        discount = props.cart.product.price * (promo.discount / 100);
+
+      buy = promo?.buy;
+      get = promo?.get;
+
+      return promo.discount || promo.buy || promo.get;
     });
-    return tempDisc;
+    return { discount, buy, get };
   };
   const [disc, setDisc] = useState(discount());
 
   useEffect(() => {
+    // const setCheck = async () => {
+    //   await props.setQty(null, null, props.idx, true);
+    // };
     if (props.check) {
-      if (!isCheckCart) handleCheck();
+      if (!props.cart.is_check) {
+        setIsCheckCart(true);
+        // props.setQty(null, null, props.idx, true);
+        // console.log('check');
+
+        // setCheck().catch(console.error);
+      }
     }
   }, [props.check]);
+
+  useEffect(() => {
+    props.setQty(null, null, props.idx, isCheckCart);
+  }, [isCheckCart]);
 
   useEffect(() => {
     dispatch(
@@ -48,10 +69,6 @@ const CartCard = (props) => {
     );
     // };
   }, [debouncedQtyValue, isCheckCart]);
-
-  const handleCheck = () => {
-    setIsCheckCart(!isCheckCart);
-  };
 
   return (
     <div className="div border-t border-[#D5D7DD] text-[16px] p-2">
@@ -68,9 +85,10 @@ const CartCard = (props) => {
             <input
               type="checkbox"
               className="h-3 w-3"
-              checked={isCheckCart}
-              onClick={handleCheck}
+              checked={props.cart.is_check}
+              onClick={() => setIsCheckCart(!isCheckCart)}
               readOnly
+              disabled={!props.cart.confirmation}
             />
           </div>
         </div>
@@ -85,17 +103,30 @@ const CartCard = (props) => {
               {props.cart.qty}{' '}
               {props?.cart?.product?.packaging_type?.type_name || 'buah'}
             </p>
+            {disc.buy ? (
+              <>
+                <span className="text-primary">
+                  Buy {disc.buy} Get {disc.get}
+                </span>
+                <p className="text-warning">*only applied once/transaction</p>
+              </>
+            ) : (
+              ''
+            )}
           </div>
           <div className="summary flex gap-2 leading-6 h-fit items-center">
             <p
               className={`text-[#737A8D] text-[14px] line-through ${
-                disc === 0 ? 'hidden' : ''
+                disc.discount === 0 ? 'hidden' : ''
               }`}
             >
               Rp {props.cart.product.price.toLocaleString(['id'])}
             </p>
             <p className={``}>
-              Rp {(props.cart.product.price - disc).toLocaleString(['id'])}
+              Rp{' '}
+              {(props.cart.product.price - disc.discount).toLocaleString([
+                'id',
+              ])}
             </p>
           </div>
         </div>
@@ -115,6 +146,7 @@ const CartCard = (props) => {
         <div className="join join-horizontal">
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            disabled={isRacik}
             onClick={(e) => props.setQty(e, '-', props.idx)}
           >
             -
@@ -122,6 +154,7 @@ const CartCard = (props) => {
           <input
             className="join-item bg-[#daf8ff]  min-w-[50px] w-[10px] text-[#009B90] text-center"
             type="number"
+            disabled={isRacik}
             onChange={(e) => {
               props.setQty(e, null, props.idx);
             }}
@@ -129,6 +162,7 @@ const CartCard = (props) => {
           />
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            disabled={isRacik}
             onClick={(e) => props.setQty(e, '+', props.idx)}
           >
             +

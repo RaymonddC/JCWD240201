@@ -43,6 +43,11 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        status: 'Cancelled',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 

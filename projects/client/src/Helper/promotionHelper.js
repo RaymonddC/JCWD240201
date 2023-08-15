@@ -38,3 +38,14 @@ export const validatePromotion = (values) => {
   }
   return errors;
 };
+
+export const validateGetPromotion = (values) => {
+  const errors = {};
+  if (!values.promotionTypeId) {
+    errors.promotionTypeId = 'Promotion type is required';
+  }
+  if (!values.sortOrder) {
+    errors.sortOrder = 'Sort order is required';
+  }
+  return errors;
+};

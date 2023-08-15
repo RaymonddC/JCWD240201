@@ -16,6 +16,12 @@ module.exports = (sequelize, DataTypes) => {
       user.hasMany(models.cart, {
         foreignKey: 'user_id',
       });
+      user.hasMany(models.transaction, {
+        foreignKey: 'user_id',
+      });
+      user.hasMany(models.address, {
+        foreignKey: 'user_id',
+      });
     }
   }
   user.init(

@@ -69,10 +69,12 @@ const getAnswers = async (req, res, next) => {
     if (question_category_id) {
       where.question_category_id = question_category_id;
     }
+    if (search) {
+      where.title = { [Op.like]: `%${search}%` };
+    }
     console.log(req.body);
     let response = await answerDB.findAndCountAll({
       include: [{ model: questionDB, where: where }],
-
       limit: pageLimit,
       offset: offset,
       order: [['updatedAt', 'DESC']],
@@ -111,7 +113,12 @@ const createQuestion = async (req, res, next) => {
   const { question, user_id, title, question_category_id } = req.body;
   console.log('question');
   try {
-    let result = await questionDB.create({ title, question, user_id, question_category_id });
+    let result = await questionDB.create({
+      title,
+      question,
+      user_id,
+      question_category_id,
+    });
 
     return res.status(201).send({
       success: true,

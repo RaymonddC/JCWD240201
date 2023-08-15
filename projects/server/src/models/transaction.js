@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       transaction.hasMany(models.transaction_history, {
         foreignKey: 'transaction_id',
       });
+      transaction.belongsTo(models.user, {
+        foreignKey: 'user_id',
+      });
     }
   }
   transaction.init(
@@ -30,6 +33,7 @@ module.exports = (sequelize, DataTypes) => {
       shipment_fee: DataTypes.INTEGER,
       total_discount: DataTypes.INTEGER,
       total_price: DataTypes.INTEGER,
+      shipment: DataTypes.STRING,
       deletedAt: DataTypes.DATE,
     },
     {
