@@ -17,6 +17,17 @@ const getPromotionByProductId = async (whereQuerry) => {
   }
 };
 
+const getAllPromotion = async (whereQuerry) => {
+  try {
+    return await PromotionDB.findAndCountAll({
+      where: whereQuerry,
+      order: [['createdAt', 'ASC']],
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getPromotionByProductId,
 };
