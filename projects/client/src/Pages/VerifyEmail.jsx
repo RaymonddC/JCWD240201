@@ -2,9 +2,11 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { userVerification } from '../API/authAPI';
 import { MdOutlineCheck } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate()
 
   const verifiedAccount = async () => {
     try {
@@ -31,7 +33,7 @@ export default function VerifyEmail() {
               You have successfully verified account.
             </div>
             <div className="flex content-center justify-center">
-              <button className="btn btn-accent w-4/12 text-white">Ok</button>
+              <button onClick={() => navigate('/login')} className="btn btn-accent w-4/12 text-white">Ok</button>
             </div>
           </div>
         </div>

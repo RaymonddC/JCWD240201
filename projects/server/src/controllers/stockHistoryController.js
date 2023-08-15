@@ -50,13 +50,13 @@ const stockHistoryList = async (req, res, next) => {
       limit: pageLimit,
     });
 
-    const totalPage = Math.ceil((result.count) / pageLimit);
+    const totalPage = Math.ceil(result.count / pageLimit);
 
     return res.send({
       success: true,
       message: 'get data success',
       data: result,
-      totalPage: totalPage
+      totalPage: totalPage,
     });
   } catch (error) {
     next(error);

@@ -12,7 +12,7 @@ const createDiscount = async (req, res, next) => {
     return res.send({
       success: true,
       status: 200,
-      message: 'create promotion success',
+      message: 'Create promotion success',
       data: result,
     });
   } catch (error) {
