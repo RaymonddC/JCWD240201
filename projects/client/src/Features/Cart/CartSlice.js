@@ -23,6 +23,7 @@ const initialState = {
   prescriptionCarts: [],
   detailprescriptionCart: {},
   promotionActive: null,
+  amountPromotion: 0,
 };
 
 export const CartSlice = createSlice({
@@ -43,6 +44,10 @@ export const CartSlice = createSlice({
     },
     setDetailprescriptionCart: (initialState, action) => {
       initialState.detailprescriptionCart = action.payload;
+    },
+    onChangeActivePromo: (initialState, action) => {
+      initialState.promotionActive = action.payload.id;
+      initialState.amountPromotion = action.payload.amount;
     },
   },
 });
@@ -225,11 +230,22 @@ export const updateConfirmationPrescriptionCartSlice =
     }
   };
 
+export const newActivePromo = (values, close) => async (dispatch) => {
+  try {
+    dispatch(onChangeActivePromo(values));
+    close();
+  } catch (error) {
+    console.log(error);
+    toast.error('error');
+  }
+};
+
 export const {
   onGetData,
   getCurrentCart,
   setPrescriptionCarts,
   setDetailprescriptionCart,
+  onChangeActivePromo,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;

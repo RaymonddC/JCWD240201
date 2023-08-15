@@ -40,7 +40,7 @@ const TransactionModal = (props) => {
         className="modal-toggle"
       />
       <div className="modal">
-        <div className="modal-box px-0 pt-0 text-sm relative">
+        <div className="modal-box px-0 pt-0 text-sm relative overflow-y">
           <div className="head flex justify-between pb-2 px-6 pt-6 border-b sticky top-0 bg-white">
             <p className="text-[24px] font-bold">Detail Transaction</p>
             <label

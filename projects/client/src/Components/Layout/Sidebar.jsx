@@ -13,6 +13,7 @@ import { MdOutlineInventory2 } from 'react-icons/md';
 import { FaPrescriptionBottleMedical } from 'react-icons/fa6';
 import { MdInventory } from 'react-icons/md';
 import { MdDiscount } from 'react-icons/md';
+import { TbReportAnalytics } from 'react-icons/tb';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
@@ -78,6 +79,12 @@ export const Sidebar = () => {
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <BiSolidReport />
             <p className="hidden lg:block">Report</p>
+          </div>
+        </Link>
+        <Link to={'/sales_report'} className="w-full">
+          <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
+            <TbReportAnalytics />
+            <p className="hidden lg:block">Sales Report</p>
           </div>
         </Link>
       </div>

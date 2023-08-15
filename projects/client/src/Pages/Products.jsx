@@ -12,7 +12,6 @@ import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 export default function Products() {
   const dispatch = useDispatch();
   const ProductsStore = useSelector((state) => state?.products?.products);
-  // console.log(ProductsStore);
   const totalPages = ProductsStore?.totalPage;
   const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -58,7 +57,6 @@ export default function Products() {
       );
     });
   }
-
   const getCat = async () => {
     await dispatch(getAllCategories());
   };
@@ -173,7 +171,6 @@ export default function Products() {
           </div>
         </div>
       </div>
-      <catalogSkl />
     </>
   );
 }
