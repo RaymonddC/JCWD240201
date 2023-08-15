@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { deleteAddress } from '../../API/addressAPI';
+import React, { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategories } from '../../Features/Category/CategorySlice';
-import { deleteCategory } from '../../API/categoryAPI';
 
 const ConfirmationModal = (props) => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => state.categories);
   const [open, setOpen] = useState(false);
+  const notes = useRef();
 
-  const confirmHandler =() => {
-    props?.confirm()
-    setOpen(false)
+  const confirmHandler = () => {
+    props?.confirm();
+    props?.setNotes(notes.current.value)
+    setOpen(false);
   };
 
   return (
@@ -30,10 +28,22 @@ const ConfirmationModal = (props) => {
       <div className="modal">
         <div className="modal-box w-fit flex flex-col items-center">
           <article className="prose">
-          <h3 className="font-bold text-center text-lg mb-4">{props?.title}</h3>
+            <h3 className="font-bold text-center text-lg mb-4">
+              {props?.title}
+            </h3>
             <p className="text-center">{props?.textLine1}</p>
             <p className="text-center">{props?.textLine2} </p>
           </article>
+          {props?.inputBox ? (
+            <input
+              placeholder="notes"
+              type="text"
+              ref={notes}
+              className="input input-bordered"
+            />
+          ) : (
+            ''
+          )}
           <div className="modal-action">
             <button
               onClick={() => setOpen(false)}

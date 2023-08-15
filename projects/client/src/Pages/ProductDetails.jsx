@@ -25,7 +25,7 @@ export default function ProductDetails() {
   const productLabels = productsStore?.labels;
   const reqPrescription = productsStore?.data?.require_prescription;
   // console.log(productLabels);
-  // console.log(productsStore?.data);
+  console.log(productsStore?.data);
   // console.log(reqPrescription)
   const dispatch = useDispatch();
   const params = useParams();

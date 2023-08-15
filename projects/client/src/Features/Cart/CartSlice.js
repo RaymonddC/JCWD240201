@@ -69,16 +69,16 @@ export const updateQtyAsync = (values) => async (dispatch) => {
 
     if (calc) {
       if (calc === '+')
-        if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
+        if (cart.qty + 1 > stock) return toast.error('Out of stock');
         else cart.qty = cart.qty + 1;
       else {
-        if (cart.qty <= 0) return toast.error('cart deleted');
+        if (cart.qty <= 0) return toast.error('Cart deleted');
         else cart.qty--;
       }
     } else if (checked !== '') {
       cart.is_check = checked;
     } else {
-      if (newQty > stock) return toast.error('Out Of Stock');
+      if (newQty > stock) return toast.error('Out of stock');
       else cart.qty = newQty;
     }
     newCarts[idx] = cart;
@@ -92,7 +92,7 @@ export const getCartUserAsync = () => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
     if (!token) {
-      throw { message: 'No User' };
+      throw { message: 'No user' };
     }
 
     let { data } = await getUserCarts(token);
@@ -108,7 +108,7 @@ export const addToCartAsync = (values) => async (dispatch) => {
     // console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
-    if (!token) throw { message: 'Please Login First' };
+    if (!token) throw { message: 'Please login first' };
     if (!productId) throw { message: "Product doesn't exist" };
     if ((productId === 1) & !prescriptionImage) {
       throw { message: 'Please upload image' };
@@ -134,7 +134,7 @@ export const updateCartAsync = (values) => async (dispatch) => {
     const { cartId, qty, isCheck, stock } = values;
 
     const token = localStorage.getItem('token');
-    if (stock < qty) throw { message: 'stock kurang' };
+    if (stock < qty) throw { message: 'Not enough stock' };
     if (qty <= 0) await deleteCart(token, cartId);
     else await updateCart(token, cartId, { qty, isCheck });
   } catch (error) {
