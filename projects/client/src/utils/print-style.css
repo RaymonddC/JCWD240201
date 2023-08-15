@@ -1,0 +1,4 @@
+@page {
+  size: landscape A3; /* Set the paper size and orientation */
+  margin: 0cm; /* Set margins (top, right, bottom, left) */
+}

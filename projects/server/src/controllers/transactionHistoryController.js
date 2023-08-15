@@ -1,12 +1,22 @@
 const jwt = require('jsonwebtoken');
-const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
 const fs = require('fs');
+const transporter = require('../helpers/transporter');
 const db = require('../models');
 const txHistoryDB = db.transaction_history;
+const transactionDB = db.transaction;
+const { QueryTypes } = require('sequelize');
+const {
+  getRevenueQuery,
+  validateDate,
+  getTotalTransactionQuery,
+  generateDate,
+  getUserTransactionQuery,
+  getTopSaleProductQuery,
+  validateIsValueExist,
+} = require('../helpers/transactionHistoryHelper');
 const txDB = db.transaction;
-const transporter = require('../helpers/transporter');
 const { sequelize } = require('../models');
 
 const updateTxHistory = async (req, res, next) => {
@@ -55,4 +65,119 @@ const updateTxHistory = async (req, res, next) => {
   } catch (error) {}
 };
 
-module.exports = { updateTxHistory };
+const getRevenue = async (req, res, next) => {
+  try {
+    const { start_date, end_date, sort_type, sort_order } = req.query;
+    const startDate = new Date(start_date + '');
+    const endDate = new Date(end_date + '');
+    validateDate(startDate, endDate);
+    const data = await getRevenueQuery({
+      startDate,
+      endDate,
+      sort_type,
+      sort_order,
+    });
+    const generatedDate = generateDate(startDate, endDate, sort_order);
+    let newData = validateIsValueExist({
+      data,
+      generatedDate,
+      sort_type,
+      sort_order,
+      key: 'today_revenue',
+    });
+    return res.status(200).send({
+      success: true,
+      message: 'Get revenue Successfully',
+      data: newData,
+      orginal: data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTotalTransaction = async (req, res, next) => {
+  try {
+    const { start_date, end_date, sort_type, sort_order } = req.query;
+    const startDate = new Date(start_date + '');
+    const endDate = new Date(end_date + '');
+    validateDate(startDate, endDate);
+    const data = await getTotalTransactionQuery({
+      startDate,
+      endDate,
+      sort_type,
+      sort_order,
+    });
+    const generatedDate = generateDate(startDate, endDate, sort_order);
+    let newData = validateIsValueExist({
+      data,
+      generatedDate,
+      sort_type,
+      sort_order,
+      key: 'total_transaction',
+    });
+    return res.status(200).send({
+      success: true,
+      message: 'Get revenue Successfully',
+      data: newData,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserTransaction = async (req, res, next) => {
+  try {
+    const { start_date, end_date, sort_type, sort_order } = req.query;
+    const startDate = new Date(start_date + '');
+    const endDate = new Date(end_date + '');
+    validateDate(startDate, endDate);
+    const data = await getUserTransactionQuery({
+      startDate,
+      endDate,
+      sort_type,
+      sort_order,
+    });
+    const generatedDate = generateDate(startDate, endDate, sort_order);
+    const newData = validateIsValueExist({
+      data,
+      generatedDate,
+      sort_type,
+      sort_order,
+      key: 'total_user',
+    });
+    return res.status(200).send({
+      success: true,
+      message: 'Get revenue Successfully',
+      data: newData,
+      original: data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getTopSaleProduct = async (req, res, next) => {
+  try {
+    const { start_date, end_date } = req.query;
+    const startDate = new Date(start_date + '');
+    const endDate = new Date(end_date + '');
+    validateDate(startDate, endDate);
+    const data = await getTopSaleProductQuery(startDate, endDate);
+    res.status(200).send({
+      success: true,
+      message: 'Get revenue Successfully',
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  updateTxHistory,
+  getRevenue,
+  getTotalTransaction,
+  getUserTransaction,
+  getTopSaleProduct,
+};
