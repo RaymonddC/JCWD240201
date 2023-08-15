@@ -14,6 +14,7 @@ import AddPromotion from '../../Pages/AddPromotion';
 import PrescriptionCopyAdmin from '../../Pages/PrescriptionCopyAdmin';
 import ReportPage from '../../Components/Report/ReportPage';
 import StockHistory from '../../Pages/StockHistory';
+import SalesReport from '../../Pages/SalesReport';
 
 const AdminRoute = (props) => {
   const routers = routerSource(props);
@@ -136,6 +137,15 @@ const routerSource = (props) => [
     element: (
       <AdminLayout>
         <StockHistory />,
+      </AdminLayout>
+    ),
+  },
+  {
+    index: true,
+    path: '/sales_report',
+    element: (
+      <AdminLayout>
+        <SalesReport />,
       </AdminLayout>
     ),
   },
