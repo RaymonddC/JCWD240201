@@ -17,7 +17,7 @@ const PromotionModal = (props) => {
     id: promotionActive,
     amount: amountPromotion,
   });
-  console.log(selectedPromo, promotionActive);
+  console.log(selectedPromo, promotionActive, amountPromotion);
 
   useEffect(() => {
     dispatch(

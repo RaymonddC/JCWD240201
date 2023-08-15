@@ -66,16 +66,17 @@ const TransactionCardAdmin = (props) => {
                 </span>
               </p>
             ) : (
-              <p>
-                {props.tx.transaction_histories[0].transaction_status.status}
-              </p>
+              ''
+              // <p>
+              //   {props.tx.transaction_histories[0].transaction_status.status}
+              // </p>
             )}
           </div>
         </div>
       </div>
       <div className="detailtx px-5">
         <div className="details flex justify-between py-3">
-          <div className="product flex w-[35%] mr-2 border-r">
+          <div className="product flex w-[70%] md:w-[35%] mr-2 border-r">
             <div className="img">
               <img
                 className="h-20 w-20"
@@ -102,7 +103,7 @@ const TransactionCardAdmin = (props) => {
               )}
             </div>
           </div>
-          <div className="userInfo flex w-[60%] gap-1">
+          <div className="userInfo md:flex w-[30%] md:w-[60%] gap-y-3 md:gap-1">
             <div className="user w-[30%]">
               <p className="font-bold">Buyer</p>
               <p>{props.tx.user?.full_name}</p>
@@ -117,12 +118,12 @@ const TransactionCardAdmin = (props) => {
             </div>
           </div>
         </div>
-        <div className="price text-lg  text-center flex justify-between bg-[#F6FAFB] p-2">
-          <div className="total">
-            <span className="font-bold">Total Price </span>
-            <span className="text-sm">
+        <div className="price sm:text-lg  text-center flex justify-between bg-[#F6FAFB] p-2">
+          <div className="total md:flex items-center">
+            <p className="font-bold">Total Price </p>
+            <p className="text-sm">
               ({props.tx.transaction_details.length} Medicine)
-            </span>
+            </p>
           </div>
           <p className="font-bold">
             Rp {props.tx.total_price?.toLocaleString(['id'])}
@@ -199,7 +200,7 @@ const TransactionCardAdmin = (props) => {
           openAttachmentModal={openAttachmentModal}
           closeModal={() => setOpenAttachmentModal(false)}
           id={props?.tx.id}
-          setToggle={()=>props.setToggle()}
+          setToggle={() => props.setToggle()}
         />
       ) : null}
       {openSendOrderModal ? (
@@ -208,7 +209,7 @@ const TransactionCardAdmin = (props) => {
           openSendOrderModal={openSendOrderModal}
           closeModal={() => setOpenSendOrderModal(false)}
           id={props?.tx.id}
-          setToggle={()=>props.setToggle()}
+          setToggle={() => props.setToggle()}
         />
       ) : null}
     </div>

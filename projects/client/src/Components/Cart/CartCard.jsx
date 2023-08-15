@@ -147,7 +147,11 @@ const CartCard = (props) => {
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
             disabled={isRacik}
-            onClick={(e) => props.setQty(e, '-', props.idx)}
+            onClick={(e) => {
+              props.cart.qty === 1
+                ? setOpenDeletemodal(true)
+                : props.setQty(e, '-', props.idx);
+            }}
           >
             -
           </button>
@@ -156,7 +160,9 @@ const CartCard = (props) => {
             type="number"
             disabled={isRacik}
             onChange={(e) => {
-              props.setQty(e, null, props.idx);
+              Number(e.currentTarget.value) === 0
+                ? setOpenDeletemodal(true)
+                : props.setQty(e, null, props.idx);
             }}
             value={props.cart.qty}
           />

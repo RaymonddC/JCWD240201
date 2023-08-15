@@ -11,7 +11,7 @@ const DeleteModal = (props) => {
 
   const deleteHandler = async () => {
     try {
-      const response = dispatch(props.delFunc({ id: props.id }));
+      const response = await dispatch(props.delFunc({ id: props.id }));
       if (response?.success) {
         props?.closeModal();
         toast.success(response.data.message);

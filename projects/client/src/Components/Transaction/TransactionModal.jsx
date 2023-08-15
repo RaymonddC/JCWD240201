@@ -168,7 +168,10 @@ const TransactionModal = (props) => {
               </div>
               <div className="calc border-y py-2 my-1">
                 <div className="totalPrice flex justify-between">
-                  <p>Total Price (10 items)</p>
+                  <div className="items md:flex">
+                    <p>Total Price </p>
+                    <p>(10 items)</p>
+                  </div>
                   <p>Rp{transaction.total_price?.toLocaleString(['id'])}</p>
                 </div>
                 <div className="shipment flex justify-between">
