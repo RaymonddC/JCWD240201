@@ -113,6 +113,7 @@ export const addToCartAsync = (values) => async (dispatch) => {
     if ((productId === 1) & !prescriptionImage) {
       throw { message: 'Please upload image' };
     }
+    console.log(qty);
     const response = await postCart(token, {
       productId,
       qty,
@@ -149,39 +150,14 @@ export const deleteCartAsync = (values) => async (dispatch) => {
     let { data } = await deleteCart(token, values.id);
     if (data.data) {
       await dispatch(getCartUserAsync());
-      return toast.success('Product removed from cart');
+      // toast.success('Product removed from cart');
+      return { data: { message: 'Product removed from cart' }, success: true };
     }
   } catch (error) {
     return toast.error('Failed to remove product');
     // toast.error(error.message);
   }
 };
-
-// export const checkoutAsync = () => async (dispatch) => {
-//   try {
-//     console.log('checkout');
-//     let token = localStorage.getItem('token');
-
-//     let { data } = await axios.get(
-//       `${UrlApi}/carts?userId=${userId}&_expand=type`,
-//     );
-
-//     console.log(data, 'cart');
-//     data.map(async (value) => {
-//       try {
-//         console.log(value.type.stock, value.quantity);
-//         await axios.patch(`${UrlApi}/types/${value.typeId}`, {
-//           stock: value.type.stock - value.quantity,
-//         });
-//         await axios.delete(`${UrlApi}/carts/${value.id}`);
-//       } catch (error) {
-//         toast.error(error);
-//       } finally {
-//         dispatch(getCartUserAsync());
-//       }
-//     });
-//   } catch (error) {}
-// };
 
 export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
   try {
