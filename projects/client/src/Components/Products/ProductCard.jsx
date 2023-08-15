@@ -11,8 +11,13 @@ export default function ProductCard(props) {
   const productId = props?.data?.id;
   const price = props?.data?.price?.toLocaleString(['id']);
   const reqPrescripton = props?.data?.require_prescription;
-  // console.log(props?.data)
-  // console.log(reqPrescripton)
+  let image;
+  // console.log('><><><', props);
+  props?.data?.product_images
+    ? (image = props?.data?.product_images[0]?.image)
+    : (image = '');
+  // const image=''
+  // console.log(image)
 
   const handleAddToCart = () => {
     if (reqPrescripton) {
@@ -31,8 +36,8 @@ export default function ProductCard(props) {
         <figure>
           <Link to={`/products/${productId}`}>
             <img
-              className="h-28"
-              src="https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_750,w_750/v1/production/pharmacy/products/1643869601_tolak_angin_sidomuncul_12_sachet_15_ml"
+              className="h-32 pt-3"
+              src={image ? `http://localhost:8000/${image}` : null}
               alt=""
             />
           </Link>

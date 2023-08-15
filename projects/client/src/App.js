@@ -44,20 +44,23 @@ function App() {
   // }, [bodyScrollable]);
   useEffect(() => {
     if (
-      pathname === '/' ||
-      pathname === '/discussions' ||
-      pathname === '/products' ||
-      pathname === '/cart'||
-      pathname === '/user/profile'||
-      pathname === '/user/address' ||
-      pathname === '/user/change-password'||
-      pathname === '/user/transaction'
+      // pathname === '/' ||
+      // pathname === '/discussions' ||
+      // pathname === '/products' ||
+      // pathname === '/cart'||
+      // pathname === '/user/profile'||
+      // pathname === '/user/address' ||
+      // pathname === '/user/change-password'||
+      // pathname === '/user/transaction'||
+      // pathname === '/products/:id'
+      pathname === '/login' ||
+      pathname === '/register'
     ) {
-      setNavbar(true);
-      setFooter(true);
-    } else {
       setNavbar(false);
       setFooter(false);
+    } else {
+      setNavbar(true);
+      setFooter(true);
     }
     dispatch(keepLoginAsync());
   }, [pathname]);
