@@ -15,7 +15,7 @@ export default function DetailProductAdmin(props) {
       const categories = result?.data?.labels.map((value) => {
         return value.product_category;
       });
-      setImage(result?.data?.data?.image?.image);
+      setImage(result?.data?.data?.product_images[0]?.image);
       setProduct(result?.data?.data);
       setCategories(categories);
     } catch (error) {}

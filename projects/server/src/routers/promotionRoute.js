@@ -21,9 +21,9 @@ router.get(
 );
 router.get(
   '/list',
-  // APIKey,
+  APIKey,
   verifyToken,
-  // isAdmin,
+  isAdmin,
   promotionController.getPromotionList,
 );
 
