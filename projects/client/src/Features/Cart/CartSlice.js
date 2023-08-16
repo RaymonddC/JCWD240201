@@ -23,6 +23,7 @@ const initialState = {
   prescriptionCarts: [],
   detailprescriptionCart: {},
   promotionActive: null,
+  amountPromotion: 0,
 };
 
 export const CartSlice = createSlice({
@@ -44,6 +45,10 @@ export const CartSlice = createSlice({
     setDetailprescriptionCart: (initialState, action) => {
       initialState.detailprescriptionCart = action.payload;
     },
+    onChangeActivePromo: (initialState, action) => {
+      initialState.promotionActive = action.payload.id;
+      initialState.amountPromotion = action.payload.amount;
+    },
   },
 });
 
@@ -64,16 +69,16 @@ export const updateQtyAsync = (values) => async (dispatch) => {
 
     if (calc) {
       if (calc === '+')
-        if (cart.qty + 1 > stock) return toast.error('Out Of Stock');
+        if (cart.qty + 1 > stock) return toast.error('Out of stock');
         else cart.qty = cart.qty + 1;
       else {
-        if (cart.qty <= 0) return toast.error('cart deleted');
+        if (cart.qty <= 0) return toast.error('Cart deleted');
         else cart.qty--;
       }
     } else if (checked !== '') {
       cart.is_check = checked;
     } else {
-      if (newQty > stock) return toast.error('Out Of Stock');
+      if (newQty > stock) return toast.error('Out of stock');
       else cart.qty = newQty;
     }
     newCarts[idx] = cart;
@@ -87,7 +92,7 @@ export const getCartUserAsync = () => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
     if (!token) {
-      throw { message: 'No User' };
+      throw { message: 'No user' };
     }
 
     let { data } = await getUserCarts(token);
@@ -103,11 +108,12 @@ export const addToCartAsync = (values) => async (dispatch) => {
     // console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
-    if (!token) throw { message: 'Please Login First' };
+    if (!token) throw { message: 'Please login first' };
     if (!productId) throw { message: "Product doesn't exist" };
     if ((productId === 1) & !prescriptionImage) {
       throw { message: 'Please upload image' };
     }
+    console.log(qty);
     const response = await postCart(token, {
       productId,
       qty,
@@ -128,7 +134,7 @@ export const updateCartAsync = (values) => async (dispatch) => {
     const { cartId, qty, isCheck, stock } = values;
 
     const token = localStorage.getItem('token');
-    if (stock < qty) throw { message: 'stock kurang' };
+    if (stock < qty) throw { message: 'Not enough stock' };
     if (qty <= 0) await deleteCart(token, cartId);
     else await updateCart(token, cartId, { qty, isCheck });
   } catch (error) {
@@ -144,39 +150,14 @@ export const deleteCartAsync = (values) => async (dispatch) => {
     let { data } = await deleteCart(token, values.id);
     if (data.data) {
       await dispatch(getCartUserAsync());
-      return toast.success('Product removed from cart');
+      // toast.success('Product removed from cart');
+      return { data: { message: 'Product removed from cart' }, success: true };
     }
   } catch (error) {
     return toast.error('Failed to remove product');
     // toast.error(error.message);
   }
 };
-
-// export const checkoutAsync = () => async (dispatch) => {
-//   try {
-//     console.log('checkout');
-//     let token = localStorage.getItem('token');
-
-//     let { data } = await axios.get(
-//       `${UrlApi}/carts?userId=${userId}&_expand=type`,
-//     );
-
-//     console.log(data, 'cart');
-//     data.map(async (value) => {
-//       try {
-//         console.log(value.type.stock, value.quantity);
-//         await axios.patch(`${UrlApi}/types/${value.typeId}`, {
-//           stock: value.type.stock - value.quantity,
-//         });
-//         await axios.delete(`${UrlApi}/carts/${value.id}`);
-//       } catch (error) {
-//         toast.error(error);
-//       } finally {
-//         dispatch(getCartUserAsync());
-//       }
-//     });
-//   } catch (error) {}
-// };
 
 export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
   try {
@@ -225,11 +206,22 @@ export const updateConfirmationPrescriptionCartSlice =
     }
   };
 
+export const newActivePromo = (values, close) => async (dispatch) => {
+  try {
+    dispatch(onChangeActivePromo(values));
+    close();
+  } catch (error) {
+    console.log(error);
+    toast.error('error');
+  }
+};
+
 export const {
   onGetData,
   getCurrentCart,
   setPrescriptionCarts,
   setDetailprescriptionCart,
+  onChangeActivePromo,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;

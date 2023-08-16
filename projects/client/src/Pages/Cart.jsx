@@ -15,6 +15,7 @@ import AddressModal from '../Components/Address/addressModal';
 import { CiDiscount1 } from 'react-icons/ci';
 import { AiOutlineRight } from 'react-icons/ai';
 import PromotionModal from '../Components/Cart/PromotionModal';
+import { getPromotionsSlice } from '../Features/Promotion/PromotionSlice';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Cart = () => {
     totalPrice,
     activeCart,
     discount,
-    promotionActive,
+    amountPromotion,
   } = useSelector((state) => state?.cart);
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
@@ -107,17 +108,18 @@ const Cart = () => {
           }`}
         >
           <div className="card-body">
-            <button className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4">
-              <label
-                htmlFor="my_modal_6"
-                onClick={() => setOpenPromotionnModal(true)}
-                className="promo flex items-center gap-2 hover:cursor-pointer"
-              >
-                <CiDiscount1 size={'1.5em'} />
-                <p>Use Your Promo Here</p>
-              </label>
+            {/* <label
+              className="promo flex items-center gap-2 hover:cursor-pointer"
+              > */}
+            <label
+              htmlFor="my_modal_6"
+              onClick={() => setOpenPromotionnModal(true)}
+              className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
+            >
+              <CiDiscount1 size={'1.5em'} />
+              <p>Use Your Promo Here</p>
               <AiOutlineRight />
-            </button>
+            </label>
             <div className="summary hidden md:block">
               <div className="ringkasan ">
                 <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
@@ -133,7 +135,9 @@ const Cart = () => {
                 </div>
                 <div className="detailDiscount flex justify-between text-[16px]">
                   <p>Total Discount</p>
-                  <span>-Rp{discount.toLocaleString(['id'])}</span>
+                  <span>
+                    -Rp{(discount + amountPromotion).toLocaleString(['id'])}
+                  </span>
                 </div>
               </div>
             </div>
@@ -143,7 +147,10 @@ const Cart = () => {
                   Total Price
                 </p>
                 <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
-                  Rp{(totalPrice - discount).toLocaleString(['id'])}
+                  Rp
+                  {(totalPrice - discount - amountPromotion).toLocaleString([
+                    'id',
+                  ])}
                 </span>
               </div>
               <div className="orderNow  md:pt-5">
@@ -173,6 +180,7 @@ const Cart = () => {
       ) : null}
       {openPromotionModal ? (
         <PromotionModal
+          totalPrice={totalPrice}
           openPromotionModal={openPromotionModal}
           closeModal={() => setOpenPromotionnModal(false)}
         />

@@ -6,6 +6,9 @@ import { getCartUserAsync } from '../Features/Cart/CartSlice';
 import ShippingMethod from '../Components/Checkout/ShippingMethod';
 import { toast } from 'react-hot-toast';
 import { checkoutTxSlice } from '../Features/Checkout/CheckoutSlice';
+import { CiDiscount1 } from 'react-icons/ci';
+import { AiOutlineRight } from 'react-icons/ai';
+import PromotionModal from '../Components/Cart/PromotionModal';
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -14,6 +17,7 @@ export default function Checkout() {
   const { shippingFee } = useSelector((state) => state.checkout);
   const { editAddressData, selectedAddress, cityUser, loadAddress } =
     useSelector((state) => state.address);
+  const [openPromotionModal, setOpenPromotionnModal] = useState(false);
   const {
     carts,
     totalCart,
@@ -21,6 +25,7 @@ export default function Checkout() {
     activeCart,
     discount,
     promotionActive,
+    amountPromotion,
   } = useSelector((state) => state?.cart);
 
   const [shipping, setShipping] = useState({
@@ -71,11 +76,19 @@ export default function Checkout() {
           }`}
         >
           <div className="card-body">
-            <div className="promo">promo</div>
+            <label
+              htmlFor="my_modal_6"
+              onClick={() => setOpenPromotionnModal(true)}
+              className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
+            >
+              <CiDiscount1 size={'1.5em'} />
+              <p>Use Your Promo Here</p>
+              <AiOutlineRight />
+            </label>
             <div className="summary hidden md:block">
               <div className="ringkasan ">
                 <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
-                  Ringkasan Belanja
+                  Order Summary
                 </p>
               </div>
               <div className="details py-3 border-b border-[#D5D7DD]">
@@ -91,7 +104,9 @@ export default function Checkout() {
                 </div>
                 <div className="detailDiscount flex justify-between text-[16px]">
                   <p>Total Discount</p>
-                  <span>-Rp{discount.toLocaleString(['id'])}</span>
+                  <span>
+                    -Rp{(discount + amountPromotion).toLocaleString(['id'])}
+                  </span>
                 </div>
               </div>
             </div>
@@ -102,7 +117,12 @@ export default function Checkout() {
                 </p>
                 <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
                   Rp
-                  {(totalPrice - discount + shippingFee).toLocaleString(['id'])}
+                  {(
+                    totalPrice -
+                    discount +
+                    shippingFee -
+                    amountPromotion
+                  ).toLocaleString(['id'])}
                 </span>
               </div>
               <div className="orderNow  md:pt-5">
@@ -117,7 +137,7 @@ export default function Checkout() {
                       checkoutTxSlice(
                         {
                           shippingFee,
-                          discount,
+                          discount: discount + amountPromotion,
                           activeCart,
                           promotionActive,
                           ...shipping,
@@ -139,6 +159,13 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+      {openPromotionModal ? (
+        <PromotionModal
+          totalPrice={totalPrice}
+          openPromotionModal={openPromotionModal}
+          closeModal={() => setOpenPromotionnModal(false)}
+        />
+      ) : null}
     </div>
   );
 }

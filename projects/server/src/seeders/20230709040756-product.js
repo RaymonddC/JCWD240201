@@ -607,7 +607,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // antibiotik ---------------------------------------------------------------
-      //36
+      //37
       {
         name: 'Clinmas 150 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -624,7 +624,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //37
+      //38
       {
         name: 'Zithrolic 500 Mg 6 Kaplet',
         packaging_type_id: 2,
@@ -641,7 +641,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //38
+      //39
       {
         name: 'Ciflos 500 Mg 10 Tablet',
         packaging_type_id: 2,
@@ -658,7 +658,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //39
+      //40
       {
         name: 'Pritalinc 500 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -675,7 +675,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //40
+      //41
       {
         name: 'Nomika 50 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -693,7 +693,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // susu------------------------------------------------------------------------
-      //41
+      //42
       {
         name: 'Ensure Vanilla 900 gr',
         packaging_type_id: 7,
@@ -710,7 +710,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //42
+      //43
       {
         name: 'Nutribaby Royal Pepti Junior 400 gr',
         packaging_type_id: 7,
@@ -727,7 +727,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //43
+      //44
       {
         name: 'PediaComplete Vanila 400 gr',
         packaging_type_id: 7,
@@ -744,7 +744,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //44
+      //45
       {
         name: 'Diabetasol Rasa Vanila 180 gr',
         packaging_type_id: 2,
@@ -761,7 +761,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //45
+      //46
       {
         name: 'Entrasol Gold Vanila 185 gr',
         packaging_type_id: 3,
@@ -777,7 +777,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // obat batuk
-      //46
+      //47
       {
         name: 'Acetin 200 Mg 10 Kapsul',
         packaging_type_id: 2,
@@ -794,7 +794,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //47
+      //48
       {
         name: 'Benadryl Batuk Berdahak Sirup 50 Ml',
         packaging_type_id: 1,
@@ -811,7 +811,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //48
+      //49
       {
         name: 'Bisolvon 8 Mg 10 Tablet',
         packaging_type_id: 5,
@@ -828,7 +828,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //49
+      //50
       {
         name: 'Cohistan Ekspektoran Sirup 60 Ml',
         packaging_type_id: 1,
@@ -845,7 +845,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //50
+      //51
       {
         name: 'Epexol Drops 20 Ml',
         packaging_type_id: 1,
@@ -863,7 +863,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // obat sakit kepala
-      //51
+      //52
       {
         name: 'Antrain 500 Mg 10 Tablet',
         packaging_type_id: 2,
@@ -880,7 +880,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //52
+      //53
       {
         name: 'Biogesic 500 Mg 4 Tablet',
         packaging_type_id: 5,
@@ -897,7 +897,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //53
+      //54
       {
         name: 'Bodrex Extra 4 Kaplet',
         packaging_type_id: 5,
@@ -913,7 +913,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //54
+      //55
       {
         name: 'Cargesik 500 Mg 10 Kaplet',
         packaging_type_id: 2,
@@ -930,7 +930,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      //55
+      //56
       {
         name: 'Exedra Rema 10 Kaplet',
         packaging_type_id: 5,

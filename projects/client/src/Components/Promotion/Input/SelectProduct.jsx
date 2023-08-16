@@ -9,6 +9,9 @@ export default function SelectProduct(props) {
     value.current.value = props.values;
   }, [props.values]);
 
+  useEffect(() => {
+    value.current.value = "All products"
+  }, [])
   // useEffect(() => {
   //   setValue(null);
   // }, [value]);

@@ -2,19 +2,21 @@ const db = require('../models');
 const promotionDB = db.promotion;
 const promotionTypeDB = db.promotion_type;
 const productDB = db.product;
+const { sequelize } = require('../models');
 
 const createDiscount = async (req, res, next) => {
   try {
     const { data } = req.body;
+    console.log('data>>>>>',data);
     const result = await promotionDB.create(data);
-
     return res.send({
       success: true,
       status: 200,
-      message: 'create promotion success',
+      message: 'Create promotion success',
       data: result,
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };
@@ -36,23 +38,42 @@ const getPromotionType = async (req, res, next) => {
 
 const getPromotionList = async (req, res, next) => {
   try {
-    const { page, limit, sortOrder, promotionTypeId } = req.query;
+    const { page, limit, sortOrder, promotionTypeId, totalPrice } = req.query;
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
-    let order = [];
-
+    console.log(totalPrice, 'totalPrice');
+    let options = {};
     if (sortOrder) {
-      order = [['createdAt', sortOrder]];
+      options.order = [['createdAt', sortOrder]];
     } else {
-      order = [['createdAt', 'DESC']];
+      options.order = [['createdAt', 'DESC']];
     }
 
+    if (limit) {
+      options.offset = offset;
+      options.limit = pageLimit;
+    }
+    if (totalPrice && totalPrice != 0) {
+      options.attributes = {
+        include: [
+          [
+            sequelize.literal(
+              `CASE
+              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS FLOAT)
+              ELSE
+              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount)AS FLOAT)
+              END`,
+            ),
+            'totalDiscount',
+          ],
+        ],
+      };
+      options.order = [['totalDiscount', 'DESC']];
+    }
     const getPromotion = await promotionDB.findAndCountAll({
       include: productDB,
       where: { promotion_type_id: promotionTypeId },
-      offset: offset,
-      limit: pageLimit,
-      order: order,
+      ...options,
     });
 
     const totalPage = Math.ceil(getPromotion.count / pageLimit);

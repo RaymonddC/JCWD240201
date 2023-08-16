@@ -15,33 +15,33 @@ import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 const AttachmentModal = (props) => {
   const dispatch = useDispatch();
-
   const { transaction } = useSelector((state) => state.transaction);
   const image = transaction?.image;
-  console.log('props',props);
+  console.log('props', props);
   const [openStatus, setOpenStatus] = useState(false);
+  const [notes, setNotes] = useState('');
 
-  const acceptPayment = async() => {
+  const acceptPayment = async () => {
     await dispatch(
       updateTransactionHistorySlice({
         transaction_id: props.id,
         transaction_status_id: 3,
       }),
     );
-    props.setToggle()
-    props.closeModal()
+    props.setToggle();
+    props.closeModal();
   };
-  const rejectPayment = async() => {
+  const rejectPayment = async () => {
     dispatch(
       updateTransactionHistorySlice({
         transaction_id: props.id,
         transaction_status_id: 1,
+        notes,
       }),
     );
-    props.setToggle()
-    props.closeModal()
+    props.setToggle();
+    props.closeModal();
   };
-
 
   useEffect(() => {
     dispatch(getTransactionSlice({ id: props.id }));
@@ -140,6 +140,8 @@ const AttachmentModal = (props) => {
                 textLine1="Are you sure you want to reject this payment?"
                 label="decline"
                 styling="btn btn-outline btn-error w-[80%]"
+                inputBox={true}
+                setNotes={setNotes}
                 confirm={rejectPayment}
               />
             </div>

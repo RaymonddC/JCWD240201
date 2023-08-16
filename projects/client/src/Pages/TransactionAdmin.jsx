@@ -7,11 +7,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllTransactionSlice } from '../Features/Transaction/TransactionSlice';
 import TransactionCardAdmin from '../Components/Transaction/TransactionCardAdmin';
 
+import { MdArrowDropDown } from 'react-icons/md';
+import { getAllTxStatus } from '../Features/TransactionStatus/TransactionStatusSlice';
+
 const TransactionAdmin = () => {
   const dispatch = useDispatch();
   const { transactions, totalPages } = useSelector(
     (state) => state.transaction,
   );
+  const { txStatuses } = useSelector((state) => state.txStatus);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
@@ -19,10 +23,16 @@ const TransactionAdmin = () => {
     searchParams.get('sortOrder') || '',
   );
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
+  const [selectedStatus, setSelectedStatus] = useState('Waiting for payment');
+  const [selectedStatusId, setSelectedStatusId] = useState(1);
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
   const [toggle, setToggle] = useState(false);
   let queryParams = {};
+
+  useEffect(() => {
+    dispatch(getAllTxStatus());
+  }, []);
 
   useEffect(() => {
     console.log('.>> masuk use effect');
@@ -38,10 +48,11 @@ const TransactionAdmin = () => {
     if (sortOrder) {
       queryParams['sortOrder'] = sortOrder;
     }
+    if (selectedStatus) queryParams['status'] = selectedStatus;
     setSearchParams(queryParams);
     dispatch(
       getAllTransactionSlice({
-        // selectedStatusId,
+        selectedStatusId,
         debouncedSearchValue,
         page,
         limitPage: 5,
@@ -49,10 +60,10 @@ const TransactionAdmin = () => {
         sortOrder,
       }),
     );
-  }, [page, debouncedSearchValue, sortType, sortOrder, toggle]);
+  }, [page, debouncedSearchValue, sortType, sortOrder, toggle, selectedStatus]);
 
   return (
-    <div>
+    <div className="min-h-[100vh]">
       <div className="head flex justify-between">
         <p className="font-bold">All Transaction</p>
         <div className="flex gap-2 hidden">
@@ -81,6 +92,40 @@ const TransactionAdmin = () => {
             },
           ]}
         />
+        <div className="dropdown dropdown-end  md:block">
+          <label tabIndex={0} className="btn btn-primary text-white">
+            Filter By <MdArrowDropDown size={25} />
+          </label>
+          <ul
+            tabIndex={0}
+            className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+          >
+            <li key={`TxS0`}>
+              <div
+                onClick={() => {
+                  setSelectedStatusId(null);
+                  setSelectedStatus('All');
+                }}
+              >
+                All
+              </div>
+            </li>
+            {txStatuses.map((value, index) => {
+              return (
+                <li key={`TxS${index}`}>
+                  <div
+                    onClick={() => {
+                      setSelectedStatusId(value.id);
+                      setSelectedStatus(value.status);
+                    }}
+                  >
+                    {value.status}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
       <div className="AllTransaction px-3">
         <div className="top flex  my-3 justify-end">

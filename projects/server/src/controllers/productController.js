@@ -40,6 +40,7 @@ const getAllProducts = async (req, res, next) => {
         { model: closedStockDB },
         { model: openedStockDB },
         { model: promotionDB },
+        { model: productImageDB },
       ],
       limit: pageLimit,
       offset: offset,
@@ -67,7 +68,7 @@ const getProductDetails = async (req, res, next) => {
     const { id } = req.params;
     console.log('id', req.params);
     const response = await productDB.findOne({
-      include: [packagingDB, productTypeDB],
+      include: [packagingDB, productTypeDB, productImageDB],
       where: { id },
     });
     const labels = await labelDB.findAll({

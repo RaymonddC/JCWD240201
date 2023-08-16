@@ -55,14 +55,26 @@ const addToCart = async (req, res, next) => {
     const image = req.file;
     const imagePath = image ? image.path : undefined;
     console.log(productId, qty, userId, imagePath);
-    // const product = await getProduct()
-    // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
+
+    // console.log(stock.total_stock < qty, qty, stock.total_stock);
+    // throw { message: 'bentar', data: stock };
+
     // if(product. === true) throw({message:'butuh resep bro'})
     const isCart = await getCart('', {
       product_id: productId,
       user_id: userId,
     });
-    // if (!result) throw { message: 'Invalid Credentials', code: 400 };
+    const promotion = await Promotion.findOne({
+      where: { product_id: productId },
+    });
+    if (isCart && promotion && promotion.limit <= isCart.qty)
+      throw { message: 'Out Of Stock' };
+    const stock = await ClosedStock.findOne({
+      where: { product_id: productId },
+    });
+    if (isCart && stock.total_stock <= isCart.qty)
+      throw { message: 'Out Of Stock' };
+
     if (productId === 1 && !image) throw { message: 'Please upload image' };
     if (isCart && isCart.qty === qty) '';
     else if (isCart && productId !== 1)

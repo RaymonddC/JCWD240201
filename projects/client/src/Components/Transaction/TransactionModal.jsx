@@ -40,7 +40,7 @@ const TransactionModal = (props) => {
         className="modal-toggle"
       />
       <div className="modal">
-        <div className="modal-box px-0 pt-0 text-sm relative">
+        <div className="modal-box px-0 pt-0 text-sm relative overflow-y">
           <div className="head flex justify-between pb-2 px-6 pt-6 border-b sticky top-0 bg-white">
             <p className="text-[24px] font-bold">Detail Transaction</p>
             <label
@@ -168,7 +168,10 @@ const TransactionModal = (props) => {
               </div>
               <div className="calc border-y py-2 my-1">
                 <div className="totalPrice flex justify-between">
-                  <p>Total Price (10 items)</p>
+                  <div className="items md:flex">
+                    <p>Total Price </p>
+                    <p>(10 items)</p>
+                  </div>
                   <p>Rp{transaction.total_price?.toLocaleString(['id'])}</p>
                 </div>
                 <div className="shipment flex justify-between">

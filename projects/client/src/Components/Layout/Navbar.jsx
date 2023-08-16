@@ -100,7 +100,7 @@ export default function NavBar() {
             </label>
             <ul
               tabIndex={0}
-              className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+              className="menu dropdown-content z-[20] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
               <li>
                 <Link to="/products">SHOP</Link>
