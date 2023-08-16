@@ -18,6 +18,9 @@ module.exports = {
       is_active: {
         type: Sequelize.BOOLEAN,
       },
+      notes: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

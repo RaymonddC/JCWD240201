@@ -34,7 +34,7 @@ const getAllProducts = async (req, res, next) => {
     console.log(sortType, sortOrder, search, order);
     const response = await productDB.findAndCountAll({
       include: [
-        { model: labelDB },
+        // { model: labelDB }, <<<< ini ngaruh ga??
         { model: packagingDB },
         { model: productTypeDB },
         { model: closedStockDB },
@@ -47,6 +47,7 @@ const getAllProducts = async (req, res, next) => {
       where: where,
       order: order,
     });
+    console.log('><><>.>>>',response.rows.length, pageLimit)
     const totalPage = Math.ceil(response.count / pageLimit);
 
     return res.status(200).send({

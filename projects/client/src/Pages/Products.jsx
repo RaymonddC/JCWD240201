@@ -26,7 +26,8 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  // console.log('>>>', CategoryStore);
+  console.log('>>>', ProductsStore);
+  console.log(totalPages)
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (

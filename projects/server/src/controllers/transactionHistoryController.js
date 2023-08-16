@@ -24,13 +24,14 @@ const updateTxHistory = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { transaction_id, transaction_status_id, notes } = req.body;
+    console.log("🚀 ~ file: transactionHistoryController.js:27 ~ updateTxHistory ~ notes:", notes)
     let txCreate;
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },
     });
     if (txFind !== null) {
       const txUpdate = await txHistoryDB.update(
-        { is_active: false, notes },
+        { is_active: false},
         {
           where: { is_active: true, transaction_id },
           transacton: t,

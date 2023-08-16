@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import NavBar from '../Components/Layout/Navbar';
 import {
   getQuestionDetail,
   postAnswer,
@@ -24,10 +23,6 @@ export default function QuestionDetails() {
   const answerId = QnAStore?.questions?.answers?.[0]?.id;
   const answerText = useRef();
   const [disabled, setDisabled] = useState(true);
-
-  // const [question, setQuestion] = useState();
-  // const[ answer , setAnswer] = useState();
-  console.log(title);
 
   useEffect(() => {
     dispatch(getQuestionDetail({ id: Number(id) }));
@@ -121,7 +116,6 @@ export default function QuestionDetails() {
   } else {
     return (
       <>
-        <NavBar />
         <div className="flex flex-col items-center w-full">
           <div className="card card-compact max-w-3xl w-full my-5 bg-base-100 shadow-xl">
             <div className="flex justify-end px-3">

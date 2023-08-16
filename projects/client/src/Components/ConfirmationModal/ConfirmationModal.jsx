@@ -8,8 +8,8 @@ const ConfirmationModal = (props) => {
   const notes = useRef();
 
   const confirmHandler = () => {
+    console.log('ntes', notes.current.value);
     props?.confirm();
-    props?.setNotes(notes.current.value)
     setOpen(false);
   };
 
@@ -39,6 +39,9 @@ const ConfirmationModal = (props) => {
               placeholder="notes"
               type="text"
               ref={notes}
+              onChange={(e) => {
+                props.setNotes(e.target.value);
+              }}
               className="input input-bordered"
             />
           ) : (
