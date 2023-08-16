@@ -30,12 +30,16 @@ const TransactionAdmin = () => {
   const [toggle, setToggle] = useState(false);
   let queryParams = {};
 
+  console.log("🚀 ~  ~ page:", page)
   useEffect(() => {
     dispatch(getAllTxStatus());
   }, []);
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchValue, sortType, sortOrder]);
 
   useEffect(() => {
-    console.log('.>> masuk use effect');
+
     if (page) {
       queryParams['page'] = page;
     }
