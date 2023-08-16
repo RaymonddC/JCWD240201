@@ -16,7 +16,6 @@ const AttachmentModal = (props) => {
   const dispatch = useDispatch();
   const { transaction } = useSelector((state) => state.transaction);
   const image = transaction?.image;
-  console.log('props', props);
   const [openStatus, setOpenStatus] = useState(false);
   const [notes, setNotes] = useState('');
   const acceptPayment = async () => {
