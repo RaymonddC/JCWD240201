@@ -30,7 +30,6 @@ const TransactionAdmin = () => {
   const [toggle, setToggle] = useState(false);
   let queryParams = {};
 
-  console.log("🚀 ~  ~ page:", page)
   useEffect(() => {
     dispatch(getAllTxStatus());
   }, []);
