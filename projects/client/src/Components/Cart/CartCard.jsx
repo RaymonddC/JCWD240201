@@ -94,7 +94,18 @@ const CartCard = (props) => {
         </div>
 
         <div className="img">
-          <img className="h-20 w-20" src={props.cart.img || Logo} alt={Logo} />
+          <img
+            className="h-20 w-20"
+            src={
+              props.cart.prescription_image || props.cart.img
+                ? `
+              ${process.env.REACT_APP_API_BASE_URL}/${
+                props.cart.prescription_image || props.cart.img
+              }`
+                : Logo
+            }
+            alt={'Product'}
+          />
         </div>
         <div className="cartDetail lg:flex flex-grow pl-3">
           <div className="detail flex-grow pb-2">
@@ -110,6 +121,11 @@ const CartCard = (props) => {
                 </span>
                 <p className="text-warning">*only applied once/transaction</p>
               </>
+            ) : (
+              ''
+            )}
+            {!props.cart.confirmation ? (
+              <p className="text-warning">Waiting for Confirmation</p>
             ) : (
               ''
             )}

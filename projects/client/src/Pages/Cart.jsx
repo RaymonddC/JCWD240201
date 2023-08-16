@@ -16,6 +16,7 @@ import { CiDiscount1 } from 'react-icons/ci';
 import { AiOutlineRight } from 'react-icons/ai';
 import PromotionModal from '../Components/Cart/PromotionModal';
 import { getPromotionsSlice } from '../Features/Promotion/PromotionSlice';
+import toast from 'react-hot-toast';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -113,7 +114,11 @@ const Cart = () => {
               > */}
             <label
               htmlFor="my_modal_6"
-              onClick={() => setOpenPromotionnModal(true)}
+              onClick={() => {
+                activeCart === 0
+                  ? toast.error('Select Your Cart')
+                  : setOpenPromotionnModal(true);
+              }}
               className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
             >
               <CiDiscount1 size={'1.5em'} />

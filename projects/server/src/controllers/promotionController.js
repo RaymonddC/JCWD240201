@@ -2,7 +2,9 @@ const db = require('../models');
 const promotionDB = db.promotion;
 const promotionTypeDB = db.promotion_type;
 const productDB = db.product;
+const userDB = db.user;
 const { sequelize } = require('../models');
+const { Op } = require('sequelize');
 
 const createDiscount = async (req, res, next) => {
   try {
@@ -38,6 +40,7 @@ const getPromotionType = async (req, res, next) => {
 const getPromotionList = async (req, res, next) => {
   try {
     const { page, limit, sortOrder, promotionTypeId, totalPrice } = req.query;
+    const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
     console.log(totalPrice, 'totalPrice');
@@ -69,9 +72,21 @@ const getPromotionList = async (req, res, next) => {
       };
       options.order = [['totalDiscount', 'DESC']];
     }
+    const user = await userDB.findByPk(req.user.id);
+
+    let whereQuery = [];
+    if (user.role_id !== 1)
+      whereQuery.push({ date_start: { [Op.lte]: today } });
+    console.log(...whereQuery);
     const getPromotion = await promotionDB.findAndCountAll({
       include: productDB,
-      where: { promotion_type_id: promotionTypeId },
+      where: {
+        [Op.and]: [
+          ...whereQuery,
+          { promotion_type_id: promotionTypeId },
+          { limit: { [Op.gt]: 0 } },
+        ],
+      },
       ...options,
     });
 
