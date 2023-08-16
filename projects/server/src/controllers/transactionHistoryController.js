@@ -6,6 +6,7 @@ const transporter = require('../helpers/transporter');
 const db = require('../models');
 const txHistoryDB = db.transaction_history;
 const transactionDB = db.transaction;
+const userDB = db.user;
 const { QueryTypes } = require('sequelize');
 const {
   getRevenueQuery,
@@ -22,16 +23,24 @@ const { sequelize } = require('../models');
 const updateTxHistory = async (req, res, next) => {
   console.log('>>>> update tx history');
   const t = await sequelize.transaction();
+  const template = fs.readFileSync(
+    './src/helpers/verifyEmailTemplate.html',
+    'utf-8',
+  );
   try {
-    const { transaction_id, transaction_status_id, notes } = req.body;
-    console.log("🚀 ~ file: transactionHistoryController.js:27 ~ updateTxHistory ~ notes:", notes)
+    const { transaction_id, transaction_status_id, notes, email } = req.body;
     let txCreate;
+    const tempCompile = await Handlebars.compile(data);
+    if (email) {
+      const emailFind = await userDB.findOne({ where: { email } });
+      if (!emailFind) throw { message: 'email not found' };
+    }
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },
     });
     if (txFind !== null) {
       const txUpdate = await txHistoryDB.update(
-        { is_active: false},
+        { is_active: false },
         {
           where: { is_active: true, transaction_id },
           transacton: t,
@@ -63,7 +72,9 @@ const updateTxHistory = async (req, res, next) => {
       message: 'Update transaction history success',
       data: txCreate,
     });
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getRevenue = async (req, res, next) => {
