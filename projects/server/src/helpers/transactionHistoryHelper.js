@@ -168,7 +168,7 @@ const getTopSaleProductQuery = (start_date, end_date) => {
     JOIN pharmacy.products ON pharmacy.stock_histories.product_id = pharmacy.products.id
     WHERE pharmacy.transaction_histories.is_active = true
     AND pharmacy.transaction_histories.transaction_status_id = 6 
-    AND pharmacy.stock_histories.stock_history_type_id = 6
+    AND pharmacy.stock_histories.stock_history_type_id = 4
     AND (DATE(pharmacy.transaction_histories.createdAt) BETWEEN :start_date AND :end_date)
     GROUP BY pharmacy.stock_histories.product_id
     ORDER BY quantity_closed DESC;`,

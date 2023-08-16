@@ -59,13 +59,16 @@ export const keepLoginAsync = () => async (dispatch) => {
   }
 };
 
-export const logoutAsync = () => async (dispatch) => {
+export const logoutAsync = (navigate) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
     if (token) {
       localStorage.removeItem('token');
       dispatch(onSaveUser({}));
     }
+    navigate('/products');
+    // console.log('Jalan');
+    console.log(navigate);
     toast.success('Logout Success!');
   } catch (error) {}
 };

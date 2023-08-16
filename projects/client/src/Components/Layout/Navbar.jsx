@@ -71,14 +71,14 @@ export default function NavBar() {
                     )}
                     <span className="font-bold">{user?.full_name}</span>
                   </Link>
-                  <button
+                  {/* <button
                     className="btn btn-outline btn-secondary ml-3"
                     onClick={() => {
                       dispatch(logoutAsync());
                     }}
                   >
                     <Link to={'/login'}>logout</Link>
-                  </button>
+                  </button> */}
                 </div>
               ) : (
                 <div className="flex gap-3">

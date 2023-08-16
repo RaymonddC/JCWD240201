@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import Logo from '../../utils/images/logoHealthyMed.svg';
@@ -17,6 +17,7 @@ import { TbReportAnalytics } from 'react-icons/tb';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
   return (
@@ -113,7 +114,7 @@ export const Sidebar = () => {
             <div
               className="iconMore m-auto"
               onClick={() => {
-                dispatch(logoutAsync());
+                dispatch(logoutAsync(navigate));
                 // <Navigate to={'/login'} />;
               }}
             >

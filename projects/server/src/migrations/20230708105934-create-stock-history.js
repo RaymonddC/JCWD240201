@@ -12,6 +12,9 @@ module.exports = {
       product_id: {
         type: Sequelize.INTEGER,
       },
+      transaction_id: {
+        type: Sequelize.INTEGER,
+      },
       unit: {
         type: Sequelize.BOOLEAN,
       },
