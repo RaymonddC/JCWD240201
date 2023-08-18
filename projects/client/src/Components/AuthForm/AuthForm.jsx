@@ -14,6 +14,7 @@ import { InputPassword } from './Input/InputPassword';
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const key = process.env.REACT_APP_API_SECRET_KEY
   return (
     <Formik
       initialValues={{
@@ -29,11 +30,11 @@ export const AuthForm = (propss) => {
         try {
           const script = document.createElement('script');
           script.src =
-            'https://www.google.com/recaptcha/api.js?render=6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7';
+            `https://www.google.com/recaptcha/api.js?render=${key}`;
           script.addEventListener('load', () => {
             window.grecaptcha.ready(() => {
               window.grecaptcha
-                .execute('6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7')
+                .execute(`${key}`)
                 .then(async (token) => {
                   const isSuccess = await dispatch(
                     propss.isRegis ? onRegister(values) : onLoginAsync(values, token),
@@ -145,7 +146,7 @@ export const AuthForm = (propss) => {
               props.isSubmitting ? 'btn-disabled' : 'btn-primary '
             } `}
             disabled={props.isSubmitting}
-            data-sitekey="6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7"
+            data-sitekey={key}
             data-callback="onSubmit"
             data-action="submit"
           >
