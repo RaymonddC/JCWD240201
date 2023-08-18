@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 export const AdminLayout = (props) => {
   const { user } = useSelector((state) => state.user);
-  console.log(props);
+  // console.log(props);
   useEffect(() => {
     setTimeout(
       () => {
@@ -23,9 +23,9 @@ export const AdminLayout = (props) => {
       <Sidebar />
       <div
         className="lg:ml-[250px] sm:ml-[80px] ml-0 grow    md:flex flex-col  
-       h-[100vh] md:min-h-[full]  w-full   md:grow  md:w-[50vw] overflow-auto"
+       h-full w-full   md:grow  md:w-[50vw] "
       >
-        <div className="bg-gradient-to-b from-[#D6F5F3] from-10% via-[#F7FCFC] via-90% to-[#F1F5FC]  h-full px-5 py-5">
+        <div className="bg-gradient-to-b from-[#D6F5F3] from-10% via-[#F7FCFC] via-90% to-[#F1F5FC]  min-h-[100vh] first-letter:px-5 py-14">
           {props?.children[0]}
         </div>
       </div>

@@ -37,7 +37,7 @@ export default function NavBar() {
             </div>
             <div className="flex items-center relative">
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn btn-sm btn-ghost absolute right-72">
+                <button className="btn btn-sm btn-ghost absolute right-44">
                   <Link to={'/cart'}>
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
@@ -55,7 +55,7 @@ export default function NavBar() {
                 ''
               )}
               {user && Object.keys(user).length !== 0 ? (
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-40 truncate">
                   <Link
                     to="/user/profile"
                     className="flex justify-center items-center gap-2 "
