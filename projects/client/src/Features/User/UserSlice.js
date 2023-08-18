@@ -77,7 +77,7 @@ export const checkCredentialAsync =
       let response = await checkCredential({
         usernameOrEmail,
         password,
-        token
+        token,
       });
 
       return response.data;
@@ -112,7 +112,7 @@ export const onLoginAsync = (values, token) => async (dispatch) => {
   }
 };
 
-export const onRegister = (values) => async (dispatch) => {
+export const onRegister = (values, token) => async (dispatch) => {
   try {
     const {
       fullName,
@@ -130,6 +130,7 @@ export const onRegister = (values) => async (dispatch) => {
       password: password,
       confirmPassword: confirmPassword,
       phoneNumber: '0' + phoneNumber,
+      token,
     });
 
     toast.success('Register Success! Check Email for verification');

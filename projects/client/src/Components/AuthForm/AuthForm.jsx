@@ -64,15 +64,16 @@ export const AuthForm = (propss) => {
               .then(async (token) => {
                 const isSuccess = await dispatch(
                   propss.isRegis
-                    ? onRegister(values)
+                    ? onRegister(values, token)
                     : onLoginAsync(values, token),
                 );
 
                 if (!propss.isRegis) {
-                  if (isSuccess) return navigate('/');
                   setIsSubmitting(false)
+                  if (isSuccess) return navigate('/');
                   resetForm();
                 } else {
+                  setIsSubmitting(false)
                   if (isSuccess) return navigate('/login');
                 }
               });

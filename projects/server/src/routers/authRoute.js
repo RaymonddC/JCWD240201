@@ -8,6 +8,8 @@ const recaptcha = require('../middleware/recaptcha');
 
 router.post(
   '/register',
+  APIKey.APIKey,
+  recaptcha.verify,
   authController.userCreate,
   authController.sendVerifyEmail,
 );
