@@ -29,6 +29,7 @@ export default function PromotionPage() {
     validate: validateGetPromotion,
     onSubmit: async (values, { setSubmitting }) => {
       try {
+        console.log(values);
         const result = await getPromotionAPI(values);
         setCurrentPromoType(result?.data?.data?.rows[0]?.promotion_type_id);
         setData(result?.data?.data?.rows);
@@ -54,7 +55,7 @@ export default function PromotionPage() {
       formik.setFieldValue('page', page);
       formik?.handleSubmit();
     }
-  }, [formik?.values?.page]);
+  }, [page]);
   return (
     <>
       <div className="font-bold text-xl">Promotion</div>

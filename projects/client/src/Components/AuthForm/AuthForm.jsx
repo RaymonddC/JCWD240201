@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
 import { onLoginAsync, onRegister } from '../../Features/User/UserSlice';
 
@@ -27,16 +27,28 @@ export const AuthForm = (propss) => {
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
-          const isSuccess = await dispatch(
-            propss.isRegis ? onRegister(values) : onLoginAsync(values),
-          );
+          const script = document.createElement('script');
+          script.src =
+            'https://www.google.com/recaptcha/api.js?render=6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7';
+          script.addEventListener('load', () => {
+            window.grecaptcha.ready(() => {
+              window.grecaptcha
+                .execute('6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7')
+                .then(async (token) => {
+                  const isSuccess = await dispatch(
+                    propss.isRegis ? onRegister(values) : onLoginAsync(values, token),
+                  );
 
-          if (!propss.isRegis) {
-            if (isSuccess) return navigate('/');
-            resetForm();
-          } else {
-            if (isSuccess) return navigate('/login');
-          }
+                  if (!propss.isRegis) {
+                    if (isSuccess) return navigate('/');
+                    resetForm();
+                  } else {
+                    if (isSuccess) return navigate('/login');
+                  }
+                });
+            });
+          });
+          document.body.appendChild(script);
         } catch (error) {}
       }}
     >
@@ -129,10 +141,13 @@ export const AuthForm = (propss) => {
           )}
           <button
             type="submit"
-            className={`btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
+            className={`g-recaptcha btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
               props.isSubmitting ? 'btn-disabled' : 'btn-primary '
             } `}
             disabled={props.isSubmitting}
+            data-sitekey="6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7"
+            data-callback="onSubmit"
+            data-action="submit"
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
