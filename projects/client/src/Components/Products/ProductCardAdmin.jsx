@@ -9,6 +9,9 @@ export default function ProductCardAdmin(props) {
   const stock = props?.data?.closed_stocks
     ? props?.data?.closed_stocks[0]?.total_stock
     : null;
+  const image = props?.data?.product_images
+    ? props?.data?.product_images[0]?.image
+    : '';
   const packaging = props?.data?.packaging_type?.type_name;
 
   return (
@@ -16,14 +19,16 @@ export default function ProductCardAdmin(props) {
       <label
         onClick={() => props.setProductId(productId)}
         htmlFor="detail_product"
-        className="flex bg-base-100  items-center w-full max-w-4xl shadow-xl hover:cursor-pointer hover:bg-slate-100"
+        className="flex bg-base-100  items-center w-full max-w-4xl shadow-xl rounded-lg hover:cursor-pointer hover:bg-slate-100 "
       >
-        <img
-          className="h-24 hidden md:block px-5"
-          src="https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_750,w_750/v1/production/pharmacy/products/1643869601_tolak_angin_sidomuncul_12_sachet_15_ml"
-          alt=""
-        />
-        <div className="flex justify-between items-center w-full">
+        <div className='hidden md:block w-40 '>
+          <img
+            className="h-24 hidden md:block px-5"
+            src={image ? `http://localhost:8000/${image}` : null}
+            alt=""
+          />
+        </div>
+        <div className="flex justify-between items-center w-full py-2">
           <div className="px-5 ">
             <p className="font-bold line-clamp-2">{productName}</p>
             {props.stockPage ? (

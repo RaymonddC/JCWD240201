@@ -1,14 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import NavBar from '../Components/Layout/Navbar';
-import {
-  getQuestionDetail,
-  postAnswer,
-  updateAnswer,
-} from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProductDetails } from '../Features/Product/ProductSlice';
-import axios from 'axios';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import { toast } from 'react-hot-toast';
 import { MdOutlineWarningAmber } from 'react-icons/md';
@@ -24,6 +17,10 @@ export default function ProductDetails() {
   const productPrice = productsStore?.data?.price?.toLocaleString(['id']);
   const productLabels = productsStore?.labels;
   const reqPrescription = productsStore?.data?.require_prescription;
+  let image;
+  productsStore?.data?.product_images
+    ? (image = productsStore?.data?.product_images[0]?.image)
+    : (image = '');
   // console.log(productLabels);
   console.log(productsStore?.data);
   // console.log(reqPrescription)
@@ -33,8 +30,6 @@ export default function ProductDetails() {
   const productId = Number(id);
   const [descTab, setDescTab] = useState('tab-active');
   const [dosingTab, setDosingTab] = useState('');
-  let descActive = '';
-  let dosingActive = '';
   const labelsMap = productLabels?.map((value, index) => {
     return (
       <div
@@ -58,7 +53,7 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     if (Object.keys(user).length === 0) {
-      return toast.error('Login First before adding product to cart');
+      return toast.error('Login first before adding product to cart');
       // return navigate('/login');
     }
     dispatch(addToCartAsync({ productId: productId }));
@@ -79,7 +74,7 @@ export default function ProductDetails() {
               <div>
                 <img
                   className="h-64 "
-                  src="https://res-3.cloudinary.com/dk0z4ums3/image/upload/c_scale,h_750,w_750/v1/production/pharmacy/products/1643869601_tolak_angin_sidomuncul_12_sachet_15_ml"
+                  src={image ? `http://localhost:8000/${image}` : null}
                   alt=""
                 />
               </div>
@@ -109,7 +104,7 @@ export default function ProductDetails() {
                   <span>This product requires prescription</span>
                 </div>
               ) : (
-                <div className=''></div>
+                <div className=""></div>
               )}
               <div className="tabs justify-center py-5">
                 <div
