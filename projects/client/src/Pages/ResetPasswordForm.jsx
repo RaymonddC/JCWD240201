@@ -71,7 +71,7 @@ export default function ResetPasswordForm() {
       setDisable(false);
     } catch (error) {
       setDisable(false);
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
   return (

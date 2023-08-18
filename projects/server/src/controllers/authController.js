@@ -79,12 +79,7 @@ const verifyAccount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
-    return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
-      data: null,
-    });
+    next(error);
   }
 };
 
@@ -210,7 +205,7 @@ const getUserById = async (req, res, next) => {
   }
 };
 
-const sendResetPasswordForm = async (req, res) => {
+const sendResetPasswordForm = async (req, res, next) => {
   try {
     // create email token
     const { email } = req.body;
@@ -250,16 +245,11 @@ const sendResetPasswordForm = async (req, res) => {
       });
     }
   } catch (error) {
-    return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
-      data: null,
-    });
+    next(error);
   }
 };
 
-const resetPassword = async (req, res) => {
+const resetPassword = async (req, res, next) => {
   try {
     //create and validate new password
     const { newPassword } = req.body;
@@ -295,16 +285,11 @@ const resetPassword = async (req, res) => {
       data: null,
     });
   } catch (error) {
-    return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
-      data: null,
-    });
+    next(error);
   }
 };
 
-const changePassword = async (req, res) => {
+const changePassword = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { oldPassword, newPassword } = req.body;
@@ -315,7 +300,7 @@ const changePassword = async (req, res) => {
     );
 
     if (!isPasswordValid.test(newPassword))
-      throw { message: 'Password is not Valid', status: 400 };
+      throw { message: 'Password is not valid', code: 400 };
 
     //get data user and compare old password
     const getUser = await User.findOne({ where: { id: userId } });
@@ -339,19 +324,14 @@ const changePassword = async (req, res) => {
       return res.send({
         success: true,
         status: 200,
-        message: 'Change Password Success',
+        message: 'Change password success',
         data: result,
       });
     } else {
-      throw { message: 'Wrong old password', status: 400 };
+      throw { message: 'Wrong old password', code: 400 };
     }
   } catch (error) {
-    return res.send({
-      success: false,
-      status: error.status,
-      message: error.message,
-      data: null,
-    });
+    next(error)
   }
 };
 
