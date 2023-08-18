@@ -80,7 +80,7 @@ export const getTopSaleSlice = (query) => async (dispatch) => {
     });
 
     if (response.data.success) {
-      console.log(response.data.data);
+      console.log(response);
       dispatch(setTopSale(response.data.data));
     }
   } catch (error) {

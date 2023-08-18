@@ -1,3 +1,4 @@
+const { promotionExpired } = require('../helpers/promotionHelper');
 const db = require('../models');
 const promotionDB = db.promotion;
 const promotionTypeDB = db.promotion_type;
@@ -7,8 +8,11 @@ const { sequelize } = require('../models');
 const createDiscount = async (req, res, next) => {
   try {
     const { data } = req.body;
-    console.log('data>>>>>',data);
     const result = await promotionDB.create(data);
+
+    if (result) {
+      await promotionExpired(result);
+    }
     return res.send({
       success: true,
       status: 200,

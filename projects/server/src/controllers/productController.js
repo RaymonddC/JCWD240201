@@ -92,7 +92,6 @@ const getProductDetails = async (req, res, next) => {
       message: 'get product details success',
       labels: labels,
       data: response,
-      image: image,
       opened_stock: openedStock,
       closed_stock: closedStock,
     });
