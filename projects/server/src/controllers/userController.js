@@ -17,7 +17,7 @@ const fs = require('fs');
 const getUserData = async (req, res) => {
   try {
     // TODO: get user_id from token
-    const hehe = await user.findOne({
+    const data = await user.findOne({
       include: { model: role, attributes: ['role_name'] },
       attributes: {
         exclude: ['password', 'username'],
@@ -26,7 +26,7 @@ const getUserData = async (req, res) => {
         id: 1,
       },
     });
-    res.send(hehe);
+    res.send(data);
   } catch (error) {
     res.send(error.message || error);
   }
@@ -58,13 +58,15 @@ const updateUserData = async (req, res, next) => {
         { where: { id: auth.id } },
       );
 
-      if (previousImage) {
-        fs.unlink(previousImage.profile_image, function (err) {
-          try {
-            if (err) throw err;
-          } catch (error) {
-            console.log(error);
-          }
+      if (previousImage.dataValues.profile_image) {
+        const oldPath = previousImage.dataValues.profile_image;
+        const fileName = previousImage.dataValues.profile_image.split('/');
+        const newPath = `public/deleted_user_profile_images/${
+          fileName[fileName.length - 1]
+        }`;
+
+        fs.rename(oldPath, newPath, function (err) {
+          if (err) throw err;
         });
       }
     } else {

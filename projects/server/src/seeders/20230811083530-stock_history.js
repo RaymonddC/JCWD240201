@@ -396,5 +396,6 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete('stock_histories', null, {});
   },
 };

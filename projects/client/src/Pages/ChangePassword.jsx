@@ -73,7 +73,7 @@ export default function ChangePassword() {
       <div className="flex flex-col items-center lg:flex-row lg:items-start lg:justify-center px-4 gap-4 pt-2">
         <MenuBarDesktop />
         <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
-          <div className="flex items-center mb-4">
+          <div className="flex lg:h-[48px] items-center mb-4">
             <MenuBarMobile />
             <h3 className="text-[20px] lg:text-[23px] font-bold">
               Change Password

@@ -58,7 +58,7 @@ export default function Transaction() {
   return (
     <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
       <div className="flex justify-between mb-4">
-        <div className="flex items-center">
+        <div className="flex lg:h-[48px] items-center">
           <MenuBarMobile />
           <h3 className="text-[20px] lg:text-[23px] font-bold">
             My Transaction

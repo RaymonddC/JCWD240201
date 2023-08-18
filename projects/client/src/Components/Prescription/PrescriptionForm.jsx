@@ -17,9 +17,10 @@ export default function PrescriptionForm(props) {
   const { id } = useParams();
   const [openDropdown, setOpenDropdown] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [openedStock, setOpenedStock] = useState();
-  const [closedStock, setClosedStock] = useState();
-  const { productDropdown } = useSelector((state) => state?.products);
+  const [openedStock, setOpenedStock] = useState(undefined);
+  const [closedStock, setClosedStock] = useState(undefined);
+
+  console.log(closedStock, openedStock);
 
   const formik = useFormik({
     initialValues: {
@@ -119,16 +120,27 @@ export default function PrescriptionForm(props) {
         openDropdown={openDropdown}
         formik={formik}
         setSelectedProduct={setSelectedProduct}
-        setClosedStock={setClosedStock}
-        setOpenedStock={setOpenedStock}
         data={props?.data}
+        openedStock={openedStock}
+        setOpenedStock={setOpenedStock}
+        closedStock={closedStock}
+        setClosedStock={setClosedStock}
       />
       <div className="flex justify-between max-w-xs">
-        <InputQty formik={formik} />
-        <InputDropdownUnit formik={formik} selectedProduct={selectedProduct} />
+        <InputQty
+          formik={formik}
+          closedStock={closedStock}
+          openedStock={openedStock}
+        />
+        <InputDropdownUnit
+          formik={formik}
+          selectedProduct={selectedProduct}
+          setClosedStock={setClosedStock}
+          setOpenedStock={setOpenedStock}
+        />
       </div>
       {formik?.errors?.qty ? (
-        <p>{formik?.errors?.qty}</p>
+        <p className="text-error">{formik?.errors?.qty}</p>
       ) : !formik.values.unit_conversion ? (
         <p className="h-[24px]"></p>
       ) : (

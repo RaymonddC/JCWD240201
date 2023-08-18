@@ -5,11 +5,26 @@ import { useNavigate } from 'react-router-dom';
 export default function PrescriptionCard(props) {
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+  const dateTime = new Date(props?.data?.createdAt);
+  const date = dateTime
+    .toLocaleDateString('EN-us', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })
+    .split(',');
+
+  const time = dateTime.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    // timeZoneName: 'short',
+  });
 
   // console.log(props);
 
   return (
-    <div className="rounded-xl border-2 border-black flex flex-col w-full max-w-[896px]">
+    <div className="rounded-xl shadow-xl bg-white flex flex-col w-full max-w-[896px]">
       <div
         className={`${
           props?.data?.confirmation === null
@@ -26,7 +41,9 @@ export default function PrescriptionCard(props) {
             ? 'Accepted Prescription'
             : 'Rejected Prescription'}
         </p>
-        <p>{props?.data?.createdAt}</p>
+        <p>
+          {date[0]}, {date[1]} {date[2]}, {time} WIB
+        </p>
       </div>
       <div className="flex gap-4 p-4">
         <img
