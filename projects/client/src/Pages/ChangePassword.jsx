@@ -51,18 +51,16 @@ export default function ChangePassword() {
 
       const result = await changePassword(user.id, oldPassword, newPassword);
       const errorMessage = { message: result.data?.message };
-
       if (result.data?.success) {
         toast.success(result.data?.message);
       } else {
         throw errorMessage;
       }
-
       _oldPassword.current.value = '';
       _newPassword.current.value = '';
       _confirmNewPassword.current.value = '';
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 
