@@ -7,9 +7,11 @@ export default function InputSearchDropdown(props) {
     openDropdown,
     formik,
     setSelectedProduct,
-    setClosedStock,
-    setOpenedStock,
     data,
+    openedStock,
+    setOpenedStock,
+    closedStock,
+    setClosedStock,
   } = props;
 
   return (
@@ -37,19 +39,18 @@ export default function InputSearchDropdown(props) {
             return (
               <p
                 key={value.id}
-                className="p-2 border-b border-[#D5D7DD]"
+                className="p-2 border-b border-[#D5D7DD] cursor-pointer hover:font-bold"
                 onClick={() => {
                   formik.setFieldValue('product_id', value.id);
                   setOpenDropdown(!openDropdown);
                   setSelectedProduct(value);
-                  setClosedStock(value?.closed_stocks[0].total_stock);
-                  setOpenedStock(
-                    (value?.opened_stocks[0]?.qty
-                      ? value?.opened_stocks[0]?.qty
-                      : 0) +
-                      value?.closed_stocks[0]?.total_stock * value?.net_content,
-                  );
                   formik.setFieldValue('search', value.name);
+                  if (openedStock) setOpenedStock(undefined);
+                  if (closedStock) setClosedStock(undefined);
+                  if (formik.values.unit_conversion)
+                    formik.setFieldValue('unit_conversion', '');
+                  if (formik.values.qty > 1 || formik.values.qty < 1)
+                    formik.setFieldValue('qty', 1);
                 }}
               >
                 {value?.name}
