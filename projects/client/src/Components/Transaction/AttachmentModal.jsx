@@ -5,7 +5,6 @@ import {
   getTransactionSlice,
   updateTransactionHistorySlice,
 } from '../../Features/Transaction/TransactionSlice';
-import TxProductCard from './TxProductCard';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import TransactionStatusCard from './TransactionStatusCard';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
@@ -17,10 +16,8 @@ const AttachmentModal = (props) => {
   const dispatch = useDispatch();
   const { transaction } = useSelector((state) => state.transaction);
   const image = transaction?.image;
-  console.log('props', props);
   const [openStatus, setOpenStatus] = useState(false);
   const [notes, setNotes] = useState('');
-
   const acceptPayment = async () => {
     await dispatch(
       updateTransactionHistorySlice({
@@ -32,7 +29,7 @@ const AttachmentModal = (props) => {
     props.closeModal();
   };
   const rejectPayment = async () => {
-    dispatch(
+    await dispatch(
       updateTransactionHistorySlice({
         transaction_id: props.id,
         transaction_status_id: 1,

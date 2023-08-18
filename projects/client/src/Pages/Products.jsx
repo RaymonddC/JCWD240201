@@ -16,6 +16,7 @@ export default function Products() {
   const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
+  console.log('<<<<',searchParams.get('page'))
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
@@ -26,7 +27,8 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  // console.log('>>>', CategoryStore);
+  // console.log('>>>', ProductsStore);
+  // console.log(page)
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (

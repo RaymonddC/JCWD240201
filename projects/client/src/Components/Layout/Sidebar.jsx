@@ -91,12 +91,12 @@ export const Sidebar = () => {
       </div>
       <Link to={!user || Object.keys(user).length === 0 ? '/login' : ''}>
         <div className="profile min-w-[100%] p-[13px]   rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 lg:flex-row flex-col gap-2 lg:gap-0 items-center lg:items-start hidden sm:flex">
-          <div className="avatar w-[40px] h-[40px] rounded-full m-[12px]">
+          {/* <div className="avatar w-[40px] h-[40px] rounded-full m-[12px]">
             <img
               src={`${process.env.REACT_APP_API_URL}/UserProfile/default.png`}
               alt=""
             />
-          </div>
+          </div> */}
           {/* <div className={`detail ${openMenu ? '' : 'invisible'}`}> */}
           <div
             className={`detail align-middle grow text-left  my-auto hidden lg:block`}

@@ -44,17 +44,9 @@ function App() {
   // }, [bodyScrollable]);
   useEffect(() => {
     if (
-      // pathname === '/' ||
-      // pathname === '/discussions' ||
-      // pathname === '/products' ||
-      // pathname === '/cart'||
-      // pathname === '/user/profile'||
-      // pathname === '/user/address' ||
-      // pathname === '/user/change-password'||
-      // pathname === '/user/transaction'||
-      // pathname === '/products/:id'
       pathname === '/login' ||
-      pathname === '/register'
+      pathname === '/register'||
+      pathname === '/verfication'
     ) {
       setNavbar(false);
       setFooter(false);

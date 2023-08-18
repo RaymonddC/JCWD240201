@@ -103,6 +103,13 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        product_id: 21,
+        image: 'public\\product_images\\tolak_flu.jpeg',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      
     ]);
   },
 
