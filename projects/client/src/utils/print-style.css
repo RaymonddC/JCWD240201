@@ -1,4 +1,16 @@
-@page {
-  size: landscape A3; /* Set the paper size and orientation */
-  margin: 0cm; /* Set margins (top, right, bottom, left) */
+@media print {
+  .react-printable-parent {
+    grid-template-columns: 1fr;
+    gap: 700px;
+  }
+  .react-print {
+    max-width: 200px;
+  }
 }
+
+/* @media (min-width: 1280px) {
+  @page {
+    size: landscape A3;
+    margin: 0cm;
+  }
+} */

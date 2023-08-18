@@ -126,7 +126,7 @@ const getTotalTransactionQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN :startDate AND :endDate)
+    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
@@ -147,7 +147,7 @@ const getUserTransactionQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN :startDate AND :endDate)
+    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
