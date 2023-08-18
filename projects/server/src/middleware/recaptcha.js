@@ -13,7 +13,6 @@ const verify = async (req, res, next) => {
         },
       },
     );
-
     if (!response.data.success)
       throw { message: 'You might be a robot, sorry! You are banned!' };
 

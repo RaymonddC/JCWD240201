@@ -14,7 +14,35 @@ import { InputPassword } from './Input/InputPassword';
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const key = process.env.REACT_APP_API_SECRET_KEY
+  const key = process.env.REACT_APP_API_SECRET_KEY;
+
+  useEffect(() => {
+    const loadScriptByURL = (id, url, callback) => {
+      const isScriptExist = document.getElementById(id);
+
+      if (!isScriptExist) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+        script.id = id;
+        script.onload = function () {
+          if (callback) callback();
+        };
+        document.body.appendChild(script);
+      }
+
+      if (isScriptExist && callback) callback();
+    };
+
+    // load the script by passing the URL
+    loadScriptByURL(
+      key,
+      `https://www.google.com/recaptcha/api.js?render=${key}`,
+      function () {
+        console.log('Script loaded!');
+      },
+    );
+  }, []);
   return (
     <Formik
       initialValues={{
@@ -28,28 +56,24 @@ export const AuthForm = (propss) => {
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
-          const script = document.createElement('script');
-          script.src =
-            `https://www.google.com/recaptcha/api.js?render=${key}`;
-          script.addEventListener('load', () => {
-            window.grecaptcha.ready(() => {
-              window.grecaptcha
-                .execute(`${key}`)
-                .then(async (token) => {
-                  const isSuccess = await dispatch(
-                    propss.isRegis ? onRegister(values) : onLoginAsync(values, token),
-                  );
+          window.grecaptcha.ready(() => {
+            window.grecaptcha
+              .execute(key, { action: 'submit' })
+              .then(async (token) => {
+                const isSuccess = await dispatch(
+                  propss.isRegis
+                    ? onRegister(values)
+                    : onLoginAsync(values, token),
+                );
 
-                  if (!propss.isRegis) {
-                    if (isSuccess) return navigate('/');
-                    resetForm();
-                  } else {
-                    if (isSuccess) return navigate('/login');
-                  }
-                });
-            });
+                if (!propss.isRegis) {
+                  if (isSuccess) return navigate('/');
+                  resetForm();
+                } else {
+                  if (isSuccess) return navigate('/login');
+                }
+              });
           });
-          document.body.appendChild(script);
         } catch (error) {}
       }}
     >
@@ -146,9 +170,6 @@ export const AuthForm = (propss) => {
               props.isSubmitting ? 'btn-disabled' : 'btn-primary '
             } `}
             disabled={props.isSubmitting}
-            data-sitekey={key}
-            data-callback="onSubmit"
-            data-action="submit"
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
