@@ -6,7 +6,9 @@ export default function ProductCardAdmin(props) {
   const productName = props?.data?.name;
   const price = props?.data?.price?.toLocaleString(['id']);
   const productId = props?.data.id;
-  const stock = props?.data?.closed_stocks[0]?.total_stock;
+  const stock = props?.data?.closed_stocks
+    ? props?.data?.closed_stocks[0]?.total_stock
+    : null;
   const packaging = props?.data?.packaging_type?.type_name;
 
   return (
