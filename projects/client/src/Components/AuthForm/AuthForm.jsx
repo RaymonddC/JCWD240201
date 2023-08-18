@@ -14,6 +14,7 @@ import { InputPassword } from './Input/InputPassword';
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const key = process.env.REACT_APP_API_SECRET_KEY;
 
   useEffect(() => {
@@ -56,6 +57,7 @@ export const AuthForm = (propss) => {
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
+          setIsSubmitting(true)
           window.grecaptcha.ready(() => {
             window.grecaptcha
               .execute(key, { action: 'submit' })
@@ -68,6 +70,7 @@ export const AuthForm = (propss) => {
 
                 if (!propss.isRegis) {
                   if (isSuccess) return navigate('/');
+                  setIsSubmitting(false)
                   resetForm();
                 } else {
                   if (isSuccess) return navigate('/login');
@@ -169,7 +172,7 @@ export const AuthForm = (propss) => {
             className={`g-recaptcha btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
               props.isSubmitting ? 'btn-disabled' : 'btn-primary '
             } `}
-            disabled={props.isSubmitting}
+            disabled={isSubmitting}
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
