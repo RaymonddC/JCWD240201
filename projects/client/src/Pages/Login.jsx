@@ -9,6 +9,7 @@ import LoginImage from '../utils/images/Frame.svg';
 import Logo from '../utils/images/logoHealthyMed.svg';
 
 export const Login = () => {
+  console.log('Login');
   const { user } = useSelector((state) => state?.user);
 
   const [isRegis, setIsRegis] = useState(

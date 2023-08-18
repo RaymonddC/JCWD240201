@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutAsync } from '../../Features/User/UserSlice';
+import { logoutAsync, onSaveUser } from '../../Features/User/UserSlice';
 import Logo from '../../utils/images/logoHealthyMed.svg';
 import TransactionIcon from '../../utils/images/Transaction.svg';
 import { BiSolidReport } from 'react-icons/bi';
@@ -16,7 +16,7 @@ import { MdDiscount } from 'react-icons/md';
 import { TbReportAnalytics } from 'react-icons/tb';
 
 export const Sidebar = () => {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
@@ -115,6 +115,10 @@ export const Sidebar = () => {
               className="iconMore m-auto"
               onClick={() => {
                 dispatch(logoutAsync(navigate));
+                // localStorage.removeItem('token');
+                // dispatch(onSaveUser({}));
+                // navigate('/');
+                // console.log('MASUK');
                 // <Navigate to={'/login'} />;
               }}
             >
