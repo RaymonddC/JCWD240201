@@ -14,7 +14,7 @@ export default function StockPageAdmin() {
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
 
-  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [productId, setProductId] = useState(null);
   const [isUpdated, setIsUpdated] = useState(false);
