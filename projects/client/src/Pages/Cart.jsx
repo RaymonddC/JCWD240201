@@ -158,15 +158,20 @@ const Cart = () => {
                   ])}
                 </span>
               </div>
-              <div className="orderNow  md:pt-5">
+              <div
+                className="orderNow  md:pt-5"
+                onClick={() => {
+                  // checkoutAsync();
+                  // navigate('/checkout');
+                  if (activeCart === 0)
+                    return toast.error('Select product to checkout');
+                  if (!address.length) return setOpenAddressModal(true);
+                  return navigate('/checkout');
+                }}
+              >
                 <button
                   className="btn btn-sm md:btn-md  btn-primary w-full text-white"
-                  onClick={() => {
-                    // checkoutAsync();
-                    // navigate('/checkout');
-                    if (!address.length) return setOpenAddressModal(true);
-                    return navigate('/checkout');
-                  }}
+                  disabled={!activeCart}
                 >
                   Proceed ({activeCart})
                 </button>
