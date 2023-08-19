@@ -16,5 +16,6 @@ router.post(
   uploadPayment,
   transactionController.uploadPayment,
 );
+router.post('/pay', transactionController.payment);
 
 module.exports = router;

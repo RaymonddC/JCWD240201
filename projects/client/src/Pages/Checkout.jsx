@@ -33,8 +33,57 @@ export default function Checkout() {
     duration: null,
   });
 
+  const [tokenMidtrans, setTokenMidtrans] = useState(null);
+
   useEffect(() => {
     dispatch(getCartUserAsync());
+  }, []);
+
+  useEffect(() => {
+    console.log(tokenMidtrans, '================>>>>>>>>>>');
+    if (tokenMidtrans)
+      window.snap.pay(tokenMidtrans, {
+        onSuccess: function (result) {
+          /* You may add your own implementation here */
+          alert('payment success!');
+          console.log(result);
+        },
+        onPending: function (result) {
+          /* You may add your own implementation here */
+          alert('wating your payment!');
+          console.log(result);
+        },
+        onError: function (result) {
+          /* You may add your own implementation here */
+          alert('payment failed!');
+          console.log(result);
+        },
+        onClose: function () {
+          /* You may add your own implementation here */
+          alert('you closed the popup without finishing the payment');
+        },
+      });
+  }, [tokenMidtrans]);
+
+  //PaymentGateway
+  useEffect(() => {
+    // You can also change below url value to any script url you wish to load,
+    // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
+    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
+
+    let scriptTag = document.createElement('script');
+    scriptTag.src = midtransScriptUrl;
+
+    // Optional: set script attribute, for example snap.js have data-client-key attribute
+    // (change the value according to your client-key)
+    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY || '';
+    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
   }, []);
 
   if (!token) return <Navigate to="/" />;
@@ -133,7 +182,7 @@ export default function Checkout() {
                       return toast.error('Please choose your shipping courier');
 
                     // if (
-                    dispatch(
+                    const { url, midtransToken } = await dispatch(
                       checkoutTxSlice(
                         {
                           shippingFee,
@@ -146,6 +195,8 @@ export default function Checkout() {
                         navigate,
                       ),
                     );
+                    console.log(midtransToken);
+                    setTokenMidtrans(midtransToken);
                     // )
                     // return navigate('/user/transaction');
 

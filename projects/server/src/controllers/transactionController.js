@@ -24,9 +24,9 @@ const {
 } = require('../helpers/transactionHelper');
 const { getPromotionByProductId } = require('../helpers/promotionHelper');
 const { unitConversionHelper } = require('../helpers/unitConversionHelper');
+const { getMidtransSnap } = require('../helpers/paymentHelper');
 
 const checkout = async (req, res, next) => {
-  console.log('masuk checkout');
   const t = await sequelize.transaction();
   try {
     const userId = req.user.id;
@@ -180,7 +180,7 @@ const checkout = async (req, res, next) => {
                 t,
               );
             } catch (error) {
-            //   console.log (error)
+              //   console.log (error)
             }
           });
         }
@@ -241,17 +241,26 @@ const checkout = async (req, res, next) => {
       { transaction: t },
     );
     // throw { message: 'sabar' };
+    const user = await UserDB.findByPk(req.user.id);
+    const { token, redirect_url } = await getMidtransSnap({
+      totalPay:
+        transaction.total_price +
+        transaction.shipment_fee -
+        transaction.total_discount,
+      user,
+    });
     await t.commit();
 
     return res.status(200).send({
       success: true,
       message: 'Checkout Success',
       data: txDetailData,
+      paymentData: { token, url: redirect_url },
       // pageCount: count,
     });
   } catch (error) {
     await t.rollback();
-    // console.log(error);
+    console.log(error);
     next(error);
   }
 };
@@ -521,10 +530,24 @@ const cancelTransaction = async (req, res, next) => {
   }
 };
 
+const payment = async (req, res, next) => {
+  try {
+    await getMidtransSnap();
+    return res.status(200).send({
+      success: true,
+      message: 'Upload payment Success',
+      data: [],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   checkout,
   getAllTransaction,
   getTransaction,
   uploadPayment,
   cancelTransaction,
+  payment,
 };

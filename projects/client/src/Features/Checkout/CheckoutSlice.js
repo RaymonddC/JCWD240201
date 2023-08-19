@@ -42,11 +42,14 @@ export const checkoutTxSlice = (values, navigate) => async (dispatch) => {
 
     console.log(values);
     // process.exit();
-    await checkoutAPI(values, token);
-
+    const { data } = await checkoutAPI(values, token);
+    console.log(data);
+    console.log(data.paymentData.url, data.paymentData.token);
     toast.success('Checkout Success');
-    navigate('/user/transaction');
-    return true;
+    // return navigate(data.url);
+    // navigate('/user/transaction');
+    console.log(data);
+    return { midtransToken: data.paymentData.token, url: data.paymentData.url };
   } catch (error) {
     return toast.error(error.message);
   }

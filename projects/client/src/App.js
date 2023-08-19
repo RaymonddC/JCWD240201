@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {
     if (
       pathname === '/login' ||
-      pathname === '/register'||
+      pathname === '/register' ||
       pathname === '/verfication'
     ) {
       setNavbar(false);
