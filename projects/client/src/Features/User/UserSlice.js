@@ -59,23 +59,25 @@ export const keepLoginAsync = () => async (dispatch) => {
   }
 };
 
-export const logoutAsync = () => async (dispatch) => {
+export const logoutAsync = (navigate) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
     if (token) {
       localStorage.removeItem('token');
       dispatch(onSaveUser({}));
     }
+    navigate('/login');
     toast.success('Logout Success!');
   } catch (error) {}
 };
 
 export const checkCredentialAsync =
-  (usernameOrEmail, password) => async (dispatch) => {
+  (usernameOrEmail, password, token) => async (dispatch) => {
     try {
       let response = await checkCredential({
         usernameOrEmail,
         password,
+        token,
       });
 
       return response.data;
@@ -88,12 +90,12 @@ export const checkCredentialAsync =
     }
   };
 
-export const onLoginAsync = (values) => async (dispatch) => {
+export const onLoginAsync = (values, token) => async (dispatch) => {
   try {
     const { usernameOrEmail, password } = values;
 
     let result = await dispatch(
-      checkCredentialAsync(usernameOrEmail, password),
+      checkCredentialAsync(usernameOrEmail, password, token),
     );
 
     localStorage.removeItem('token');
@@ -110,7 +112,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
   }
 };
 
-export const onRegister = (values) => async (dispatch) => {
+export const onRegister = (values, token) => async (dispatch) => {
   try {
     const {
       fullName,
@@ -128,6 +130,7 @@ export const onRegister = (values) => async (dispatch) => {
       password: password,
       confirmPassword: confirmPassword,
       phoneNumber: '0' + phoneNumber,
+      token,
     });
 
     toast.success('Register Success! Check Email for verification');

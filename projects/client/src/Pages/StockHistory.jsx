@@ -32,9 +32,9 @@ export default function StockHistory() {
     name: 'All products',
     id: '',
   };
-  const startDate = new Date()
-  startDate.setDate(startDate.getDate() - 7)
-  const endDate = new Date()
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 7);
+  const endDate = new Date();
 
   const onSelectedProduct = (value) => {
     setSelectedProduct(value.name);
@@ -73,7 +73,7 @@ export default function StockHistory() {
         setTotalPages(result?.data?.totalPage);
         setSubmitting(false);
       } catch (error) {
-        toast.error(error.message);
+        toast.error(error.response.data.message);
       }
     },
   });
@@ -113,6 +113,7 @@ export default function StockHistory() {
                 placeholder="Please select product"
                 errors={formik?.errors?.product_id}
                 label="Product"
+                defaultValue={true}
               />
               <div className={openProduct ? 'absolute w-full' : 'hidden'}>
                 <div
@@ -124,7 +125,7 @@ export default function StockHistory() {
                 {productMap}
               </div>
             </div>
-            <div className='md:flex md:justify-evenly'>
+            <div className="md:flex md:justify-evenly">
               <div className="flex justify-between gap-3">
                 <div className="w-6/12 md:w-full">
                   <InputUserDate
@@ -147,7 +148,7 @@ export default function StockHistory() {
                   />
                 </div>
               </div>
-              <div className='md:w-full md:ml-3'>
+              <div className="md:w-full md:ml-3">
                 <SelectSortOrder
                   id="sortOrder"
                   name="sortOrder"

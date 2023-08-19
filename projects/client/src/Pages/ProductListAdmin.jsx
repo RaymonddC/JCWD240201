@@ -17,7 +17,7 @@ export default function ProductListAdmin() {
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
 
-  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
   const [sortOrder, setSortOrder] = useState(

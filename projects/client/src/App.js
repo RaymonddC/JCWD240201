@@ -44,20 +44,15 @@ function App() {
   // }, [bodyScrollable]);
   useEffect(() => {
     if (
-      pathname === '/' ||
-      pathname === '/discussions' ||
-      pathname === '/products' ||
-      pathname === '/cart'||
-      pathname === '/user/profile'||
-      pathname === '/user/address' ||
-      pathname === '/user/change-password'||
-      pathname === '/user/transaction'
+      pathname === '/login' ||
+      pathname === '/register'||
+      pathname === '/verfication'
     ) {
-      setNavbar(true);
-      setFooter(true);
-    } else {
       setNavbar(false);
       setFooter(false);
+    } else {
+      setNavbar(true);
+      setFooter(true);
     }
     dispatch(keepLoginAsync());
   }, [pathname]);

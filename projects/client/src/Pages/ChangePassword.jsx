@@ -51,18 +51,16 @@ export default function ChangePassword() {
 
       const result = await changePassword(user.id, oldPassword, newPassword);
       const errorMessage = { message: result.data?.message };
-
       if (result.data?.success) {
         toast.success(result.data?.message);
       } else {
         throw errorMessage;
       }
-
       _oldPassword.current.value = '';
       _newPassword.current.value = '';
       _confirmNewPassword.current.value = '';
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -73,7 +71,7 @@ export default function ChangePassword() {
       <div className="flex flex-col items-center lg:flex-row lg:items-start lg:justify-center px-4 gap-4 pt-2">
         <MenuBarDesktop />
         <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
-          <div className="flex items-center mb-4">
+          <div className="flex lg:h-[48px] items-center mb-4">
             <MenuBarMobile />
             <h3 className="text-[20px] lg:text-[23px] font-bold">
               Change Password
