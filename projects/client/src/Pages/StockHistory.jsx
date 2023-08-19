@@ -73,7 +73,7 @@ export default function StockHistory() {
         setTotalPages(result?.data?.totalPage);
         setSubmitting(false);
       } catch (error) {
-        toast.error(error.message);
+        toast.error(error.response.data.message);
       }
     },
   });
