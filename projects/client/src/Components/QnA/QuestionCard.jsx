@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createMarkup } from '../../Helper/createMarkup';
+var parse = require('html-react-parser');
 
 export default function QuestionCard(props) {
   const date = new Date(props?.data?.createdAt);
@@ -26,7 +28,11 @@ export default function QuestionCard(props) {
           <div className="card-body ">
             <article className="prose">
               <h4 className="truncate"> {title}</h4>
-              <p className="truncate">{question}</p>
+              {/* <p className="truncate" >{question}</p> */}
+              <p
+                className=" line-clamp-2"
+                dangerouslySetInnerHTML={createMarkup(question)}
+              ></p>
             </article>
           </div>
         </div>

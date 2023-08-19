@@ -6,6 +6,7 @@ import {
 } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { createMarkup } from '../Helper/createMarkup';
 
 export default function QuestionDetails() {
   const user = useSelector((state) => state?.user?.user);
@@ -38,7 +39,10 @@ export default function QuestionDetails() {
           <div className="card-body ">
             <article className="prose">
               <h3>{title}</h3>
-              <p>{question}</p>
+              <p
+                className="preview"
+                dangerouslySetInnerHTML={createMarkup(question)}
+              ></p>
             </article>
           </div>
         </div>
@@ -124,7 +128,10 @@ export default function QuestionDetails() {
             <div className="card-body ">
               <article className="prose">
                 <h3>{title} </h3>
-                <p>{question}</p>
+                <p
+                className="preview"
+                dangerouslySetInnerHTML={createMarkup(question)}
+              ></p>
               </article>
             </div>
           </div>

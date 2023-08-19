@@ -14,20 +14,11 @@ export default function QnAAdmin() {
   const questionMap = questionList?.map((value, index) => {
     return <QuestionCardAdmin data={value} key={`question${index}`} />;
   });
-  // console.log(questionList);
-  // console.log('QnAStore', QnAStore.questions?.data?.rows);
   const totalPages = QnAStore?.questions?.totalPage;
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
-  // const next = () => {
-  //   const nextPage = page >= totalPages ? totalPages : page + 1;
-  //   setPage(nextPage);
-  // };
-  // const prev = () => {
-  //   const prevPage = page <= 1 ? 1 : page - 1;
-  //   setPage(prevPage);
-  // };
+
 
   useEffect(() => {
     dispatch(getQuestions({ page, limit: 2 }));
