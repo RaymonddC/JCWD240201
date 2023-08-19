@@ -4,8 +4,8 @@ import UserEditModal from '../Components/Profile/UserEditModal';
 import { useSelector } from 'react-redux';
 import { convertDate } from '../Helper/userHelper';
 import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
+import NavBar from '../Components/Layout/Navbar';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
-import { formatDate } from '../Helper/formatDateHelper';
 
 export default function Profile() {
   let token = localStorage.getItem('token');
@@ -48,7 +48,7 @@ export default function Profile() {
                 Birth of date
               </p>
               <p className="text-[14px] md:text-[16px]">
-                {user?.birthdate ? formatDate(new Date(user?.birthdate)) : '-'}
+                {user?.birthdate ? convertDate(user?.birthdate) : '-'}
               </p>
             </div>
             <div className="flex justify-between pt-4">

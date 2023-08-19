@@ -1,11 +1,7 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MdMenu } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
-import { logoutAsync } from '../../Features/User/UserSlice';
 
 export default function MenuBarMobile() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   return (
     // <div className="hidden lg:flex w-full h-fit lg:max-w-[255px] lg:flex-col flex-row shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg">
     //   <Link
@@ -28,7 +24,7 @@ export default function MenuBarMobile() {
       </label>
       <ul
         tabIndex={0}
-        className="dropdown-content z-[20] menu p-2 shadow bg-base-100 rounded-box w-52"
+        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
       >
         <li>
           <Link
@@ -77,16 +73,6 @@ export default function MenuBarMobile() {
           >
             Transaction
           </Link>
-        </li>
-        <li>
-          <div
-            onClick={() => {
-              dispatch(logoutAsync(navigate));
-            }}
-            className={`p-3 cursor-pointer hover:font-bold text-error`}
-          >
-            Log Out
-          </div>
         </li>
       </ul>
     </div>

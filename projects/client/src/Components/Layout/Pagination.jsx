@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 export default function Pagination(props) {
-  console.log(props?.page)
   const next = () => {
     const nextPage =
       props?.page >= props?.totalPages ? props?.totalPages : props?.page + 1;

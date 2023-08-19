@@ -39,7 +39,6 @@
     "formik": "^2.4.2",
     "react-dropdown-select": "^4.10.0",
     "react-icons": "^4.10.1",
-    "react-select": "^5.7.4",
     "react-to-print": "^2.14.13",
     "react-zoom-pan-pinch": "^3.1.0",
     "recharts": "^2.7.3"

@@ -47,7 +47,7 @@ const getAllPrescriptionCartProductList = async (req, res, next) => {
 
 const getPrescriptionCartProduct = async (req, res, next) => {
   try {
-    const { cart_id, product_id, unit_conversion } = req.params;
+    const { id } = req.params;
     const data = await prescriptionCartDB.findOne({
       where: { id },
     });

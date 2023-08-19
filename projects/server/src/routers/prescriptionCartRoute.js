@@ -15,7 +15,7 @@ router.get(
   prescriptionCartController.getAllPrescriptionCartProductList,
 );
 router.get(
-  '/:cart_id/:product_id/:unit_conversion',
+  '/:id',
   APIKey,
   verifyToken,
   isAdmin,

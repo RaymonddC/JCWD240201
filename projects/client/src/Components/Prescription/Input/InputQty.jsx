@@ -1,5 +1,5 @@
 export default function InputQty(props) {
-  const { formik, closedStock, openedStock } = props;
+  const { formik } = props;
   return (
     <div className="flex flex-col">
       <label htmlFor="">Quantity</label>
@@ -34,13 +34,9 @@ export default function InputQty(props) {
         />
         <button
           disabled={
-            !formik.values.unit_conversion ||
-            formik.values.qty >=
-              (formik.values.unit_conversion === 'true'
-                ? openedStock
-                : closedStock)
-              ? true
-              : false
+            formik.values.unit_conversion && !(formik.values.qty >= 200)
+              ? false
+              : true
           }
           type="button"
           className=" join-item w-[48px] h-full btn btn-sm btn-ghost text-[#009B90]"

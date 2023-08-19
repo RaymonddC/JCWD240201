@@ -279,7 +279,7 @@ module.exports = {
       },
       {
         product_id: 36,
-        category_id: 7,
+        category_id: 8,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -309,7 +309,7 @@ module.exports = {
       },
       {
         product_id: 41,
-        category_id: 8,
+        category_id: 9,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -339,7 +339,7 @@ module.exports = {
       },
       {
         product_id: 46,
-        category_id: 9,
+        category_id: 2,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -369,7 +369,7 @@ module.exports = {
       },
       {
         product_id: 51,
-        category_id: 2,
+        category_id: 5,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -399,7 +399,7 @@ module.exports = {
       },
       {
         product_id: 56,
-        category_id: 5,
+        category_id: 6,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -423,12 +423,6 @@ module.exports = {
       },
       {
         product_id: 60,
-        category_id: 6,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      {
-        product_id: 61,
         category_id: 6,
         createdAt: new Date(),
         updatedAt: new Date(),

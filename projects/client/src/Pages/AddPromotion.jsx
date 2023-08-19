@@ -75,7 +75,7 @@ export default function AddPromotion() {
           throw errorMessage;
         }
       } catch (error) {
-        toast.error(error.response.data.message);
+        toast.error(error.message);
       }
     },
   });

@@ -90,7 +90,7 @@ export default function SalesReport() {
   return (
     <div className="">
       <h1 className="font-bold text-xl">Sales Report</h1>
-      <div className="w-full flex justify-center mb-4">
+      <div className="w-full flex justify-center">
         <div className="flex items-center">
           <DateRangePicker range={range} setRange={setRange} />
           <button onClick={() => setToggle(!toggle)} className="btn">
@@ -104,32 +104,27 @@ export default function SalesReport() {
         <ExcelDownload />
       </div>
 
-      <div
-        ref={chartAndTable}
-        className="w-full grid xl:grid-cols-2 gap-4 react-printable-parent"
-      >
-        <div className="w-full rounded-lg shadow-xl p-4 bg-white">
-          <h1 className="ml-[65px] font-bold text-lg mb-4">Revenue</h1>
-          <div className="w-full h-[340px] react-print">
+      <div ref={chartAndTable} className="w-full grid xl:grid-cols-2">
+        <div className="w-full rounded-lg shadow-xl p-4">
+          <h1 className="ml-20 font-bold text-lg mb-4">Revenue</h1>
+          <div className="w-full h-[340px]">
             <Chart data={revenue} dataKey="today_revenue" />
           </div>
         </div>
-        <div className="w-full rounded-lg shadow-xl p-4 bg-white">
-          <h1 className="ml-[65px] font-bold text-lg mb-4">Transaction</h1>
+        <div className="w-full rounded-lg shadow-xl p-4">
+          <h1 className="ml-20 font-bold text-lg mb-4">Transaction</h1>
           <div className="w-full h-[340px]">
             <Chart data={totalTransaction} dataKey="total_transaction" />
           </div>
         </div>
-        <div className="w-full rounded-lg shadow-xl p-4  bg-white">
-          <h1 className="ml-[65px] font-bold text-lg mb-4">User</h1>
+        <div className="w-full rounded-lg shadow-xl p-4">
+          <h1 className="ml-20 font-bold text-lg mb-4">User</h1>
           <div className="w-full h-[340px]">
             <Chart data={totalUser} dataKey="total_user" />
           </div>
         </div>
-        <div className="w-full overflow-x-auto rounded-lg shadow-lg p-4 bg-white">
-          <h1 className="ml-[65px] font-bold text-lg mb-4 ">
-            Top Sales Product
-          </h1>
+        <div className="w-full overflow-x-auto mt-4 rounded-lg shadow-lg">
+          <h1 className="ml-20 font-bold text-lg mb-4">Top Sales Product</h1>
           <TableTopSales />
         </div>
       </div>

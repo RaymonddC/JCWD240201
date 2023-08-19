@@ -35,7 +35,7 @@ export default function ReqResetPassword() {
       setDisable(false);
     } catch (error) {
       setDisable(false);
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     }
   };
 

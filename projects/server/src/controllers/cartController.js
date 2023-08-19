@@ -8,7 +8,6 @@ const {
   updateConfirmation,
   isPrescriptionCartProductListEmpty,
   getAllPrescriptions,
-  getPricePrescription,
 } = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
@@ -35,31 +34,12 @@ const getCarts = async (req, res, next) => {
     let whereQuery = { user_id: userId };
 
     const { count, rows } = await getUserCarts('', whereQuery);
-    // console.log(count, 'cart');
-
-    const newRows = await Promise.all(
-      rows.map(async (row) => {
-        if (row.product_id === 1 && row.confirmation === true) {
-          const prescriptionPrice = await getPricePrescription(
-            row.dataValues.id,
-          );
-          return {
-            ...row.dataValues,
-            product: {
-              ...row.dataValues.product.dataValues,
-              price: Number(prescriptionPrice[0].total_price),
-            },
-          };
-        } else {
-          return row;
-        }
-      }),
-    );
+    console.log(count, 'cart');
 
     return res.status(200).send({
       success: true,
       message: 'getAll Cart',
-      data: newRows,
+      data: rows,
       // pageCount: count,
     });
   } catch (error) {

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
@@ -7,7 +8,6 @@ const db = require('../models');
 const productCategoryDB = db.product_category;
 const labelDB = db.label;
 const productDB = db.product;
-const productImageDB = db.product_image;
 const transporter = require('../helpers/transporter');
 
 const getLabels = async (req, res, next) => {
@@ -22,23 +22,16 @@ const getLabels = async (req, res, next) => {
     if (category) {
       whereCat.category_name = category;
     }
-    console.log(category);
     if (sortType) {
       order = [['product', sortType, sortOrder]];
     } else {
       order = [['product', 'updatedAt', 'DESC']];
     }
-    const categories = await productCategoryDB.findOne({ where: whereCat });
-    // console.log('cataeg', categories);
-    whereLabel.category_id = categories.dataValues.id;
-    // console.log('whereLabel', whereLabel);
+    const categories = await productCategoryDB.findAll({ where: whereCat });
+    whereLabel.category_id = categories[0].id;
     const response = await labelDB.findAndCountAll({
       include: [
-        {
-          model: productDB,
-          include: [{ model: productImageDB }],
-          // where: { name: { [Op.like]: `%${search}%` } },
-        },
+        { model: productDB, where: { name: { [Op.like]: `%${search}%` } } },
         productCategoryDB,
       ],
       limit: pageLimit,
@@ -46,7 +39,6 @@ const getLabels = async (req, res, next) => {
       where: whereLabel,
       order: order,
     });
-    console.log(response);
 
     const totalPage = Math.ceil((response.count - 1) / pageLimit);
     const key = 'product';

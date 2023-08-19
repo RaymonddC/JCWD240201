@@ -16,7 +16,7 @@ const CartCard = (props) => {
   const dispatch = useDispatch();
   const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
   const stock = props.cart.product?.closed_stocks[0]?.total_stock;
-  const isRacik = props?.cart?.product?.id === 1;
+  const isRacik = props.cart.product.id === 1;
 
   const debouncedQtyValue = useDebounce(props.cart.qty, 500);
 
@@ -26,7 +26,7 @@ const CartCard = (props) => {
     let discount = 0,
       buy = 0,
       get = 0;
-    props?.cart?.product?.promotions?.some((promo) => {
+    props.cart.product.promotions?.some((promo) => {
       if (promo?.discount)
         discount = props.cart.product.price * (promo.discount / 100);
 

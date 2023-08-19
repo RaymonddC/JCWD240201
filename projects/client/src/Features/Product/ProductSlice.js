@@ -86,7 +86,7 @@ export const getLabels = (data) => async (dispatch) => {
       category: data.category,
     });
 
-    // console.log(response.data);
+    console.log(response);
     dispatch(products(response?.data));
   } catch (error) {
     console.log(error);

@@ -58,7 +58,7 @@ export default function Transaction() {
   return (
     <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
       <div className="flex justify-between mb-4">
-        <div className="flex lg:h-[48px] items-center">
+        <div className="flex items-center">
           <MenuBarMobile />
           <h3 className="text-[20px] lg:text-[23px] font-bold">
             My Transaction
@@ -84,7 +84,7 @@ export default function Transaction() {
               return (
                 <button
                   key={'txStatus' + value.id}
-                  className={`statusses flex-1 text-center mb-2 border-b-4 px-2  py-3 flex justify-center  items-center min-w-[50%] md:min-w-[18%]  ${
+                  className={`statusses flex-1 text-center border-b-4 px-2  py-3 flex justify-center  items-center min-w-[50%] md:min-w-[18%]  ${
                     selectedStatus === value.status
                       ? 'border-blue-500 font-bold hover:border-blue-500 '
                       : ''

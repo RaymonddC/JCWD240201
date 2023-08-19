@@ -1,7 +1,7 @@
 export default function InputUserDate(props) {
   return (
     <>
-      <label htmlFor={props?.id} className="text-[14px]">
+      <label htmlFor={props.id} className="text-[14px]">
         {props.label}
       </label>
       <input
@@ -11,10 +11,10 @@ export default function InputUserDate(props) {
             : 'input w-full px-3 mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]'
         }
         name={props.name}
-        id={props?.id}
+        id={props.id}
         type="date"
         onChange={props.handleChange}
-        value={props?.values}
+        value={props.values}
         disabled={props.isDisabled}
       />
       <p className="text-error text-[14px]">{props?.errors}</p>

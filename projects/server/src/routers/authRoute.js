@@ -4,22 +4,14 @@ const auth = require('../middleware/auth');
 
 const { authController } = require('./../controllers');
 const APIKey = require('../middleware/APIKey');
-const recaptcha = require('../middleware/recaptcha');
 
 router.post(
   '/register',
-  APIKey.APIKey,
-  recaptcha.verify,
   authController.userCreate,
   authController.sendVerifyEmail,
 );
 
-router.post(
-  '/login',
-  APIKey.APIKey,
-  recaptcha.verify,
-  authController.userLogin,
-);
+router.post('/login', APIKey.APIKey, authController.userLogin);
 
 // //keepLogin (byToken)
 router.get(

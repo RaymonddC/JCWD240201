@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
 import { onLoginAsync, onRegister } from '../../Features/User/UserSlice';
 
@@ -14,36 +14,6 @@ import { InputPassword } from './Input/InputPassword';
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const key = process.env.REACT_APP_API_SECRET_KEY;
-
-  useEffect(() => {
-    const loadScriptByURL = (id, url, callback) => {
-      const isScriptExist = document.getElementById(id);
-
-      if (!isScriptExist) {
-        var script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = url;
-        script.id = id;
-        script.onload = function () {
-          if (callback) callback();
-        };
-        document.body.appendChild(script);
-      }
-
-      if (isScriptExist && callback) callback();
-    };
-
-    // load the script by passing the URL
-    loadScriptByURL(
-      key,
-      `https://www.google.com/recaptcha/api.js?render=${key}`,
-      function () {
-        console.log('Script loaded!');
-      },
-    );
-  }, []);
   return (
     <Formik
       initialValues={{
@@ -57,27 +27,16 @@ export const AuthForm = (propss) => {
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
-          setIsSubmitting(true)
-          window.grecaptcha.ready(() => {
-            window.grecaptcha
-              .execute(key, { action: 'submit' })
-              .then(async (token) => {
-                const isSuccess = await dispatch(
-                  propss.isRegis
-                    ? onRegister(values, token)
-                    : onLoginAsync(values, token),
-                );
+          const isSuccess = await dispatch(
+            propss.isRegis ? onRegister(values) : onLoginAsync(values),
+          );
 
-                if (!propss.isRegis) {
-                  setIsSubmitting(false)
-                  if (isSuccess) return navigate('/');
-                  resetForm();
-                } else {
-                  setIsSubmitting(false)
-                  if (isSuccess) return navigate('/login');
-                }
-              });
-          });
+          if (!propss.isRegis) {
+            if (isSuccess) return navigate('/');
+            resetForm();
+          } else {
+            if (isSuccess) return navigate('/login');
+          }
         } catch (error) {}
       }}
     >
@@ -170,10 +129,10 @@ export const AuthForm = (propss) => {
           )}
           <button
             type="submit"
-            className={`g-recaptcha btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
+            className={`btn text-white font-bold rounded-xl py-[10px] w-full mt-[20px] mb-[5px] ${
               props.isSubmitting ? 'btn-disabled' : 'btn-primary '
             } `}
-            disabled={isSubmitting}
+            disabled={props.isSubmitting}
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>

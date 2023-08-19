@@ -1,4 +1,3 @@
-const { promotionExpired } = require('../helpers/promotionHelper');
 const db = require('../models');
 const promotionDB = db.promotion;
 const promotionTypeDB = db.promotion_type;
@@ -12,9 +11,6 @@ const createDiscount = async (req, res, next) => {
     const { data } = req.body;
     const result = await promotionDB.create(data);
 
-    if (result) {
-      await promotionExpired(result);
-    }
     return res.send({
       success: true,
       status: 200,
@@ -22,7 +18,6 @@ const createDiscount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

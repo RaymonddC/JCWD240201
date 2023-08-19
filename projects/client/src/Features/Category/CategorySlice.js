@@ -26,7 +26,7 @@ export const getAllCategories =
   async (dispatch) => {
     try {
       let response = await getAllCategoriesAPI(search_category);
-      // console.log(response?.data.data);
+      console.log(response?.data.data);
       dispatch(categories(response?.data?.data));
     } catch (error) {
       console.log(error);

@@ -74,10 +74,10 @@ export default function UserEditModal({ data }) {
   useEffect(() => {
     if (data.full_name) {
       formik.setValues({
-        full_name: data.full_name || '',
-        phone_number: data.phone_number || '',
-        gender: data.gender || '',
-        birthdate: data.birthdate || '',
+        full_name: data.full_name,
+        phone_number: data.phone_number,
+        gender: data.gender,
+        birthdate: data.birthdate,
         profile_image: '',
       });
       setdisabled(true);
@@ -87,7 +87,7 @@ export default function UserEditModal({ data }) {
   return (
     <>
       <button
-        className="btn btn-md btn-outline border-primary text-primary hover:bg-primary hover:border-primary"
+        className="btn btn-outline border-primary text-primary hover:bg-primary hover:border-primary"
         onClick={() => setOpen(true)}
       >
         EDIT

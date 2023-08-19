@@ -10,7 +10,7 @@ const isAdmin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(400).send({
+    return res.send({
       success: false,
       message: error.message,
     });
@@ -26,7 +26,7 @@ const isUser = async (req, res, next) => {
 
     next();
   } catch (error) {
-    return res.status(400).send({
+    return res.send({
       success: false,
       message: error.message,
     });

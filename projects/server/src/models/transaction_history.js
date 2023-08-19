@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       transaction_id: DataTypes.INTEGER,
       transaction_status_id: DataTypes.INTEGER,
       is_active: DataTypes.BOOLEAN,
-      notes: DataTypes.STRING,
       deletedAt: DataTypes.DATE,
     },
     {

@@ -1,4 +1,5 @@
 export default function InputUserText(props) {
+  // TODO: tambahin touched
   return (
     <>
       <label htmlFor={props.id} className="text-[14px]">
@@ -6,7 +7,7 @@ export default function InputUserText(props) {
       </label>
       <input
         name={props.name}
-        placeholder={props?.placeholder ? props.placeholder : ''}
+        placeholder={props?.placeholder ? props.placeholder : null}
         id={props.id}
         onBlur={props?.onBlur}
         className={

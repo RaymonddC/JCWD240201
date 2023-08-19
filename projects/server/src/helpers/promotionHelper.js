@@ -28,22 +28,6 @@ const getAllPromotion = async (whereQuerry) => {
   }
 };
 
-const promotionExpired = (data) => {
-  return db.sequelize.query(
-    `CREATE EVENT promotion_expired${data.id} ON SCHEDULE AT "${data.date_end} 17:00:00"
-    DO BEGIN
-    UPDATE promotions SET deletedAt = LOCALTIMESTAMP WHERE id = :id;
-    
-    END;`,
-    {
-      replacements: { id: data.id },
-      type: db.sequelize.QueryTypes.CREATE,
-    },
-  );
-};
-
 module.exports = {
   getPromotionByProductId,
-  getAllPromotion,
-  promotionExpired,
 };

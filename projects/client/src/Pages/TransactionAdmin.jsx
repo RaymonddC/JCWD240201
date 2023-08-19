@@ -9,7 +9,6 @@ import TransactionCardAdmin from '../Components/Transaction/TransactionCardAdmin
 
 import { MdArrowDropDown } from 'react-icons/md';
 import { getAllTxStatus } from '../Features/TransactionStatus/TransactionStatusSlice';
-import { FaPage4 } from 'react-icons/fa6';
 
 const TransactionAdmin = () => {
   const dispatch = useDispatch();
@@ -24,8 +23,7 @@ const TransactionAdmin = () => {
     searchParams.get('sortOrder') || '',
   );
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
-
-  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('Waiting for payment');
   const [selectedStatusId, setSelectedStatusId] = useState(1);
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
@@ -35,11 +33,9 @@ const TransactionAdmin = () => {
   useEffect(() => {
     dispatch(getAllTxStatus());
   }, []);
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearchValue, sortType, sortOrder]);
 
   useEffect(() => {
+    console.log('.>> masuk use effect');
     if (page) {
       queryParams['page'] = page;
     }
@@ -52,9 +48,7 @@ const TransactionAdmin = () => {
     if (sortOrder) {
       queryParams['sortOrder'] = sortOrder;
     }
-    if (selectedStatus) {
-      queryParams['status'] = selectedStatus;
-    }
+    if (selectedStatus) queryParams['status'] = selectedStatus;
     setSearchParams(queryParams);
     dispatch(
       getAllTransactionSlice({

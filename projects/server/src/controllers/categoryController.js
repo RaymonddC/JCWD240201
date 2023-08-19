@@ -25,12 +25,10 @@ const getAllCategories = async (req, res, next) => {
             [Op.like]: `%${search_category}%`,
           },
         },
-        order: [['category_name', 'ASC']],
       });
     } else {
       response = await productCategoryDB.findAll({
         attributes: { exclude: ['image'] },
-        order: [['category_name', 'ASC']],
       });
     }
 

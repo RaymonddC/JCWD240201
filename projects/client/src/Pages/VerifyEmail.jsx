@@ -20,7 +20,7 @@ export default function VerifyEmail() {
   }, []);
   return (
     <>
-      <div className='flex content-center justify-center bg-secondary p-12 w-full h-screen'>
+      <div className='flex content-center justify-center bg-cyan-400 p-12 w-full h-screen'>
         <div className='flex content-center justify-center bg-white p-3 w-full rounded-lg'>
           <div className="flex content-center justify-center flex-col gap-5">
             <div className="flex content-center justify-center">
@@ -33,7 +33,7 @@ export default function VerifyEmail() {
               You have successfully verified account.
             </div>
             <div className="flex content-center justify-center">
-              <button onClick={() => navigate('/login')} className="btn btn-primary w-4/12 text-white">Ok</button>
+              <button onClick={() => navigate('/login')} className="btn btn-accent w-4/12 text-white">Ok</button>
             </div>
           </div>
         </div>

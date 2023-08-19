@@ -10,7 +10,7 @@ export default function CategoryCard(props) {
   return (
     <div
       key={props?.data?.id}
-      className="w-full h-full bg-white p-4 rounded-lg shadow-lg flex justify-between items-center"
+      className="w-full h-full p-4 border border-black flex justify-between items-center"
     >
       <div>
         <p>{`${props?.data?.category_name}`}</p>
