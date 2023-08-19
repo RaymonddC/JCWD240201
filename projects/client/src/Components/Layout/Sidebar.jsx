@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import Logo from '../../utils/images/logoHealthyMed.svg';
@@ -17,10 +17,11 @@ import { TbReportAnalytics } from 'react-icons/tb';
 
 export const Sidebar = () => {
   let dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="fixed sm:w-[80px] lg:w-[275px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#B4B9C7]">
+    <div className="fixed sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#B4B9C7]">
       <div className="flex sm:flex-col gap-[0.5em] items-center lg:items-start  flex-row">
         <Link to={'/'} className="w-full">
           <div className="cardSidebar sm:flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold hover:bg-[#8899a6] hover:bg-opacity-202 hidden justify-center ">
@@ -90,12 +91,12 @@ export const Sidebar = () => {
       </div>
       <Link to={!user || Object.keys(user).length === 0 ? '/login' : ''}>
         <div className="profile min-w-[100%] p-[13px]   rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 lg:flex-row flex-col gap-2 lg:gap-0 items-center lg:items-start hidden sm:flex">
-          <div className="avatar w-[40px] h-[40px] rounded-full m-[12px]">
+          {/* <div className="avatar w-[40px] h-[40px] rounded-full m-[12px]">
             <img
               src={`${process.env.REACT_APP_API_URL}/UserProfile/default.png`}
               alt=""
             />
-          </div>
+          </div> */}
           {/* <div className={`detail ${openMenu ? '' : 'invisible'}`}> */}
           <div
             className={`detail align-middle grow text-left  my-auto hidden lg:block`}
@@ -113,7 +114,7 @@ export const Sidebar = () => {
             <div
               className="iconMore m-auto"
               onClick={() => {
-                dispatch(logoutAsync());
+                dispatch(logoutAsync(navigate));
                 // <Navigate to={'/login'} />;
               }}
             >

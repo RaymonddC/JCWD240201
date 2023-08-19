@@ -92,13 +92,13 @@ const validateIsValueExist = (parameter) => {
 const getRevenueQuery = (query) => {
   const { startDate, endDate, sort_type, sort_order } = query;
   return db.sequelize.query(
-    `SELECT DATE(pharmacy.transaction_histories.createdAt) AS 'date', SUM(pharmacy.transactions.total_price - pharmacy.transactions.total_discount) as 'today_revenue' FROM pharmacy.transaction_histories 
-    JOIN pharmacy.transactions ON pharmacy.transactions.id = pharmacy.transaction_histories.transaction_id 
-    WHERE pharmacy.transaction_histories.is_active = true 
-    AND pharmacy.transaction_histories.transaction_status_id = 6 
-    AND pharmacy.transaction_histories.is_active = true
-    AND (DATE(pharmacy.transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
-    GROUP BY DATE(pharmacy.transaction_histories.createdAt)
+    `SELECT DATE(transaction_histories.createdAt) AS 'date', SUM(transactions.total_price - transactions.total_discount) as 'today_revenue' FROM transaction_histories 
+    JOIN transactions ON transactions.id = transaction_histories.transaction_id 
+    WHERE transaction_histories.is_active = true 
+    AND transaction_histories.transaction_status_id = 6 
+    AND transaction_histories.is_active = true
+    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
+    GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
       replacements: {
@@ -126,7 +126,7 @@ const getTotalTransactionQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN :startDate AND :endDate)
+    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
@@ -147,7 +147,7 @@ const getUserTransactionQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN :startDate AND :endDate)
+    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
@@ -162,15 +162,15 @@ const getUserTransactionQuery = (query) => {
 
 const getTopSaleProductQuery = (start_date, end_date) => {
   return db.sequelize.query(
-    `SELECT pharmacy.products.name, SUM(CASE WHEN pharmacy.stock_histories.unit = 0 THEN pharmacy.stock_histories.qty ELSE 0 END) AS 'quantity_closed', SUM(CASE WHEN pharmacy.stock_histories.unit = 1 THEN pharmacy.stock_histories.qty ELSE 0 END) AS 'quantity_opened' FROM pharmacy.transaction_histories 
-    JOIN pharmacy.transactions ON pharmacy.transaction_histories.transaction_id = pharmacy.transactions.id
-    JOIN pharmacy.stock_histories ON pharmacy.transactions.id = pharmacy.stock_histories.transaction_id
-    JOIN pharmacy.products ON pharmacy.stock_histories.product_id = pharmacy.products.id
-    WHERE pharmacy.transaction_histories.is_active = true
-    AND pharmacy.transaction_histories.transaction_status_id = 6 
-    AND pharmacy.stock_histories.stock_history_type_id = 6
-    AND (DATE(pharmacy.transaction_histories.createdAt) BETWEEN :start_date AND :end_date)
-    GROUP BY pharmacy.stock_histories.product_id
+    `SELECT products.name, SUM(CASE WHEN stock_histories.unit = 0 THEN stock_histories.qty ELSE 0 END) AS 'quantity_closed', SUM(CASE WHEN stock_histories.unit = 1 THEN stock_histories.qty ELSE 0 END) AS 'quantity_opened' FROM transaction_histories 
+    JOIN transactions ON transaction_histories.transaction_id = transactions.id
+    JOIN stock_histories ON transactions.id = stock_histories.transaction_id
+    JOIN products ON stock_histories.product_id = products.id
+    WHERE transaction_histories.is_active = true
+    AND transaction_histories.transaction_status_id = 6 
+    AND stock_histories.stock_history_type_id = 4
+    AND (DATE(transaction_histories.createdAt) BETWEEN :start_date AND :end_date)
+    GROUP BY stock_histories.product_id
     ORDER BY quantity_closed DESC;`,
     {
       replacements: {

@@ -37,7 +37,7 @@ export default function NavBar() {
             </div>
             <div className="flex items-center relative">
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn btn-sm btn-ghost absolute right-72">
+                <button className="btn btn-sm btn-ghost absolute right-44">
                   <Link to={'/cart'}>
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
@@ -55,7 +55,7 @@ export default function NavBar() {
                 ''
               )}
               {user && Object.keys(user).length !== 0 ? (
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-40 truncate">
                   <Link
                     to="/user/profile"
                     className="flex justify-center items-center gap-2 "
@@ -71,14 +71,14 @@ export default function NavBar() {
                     )}
                     <span className="font-bold">{user?.full_name}</span>
                   </Link>
-                  <button
+                  {/* <button
                     className="btn btn-outline btn-secondary ml-3"
                     onClick={() => {
                       dispatch(logoutAsync());
                     }}
                   >
                     <Link to={'/login'}>logout</Link>
-                  </button>
+                  </button> */}
                 </div>
               ) : (
                 <div className="flex gap-3">
@@ -100,7 +100,7 @@ export default function NavBar() {
             </label>
             <ul
               tabIndex={0}
-              className="menu dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
+              className="menu dropdown-content z-[20] p-2 shadow bg-base-100 rounded-box w-52 mt-4"
             >
               <li>
                 <Link to="/products">SHOP</Link>

@@ -5,7 +5,7 @@ import jumbotronImage from '../utils/images/jumbotronImage.png';
 import prescriptionImage from '../utils/images/prescription.svg';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProducts } from '../Features/Product/ProductSlice';
+import { getLabels, getProducts } from '../Features/Product/ProductSlice';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -17,7 +17,7 @@ export default function Landing() {
   const fileTypes = ['JPEG', 'PNG', 'JPG'];
   const limit = 9;
   const ProductsStore = useSelector((state) => state?.products?.products);
-  // console.log(ProductsStore);
+  console.log(ProductsStore?.data?.rows);
   const [file, setFile] = useState(null);
   const handleChange = (file) => {
     setFile(file);
@@ -25,7 +25,7 @@ export default function Landing() {
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
       <div key={`product${index}`} className="carousel-item ">
-        <ProductCard data={value} />
+        <ProductCard data={value.product} />
       </div>
     );
   });
@@ -42,7 +42,14 @@ export default function Landing() {
     } catch (error) {}
   };
   useEffect(() => {
-    dispatch(getProducts({ page: 1, limit, search: '' }));
+    // dispatch(getProducts({ page: 1, limit, search: '' }));
+    dispatch(
+      getLabels({
+        page: 1,
+        limit,
+        category: 'Jamu',
+      }),
+    );
   }, [dispatch]);
   return (
     <>
@@ -116,43 +123,16 @@ export default function Landing() {
           </Link>
         </article>
       </div>
-      <div className="flex mb-20 justify-center">
+      <div className="flex flex-col mb-20 items-center justify-center">
+        <div className="w-full flex pl-[15%] ">
+          <article className="prose">
+            <h3>Jamu</h3>
+          </article>
+        </div>
         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
         </div>
       </div>
-      {/* <div className="w-full">
-        <Footer />
-      </div> */}
     </>
   );
 }
-
-/*
-import { useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
-
-import "./styles.css";
-
-const fileTypes = ["JPEG", "PNG", "GIF"];
-
-export default function App() {
-  const [file, setFile] = useState(null);
-  const handleChange = (file) => {
-    setFile(file);
-  };
-  return (
-    <div className="App">
-      <h1>Hello To Drag & Drop Files</h1>
-      <FileUploader
-        multiple={true}
-        handleChange={handleChange}
-        name="file"
-        types={fileTypes}
-      />
-      <p>{file ? `File name: ${file[0].name}` : "no files uploaded yet"}</p>
-    </div>
-  );
-}
-
-*/

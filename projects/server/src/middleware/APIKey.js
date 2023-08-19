@@ -10,7 +10,7 @@ module.exports = {
       if (!APIAccess) throw { message: 'Access Denied 2' };
       if (APIAccess.password === 'access-confirm') next();
     } catch (error) {
-      return res.send({
+      return res.status(400).send({
         success: false,
         message: error.message,
       });

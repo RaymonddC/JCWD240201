@@ -60,6 +60,8 @@ const Cart = () => {
     else setIsCheck(false);
   }, [carts, isCheck]);
 
+  // console.log(carts);
+
   return (
     <div className="min-h-[50vh]">
       <p className="font-bold text-[24px] mb-9 hidden sm:block md:text-left text-center ">

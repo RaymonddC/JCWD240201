@@ -34,18 +34,20 @@ const getAllProducts = async (req, res, next) => {
     console.log(sortType, sortOrder, search, order);
     const response = await productDB.findAndCountAll({
       include: [
-        { model: labelDB },
+        // { model: labelDB }, <<<< ini ngaruh ga??
         { model: packagingDB },
         { model: productTypeDB },
         { model: closedStockDB },
         { model: openedStockDB },
         { model: promotionDB },
+        { model: productImageDB },
       ],
       limit: pageLimit,
       offset: offset,
       where: where,
       order: order,
     });
+    console.log('><><>.>>>',response.rows.length, pageLimit)
     const totalPage = Math.ceil(response.count / pageLimit);
 
     return res.status(200).send({
@@ -67,7 +69,7 @@ const getProductDetails = async (req, res, next) => {
     const { id } = req.params;
     console.log('id', req.params);
     const response = await productDB.findOne({
-      include: [packagingDB, productTypeDB],
+      include: [packagingDB, productTypeDB, productImageDB],
       where: { id },
     });
     const labels = await labelDB.findAll({
@@ -90,7 +92,6 @@ const getProductDetails = async (req, res, next) => {
       message: 'get product details success',
       labels: labels,
       data: response,
-      image: image,
       opened_stock: openedStock,
       closed_stock: closedStock,
     });

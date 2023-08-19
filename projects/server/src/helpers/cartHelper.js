@@ -133,6 +133,22 @@ const getAllPrescriptions = async (
   }
 };
 
+const getPricePrescription = (cart_id) => {
+  return db.sequelize.query(
+    `SELECT SUM(prescription_carts.price) as total_price FROM carts
+    JOIN prescription_carts ON carts.id = prescription_carts.cart_id
+    WHERE carts.id = :cart_id 
+    AND prescription_carts.deletedAt IS NULL
+    GROUP BY prescription_carts.cart_id;`,
+    {
+      replacements: {
+        cart_id: cart_id,
+      },
+      type: db.sequelize.QueryTypes.SELECT,
+    },
+  );
+};
+
 module.exports = {
   getUserCarts,
   getCart,
@@ -140,4 +156,5 @@ module.exports = {
   updateConfirmation,
   isPrescriptionCartProductListEmpty,
   getAllPrescriptions,
+  getPricePrescription,
 };
