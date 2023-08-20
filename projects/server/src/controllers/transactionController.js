@@ -57,11 +57,12 @@ const checkout = async (req, res, next) => {
       const promoTx = await Promotion.findByPk(promotionActive);
       if (!promoTx)
         throw {
-          message: 'Promotion not Found!',
+          message: 'Promotion quota exceed!',
           code: 400,
           data: promotionActive,
         };
-      if (promoTx && promoTx.minimum_transaction <= totalPrice) {
+      console.log(promoTx);
+      if (promoTx && promoTx.minimum_transaction < totalPrice) {
         if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
         let disc = (totalPrice * promoTx.discount) / 100;
         totalDiscount +=
@@ -180,7 +181,7 @@ const checkout = async (req, res, next) => {
                 t,
               );
             } catch (error) {
-            //   console.log (error)
+              //   console.log (error)
             }
           });
         }
@@ -204,7 +205,7 @@ const checkout = async (req, res, next) => {
       throw {
         code: 400,
         message: 'promotion changed',
-        // data: { totalDiscount, discount },
+        data: { totalDiscount, discount },
       };
 
     if (totalAllPriceDB !== Number(totalPrice))
@@ -251,7 +252,7 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    // console.log(error);
+    console.log(error);
     next(error);
   }
 };

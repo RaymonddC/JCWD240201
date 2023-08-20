@@ -1,41 +1,54 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { newActivePromo } from '../../Features/Cart/CartSlice';
+import { toast } from 'react-hot-toast';
+import moment from 'moment';
 
 const PromotionCard = (props) => {
-  // const dateTime = new Date(props.promotion.date_end);
-  // const date = dateTime
-  //   .toLocaleDateString('EN-us', {
-  //     weekday: 'long',
-  //     year: 'numeric',
-  //     month: 'long',
-  //     day: 'numeric',
-  //   })
-  //   .split(',');
-  console.log(props.id, props.promotion.id);
+  const dateTime = new Date(props.promotion.date_end);
+  const endPromo = moment([
+    dateTime.getFullYear(),
+    dateTime.getMonth(),
+    dateTime.getDate(),
+  ]).fromNow();
+
+  useEffect(() => {
+    if (props.totalPrice < props.promotion.minimum_transaction)
+      props.setSelectedPromo({
+        id: null,
+        amount: 0,
+        minPrice: 0,
+      });
+  }, []);
+
   return (
-    <div
-      className={`promo border  rounded-lg p-3 ${
-        props.id === props.promotion.id ? 'bg-green-50 border-primary' : ''
-      }`}
-      onClick={() =>
+    <button
+      className={`promo border  rounded-lg p-3 flex flex-col
+      ${
+        props.totalPrice < props.promotion.minimum_transaction
+          ? 'bg-gray-300 text-gray-500 cursor-default'
+          : ''
+      }
+       ${props.id === props.promotion.id ? 'bg-green-50 border-primary' : ''}`}
+      onClick={() => {
+        if (props.totalPrice < props.promotion.minimum_transaction)
+          return toast.error('minimum transaction');
         props.setSelectedPromo({
           id: props.promotion.id,
           amount: props.promotion.totalDiscount,
-        })
-      }
+          minPrice: props.promotion.minimum_transaction,
+        });
+      }}
     >
       <p className="font-bold text-lg">
         Discount {props.promotion.discount}% (Rp
         {props.promotion.totalDiscount?.toLocaleString(['id'])})
       </p>
-      <div className="block md:flex">
+      <div className="block md:flex gap-0.5">
         {props.promotion.minimum_transaction ? (
           <p>
             min. transaction: Rp
-            {(props.promotion.minimum_transaction || 0).toLocaleString([
-              'id',
-            ])}{' '}
+            {(props.promotion.minimum_transaction || 0).toLocaleString(['id'])}
           </p>
         ) : (
           ''
@@ -53,8 +66,8 @@ const PromotionCard = (props) => {
         )}
       </div>
       {/* <p>Ends in {dateTime}</p> */}
-      <p>Ends in 2h50m</p>
-    </div>
+      <p>Ends {endPromo}</p>
+    </button>
   );
 };
 

@@ -5,6 +5,7 @@ const User = db.user;
 const PackagingType = db.packaging_type;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
+const ProductImageDB = db.product_image;
 const prescriptionCartDB = db.prescription_cart;
 const { Op } = require('sequelize');
 const { sequelize } = require('../models');
@@ -34,6 +35,7 @@ const getUserCarts = async (includes, whereQuery, order) => {
               required: false,
             },
             { model: ClosedStock },
+            { model: ProductImageDB, attributes: ['image'] },
           ],
         },
       ],
