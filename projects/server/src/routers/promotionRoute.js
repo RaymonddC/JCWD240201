@@ -19,12 +19,6 @@ router.get(
   isAdmin,
   promotionController.getPromotionType,
 );
-router.get(
-  '/list',
-  APIKey,
-  verifyToken,
-  isAdmin,
-  promotionController.getPromotionList,
-);
+router.get('/list', APIKey, verifyToken, promotionController.getPromotionList);
 
 module.exports = router;

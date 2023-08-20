@@ -6,26 +6,28 @@ import {
   getCartUserAsync,
   updateQtyAsync,
 } from '../Features/Cart/CartSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import {
   getProvinceAsync,
   getUserAddressAsync,
 } from '../Features/Address/AddressSlice';
 import AddressModal from '../Components/Address/addressModal';
-import { CiDiscount1 } from 'react-icons/ci';
-import { AiOutlineRight } from 'react-icons/ai';
+
 import PromotionModal from '../Components/Cart/PromotionModal';
 import { getPromotionsSlice } from '../Features/Promotion/PromotionSlice';
+import ProductCard from '../Components/Products/ProductCard';
+import { getLabels } from '../Features/Product/ProductSlice';
+import ProductListSkl from '../Components/Skeleton/ProductListSkl';
+
 import toast from 'react-hot-toast';
+import CartSummary from '../Components/Cart/CartSummary';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const [openAddressModal, setOpenAddressModal] = useState(false);
   const [openPromotionModal, setOpenPromotionnModal] = useState(false);
   const { user } = useSelector((state) => state?.user);
-  const { address, loadAddress } = useSelector((state) => state.address);
+
   const {
     carts,
     totalCart,
@@ -36,6 +38,18 @@ const Cart = () => {
   } = useSelector((state) => state?.cart);
   const [isCheck, setIsCheck] = useState(false);
   // const [isForceCheck, setIsForceCheck] = useState(false);;
+
+  const ProductsStore = useSelector((state) => state?.products?.products);
+  let productMap;
+  if (totalCart === 0) {
+    productMap = ProductsStore?.data?.rows?.map((value, index) => {
+      return (
+        <div key={`product${index}`} className="carousel-item ">
+          <ProductCard data={value.product} />
+        </div>
+      );
+    });
+  }
 
   const handleQty = (e, calc, idx, checked) => {
     dispatch(
@@ -53,6 +67,14 @@ const Cart = () => {
     dispatch(getCartUserAsync());
     dispatch(getUserAddressAsync());
     dispatch(getProvinceAsync());
+    if (totalCart === 0)
+      dispatch(
+        getLabels({
+          page: 1,
+          limit: 9,
+          category: 'Jamu',
+        }),
+      );
   }, []);
 
   useEffect(() => {
@@ -60,6 +82,30 @@ const Cart = () => {
     else setIsCheck(false);
   }, [carts, isCheck]);
 
+  if (totalCart === 0) {
+    return (
+      <>
+        <div className="text-lg font-bold">Start Add Product to cart</div>
+        <div className=" mt-10 flex justify-end pr-[10%]">
+          <article className="prose">
+            <Link to="/products">
+              <h3>See all</h3>
+            </Link>
+          </article>
+        </div>
+        <div className="flex flex-col mb-20 items-center justify-center">
+          <div className="w-full flex pl-[15%] ">
+            <article className="prose">
+              <h3>Jamu</h3>
+            </article>
+          </div>
+          <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
+            {productMap ? <>{productMap}</> : <ProductListSkl limit={9} />}
+          </div>
+        </div>
+      </>
+    );
+  }
   // console.log(carts);
 
   return (
@@ -105,91 +151,15 @@ const Cart = () => {
         <div className={`noCart ${totalCart === 0 ? '' : 'hidden'} `}>
           <div className="p">Start Add Product to cart</div>
         </div>
-        <div
-          className={`card card-compact w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[11em] md:w-[30%] bg-base-100 shadow-xl h-fit  md:right-12  ${
-            totalCart === 0 ? 'hidden' : ''
-          }`}
-        >
-          <div className="card-body">
-            {/* <label
-              className="promo flex items-center gap-2 hover:cursor-pointer"
-              > */}
-            <label
-              htmlFor="my_modal_6"
-              onClick={() => {
-                activeCart === 0
-                  ? toast.error('Select Your Cart')
-                  : setOpenPromotionnModal(true);
-              }}
-              className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
-            >
-              <CiDiscount1 size={'1.5em'} />
-              <p>Use Your Promo Here</p>
-              <AiOutlineRight />
-            </label>
-            <div className="summary hidden md:block">
-              <div className="ringkasan ">
-                <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
-                  Order Summary
-                </p>
-              </div>
-              <div className="details py-3 border-b border-[#D5D7DD]">
-                <div className="detailPrice flex justify-between text-[16px]">
-                  <p>
-                    Total Price <br /> ({activeCart} item(s))
-                  </p>
-                  <span>Rp{totalPrice.toLocaleString(['id'])}</span>
-                </div>
-                <div className="detailDiscount flex justify-between text-[16px]">
-                  <p>Total Discount</p>
-                  <span>
-                    -Rp{(discount + amountPromotion).toLocaleString(['id'])}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="total flex md:block items-center">
-              <div className="lastPrice md:flex flex-grow justify-between  my-2 ">
-                <p className="md:font-bold text-[0.8em] md:text-[1.5em] lg:text-[2em]">
-                  Total Price
-                </p>
-                <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
-                  Rp
-                  {(totalPrice - discount - amountPromotion).toLocaleString([
-                    'id',
-                  ])}
-                </span>
-              </div>
-              <div
-                className="orderNow  md:pt-5"
-                onClick={() => {
-                  // checkoutAsync();
-                  // navigate('/checkout');
-                  if (activeCart === 0)
-                    return toast.error('Select product to checkout');
-                  if (!address.length) return setOpenAddressModal(true);
-                  return navigate('/checkout');
-                }}
-              >
-                <button
-                  className="btn btn-sm md:btn-md  btn-primary w-full text-white"
-                  disabled={!activeCart}
-                >
-                  Proceed ({activeCart})
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {openAddressModal ? (
-        <AddressModal
-          addAddress
-          navigate={'/checkout'}
-          openAddressModal={openAddressModal}
-          closeModal={() => setOpenAddressModal(false)}
+        {/* //SummaryCard */}
+        <CartSummary
+          totalCart={totalCart}
+          activeCart={activeCart}
+          totalPrice={totalPrice}
+          setOpenPromotionnModal={setOpenPromotionnModal}
         />
-      ) : null}
+      </div>
+
       {openPromotionModal ? (
         <PromotionModal
           totalPrice={totalPrice}
