@@ -40,7 +40,7 @@ export default function QnAAdmin() {
   );
 
   useEffect(() => {
-    console.log(questionCategory)
+    // console.log(questionCategory)
     dispatch(getQuestionCategory());
     dispatch(
       getQuestions({
