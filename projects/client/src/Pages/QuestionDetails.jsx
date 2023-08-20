@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
+  answers,
   getQuestionDetail,
   postAnswer,
   updateAnswer,
@@ -7,6 +8,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { createMarkup } from '../Helper/createMarkup';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import { convertToHTML } from 'draft-convert';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
 export default function QuestionDetails() {
   const user = useSelector((state) => state?.user?.user);
@@ -24,11 +29,24 @@ export default function QuestionDetails() {
   const answerId = QnAStore?.questions?.answers?.[0]?.id;
   const answerText = useRef();
   const [disabled, setDisabled] = useState(true);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+  const onEditorStateChange = (newEditorState) => {
+    setEditorState(newEditorState);
+  };
+  useEffect(() => {
+    console.log(answer);
+    setEditorState(
+      EditorState.createWithContent(
+        ContentState.createFromBlockArray(convertFromHTML(answer || '<p></p>')),
+      ),
+    );
+  }, [answer]);
 
   useEffect(() => {
     dispatch(getQuestionDetail({ id: Number(id) }));
     console.log(answerText?.current?.value);
-  }, [dispatch, id, answerText]);
+  }, [dispatch, id, answerText, disabled]);
   if (role === 1) {
     return (
       <>
@@ -49,12 +67,27 @@ export default function QuestionDetails() {
         {answer ? (
           <>
             <div className="w-full">
-              <textarea
-                ref={answerText}
-                className="textarea w-full my-5 textarea-bordered h-24"
-                disabled={disabled}
-                defaultValue={answer}
-              ></textarea>
+              {disabled ? (
+                <p
+                  // ref={answerText}
+                  className="textarea w-full my-5 textarea-bordered h-24"
+                  disabled={disabled}
+                  dangerouslySetInnerHTML={createMarkup(answer)}
+                ></p>
+              ) : (
+                <Editor
+                  editorState={editorState}
+                  // ref={question}
+                  wrapperClassName=" bg-white border"
+                  editorClassName="border"
+                  toolbarClassName="border"
+                  // wrapperClassName="p-1 border max-h-72"
+                  // editorClassName="p-1 border"
+                  // toolbarClassName="hidden"
+                  onEditorStateChange={onEditorStateChange}
+                  // onChange={setEditorState}
+                />
+              )}
             </div>
             <div className="flex justify-end">
               {disabled ? (
@@ -66,18 +99,21 @@ export default function QuestionDetails() {
                 </button>
               ) : (
                 <button
-                  onClick={() => {
-                    setDisabled(true);
-                    if (answerText.current.value !== answer) {
-                      dispatch(
+                  onClick={async () => {
+                    const answerNew = convertToHTML(
+                      editorState.getCurrentContent(),
+                    );
+                    if (answerNew !== answer) {
+                      await dispatch(
                         updateAnswer({
                           id: answerId,
-                          answer: answerText.current.value,
+                          answer: answerNew,
                           question_id: questionId,
                           user_id: userId,
                         }),
                       );
                     }
+                    setDisabled(true);
                   }}
                   className=" btn btn-primary"
                 >
@@ -88,26 +124,40 @@ export default function QuestionDetails() {
           </>
         ) : (
           <>
-            <div className="w-full">
-              <textarea
+            <div className="w-full h-72 overflow-auto">
+              {/* <textarea
                 ref={answerText}
                 className="textarea w-full my-5 textarea-bordered h-24"
                 placeholder="not yet answered"
                 // disabled={disabled}
-              ></textarea>
+              ></textarea> */}
+              <Editor
+                editorState={editorState}
+                // ref={question}
+                wrapperClassName=" bg-white border"
+                editorClassName="border"
+                toolbarClassName="border"
+                // wrapperClassName="p-1 border max-h-72"
+                // editorClassName="p-1 border"
+                // toolbarClassName="hidden"
+                onEditorStateChange={onEditorStateChange}
+                // onChange={setEditorState}
+              />
             </div>
 
             <div className="flex justify-end">
               <button
-                onClick={() =>
+                onClick={() => {
+                  const answer = convertToHTML(editorState.getCurrentContent());
+                  // console.log(answer);
                   dispatch(
                     postAnswer({
-                      answer: answerText.current.value,
+                      answer: answer,
                       question_id: questionId,
                       user_id: userId,
                     }),
-                  )
-                }
+                  );
+                }}
                 className=" btn btn-primary"
               >
                 post answer
@@ -129,9 +179,9 @@ export default function QuestionDetails() {
               <article className="prose">
                 <h3>{title} </h3>
                 <p
-                className="preview"
-                dangerouslySetInnerHTML={createMarkup(question)}
-              ></p>
+                  className="preview"
+                  dangerouslySetInnerHTML={createMarkup(question)}
+                ></p>
               </article>
             </div>
           </div>
@@ -142,7 +192,7 @@ export default function QuestionDetails() {
             <div className="card-body ">
               <article className="prose">
                 <h3> Answer:</h3>
-                <p>{answer}</p>
+                <p dangerouslySetInnerHTML={createMarkup(answer)}></p>
               </article>
             </div>
           </div>

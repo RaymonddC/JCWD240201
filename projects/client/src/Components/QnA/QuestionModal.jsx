@@ -28,7 +28,7 @@ export default function QuestionModal() {
   const title = useRef();
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   // const [convertedContent, setConvertedContent] = useState(null);
-  
+
   // let option = 0;
   const QnAStore = useSelector((state) => state?.QnA);
   // const onEditorStateChange = (newEditorState) => {

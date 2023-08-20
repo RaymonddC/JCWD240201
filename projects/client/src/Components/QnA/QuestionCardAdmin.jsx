@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { createMarkup } from '../../Helper/createMarkup';
 
+
 export default function QuestionCardAdmin(props) {
   const date = props?.data?.createdAt?.split('T')[0];
   const question = props?.data?.question;
