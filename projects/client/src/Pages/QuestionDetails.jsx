@@ -58,7 +58,7 @@ export default function QuestionDetails() {
             <article className="prose">
               <h3>{title}</h3>
               <p
-                className="preview"
+                className="line-clamp-3"
                 dangerouslySetInnerHTML={createMarkup(question)}
               ></p>
             </article>
@@ -70,7 +70,7 @@ export default function QuestionDetails() {
               {disabled ? (
                 <p
                   // ref={answerText}
-                  className="textarea w-full my-5 textarea-bordered h-24"
+                  className="textarea w-full my-5 textarea-bordered"
                   disabled={disabled}
                   dangerouslySetInnerHTML={createMarkup(answer)}
                 ></p>
@@ -81,11 +81,7 @@ export default function QuestionDetails() {
                   wrapperClassName=" bg-white border"
                   editorClassName="border"
                   toolbarClassName="border"
-                  // wrapperClassName="p-1 border max-h-72"
-                  // editorClassName="p-1 border"
-                  // toolbarClassName="hidden"
                   onEditorStateChange={onEditorStateChange}
-                  // onChange={setEditorState}
                 />
               )}
             </div>
@@ -124,7 +120,7 @@ export default function QuestionDetails() {
           </>
         ) : (
           <>
-            <div className="w-full h-72 overflow-auto">
+            <div className="w-full h-72 overflow-auto ">
               {/* <textarea
                 ref={answerText}
                 className="textarea w-full my-5 textarea-bordered h-24"
@@ -134,8 +130,8 @@ export default function QuestionDetails() {
               <Editor
                 editorState={editorState}
                 // ref={question}
-                wrapperClassName=" bg-white border"
-                editorClassName="border"
+                wrapperClassName=" bg-white border p-1"
+                editorClassName="border p-1"
                 toolbarClassName="border"
                 // wrapperClassName="p-1 border max-h-72"
                 // editorClassName="p-1 border"
@@ -147,16 +143,17 @@ export default function QuestionDetails() {
 
             <div className="flex justify-end">
               <button
-                onClick={() => {
+                onClick={async () => {
                   const answer = convertToHTML(editorState.getCurrentContent());
                   // console.log(answer);
-                  dispatch(
+                  await dispatch(
                     postAnswer({
                       answer: answer,
                       question_id: questionId,
                       user_id: userId,
                     }),
                   );
+                  setDisabled(true);
                 }}
                 className=" btn btn-primary"
               >

@@ -17,7 +17,7 @@ export default function QnAUser() {
   const QnAStore = useSelector((state) => state?.QnA);
   const totalPages = QnAStore?.answers?.totalPage;
   const questionCategories = QnAStore?.categories;
-  const [page, setPage] = useState(searchParams.get('page') || 1);
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [questionCategory, setQuestionCategory] = useState(
     searchParams.get('category') || '',

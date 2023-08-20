@@ -8,9 +8,9 @@ export default function QuestionCardAdmin(props) {
   const title = props?.data?.title;
   const id = props?.data?.id;
   const isAnswered = props?.data.answers.length;
-  console.log(isAnswered);
+  // console.log(isAnswered);
   // console.log(Object.keys(answer).length);
-  console.log(props?.data.answers.length);
+  // console.log(props?.data.answers.length);
   return (
     <>
       <Link to={`/qna/details/${id}`}>
