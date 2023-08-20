@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-
 import { Link, Navigate } from 'react-router-dom';
 import { AuthForm } from '../Components/AuthForm/AuthForm';
-
 import LoginImage from '../utils/images/Frame.svg';
 import Logo from '../utils/images/logoHealthyMed.svg';
+import { loginWithGoogleSlice } from '../Features/User/UserSlice';
+
 
 export const Login = () => {
   const { user } = useSelector((state) => state?.user);

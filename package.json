@@ -36,6 +36,7 @@
     "bcrypt": "^5.1.0",
     "dayjs": "^1.11.9",
     "exceljs": "^4.3.0",
+    "firebase": "^10.2.0",
     "formik": "^2.4.2",
     "react-draft-wysiwyg": "^1.15.0",
     "react-dropdown-select": "^4.10.0",
