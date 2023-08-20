@@ -30,7 +30,7 @@ const updateTxHistory = async (req, res, next) => {
   try {
     const { transaction_id, transaction_status_id, notes, email } = req.body;
     let txCreate;
-    const tempCompile = await Handlebars.compile(data);
+    // const tempCompile = await Handlebars.compile(data);
     if (email) {
       const emailFind = await userDB.findOne({ where: { email } });
       if (!emailFind) throw { message: 'email not found' };

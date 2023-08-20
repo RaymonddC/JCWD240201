@@ -12,13 +12,15 @@ const transporter = require('../helpers/transporter');
 const getQuestions = async (req, res, next) => {
   try {
     const { page, search, sort, limit, question_category_id } = req.query;
-    // console.log(">>>",question_category_id);
+    console.log(">>>",req.query);
     let where = {};
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
+    
     if (question_category_id) {
-      where.question_category_id = { question_category_id };
+      where.question_category_id = question_category_id;
     }
+
     let response = await questionDB.findAndCountAll({
       include: answerDB,
       limit: pageLimit,

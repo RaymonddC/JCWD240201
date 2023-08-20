@@ -17,7 +17,7 @@ export default function Landing() {
   const fileTypes = ['JPEG', 'PNG', 'JPG'];
   const limit = 9;
   const ProductsStore = useSelector((state) => state?.products?.products);
-  console.log(ProductsStore?.data?.rows);
+  // console.log(ProductsStore?.data?.rows);
   const [file, setFile] = useState(null);
   const handleChange = (file) => {
     setFile(file);
