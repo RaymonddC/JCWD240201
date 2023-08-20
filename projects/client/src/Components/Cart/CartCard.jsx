@@ -44,7 +44,7 @@ const CartCard = (props) => {
     //   await props.setQty(null, null, props.idx, true);
     // };
     if (props.check) {
-      if (!props.cart.is_check) {
+      if (props.cart.confirmation && !props.cart.is_check) {
         setIsCheckCart(true);
         // props.setQty(null, null, props.idx, true);
         // console.log('check');
@@ -81,10 +81,10 @@ const CartCard = (props) => {
       />
       <div className="product flex justify-between ">
         <div className="check">
-          <div className="select flex gap-5 items-center h-full">
+          <div className="select cursor-default flex gap-5 items-center h-full">
             <input
               type="checkbox"
-              className="h-3 w-3"
+              className="h-3 w-3 cursor-pointer"
               checked={props.cart.is_check}
               onClick={() => setIsCheckCart(!isCheckCart)}
               readOnly
@@ -94,7 +94,20 @@ const CartCard = (props) => {
         </div>
 
         <div className="img">
-          <img className="h-20 w-20" src={props.cart.img || Logo} alt={Logo} />
+          <img
+            className="h-20 w-20"
+            src={
+              props.cart.prescription_image ||
+              props.cart.product.product_images[0]?.image
+                ? `
+              ${process.env.REACT_APP_API_BASE_URL}/${
+                props.cart.prescription_image ||
+                props.cart.product.product_images[0]?.image
+              }`
+                : Logo
+            }
+            alt={'Product'}
+          />
         </div>
         <div className="cartDetail lg:flex flex-grow pl-3">
           <div className="detail flex-grow pb-2">
@@ -110,6 +123,11 @@ const CartCard = (props) => {
                 </span>
                 <p className="text-warning">*only applied once/transaction</p>
               </>
+            ) : (
+              ''
+            )}
+            {!props.cart.confirmation ? (
+              <p className="text-warning">Waiting for Confirmation</p>
             ) : (
               ''
             )}

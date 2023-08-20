@@ -10,14 +10,14 @@ const PromotionModal = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { promotions } = useSelector((state) => state.promotion);
-  const { promotionActive, amountPromotion } = useSelector(
+  const { promotionActive, amountPromotion, minimumPricePromo } = useSelector(
     (state) => state.cart,
   );
   const [selectedPromo, setSelectedPromo] = useState({
     id: promotionActive,
     amount: amountPromotion,
+    minPrice: minimumPricePromo,
   });
-  console.log(selectedPromo, promotionActive, amountPromotion);
 
   useEffect(() => {
     dispatch(
@@ -40,7 +40,23 @@ const PromotionModal = (props) => {
       <div className="modal">
         <div className="modal-box p-0 text-sm relative">
           <div className="head flex justify-between pb-2 px-6 pt-6 border-b sticky top-0 bg-white">
-            <p className="text-[24px] font-bold">Promotion</p>
+            <div className="heading flex justify-between w-full mr-5 items-center">
+              <p className="text-[24px] font-bold">Promotion</p>
+              <button
+                className={`btn btn-sm p-1 rounded-lg ${
+                  !selectedPromo.id ? 'btn-disabled' : ''
+                }`}
+                onClick={() =>
+                  setSelectedPromo({
+                    id: null,
+                    amount: 0,
+                    minPrice: 0,
+                  })
+                }
+              >
+                Reset Promo
+              </button>
+            </div>
             <label
               htmlFor="my_modal_6"
               className="items-center flex"
@@ -56,11 +72,17 @@ const PromotionModal = (props) => {
                   id={selectedPromo.id}
                   promotion={value}
                   setSelectedPromo={setSelectedPromo}
+                  totalPrice={props.totalPrice}
                 />
               );
             })}
           </div>
-          <div className="totalDiscount sticky bottom-0 flex justify-between bg-white p-3 px-6 ">
+          {console.log(!selectedPromo.id, selectedPromo.id)}
+          <div
+            className={`totalDiscount sticky bottom-0 flex justify-between bg-white p-3 px-6 ${
+              !selectedPromo.id ? 'hidden' : ''
+            }`}
+          >
             <div className="disc">
               <p>Applied Discount</p>
               <p className="font-bold text-xl">
