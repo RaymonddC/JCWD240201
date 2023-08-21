@@ -105,9 +105,11 @@ const TransactionCard = (props) => {
           <p>Total Belanja</p>
           <p className="font-bold">
             Rp.{' '}
-            {(props.tx.total_price + props.tx.shipment_fee)?.toLocaleString([
-              'id',
-            ])}
+            {(
+              props.tx.total_price +
+              props.tx.shipment_fee -
+              props.tx.total_discount
+            )?.toLocaleString(['id'])}
           </p>
         </div>
       </div>

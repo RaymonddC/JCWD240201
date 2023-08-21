@@ -24,6 +24,7 @@ const initialState = {
   detailprescriptionCart: {},
   promotionActive: null,
   amountPromotion: 0,
+  minimumPricePromo: 0,
 };
 
 export const CartSlice = createSlice({
@@ -31,13 +32,17 @@ export const CartSlice = createSlice({
   initialState,
   reducers: {
     onGetData: (initialState, action) => {
+      if (action.payload.totalPrice < initialState.minimumPricePromo) {
+        initialState.promotionActive = null;
+        initialState.amountPromotion = 0;
+        initialState.minimumPricePromo = 0;
+      }
       initialState.carts = action.payload.carts;
       initialState.totalCart = action.payload.totalCart;
       initialState.activeCart = action.payload.activeCart;
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
       initialState.weight = action.payload.weight;
-      // console.log('masuk');
     },
     setPrescriptionCarts: (initialState, action) => {
       initialState.prescriptionCarts = action.payload;
@@ -48,6 +53,7 @@ export const CartSlice = createSlice({
     onChangeActivePromo: (initialState, action) => {
       initialState.promotionActive = action.payload.id;
       initialState.amountPromotion = action.payload.amount;
+      initialState.minimumPricePromo = action.payload.minPrice;
     },
   },
 });
@@ -61,11 +67,6 @@ export const updateQtyAsync = (values) => async (dispatch) => {
     let prodStock = cart.product?.closed_stocks[0]?.total_stock;
     let promoStock = cart.product?.promotions[0]?.limit || prodStock * 100;
     let stock = prodStock < promoStock ? prodStock : promoStock;
-    console.log(
-      stock,
-      cart.product?.closed_stocks[0]?.total_stock,
-      cart.product?.promotions[0]?.limit,
-    );
 
     if (calc) {
       if (calc === '+')
@@ -210,6 +211,7 @@ export const updateConfirmationPrescriptionCartSlice =
 
 export const newActivePromo = (values, close) => async (dispatch) => {
   try {
+    console.log(values);
     dispatch(onChangeActivePromo(values));
     close();
   } catch (error) {

@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import { checkCredential, keepLogin, register } from '../../API/authAPI';
-
-// import { auth } from './../../firebase';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../../firebase';
 // import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-// const provider = new GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 
 // const token = localStorage.getItem('token')
 //   ? localStorage?.getItem('token')
@@ -139,6 +139,18 @@ export const onRegister = (values, token) => async (dispatch) => {
     toast.error(error?.response?.data?.message);
   }
 };
+export const loginWithGoogleSlice = () => async (dispatch) => {
+  // const dispatch = useDispatch()
+  try {
+      let response = await signInWithPopup(auth, provider)
+      console.log(response)
+      const email = response.user.email
+      console.log(email)
+        } catch (error) {
+      console.log(error)
+      toast.error(error)
+  }
+}
 export const { onSaveUser, toggleBtn, setUser } = UserSlice.actions;
 
 export default UserSlice.reducer;
