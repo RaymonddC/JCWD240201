@@ -33,7 +33,6 @@ export default function FilterBar(props) {
           value={props.value}
           className="input input-bordered w-full md:w-96 mx-3"
           onChange={(e) => {
-            // console.log(e.target.value);
             // if (e.target.value.length > 2 || e.target.value.length === 0)
               props?.setSearch(e.target.value);
           }}

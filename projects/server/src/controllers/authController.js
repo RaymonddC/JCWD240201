@@ -154,6 +154,7 @@ const userLogin = async (req, res, next) => {
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
+    console.log("🚀 ~ file: authController.js:157 ~ userLogin ~ result:", result)
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
 

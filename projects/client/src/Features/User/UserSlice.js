@@ -151,15 +151,28 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
   // const dispatch = useDispatch()
   try {
     let response = await signInWithPopup(auth, provider);
-    console.log(response);
-    const email = response.user.email;
-    const full_name = response.user.displayName;
-    const result = await googleLoginAPI({ email, full_name });
-    console.log(email);
-    toast.success('Login success!');
+    // console.log(response);
+    if (response) {
+      const email = response.user.email;
+      const full_name = response.user.displayName;
+      const result = await googleLoginAPI({
+        email,
+        full_name,
+        google_login: true,
+        verified: true,
+      });
+      // console.log(email);
+      localStorage.removeItem('token');
+      localStorage.setItem('token', result?.token);
+      dispatch(onSaveUser(result.data));
+      toast.success('Login success!');
+    } else {
+      const message = 'Login failed'
+      throw message;
+    }
   } catch (error) {
-    console.log(error);
-    toast.error(error);
+    // console.log(error);
+    toast.error(error?.response?.data?.message);
   }
 };
 export const { onSaveUser, toggleBtn, setUser } = UserSlice.actions;
