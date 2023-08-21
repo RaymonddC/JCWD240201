@@ -145,7 +145,10 @@ const userCreate = async (req, res, next) => {
 const userLogin = async (req, res, next) => {
   try {
     console.log('test');
-    const { usernameOrEmail, password } = req.body;
+    const { usernameOrEmail, password, google_login } = req.body;
+    if (google_login === true) {
+      
+    }
 
     if (!usernameOrEmail || !password)
       throw { message: 'Fill all data', code: 400 };
@@ -331,7 +334,7 @@ const changePassword = async (req, res, next) => {
       throw { message: 'Wrong old password', code: 400 };
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 

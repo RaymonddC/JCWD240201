@@ -1,15 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { checkCredential, keepLogin, register } from '../../API/authAPI';
-import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import {
+  checkCredential,
+  googleLoginAPI,
+  keepLogin,
+  register,
+} from '../../API/authAPI';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import { auth } from '../../firebase';
-// import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-const provider = new GoogleAuthProvider();
 
 // const token = localStorage.getItem('token')
 //   ? localStorage?.getItem('token')
 //   : '';
 
+const provider = new GoogleAuthProvider();
 const initialState = {
   user: {},
 };
@@ -67,7 +75,7 @@ export const logoutAsync = (navigate) => async (dispatch) => {
       dispatch(onSaveUser({}));
     }
     navigate('/login');
-    toast.success('Logout Success!');
+    toast.success('Logout success!');
   } catch (error) {}
 };
 
@@ -104,7 +112,7 @@ export const onLoginAsync = (values, token) => async (dispatch) => {
 
     dispatch(onSaveUser(result.data));
 
-    toast.success('Login Success!');
+    toast.success('Login success!');
     return true;
   } catch (error) {
     console.log(error);
@@ -133,7 +141,7 @@ export const onRegister = (values, token) => async (dispatch) => {
       token,
     });
 
-    toast.success('Register Success! Check Email for verification');
+    toast.success('Register success! Check email for verification');
     return true;
   } catch (error) {
     toast.error(error?.response?.data?.message);
@@ -142,15 +150,18 @@ export const onRegister = (values, token) => async (dispatch) => {
 export const loginWithGoogleSlice = () => async (dispatch) => {
   // const dispatch = useDispatch()
   try {
-      let response = await signInWithPopup(auth, provider)
-      console.log(response)
-      const email = response.user.email
-      console.log(email)
-        } catch (error) {
-      console.log(error)
-      toast.error(error)
+    let response = await signInWithPopup(auth, provider);
+    console.log(response);
+    const email = response.user.email;
+    const full_name = response.user.displayName;
+    const result = await googleLoginAPI({ email, full_name });
+    console.log(email);
+    toast.success('Login success!');
+  } catch (error) {
+    console.log(error);
+    toast.error(error);
   }
-}
+};
 export const { onSaveUser, toggleBtn, setUser } = UserSlice.actions;
 
 export default UserSlice.reducer;

@@ -6,12 +6,13 @@ import {
   updateAnswer,
 } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { createMarkup } from '../Helper/createMarkup';
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { convertToHTML } from 'draft-convert';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { MdOutlineArrowBack } from 'react-icons/md';
 
 export default function QuestionDetails() {
   const user = useSelector((state) => state?.user?.user);
@@ -50,6 +51,13 @@ export default function QuestionDetails() {
   if (role === 1) {
     return (
       <>
+        <div>
+          <Link to="/discussions">
+            <button className="btn btn-ghost">
+              <MdOutlineArrowBack size={25} /> back
+            </button>
+          </Link>
+        </div>
         <div className="card card-compact w-full my-5 bg-base-100 shadow-xl">
           <div className="flex justify-end px-3">
             <div className="label">{date}</div>
@@ -168,6 +176,13 @@ export default function QuestionDetails() {
     return (
       <>
         <div className="flex flex-col items-center w-full">
+          <div className='flex w-full max-w-3xl justify-start'>
+            <Link to="/discussions">
+              <button className="btn btn-ghost">
+                <MdOutlineArrowBack size={25} /> back to dicussions
+              </button>
+            </Link>
+          </div>
           <div className="card card-compact max-w-3xl w-full my-5 bg-base-100 shadow-xl">
             <div className="flex justify-end px-3">
               <div className="label">{date}</div>
