@@ -61,11 +61,11 @@ export const AuthForm = (propss) => {
           window.grecaptcha.ready(() => {
             window.grecaptcha
               .execute(key, { action: 'submit' })
-              .then(async (token) => {
+              .then(async (captchaToken) => {
                 const isSuccess = await dispatch(
                   propss.isRegis
-                    ? onRegister(values, token)
-                    : onLoginAsync(values, token),
+                    ? onRegister(values, captchaToken)
+                    : onLoginAsync(values, captchaToken),
                 );
 
                 if (!propss.isRegis) {

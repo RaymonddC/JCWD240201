@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       birthdate: DataTypes.DATEONLY,
       gender: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
+      google_login: DataTypes.BOOLEAN,
       deletedAt: DataTypes.DATE,
     },
     {

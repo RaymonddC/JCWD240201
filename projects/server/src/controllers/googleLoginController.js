@@ -18,15 +18,17 @@ const googleLogin = async (req, res, next) => {
       '🚀 ~ file: googleLoginController.js:17 ~ googleLogin ~ req.body:',
       req.body,
     );
-    const response = await userDB.findOne({ where: { email: email } });
-    const result = await getUser(email, full_name);
-   
-    if (!response) {
-      const create = await userDB.create({
+    // const response = await userDB.findOne({ where: { email: email } });
+    let result = await getUser(email, full_name);
+    
+    if (!result) {
+      result = await userDB.create({
         full_name,
         email,
         username: full_name,
         role_id: role ? role : 2,
+        verified: true,
+        google_login: true,
       });
     }
     const token = await generateToken(result);

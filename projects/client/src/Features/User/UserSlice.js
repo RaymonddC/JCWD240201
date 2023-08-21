@@ -163,8 +163,9 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
       });
       // console.log(email);
       localStorage.removeItem('token');
-      localStorage.setItem('token', result?.token);
-      dispatch(onSaveUser(result.data));
+      localStorage.setItem('token', result?.data?.token);
+      console.log("🚀 ~ file: UserSlice.js:167 ~ loginWithGoogleSlice ~ result?.data.token:", result?.data)
+      dispatch(onSaveUser(result.data.data));
       toast.success('Login success!');
     } else {
       const message = 'Login failed'

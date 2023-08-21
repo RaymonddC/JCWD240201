@@ -12,7 +12,7 @@ import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  // console.log("🚀 ~ file: Navbar.jsx:15 ~ NavBar ~ user:", user)
+  console.log("🚀 ~ file: Navbar.jsx:15 ~ NavBar ~ user:", user)
   const { totalCart } = useSelector((state) => state.cart);
 
   useEffect(() => {

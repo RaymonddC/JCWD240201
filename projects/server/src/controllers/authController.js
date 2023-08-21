@@ -145,18 +145,21 @@ const userCreate = async (req, res, next) => {
 const userLogin = async (req, res, next) => {
   try {
     console.log('test');
-    const { usernameOrEmail, password, google_login } = req.body;
-    if (google_login === true) {
-      
-    }
-
+    const { usernameOrEmail, password } = req.body;
+    
     if (!usernameOrEmail || !password)
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
-    console.log("🚀 ~ file: authController.js:157 ~ userLogin ~ result:", result)
+    console.log(
+      '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
+      result,
+    );
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
+    if (!result.verified) {
+      throw { message: 'Please check verification email' };
+    }
 
     const isUserExists = await bcrypt.compare(password, result.password);
 

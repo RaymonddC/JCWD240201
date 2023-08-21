@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { MdMenu } from 'react-icons/md';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync } from '../../Features/User/UserSlice';
 
 export default function MenuBarMobile() {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
@@ -54,18 +55,20 @@ export default function MenuBarMobile() {
             Address
           </Link>
         </li>
-        <li>
-          <Link
-            to="/user/change-password"
-            className={
-              window.location.pathname === '/user/change-password'
-                ? 'p-3 text-[#00A8B5] font-bold'
-                : 'p-3'
-            }
-          >
-            Change Password
-          </Link>
-        </li>
+        {user?.google_login ? null : (
+          <li>
+            <Link
+              to="/user/change-password"
+              className={
+                window.location.pathname === '/user/change-password'
+                  ? 'p-3 text-[#00A8B5] font-bold'
+                  : 'p-3'
+              }
+            >
+              Change Password
+            </Link>
+          </li>
+        )}
         <li>
           <Link
             to="/user/transaction"
