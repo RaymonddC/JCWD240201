@@ -60,6 +60,7 @@ export const getProducts = (data) => async (dispatch) => {
       dispatch(products(response?.data));
       dispatch(setProductDropdown(response?.data));
       dispatch(setIsLoad(false));
+      console.log(response.data);
     }
   } catch (error) {
     console.log(error);

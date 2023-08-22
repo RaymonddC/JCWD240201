@@ -125,6 +125,7 @@ export default function PrescriptionForm(props) {
         setOpenedStock={setOpenedStock}
         closedStock={closedStock}
         setClosedStock={setClosedStock}
+        debouncedSearchValue={debouncedSearchValue}
       />
       <div className="flex justify-between max-w-xs">
         <InputQty

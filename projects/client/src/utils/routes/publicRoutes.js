@@ -17,6 +17,8 @@ import ProductDetails from '../../Pages/ProductDetails';
 import Transaction from '../../Pages/Transaction';
 import ProfileLayout from '../../Components/Layout/ProfileLayout';
 import Checkout from '../../Pages/Checkout';
+import MapsPharmacy from '../../Pages/MapsPharmacy';
+import ChangeEmailForm from '../../Pages/ChangeEmailForm';
 
 const routerSource = (props) => [
   {
@@ -27,7 +29,7 @@ const routerSource = (props) => [
     path: '/user/profile',
     element: (
       // <PublicLayout>
-        <Profile />
+      <Profile />
       // </PublicLayout>
     ),
   },
@@ -67,7 +69,7 @@ const routerSource = (props) => [
     path: '/user/address',
     element: (
       // <PublicLayout>
-        <Address />
+      <Address />
       // </PublicLayout>
     ),
   },
@@ -76,7 +78,7 @@ const routerSource = (props) => [
     path: '/cart',
     element: (
       // <PublicLayout>
-        <Cart />
+      <Cart />
       // </PublicLayout>
     ),
   },
@@ -84,7 +86,7 @@ const routerSource = (props) => [
     path: '/checkout',
     element: (
       // <PublicLayout>
-        <Checkout />
+      <Checkout />
       // </PublicLayout>
     ),
   },
@@ -102,12 +104,22 @@ const routerSource = (props) => [
     path: '/user/transaction',
     element: (
       // <PublicLayout>
-        <ProfileLayout>
-          <Transaction />
-        </ProfileLayout>
-        
+      <ProfileLayout>
+        <Transaction />
+      </ProfileLayout>
+
       // </PublicLayout>
     ),
+  },
+  {
+    index: true,
+    path: '/maps',
+    element: <MapsPharmacy />,
+  },
+  {
+    index: true,
+    path: '/change-email/:token',
+    element: <ChangeEmailForm />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },
