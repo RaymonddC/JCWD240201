@@ -1,13 +1,13 @@
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
-import { onLoginAsync, onRegister } from '../../Features/User/UserSlice';
-
+import { loginWithGoogleSlice, onLoginAsync, onRegister } from '../../Features/User/UserSlice';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FcGoogle } from 'react-icons/fc';
 import { Input } from './Input/Input';
 import { InputPassword } from './Input/InputPassword';
+
 
 // import { PhoneInput } from 'react-contact-number-input';
 
@@ -177,8 +177,8 @@ export const AuthForm = (propss) => {
           >
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
-          {/* <div className="btnOther w-full text-[13px] font-bold ">
-            <div className="font-bold rounded-xl py-[8px] w-full  border border-[#898989]  my-[10px] flex items-center">
+          <div className="btnOther w-full text-[13px] font-bold ">
+            {/* <div className="font-bold rounded-xl py-[8px] w-full  border border-[#898989]  my-[10px] flex items-center">
               <div
                 // onClick={() => {
                 //   dispatch(onLoginWithGoogle());
@@ -191,8 +191,18 @@ export const AuthForm = (propss) => {
                   Google
                 </p>
               </div>
-            </div>
-          </div> */}
+            </div> */}
+             <button
+             type='button'
+              onClick={() => {
+                dispatch(loginWithGoogleSlice());
+              }}
+              className="btn btn-outline rounded-xl btn-secondary w-full"
+            >
+              <FcGoogle size={25} /> {propss.isRegis ? 'Login with ' : 'Sign in with  '}
+                  Google
+            </button>
+          </div>
         </form>
       )}
     </Formik>
