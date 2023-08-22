@@ -146,15 +146,17 @@ const userLogin = async (req, res, next) => {
   try {
     console.log('test');
     const { usernameOrEmail, password } = req.body;
-    
+
     if (!usernameOrEmail || !password)
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
-    console.log(
-      '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
-      result,
-    );
+    // console.log(
+    //   '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
+    //   result,
+    // );
+
+    console.log(`result=>>>> ${result}`);
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
     if (!result.verified) {
@@ -342,6 +344,42 @@ const changePassword = async (req, res, next) => {
   }
 };
 
+const sendChangeEmailForm = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
+    const isEmailExist = await User.findOne({
+      where: { email: email },
+    });
+    if (!isEmailExist) throw { message: 'Email not found', code: 404 };
+    let payload = { email: email };
+    const token = jwt.sign(payload, 'change-email');
+    const data = fs.readFileSync('./src/helpers/changeEmailForm.html', 'utf-8');
+    const tempCompile = await Handlebars.compile(data);
+    const tempResult = tempCompile({ token: token });
+
+    await transporter.sendMail({
+      from: 'pharmacy.jcwd2402@gmail.com',
+      to: email,
+      subject: 'Change Email',
+      html: tempResult,
+    });
+
+    console.log(`Email ==> ${email}`);
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'Please check your email to change your email',
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 module.exports = {
   sendVerifyEmail,
   verifyAccount,
@@ -351,4 +389,5 @@ module.exports = {
   sendResetPasswordForm,
   resetPassword,
   changePassword,
+  sendChangeEmailForm,
 };

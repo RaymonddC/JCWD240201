@@ -12,6 +12,7 @@ export default function InputSearchDropdown(props) {
     setOpenedStock,
     closedStock,
     setClosedStock,
+    debouncedSearchValue,
   } = props;
 
   return (
@@ -58,6 +59,11 @@ export default function InputSearchDropdown(props) {
             );
           })}
         </div>
+        {debouncedSearchValue !== formik.values.search ? (
+          <div className="absolute left-[290px] top-[15px] bg-white">
+            <span className="loading h-fit loading-spinner loading-xs"></span>
+          </div>
+        ) : null}
       </div>
     </>
   );

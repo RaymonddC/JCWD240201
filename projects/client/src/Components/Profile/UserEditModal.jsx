@@ -127,8 +127,23 @@ export default function UserEditModal({ data }) {
                 }}
                 label="Change Profile"
               />
-              <p className="text-[14px]">File max size 1 MB</p>
-              <p className="text-[14px]">
+              <p
+                className={`text-[14px] ${
+                  formik.errors.profile_image === 'File max size 1 MB'
+                    ? 'text-error'
+                    : 'text-black'
+                }`}
+              >
+                File max size 1 MB
+              </p>
+              <p
+                className={`text-[14px] ${
+                  formik.errors.profile_image ===
+                  'File must be in .JPG, .JPEG and .PNG format'
+                    ? 'text-error'
+                    : 'text-black'
+                }`}
+              >
                 File must be in .JPG, .JPEG and .PNG format
               </p>
             </div>

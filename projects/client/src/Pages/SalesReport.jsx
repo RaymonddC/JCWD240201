@@ -13,6 +13,7 @@ import ExcelDownload from '../Components/SalesReport/ExcelDownload';
 import { DropdownSortSales } from '../Components/SalesReport/DropdownSortSales';
 import { TableTopSales } from '../Components/SalesReport/TableTopSales';
 import '../utils/print-style.css';
+import { BarChart } from 'recharts';
 
 export default function SalesReport() {
   const dispatch = useDispatch();

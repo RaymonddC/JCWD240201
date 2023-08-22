@@ -41,6 +41,10 @@
   color: red;
 }
 
+.maplibregl-popup-close-button {
+  width: 20px;
+  height: 20px;
+}
 /* .wrapper-class {
   padding: 1rem;
   border: 1px solid #ccc;
