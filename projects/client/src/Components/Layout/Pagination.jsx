@@ -18,7 +18,7 @@ export default function Pagination(props) {
   }, []);
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center my-5">
         <div className="join w-64 grid grid-cols-[1fr,2fr,1fr]">
           <button onClick={() => prev()} className="join-item btn btn-outline">
             {'<<'}

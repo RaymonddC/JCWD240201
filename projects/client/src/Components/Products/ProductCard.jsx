@@ -23,7 +23,7 @@ export default function ProductCard(props) {
       }
     }
   }
-  console.log('><><><id',productId, promotions);
+
   const image = props?.data?.product_images
     ? props?.data?.product_images[0]?.image
     : '';

@@ -11,6 +11,7 @@ export default function Profile() {
   let token = localStorage.getItem('token');
 
   const { user } = useSelector((state) => state.user);
+  console.log("🚀 ~ file: Profile.jsx:14 ~ Profile ~ user:", user)
   if (!token) return <Navigate to={'/login'} />;
   return (
     <>

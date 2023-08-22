@@ -34,7 +34,7 @@ const getAllProducts = async (req, res, next) => {
     console.log(sortType, sortOrder, search, order);
     const response = await productDB.findAndCountAll({
       include: [
-        // { model: labelDB }, <<<< ini ngaruh ga??
+        // { model: labelDB },
         { model: packagingDB },
         { model: productTypeDB },
         { model: closedStockDB },

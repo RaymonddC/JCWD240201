@@ -146,13 +146,20 @@ const userLogin = async (req, res, next) => {
   try {
     console.log('test');
     const { usernameOrEmail, password } = req.body;
-
+    
     if (!usernameOrEmail || !password)
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
+    console.log(
+      '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
+      result,
+    );
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
+    if (!result.verified) {
+      throw { message: 'Please check verification email' };
+    }
 
     const isUserExists = await bcrypt.compare(password, result.password);
 
@@ -331,7 +338,7 @@ const changePassword = async (req, res, next) => {
       throw { message: 'Wrong old password', code: 400 };
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 

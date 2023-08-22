@@ -16,12 +16,12 @@ export default function Products() {
   const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
-  console.log('<<<<',searchParams.get('page'))
+  // console.log('<<<<',searchParams.get('page'))
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
-  const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
+  const [sortType, setSortType] = useState(searchParams.get('sort-type') || '');
   const [sortOrder, setSortOrder] = useState(
-    searchParams.get('sortOrder') || '',
+    searchParams.get('sort-order') || '',
   );
   const [category, setCategory] = useState(searchParams.get('category') || '');
   const productList = ProductsStore?.data?.rows;
@@ -99,10 +99,10 @@ export default function Products() {
       queryParams['search'] = debouncedSearchValue;
     }
     if (sortType) {
-      queryParams['sortType'] = sortType;
+      queryParams['sort-type'] = sortType;
     }
     if (sortOrder) {
-      queryParams['sortOrder'] = sortOrder;
+      queryParams['sort-order'] = sortOrder;
     }
     if (category) {
       queryParams['category'] = category;
@@ -110,7 +110,7 @@ export default function Products() {
     setSearchParams(queryParams);
     if (debouncedSearchValue) {
       getProductsAsync();
-      setCategory('')
+      setCategory('');
     } else if (category) {
       getLabelsAsync();
     } else {
@@ -121,6 +121,7 @@ export default function Products() {
     <>
       <div className="sticky top-3 mb-3 z-10">
         <FilterBar
+          value={search}
           setSearch={setSearch}
           setSortType={setSortType}
           setSortOrder={setSortOrder}
@@ -156,13 +157,21 @@ export default function Products() {
         </div>
         <div className="flex justify-center w-full">
           <div className="flex flex-col max-w-fit justify-center ">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-              {productMap ? (
-                <>{productMap}</>
-              ) : (
-                <ProductListSkl limit={limit} />
-              )}
-            </div>
+            {!productMap?.length ? (
+              <div className="flex py-10 w-full justify-center">
+                <article className="prose">
+                  <h4>--- No search result ---</h4>
+                </article>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                {productMap ? (
+                  <>{productMap}</>
+                ) : (
+                  <ProductListSkl limit={limit} />
+                )}
+              </div>
+            )}
             <div className="my-5">
               <Pagination
                 setPage={setPage}

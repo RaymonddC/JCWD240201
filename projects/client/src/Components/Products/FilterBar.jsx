@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { MdArrowDropDown } from 'react-icons/md';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories } from '../../Features/Category/CategorySlice';
 
@@ -8,6 +8,7 @@ export default function FilterBar(props) {
   const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
+  const text = props.value;
 
   // console.log(location);
   // const CategoryStore = useSelector((state) => state?.categories.categories);
@@ -26,16 +27,18 @@ export default function FilterBar(props) {
     <>
       <div className="flex justify-center">
         <input
+          // ref={text}
           type="text"
           placeholder="Search"
+          value={props.value}
           className="input input-bordered w-full md:w-96 mx-3"
           onChange={(e) => {
-            // console.log(e.target.value);
-            if (e.target.value.length > 2 || e.target.value.length === 0)
+            // if (e.target.value.length > 2 || e.target.value.length === 0)
               props?.setSearch(e.target.value);
           }}
         />
-        {pathname === '/discussions' ? (
+
+        {pathname === '/' ? (
           ''
         ) : (
           <div className="dropdown dropdown-end hidden md:block">

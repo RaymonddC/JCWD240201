@@ -97,12 +97,26 @@ export function sendResetForm(email) {
   );
 }
 
-export function changePassword(userId, oldPassword, newPassword){
+export function changePassword(userId, oldPassword, newPassword) {
   return axios.patch(
     `${URL}/auth/password/${userId}`,
     {
       oldPassword: oldPassword,
-      newPassword: newPassword
+      newPassword: newPassword,
+    },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
+
+export function googleLoginAPI(data) {
+  return axios.post(
+    `${URL}/auth/google-login`,
+    {
+      ...data,
     },
     {
       headers: {
