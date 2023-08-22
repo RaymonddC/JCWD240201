@@ -23,19 +23,19 @@ router.post(
 
 // //keepLogin (byToken)
 router.get(
-  '/getUser',
+  '/get-user',
   APIKey.APIKey,
   auth.verifyToken,
   authController.getUserById,
 );
 
-router.post('/sendVerify', APIKey.APIKey, authController.sendVerifyEmail);
-router.post('/verifyEmail', APIKey.APIKey, authController.verifyAccount);
-router.post('/sendReset', APIKey.APIKey, authController.sendResetPasswordForm);
-router.patch('/resetPassword', APIKey.APIKey, authController.resetPassword);
+router.post('/send-verify', APIKey.APIKey, authController.sendVerifyEmail);
+router.post('/verify-email', APIKey.APIKey, authController.verifyAccount);
+router.post('/send-reset', APIKey.APIKey, authController.sendResetPasswordForm);
+router.patch('/reset-password', APIKey.APIKey, authController.resetPassword);
 router.patch('/password/:userId', APIKey.APIKey, authController.changePassword);
 router.post(
-  '/sendChangeEmail',
+  '/send-change-email',
   APIKey.APIKey,
   authController.sendChangeEmailForm,
 );

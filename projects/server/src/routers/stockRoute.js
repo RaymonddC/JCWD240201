@@ -9,8 +9,8 @@ const { isAdmin } = require('../middleware/checkRole');
 router.post(
   '/:productId',
   APIKey,
-  // verifyToken,
-  // isAdmin,
+  verifyToken,
+  isAdmin,
   stockController.createDataStock,
 );
 router.put('/unit-conversion',APIKey, stockController.unitConversion);

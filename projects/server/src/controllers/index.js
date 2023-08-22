@@ -15,6 +15,7 @@ const txHistoryController = require('./transactionHistoryController');
 const prescriptionCartController = require('./prescriptionCartController');
 const stockHistoryController = require('./stockHistoryController');
 const googleLoginController = require('./googleLoginController');
+const promoTypeController = require('./promoTypeController');
 
 module.exports = {
   authController,
@@ -33,5 +34,6 @@ module.exports = {
   prescriptionCartController,
   txHistoryController,
   stockHistoryController,
-  googleLoginController
+  googleLoginController,
+  promoTypeController,
 };
