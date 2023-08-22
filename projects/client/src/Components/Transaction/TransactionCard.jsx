@@ -61,7 +61,7 @@ const TransactionCard = (props) => {
     try {
       await dispatch(
         updateTransactionHistorySlice({
-          transaction_status_id: 5,
+          transaction_status_id: 6,
           transaction_id: transactionId,
         }),
       );

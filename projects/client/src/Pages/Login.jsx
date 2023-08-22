@@ -53,7 +53,7 @@ export const Login = () => {
           </div>
 
           <AuthForm isRegis={isRegis} />
-          <div>
+          {/* <div>
             <button
               onClick={() => {
                 dispatch(loginWithGoogleSlice());
@@ -62,7 +62,7 @@ export const Login = () => {
             >
               <FcGoogle size={25} /> LOGIN / SIGN UP WITH GOOGLE 
             </button>
-          </div>
+          </div> */}
 
           <Link to={'/'}>
             <span className="text-[#808080] text-left pb-3">
