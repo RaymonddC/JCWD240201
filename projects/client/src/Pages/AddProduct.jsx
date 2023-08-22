@@ -213,8 +213,11 @@ export default function AddProduct() {
                 className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
                 label="test"
               />
+              {formik?.errors?.category && formik.touched?.category?.category_id ? (
+                <p className="text-error text-[14px]">{formik?.errors?.category}</p>
+              ) : null}
             </div>
-            <div>
+            <div className='my-1'>
               <InputProductImage
                 name="image.product"
                 id="product_image"
@@ -222,6 +225,8 @@ export default function AddProduct() {
                   formik.setFieldValue('image.product', e.target.files[0]);
                 }}
                 label="Product Image"
+                touched={formik.touched?.image?.product}
+                errors={formik?.errors?.product}
               />
             </div>
           </div>
@@ -234,7 +239,7 @@ export default function AddProduct() {
             Cancel
           </button>
           <button
-            disabled={!formik.isValid || formik.isSubmitting}
+            disabled={formik.isSubmitting}
             type="submit"
             className="btn w-full bg-primary text-white"
           >

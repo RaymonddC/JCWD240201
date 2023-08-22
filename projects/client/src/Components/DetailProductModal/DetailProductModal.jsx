@@ -36,7 +36,7 @@ export default function DetailProductAdmin(props) {
             <div className="flex justify-evenly gap-3">
               <img
                 className="w-6/12"
-                src={`http://localhost:8000/${image}`}
+                src={image ? `http://localhost:8000/${image}` : null}
                 alt=""
               />
               <div className="flex flex-col gap-2">

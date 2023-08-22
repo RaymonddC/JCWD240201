@@ -15,6 +15,9 @@ export default function InputProductImage(props) {
       </div>
       <p className="text-[14px]">File max size 1 MB</p>
       <p className="text-[14px]">File must be in .JPG, .JPEG and .PNG format</p>
+      {props.errors && props?.touched ? (
+        <p className="text-error text-[14px]">{props.errors}</p>
+      ) : null}
     </>
   );
 }
