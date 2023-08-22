@@ -298,6 +298,8 @@ export default function EditProduct() {
                 }}
                 label="Product Image"
                 refProp={fileInputRef}
+                touched={formik.touched?.image?.product}
+                errors={formik?.errors?.product}
               />
             </div>
             {formik?.values?.image?.product ? (
@@ -323,7 +325,7 @@ export default function EditProduct() {
             Cancel
           </button>
           <button
-            disabled={!formik.isValid || formik.isSubmitting}
+            disabled={ formik.isSubmitting}
             type="submit"
             className="btn w-full bg-primary text-white"
           >
