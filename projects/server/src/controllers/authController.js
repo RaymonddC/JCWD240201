@@ -160,6 +160,9 @@ const userLogin = async (req, res, next) => {
     if (!result.verified) {
       throw { message: 'Please check verification email' };
     }
+    if(result.google_login){
+      throw { message: 'You account was signed up using a diferent method'}
+    }
 
     const isUserExists = await bcrypt.compare(password, result.password);
 
@@ -204,7 +207,7 @@ const getUserById = async (req, res, next) => {
     if (!user) throw { message: 'user not found!', code: 400 };
     return res.status(200).send({
       success: true,
-      message: 'get user success',
+      message: 'Get user success',
       data: user,
     });
   } catch (error) {
@@ -220,7 +223,7 @@ const sendResetPasswordForm = async (req, res, next) => {
     let payload = { email: email };
     const token = jwt.sign(payload, 'reset-password');
     if (!isEmail.test(email))
-      throw { status: 400, message: 'email is not valid' };
+      throw { status: 400, message: 'Email is not valid' };
 
     //find user
     const findUser = await User.findOne({
@@ -247,7 +250,7 @@ const sendResetPasswordForm = async (req, res, next) => {
       return res.send({
         success: true,
         status: 200,
-        message: 'Send Reset Password Form Success',
+        message: 'Send reset password form success',
         data: null,
       });
     }
