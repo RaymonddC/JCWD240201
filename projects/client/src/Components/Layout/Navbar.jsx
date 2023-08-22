@@ -55,7 +55,7 @@ export default function NavBar() {
                 ''
               )}
               {user && Object.keys(user).length !== 0 ? (
-                <div className="flex gap-2 w-40 truncate">
+                <div className="flex gap-2">
                   <Link
                     to="/user/profile"
                     className="flex justify-center items-center gap-2 "
@@ -69,7 +69,9 @@ export default function NavBar() {
                     ) : (
                       <MdPerson className="w-[40px] h-[40px]" />
                     )}
-                    <span className="font-bold">{user?.full_name}</span>
+                    <span className="font-bold max-w-[132px] truncate">
+                      {user?.full_name}
+                    </span>
                   </Link>
                   {/* <button
                     className="btn btn-outline btn-secondary ml-3"

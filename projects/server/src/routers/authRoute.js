@@ -26,5 +26,10 @@ router.post('/verifyEmail', APIKey.APIKey, authController.verifyAccount);
 router.post('/sendReset', APIKey.APIKey, authController.sendResetPasswordForm);
 router.patch('/resetPassword', APIKey.APIKey, authController.resetPassword);
 router.patch('/password/:userId', APIKey.APIKey, authController.changePassword);
+router.post(
+  '/sendChangeEmail',
+  APIKey.APIKey,
+  authController.sendChangeEmailForm,
+);
 
 module.exports = router;

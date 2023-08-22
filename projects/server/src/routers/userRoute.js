@@ -4,10 +4,9 @@ const router = express.Router();
 
 const { userController } = require('../controllers');
 const { APIKey } = require('../middleware/APIKey');
-const { verifyToken } = require('../middleware/auth');
+const { verifyToken, verifyTokenEmail } = require('../middleware/auth');
 const { uploadProfile } = require('../middleware/upload');
 
-router.get('/', APIKey, userController.getUserData);
 router.put(
   '/',
   APIKey,
@@ -15,6 +14,7 @@ router.put(
   uploadProfile,
   userController.updateUserData,
 );
+router.patch('/email', APIKey, verifyTokenEmail, userController.updateEmail);
 // sementara
 // router.post('/', userController.bcrypt);
 

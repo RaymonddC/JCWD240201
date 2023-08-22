@@ -40,3 +40,8 @@
 .error {
   color: red;
 }
+
+.maplibregl-popup-close-button {
+  width: 20px;
+  height: 20px;
+}

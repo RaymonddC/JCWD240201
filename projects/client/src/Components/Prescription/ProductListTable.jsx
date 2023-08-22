@@ -17,7 +17,7 @@ export default function ProductListTable() {
       <tbody>
         {prescriptionCartProductList?.length ? (
           prescriptionCartProductList?.map((value, index) => {
-            return <ProductListCard key={index} data={value} />;
+            // return <ProductListCard key={index} data={value} />;
           })
         ) : (
           <tr>

@@ -6,11 +6,13 @@ import { convertDate } from '../Helper/userHelper';
 import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
 import { formatDate } from '../Helper/formatDateHelper';
+import ChangeEmailConfirmation from '../Components/Profile/ChangeEmailConfirmation';
 
 export default function Profile() {
   let token = localStorage.getItem('token');
 
   const { user } = useSelector((state) => state.user);
+
   if (!token) return <Navigate to={'/login'} />;
   return (
     <>
@@ -24,24 +26,32 @@ export default function Profile() {
             </div>
             <UserEditModal data={user} />
           </div>
-          <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
-            <div className="flex items-center gap-4">
+          <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-8">
+            <div className="w-full flex flex-col items-center gap-2">
               {user?.profile_image ? (
                 <img
-                  className="w-[64px] h-[64px] rounded-full"
+                  className="w-[125px] h-[125px] rounded-full"
                   src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
                   alt="profile"
                 />
               ) : (
-                <MdPerson className="w-[64px] h-[64px]" />
+                <MdPerson className="w-[100px] h-[100px]" />
               )}
-              <div>
-                <p className="font-bold md:text-[18px]">{user?.full_name}</p>
-                <p className="md:text-[16px] text-[14px]">
-                  {user?.phone_number}
-                </p>
+
+              <p className="font-bold md:text-[18px]">{user?.full_name}</p>
+            </div>
+            <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
+              <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">Email</p>
+              <div className="flex gap-2">
+                <ChangeEmailConfirmation email={user?.email} />
                 <p className="md:text-[16px] text-[14px]">{user?.email}</p>
               </div>
+            </div>
+            <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
+              <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
+                Phone number
+              </p>
+              <p className="md:text-[16px] text-[14px]">{user?.phone_number}</p>
             </div>
             <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
               <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
