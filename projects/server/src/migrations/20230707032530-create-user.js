@@ -39,6 +39,9 @@ module.exports = {
       verified: {
         type: Sequelize.BOOLEAN,
       },
+      google_login: {
+        type: Sequelize.BOOLEAN,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

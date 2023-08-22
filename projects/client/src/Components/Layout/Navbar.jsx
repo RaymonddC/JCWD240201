@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo1 from '../../utils/images/Medicore.png'
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -11,6 +12,7 @@ import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  console.log("🚀 ~ file: Navbar.jsx:15 ~ NavBar ~ user:", user)
   const { totalCart } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -19,10 +21,10 @@ export default function NavBar() {
 
   return (
     <>
-      <div className="flex relative gap-2 items-center p-5 ">
+      <div className="flex relative gap-2 items-center px-5 pt-3 ">
         <div className="w-72">
           <Link to="/">
-            <img className="px-2" src={Logo} alt="" />
+            <img className="px-2 h-20" src={Logo1} alt="" />
           </Link>
         </div>
         <div className="hidden sm:block w-full">

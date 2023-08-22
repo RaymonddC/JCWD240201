@@ -1,15 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-import { checkCredential, keepLogin, register } from '../../API/authAPI';
-
-// import { auth } from './../../firebase';
-// import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-// const provider = new GoogleAuthProvider();
+import {
+  checkCredential,
+  googleLoginAPI,
+  keepLogin,
+  register,
+} from '../../API/authAPI';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { auth } from '../../firebase';
 
 // const token = localStorage.getItem('token')
 //   ? localStorage?.getItem('token')
 //   : '';
 
+const provider = new GoogleAuthProvider();
 const initialState = {
   user: {},
 };
@@ -72,11 +80,12 @@ export const logoutAsync = (navigate) => async (dispatch) => {
 };
 
 export const checkCredentialAsync =
-  (usernameOrEmail, password) => async (dispatch) => {
+  (usernameOrEmail, password, token) => async (dispatch) => {
     try {
       let response = await checkCredential({
         usernameOrEmail,
         password,
+        token,
       });
 
       return response.data;
@@ -89,12 +98,12 @@ export const checkCredentialAsync =
     }
   };
 
-export const onLoginAsync = (values) => async (dispatch) => {
+export const onLoginAsync = (values, token) => async (dispatch) => {
   try {
     const { usernameOrEmail, password } = values;
 
     let result = await dispatch(
-      checkCredentialAsync(usernameOrEmail, password),
+      checkCredentialAsync(usernameOrEmail, password, token),
     );
 
     localStorage.removeItem('token');
@@ -103,7 +112,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
 
     dispatch(onSaveUser(result.data));
 
-    toast.success('Login Success!');
+    toast.success('Login success!');
     return true;
   } catch (error) {
     console.log(error);
@@ -111,7 +120,7 @@ export const onLoginAsync = (values) => async (dispatch) => {
   }
 };
 
-export const onRegister = (values) => async (dispatch) => {
+export const onRegister = (values, token) => async (dispatch) => {
   try {
     const {
       fullName,
@@ -129,11 +138,41 @@ export const onRegister = (values) => async (dispatch) => {
       password: password,
       confirmPassword: confirmPassword,
       phoneNumber: '0' + phoneNumber,
+      token,
     });
 
-    toast.success('Register Success! Check Email for verification');
+    toast.success('Register success! Check email for verification');
     return true;
   } catch (error) {
+    toast.error(error?.response?.data?.message);
+  }
+};
+export const loginWithGoogleSlice = () => async (dispatch) => {
+  // const dispatch = useDispatch()
+  try {
+    let response = await signInWithPopup(auth, provider);
+    // console.log(response);
+    if (response) {
+      const email = response.user.email;
+      const full_name = response.user.displayName;
+      const result = await googleLoginAPI({
+        email,
+        full_name,
+        google_login: true,
+        verified: true,
+      });
+      // console.log(email);
+      localStorage.removeItem('token');
+      localStorage.setItem('token', result?.data?.token);
+      console.log("🚀 ~ file: UserSlice.js:167 ~ loginWithGoogleSlice ~ result?.data.token:", result?.data)
+      dispatch(onSaveUser(result.data.data));
+      toast.success('Login success!');
+    } else {
+      const message = 'Login failed'
+      throw message;
+    }
+  } catch (error) {
+    // console.log(error);
     toast.error(error?.response?.data?.message);
   }
 };

@@ -3,6 +3,7 @@ const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function createQuestionAPI(data) {
+ 
   return axios.post(
     `${URL}/discussions/questions`,
     {
@@ -16,10 +17,10 @@ export function createQuestionAPI(data) {
 }
 
 export function getQuestionsAPI(data) {
+  // console.log(data);
   return axios.get(`${URL}/discussions/questions`, {
     params: {
-      page: data.page,
-      limit: data.limit,
+      ...data
     },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });

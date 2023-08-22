@@ -112,6 +112,20 @@ export function changePassword(userId, oldPassword, newPassword) {
   );
 }
 
+export function googleLoginAPI(data) {
+  return axios.post(
+    `${URL}/auth/google-login`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
+
 export function sendChangeEmailFormAPI(email) {
   return axios.post(
     `${URL}/auth/sendChangeEmail`,

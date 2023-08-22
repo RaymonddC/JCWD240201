@@ -11,20 +11,29 @@ const transporter = require('../helpers/transporter');
 
 const getQuestions = async (req, res, next) => {
   try {
-    const { page, search, sort, limit, question_category_id } = req.query;
-    // console.log(">>>",question_category_id);
+    const { page, search, sortType, sortOrder, limit, question_category_id } =
+      req.query;
+    console.log('>>>', req.query);
     let where = {};
+    let order = [];
+    where.title = { [Op.like]: `%${search}%` };
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
-    if (question_category_id) {
-      where.question_category_id = { question_category_id };
+    if (sortType && sortOrder) {
+      order = [[sortType, sortOrder]];
+    } else {
+      order = [['updatedAt', 'DESC']];
     }
+    if (question_category_id) {
+      where.question_category_id = question_category_id;
+    }
+
     let response = await questionDB.findAndCountAll({
       include: answerDB,
       limit: pageLimit,
       offset: offset,
       where: where,
-      order: [['updatedAt', 'DESC']],
+      order: order,
     });
     const totalPage = Math.ceil(response.count / pageLimit);
     return res.status(200).send({
@@ -61,23 +70,30 @@ const getQuestionDetails = async (req, res, next) => {
 
 const getAnswers = async (req, res, next) => {
   try {
-    const { page, search, sort, limit, question_category_id } = req.query;
+    const { page, search, sortType, sortOrder, limit, question_category_id } =
+      req.query;
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
     let where = {};
-    console.log('>>> answer', question_category_id);
+    let order = [];
+    // console.log('>>> answer', question_category_id);
     if (question_category_id) {
       where.question_category_id = question_category_id;
     }
     if (search) {
       where.title = { [Op.like]: `%${search}%` };
     }
+    if (sortType && sortOrder) {
+      order = [[sortType, sortOrder]];
+    } else {
+      order = [['updatedAt', 'DESC']];
+    }
     console.log(req.body);
     let response = await answerDB.findAndCountAll({
       include: [{ model: questionDB, where: where }],
       limit: pageLimit,
       offset: offset,
-      order: [['updatedAt', 'DESC']],
+      order: order,
     });
     // console.log(response);
     const totalPage = Math.ceil(response.count / pageLimit);

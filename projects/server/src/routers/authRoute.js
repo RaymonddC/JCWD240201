@@ -2,16 +2,24 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 
-const { authController } = require('./../controllers');
+const { authController, googleLoginController } = require('./../controllers');
 const APIKey = require('../middleware/APIKey');
+const recaptcha = require('../middleware/recaptcha');
 
 router.post(
   '/register',
+  APIKey.APIKey,
+  recaptcha.verify,
   authController.userCreate,
   authController.sendVerifyEmail,
 );
 
-router.post('/login', APIKey.APIKey, authController.userLogin);
+router.post(
+  '/login',
+  APIKey.APIKey,
+  recaptcha.verify,
+  authController.userLogin,
+);
 
 // //keepLogin (byToken)
 router.get(
@@ -31,5 +39,6 @@ router.post(
   APIKey.APIKey,
   authController.sendChangeEmailForm,
 );
+router.post('/google-login', APIKey.APIKey, googleLoginController.googleLogin);
 
 module.exports = router;

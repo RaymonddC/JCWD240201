@@ -22,10 +22,10 @@ export const AdminLayout = (props) => {
     <div className="flex">
       <Sidebar />
       <div
-        className="lg:ml-[250px] sm:ml-[80px] ml-0 grow    md:flex flex-col  
+        className="lg:ml-[250px] sm:ml-[80px] ml-0 grow md:flex flex-col  
        h-full w-full   md:grow  md:w-[50vw] "
       >
-        <div className="bg-gradient-to-b from-[#D6F5F3] from-10% via-[#F7FCFC] via-90% to-[#F1F5FC]  min-h-[100vh] px-5 py-14">
+        <div className="bg-gradient-to-b from-[#D6F5F3] from-10% via-[#F7FCFC] via-90% to-[#F1F5FC] min-h-[100vh] px-5 pt-14 pb-20">
           {props?.children[0]}
         </div>
       </div>

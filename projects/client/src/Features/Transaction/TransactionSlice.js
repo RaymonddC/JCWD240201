@@ -60,6 +60,7 @@ export const updateTransactionHistorySlice = (data) => async (dispatch) => {
     // dispatch(getAllTransactionSlice())
     // dispatch(getAllTxStatus());
   } catch (error) {
+    console.log(error);
     return toast.error(error.message);
   }
 };

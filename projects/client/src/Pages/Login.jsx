@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-
 import { Link, Navigate } from 'react-router-dom';
 import { AuthForm } from '../Components/AuthForm/AuthForm';
-
 import LoginImage from '../utils/images/Frame.svg';
 import Logo from '../utils/images/logoHealthyMed.svg';
+import { loginWithGoogleSlice } from '../Features/User/UserSlice';
+import { FcGoogle } from 'react-icons/fc';
 
 export const Login = () => {
-  console.log('Login');
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state?.user);
 
   const [isRegis, setIsRegis] = useState(
@@ -54,6 +53,16 @@ export const Login = () => {
           </div>
 
           <AuthForm isRegis={isRegis} />
+          <div>
+            <button
+              onClick={() => {
+                dispatch(loginWithGoogleSlice());
+              }}
+              className="btn btn-outline btn-secondary w-full"
+            >
+              <FcGoogle size={25} /> LOGIN / SIGN UP WITH GOOGLE 
+            </button>
+          </div>
 
           <Link to={'/'}>
             <span className="text-[#808080] text-left pb-3">
