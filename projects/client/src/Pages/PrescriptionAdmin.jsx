@@ -23,11 +23,14 @@ export default function PrescriptionAdmin() {
   const { detailprescriptionCart } = useSelector((state) => state.cart);
 
   useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchValue, confirmation, sort]);
+
+  useEffect(() => {
     if (search) queryParams['searchUser'] = search;
     if (confirmation) queryParams['confirmation'] = confirmation;
     if (sort) queryParams['sort'] = sort;
     if (page) queryParams['page'] = page;
-
     setSearchParams(queryParams);
     dispatch(
       getAllPrescriptionsCartsSlice({
@@ -35,7 +38,7 @@ export default function PrescriptionAdmin() {
         confirmation: confirmation,
         sort: sort,
         page: page,
-        limit: 5,
+        limit: 1,
       }),
     );
   }, [debouncedSearchValue, confirmation, sort, page]);

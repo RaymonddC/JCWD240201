@@ -276,7 +276,7 @@ module.exports = {
       // obat flu ----------------------------------------------------------------------------
       {
         //17
-        name: 'Ceteme 4 Mg 12 Tablet',
+        name: 'Ceteme 4 Mg 12 Tablet', //Done
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 12,
@@ -293,7 +293,7 @@ module.exports = {
       },
       //18
       {
-        name: 'Cerini 10mg/ml Drop 20ml',
+        name: 'Cerini 10mg/ml Drop 20ml', //Done
         packaging_type_id: 1,
         product_type_id: 2,
         net_content: 20,
@@ -310,7 +310,7 @@ module.exports = {
       },
       //19
       {
-        name: 'Panadol Anak-Anak Rasa Cherry 10 Tablet',
+        name: 'Panadol Anak-Anak Rasa Cherry 10 Tablet', // Done
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
@@ -327,7 +327,7 @@ module.exports = {
       },
       //20
       {
-        name: 'Trisela 10 Mg 10 Tablet',
+        name: 'Trisela 10 Mg 10 Tablet', //Done
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
@@ -344,7 +344,7 @@ module.exports = {
       },
       //21
       {
-        name: 'Tolak Angin Cair Flu Sido Muncul 15 Ml',
+        name: 'Tolak Angin Cair Flu Sido Muncul 15 Ml', //Done
         packaging_type_id: 3,
         product_type_id: 2,
         net_content: 15,
@@ -361,7 +361,7 @@ module.exports = {
       // obat vitamin ------------------------------------------------------------------------------------------------
       //22
       {
-        name: 'Vitacimin Lemon 2 Tablet',
+        name: 'Vitacimin Lemon 2 Tablet', //Done
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 2,
@@ -377,7 +377,7 @@ module.exports = {
       },
       //23
       {
-        name: 'Vitamin C IPI 50 Mg 90 Tablet',
+        name: 'Vitamin C IPI 50 Mg 90 Tablet', //Done
         packaging_type_id: 1,
         product_type_id: 1,
         net_content: 90,
@@ -393,7 +393,7 @@ module.exports = {
       },
       //24
       {
-        name: 'Vitamin A IPI 45 Tablet',
+        name: 'Vitamin A IPI 45 Tablet', //done
         packaging_type_id: 1,
         product_type_id: 1,
         net_content: 45,
@@ -409,7 +409,7 @@ module.exports = {
       },
       //25
       {
-        name: 'Vitamin A 200000 IU 50 Kapsul',
+        name: 'Vitamin A 200000 IU 50 Kapsul', //Done
         packaging_type_id: 1,
         product_type_id: 1,
         net_content: 50,
@@ -425,7 +425,7 @@ module.exports = {
       },
       //26
       {
-        name: 'Vitamin B Complex IPI 45 Tablet',
+        name: 'Vitamin B Complex IPI 45 Tablet', //Done
         packaging_type_id: 1,
         product_type_id: 1,
         net_content: 45,
@@ -442,7 +442,7 @@ module.exports = {
       // Obat Demam --------------------------------------------------------------
       //27
       {
-        name: 'Bodrexin 80 Mg 6 Tablet',
+        name: 'Bodrexin 80 Mg 6 Tablet', //Done
         packaging_type_id: 1,
         product_type_id: 1,
         net_content: 6,
@@ -459,7 +459,7 @@ module.exports = {
       },
       //28
       {
-        name: 'Biogesic 500 Mg 4 Tablet',
+        name: 'Biogesic 500 Mg 4 Tablet', //Done
         packaging_type_id: 5,
         product_type_id: 1,
         net_content: 4,
@@ -476,7 +476,7 @@ module.exports = {
       },
       //29
       {
-        name: 'Dumin 500 Mg 10 Tablet',
+        name: 'Dumin 500 Mg 10 Tablet', //Done
         packaging_type_id: 5,
         product_type_id: 1,
         net_content: 10,
@@ -493,7 +493,7 @@ module.exports = {
       },
       //30
       {
-        name: 'Farsifen 400 Mg 10 Tablet',
+        name: 'Farsifen 400 Mg 10 Tablet', //Done
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 10,
@@ -510,7 +510,7 @@ module.exports = {
       },
       //31
       {
-        name: 'Inzana 4 Tablet',
+        name: 'Inzana 4 Tablet', //Done
         packaging_type_id: 2,
         product_type_id: 1,
         net_content: 4,
@@ -767,8 +767,10 @@ module.exports = {
         packaging_type_id: 3,
         product_type_id: 8,
         net_content: 4,
-        description: 'Entrasol Gold Vanila mengandung kalsium, vitamin D, magnesium, serat, omega 3 dan 6, yang dilengkapi dengan ekstrak buah zaitun serta 10 vitamin dan 5 mineral. Kombinasi nutrisi dalam susu ini berguna untuk menguatkan tulang dan gigi, mencegah osteoporosis, serta memelihara kesehatan tubuh secara keseluruhan. Dengan begitu, tubuh tetap sehat dan aktif di masa tua.',
-        dosing: 'Larutkan 3 sendok makan (35 gram) Entrasol Gold Vanila ke dalam 200 ml air matang hangat, aduk hingga larut dan susu siap untuk diminum. Setelah dibuka, lipat polybag dan tutup rapat-rapat. Habiskan Entrasol Gold Vanila dalam waktu kurang dari satu bulan setelah kemasan dibuka.',
+        description:
+          'Entrasol Gold Vanila mengandung kalsium, vitamin D, magnesium, serat, omega 3 dan 6, yang dilengkapi dengan ekstrak buah zaitun serta 10 vitamin dan 5 mineral. Kombinasi nutrisi dalam susu ini berguna untuk menguatkan tulang dan gigi, mencegah osteoporosis, serta memelihara kesehatan tubuh secara keseluruhan. Dengan begitu, tubuh tetap sehat dan aktif di masa tua.',
+        dosing:
+          'Larutkan 3 sendok makan (35 gram) Entrasol Gold Vanila ke dalam 200 ml air matang hangat, aduk hingga larut dan susu siap untuk diminum. Setelah dibuka, lipat polybag dan tutup rapat-rapat. Habiskan Entrasol Gold Vanila dalam waktu kurang dari satu bulan setelah kemasan dibuka.',
         BPOM_id: 'MD 805010329281',
         require_prescription: false,
         price: 45100,

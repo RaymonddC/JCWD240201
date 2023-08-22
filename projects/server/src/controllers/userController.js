@@ -1,36 +1,10 @@
 const deleteFiles = require('../helpers/deleteFiles');
 const { validate } = require('../helpers/userHelper');
-const { user, role } = require('./../models');
+const db = require('./../models');
+const userDB = db.user;
+const roleDB = db.role;
 const fs = require('fs');
-
-// const validate = (data) => {
-//   if (
-//     !data.full_name ||
-//     !data.phone_number ||
-//     !data.gender ||
-//     !data.birthdate
-//   ) {
-//     throw { message: 'Please fill your form correctly', code: 400 };
-//   }
-// };
-
-const getUserData = async (req, res) => {
-  try {
-    // TODO: get user_id from token
-    const data = await user.findOne({
-      include: { model: role, attributes: ['role_name'] },
-      attributes: {
-        exclude: ['password', 'username'],
-      },
-      where: {
-        id: 1,
-      },
-    });
-    res.send(data);
-  } catch (error) {
-    res.send(error.message || error);
-  }
-};
+const bcrypt = require('bcrypt');
 
 const updateUserData = async (req, res, next) => {
   try {
@@ -97,7 +71,33 @@ const updateUserData = async (req, res, next) => {
   }
 };
 
+const updateEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const previousEmail = req.user.email;
+    if (!email) throw { message: 'Please fill the form correctly', code: 400 };
+    const isEmailExist = await userDB.findOne({
+      where: { email },
+    });
+
+    if (isEmailExist) throw { message: 'Email already in use', code: 400 };
+
+    await userDB.update(
+      { email: email, verified: false },
+      { where: { email: previousEmail } },
+    );
+
+    res.status(200).send({
+      success: true,
+      message:
+        'Change email successfully, please check your new email for verification',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  getUserData,
   updateUserData,
+  updateEmail,
 };

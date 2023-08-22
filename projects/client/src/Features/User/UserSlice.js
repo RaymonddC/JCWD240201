@@ -72,10 +72,10 @@ export const logoutAsync = (navigate) => async (dispatch) => {
     let token = localStorage.getItem('token');
     if (token) {
       localStorage.removeItem('token');
-      dispatch(onSaveUser({}));
+      await dispatch(onSaveUser({}));
+      navigate('/login');
+      toast.success('Logout Success!');
     }
-    navigate('/login');
-    toast.success('Logout success!');
   } catch (error) {}
 };
 

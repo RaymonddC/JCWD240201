@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 export default function AddressModal(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { province, city } = useSelector((state) => state.address);
+  const { province, city, loadCity } = useSelector((state) => state.address);
 
   const formik = useFormik({
     initialValues: {
@@ -63,6 +63,8 @@ export default function AddressModal(props) {
     if (props?.checkoutPage) props?.openSelectAddress();
     return props?.closeModal();
   };
+
+  console.log(loadCity);
 
   useEffect(() => {
     if (
@@ -162,6 +164,7 @@ export default function AddressModal(props) {
               values={formik?.values?.city_id}
               placeholder="Select a city"
               data={city}
+              loadCity={loadCity}
             />
             <InputAddressTextField
               id="address"

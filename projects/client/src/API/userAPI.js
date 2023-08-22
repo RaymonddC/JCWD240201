@@ -15,14 +15,26 @@ const apikey = `${process.env.REACT_APP_API_KEY}`;
 export const updateProfile = (data, token) => {
   return axios.put(
     `${URL}/users/`,
-    {
-      ...data,
-    },
+    { ...data },
     {
       headers: {
         authorization: `Bearer ${token}`,
         apikey: apikey,
         'Content-Type': 'multipart/form-data',
+      },
+    },
+  );
+};
+
+export const updateEmailAPI = (email, token) => {
+  console.log(`Emailnya nih =>> ${email}`);
+  return axios.patch(
+    `${URL}/users/email`,
+    { email },
+    {
+      headers: {
+        apikey: apikey,
+        authorization: `Bearer ${token}`,
       },
     },
   );
