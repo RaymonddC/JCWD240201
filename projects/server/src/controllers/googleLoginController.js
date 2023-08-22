@@ -19,7 +19,7 @@ const googleLogin = async (req, res, next) => {
       req.body,
     );
     // const response = await userDB.findOne({ where: { email: email } });
-    let result = await getUser(email, full_name);
+    let result = await getUser(email, email);
     
     if (!result) {
       result = await userDB.create({
@@ -32,7 +32,7 @@ const googleLogin = async (req, res, next) => {
       });
     }
     const token = await generateToken(result);
-    const user = await getUser(email, full_name, 'password');
+    const user = await getUser(email, email, 'password');
     return res.status(200).send({
       success: true,
       message: 'Login Success',
