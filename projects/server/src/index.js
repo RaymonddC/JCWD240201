@@ -41,6 +41,7 @@ const {
   prescriptionCartRoute,
   txHistoryRoute,
   stockHistoryRoute,
+  promoTypeRoute
 } = require('./routers');
 
 app.use('/auth', authRoute);
@@ -59,6 +60,7 @@ app.use('/promotions', promotionRoute);
 app.use('/tx-histories', txHistoryRoute);
 app.use('/prescriptioncarts', prescriptionCartRoute);
 app.use('/stock-histories', stockHistoryRoute);
+app.use('/promo-types', promoTypeRoute);
 
 app.get('/api', (req, res) => {
   res.send(`Hello, this is my API`);

@@ -1,17 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { promotionController } = require('../controllers');
+const { promoTypeController } = require('../controllers');
 const { APIKey } = require('../middleware/APIKey');
 const { verifyToken } = require('../middleware/auth');
 const { isAdmin } = require('../middleware/checkRole');
 
-router.post(
+router.get(
   '/',
   APIKey,
   verifyToken,
   isAdmin,
-  promotionController.createDiscount,
+  promoTypeController.getPromotionType,
 );
-router.get('/list', APIKey, verifyToken, promotionController.getPromotionList);
 
 module.exports = router;
