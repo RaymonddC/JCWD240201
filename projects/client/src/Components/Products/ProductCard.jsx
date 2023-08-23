@@ -49,7 +49,7 @@ export default function ProductCard(props) {
           <Link to={`/products/${productId}`}>
             <div className="h-28 pt-1">
               <img
-                className="h-32"
+                className="h-28 object-scale-down"
                 src={image ? `http://localhost:8000/${image}` : null}
                 alt=""
               />

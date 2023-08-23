@@ -14,6 +14,8 @@ import { FaPrescriptionBottleMedical } from 'react-icons/fa6';
 import { MdInventory } from 'react-icons/md';
 import { MdDiscount } from 'react-icons/md';
 import { TbReportAnalytics } from 'react-icons/tb';
+import { PiNoteFill } from 'react-icons/pi';
+import { MdHome } from 'react-icons/md';
 
 export const Sidebar = () => {
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ export const Sidebar = () => {
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="fixed sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#B4B9C7]">
+    <div className="fixed sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#000000]">
       <div className="flex sm:flex-col gap-[0.5em] items-center lg:items-start  flex-row">
         <Link to={'/'} className="w-full">
           <div className="cardSidebar sm:flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold hover:bg-[#8899a6] hover:bg-opacity-202 hidden justify-center ">
@@ -30,7 +32,7 @@ export const Sidebar = () => {
         </Link>
         <Link to={'/'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
-            <AiOutlineHome />
+            <MdHome />
             <p className="hidden lg:block">Dashboard</p>
           </div>
         </Link>
@@ -72,7 +74,8 @@ export const Sidebar = () => {
         </Link>
         <Link to={'/transactions'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
-            <img className="" src={TransactionIcon} alt="" />
+            {/* <img className="" src={TransactionIcon} alt="" /> */}
+            <PiNoteFill />
             <p className="hidden lg:block">Transaction</p>
           </div>
         </Link>

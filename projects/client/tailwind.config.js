@@ -15,7 +15,7 @@ module.exports = {
   ],
   daisyui: {
     themes: [
-      'emerald',
+      // 'emerald',
       {
         mytheme: {
           primary: '#ff5757',

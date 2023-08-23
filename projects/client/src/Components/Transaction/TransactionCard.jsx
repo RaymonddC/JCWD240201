@@ -53,7 +53,7 @@ const TransactionCard = (props) => {
         }),
       );
       dispatch(getAllTransactionSlice());
-      // props?.setTogle(!props?.togle);
+      props?.setTogle(!props?.togle);
       // props.togle
     } catch (error) {}
   };
