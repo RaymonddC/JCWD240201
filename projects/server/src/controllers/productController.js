@@ -20,12 +20,14 @@ const deleteFiles = require('../helpers/deleteFiles');
 const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, limit, sortType, sortOrder } = req.query;
+    const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
     let where = {};
     let order = [];
     where.name = { [Op.like]: `%${search}%` };
     where.id = { [Op.not]: 1 };
+
     if (sortType) {
       order = [[sortType, sortOrder]];
     } else {
@@ -39,7 +41,17 @@ const getAllProducts = async (req, res, next) => {
         { model: productTypeDB },
         { model: closedStockDB },
         { model: openedStockDB },
-        { model: promotionDB },
+        {
+          model: promotionDB,
+          where: {
+            [Op.and]: [
+              { limit: { [Op.gt]: 0 } },
+              { date_start: { [Op.lte]: today } },
+              { date_end: { [Op.gte]: today } },
+            ],
+          },
+          required: false,
+        },
         { model: productImageDB },
       ],
       limit: pageLimit,
@@ -47,7 +59,7 @@ const getAllProducts = async (req, res, next) => {
       where: where,
       order: order,
     });
-    console.log('><><>.>>>',response.rows.length, pageLimit)
+    console.log('><><>.>>>', response.rows.length, pageLimit);
     const totalPage = Math.ceil(response.count / pageLimit);
 
     return res.status(200).send({
