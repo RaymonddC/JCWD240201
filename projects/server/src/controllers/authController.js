@@ -20,7 +20,19 @@ const sendVerifyEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
     let payload = { email: email };
-    const token = jwt.sign(payload, 'verification-account');
+    const token = jwt.sign(payload, 'verification-account', {
+      expiresIn: '1h',
+    });
+
+    await User.update(
+      { token: token },
+      {
+        where: {
+          email: email,
+        },
+      },
+    );
+
     const data = fs.readFileSync(
       './src/helpers/verifyEmailTemplate.html',
       'utf-8',
@@ -45,7 +57,6 @@ const sendVerifyEmail = async (req, res, next) => {
       data: null,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -63,8 +74,11 @@ const verifyAccount = async (req, res, next) => {
 
     if (isVerified.verified) throw { message: 'Account is already verified' };
 
+    const getToken = await User.findOne({ where: { email: verifiedUser.email } });
+    if (token !== getToken.token) throw { message: 'Token is not found, please resend your verification request' };
+
     const result = await User.update(
-      { verified: true },
+      { verified: true, token: '' },
       {
         where: {
           email: verifiedUser.email,
@@ -162,8 +176,8 @@ const userLogin = async (req, res, next) => {
     if (!result.verified) {
       throw { message: 'Please check verification email' };
     }
-    if(result.google_login){
-      throw { message: 'You account was signed up using a diferent method'}
+    if (result.google_login) {
+      throw { message: 'You account was signed up using a diferent method' };
     }
 
     const isUserExists = await bcrypt.compare(password, result.password);
@@ -281,7 +295,7 @@ const resetPassword = async (req, res, next) => {
     if (!getEmail) throw { message: 'Unauthorized request', status: 401 };
 
     //reset password
-    User.update(
+    await User.update(
       { password: hashPassword },
       {
         where: {
