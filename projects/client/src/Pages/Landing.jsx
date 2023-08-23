@@ -117,7 +117,7 @@ export default function Landing() {
           </div>
         </div>
       </div>
-      <div className=" mt-10 flex justify-end pr-[10%]">
+      <div className=" flex justify-end pr-[10%]">
         <article className="prose">
           <Link to="/products">
             <h3>See all</h3>
@@ -140,7 +140,7 @@ export default function Landing() {
         </article>
       </div>
       <div className="w-full flex justify-center p-5">
-        <div className="w-[70%] ">
+        <div className="w-[70%]  " autoFocus={false} tabIndex={-1}>
           <StoreLocation />
         </div>
       </div>

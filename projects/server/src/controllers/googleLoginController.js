@@ -17,7 +17,7 @@ const googleLogin = async (req, res, next) => {
     let result = await getUser(email, email);
     console.log(
       '🚀 ~ file: googleLoginController.js:23 ~ googleLogin ~ result.user.dataValues:',
-      result.dataValues,
+      result,
     );
     if (!result) {
       result = await userDB.create({
