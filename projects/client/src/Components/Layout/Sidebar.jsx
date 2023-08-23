@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync, onSaveUser } from '../../Features/User/UserSlice';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import TransactionIcon from '../../utils/images/Transaction.svg';
 import { BiSolidReport } from 'react-icons/bi';
 import { GiMedicines } from 'react-icons/gi';
@@ -26,8 +26,8 @@ export const Sidebar = () => {
     <div className="fixed sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#000000]">
       <div className="flex sm:flex-col gap-[0.5em] items-center lg:items-start  flex-row">
         <Link to={'/'} className="w-full">
-          <div className="cardSidebar sm:flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold hover:bg-[#8899a6] hover:bg-opacity-202 hidden justify-center ">
-            <img className="h-10 px-2" src={Logo} alt="" />
+          <div className="cardSidebar sm:flex rounded-[50px] gap-[20px] h-20 p-[13px] font-bold hover:bg-[#8899a6] hover:bg-opacity-202 hidden justify-center ">
+            <img className="h-18 px-2" src={Logo} alt="" />
           </div>
         </Link>
         <Link to={'/'} className="w-full">

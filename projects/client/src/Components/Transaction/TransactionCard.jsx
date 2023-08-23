@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import { Link } from 'react-router-dom';
 import TransactionModal from './TransactionModal';
 import InputUserFile from '../Profile/Input/InputUserFile';

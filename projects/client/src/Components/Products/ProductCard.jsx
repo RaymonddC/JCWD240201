@@ -76,7 +76,7 @@ export default function ProductCard(props) {
                 onClick={() => {
                   handleAddToCart();
                 }}
-                className="btn btn-xs md:btn-sm btn-accent"
+                className="btn btn-xs md:btn-sm btn-primary btn-outline"
               >
                 {reqPrescripton ? 'prescription' : 'add to cart'}
               </button>
