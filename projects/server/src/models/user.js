@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       gender: DataTypes.STRING,
       verified: DataTypes.BOOLEAN,
       google_login: DataTypes.BOOLEAN,
+      token: DataTypes.STRING,
       deletedAt: DataTypes.DATE,
     },
     {
