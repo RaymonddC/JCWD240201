@@ -27,8 +27,8 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  // console.log('>>>', ProductsStore);
-  // console.log(page)
+  const [minPrice, setMinPrice] = useState(searchParams.get('min-price') || 0);
+  const [maxPrice, setMaxPrice] = useState(searchParams.get('max-price') || 0);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
@@ -119,13 +119,16 @@ export default function Products() {
   }, [page, debouncedSearchValue, sortType, sortOrder, category]);
   return (
     <>
-      <div className="sticky top-3 mb-3 z-10">
+      <div className=" flex sticky top-3 mb-3 z-10 justify-center">
         <FilterBar
           value={search}
           setSearch={setSearch}
           setSortType={setSortType}
           setSortOrder={setSortOrder}
+          setMinPrice={setMinPrice}
+          setMaxPrice={setMaxPrice}
           sortBy={true}
+          priceRange={true}
           option={[
             { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
             { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
@@ -141,6 +144,25 @@ export default function Products() {
             },
           ]}
         />
+        {/* <div className="hidden md:block">
+          <div className="flex items-start">
+            <div>Price range: min =</div>
+            <div className="flex flex-col">
+              <input type="text" value={`Rp.${minPrice}`} />
+              <input
+                type="range"
+                min={0}
+                max="100"
+                value={minPrice}
+                className="range range-xs w-40"
+                onChange={(e) => {
+                  setMinPrice(e.target.value);
+                }}
+              />
+            </div>
+            <div>max =</div>
+          </div>
+        </div> */}
       </div>
       <div className="flex ">
         <div className="hidden w-52 md:block pl-3">

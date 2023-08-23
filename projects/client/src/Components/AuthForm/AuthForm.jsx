@@ -1,20 +1,23 @@
 import { Formik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import { LoginSchema, SignupSchema } from '../../utils/ValidationSchema';
-import { loginWithGoogleSlice, onLoginAsync, onRegister } from '../../Features/User/UserSlice';
+import {
+  loginWithGoogleSlice,
+  onLoginAsync,
+  onRegister,
+} from '../../Features/User/UserSlice';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { FcGoogle } from 'react-icons/fc';
 import { Input } from './Input/Input';
 import { InputPassword } from './Input/InputPassword';
 
-
 // import { PhoneInput } from 'react-contact-number-input';
 
 export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const key = process.env.REACT_APP_API_SECRET_KEY;
 
   useEffect(() => {
@@ -57,7 +60,7 @@ export const AuthForm = (propss) => {
       validationSchema={propss.isRegis ? SignupSchema : LoginSchema}
       onSubmit={async (values, { resetForm }) => {
         try {
-          setIsSubmitting(true)
+          setIsSubmitting(true);
           window.grecaptcha.ready(() => {
             window.grecaptcha
               .execute(key, { action: 'submit' })
@@ -69,11 +72,11 @@ export const AuthForm = (propss) => {
                 );
 
                 if (!propss.isRegis) {
-                  setIsSubmitting(false)
+                  setIsSubmitting(false);
                   if (isSuccess) return navigate('/');
                   resetForm();
                 } else {
-                  setIsSubmitting(false)
+                  setIsSubmitting(false);
                   if (isSuccess) return navigate('/login');
                 }
               });
@@ -178,29 +181,16 @@ export const AuthForm = (propss) => {
             {propss.isRegis ? 'Register' : 'Login'}
           </button>
           <div className="btnOther w-full text-[13px] font-bold ">
-            {/* <div className="font-bold rounded-xl py-[8px] w-full  border border-[#898989]  my-[10px] flex items-center">
-              <div
-                // onClick={() => {
-                //   dispatch(onLoginWithGoogle());
-                // }}
-                className="flex w-full justify-center gap-3 cursor-pointer"
-              >
-                <FcGoogle size={'24px'} />
-                <p>
-                  {propss.isRegis ? 'Sign up with ' : 'Sign in with  '}
-                  Google
-                </p>
-              </div>
-            </div> */}
-             <button
-             type='button'
+            <button
+              type="button"
               onClick={() => {
                 dispatch(loginWithGoogleSlice());
               }}
               className="btn btn-outline rounded-xl btn-secondary w-full"
             >
-              <FcGoogle size={25} /> {propss.isRegis ? 'Login with ' : 'Sign in with  '}
-                  Google
+              <FcGoogle size={25} />{' '}
+              {propss.isRegis ? 'Login with ' : 'Sign in with  '}
+              Google
             </button>
           </div>
         </form>

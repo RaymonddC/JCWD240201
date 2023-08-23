@@ -177,7 +177,7 @@ const userLogin = async (req, res, next) => {
     //   result,
     // );
 
-    console.log(`result=>>>> ${result}`);
+    // console.log(`result=>>>> ${result}`);
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
     // if (!result.verified) {
