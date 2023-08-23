@@ -12,7 +12,7 @@ const {
 } = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
-const Product = db.product;
+const productDB = db.product;
 const User = db.user;
 const PackagingType = db.packaging_type;
 const Promotion = db.promotion;
@@ -74,12 +74,14 @@ const addToCart = async (req, res, next) => {
     const userId = req.user.id;
     const image = req.file;
     const imagePath = image ? image.path : undefined;
-    console.log(productId, qty, userId, imagePath);
 
-    // console.log(stock.total_stock < qty, qty, stock.total_stock);
-    // throw { message: 'bentar', data: stock };
+    const product = await productDB.findOne({
+      where: { id: productId },
+    });
 
-    // if(product. === true) throw({message:'butuh resep bro'})
+    if (product.require_prescription) {
+      throw { message: 'This product requires prescription' };
+    }
     const isCart = await getCart('', {
       product_id: productId,
       user_id: userId,

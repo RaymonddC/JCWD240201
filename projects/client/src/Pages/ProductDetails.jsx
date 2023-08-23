@@ -52,6 +52,9 @@ export default function ProductDetails() {
   };
 
   const handleAddToCart = () => {
+    if (reqPrescription) {
+      return toast.error('This product requires prescription');
+    }
     if (Object.keys(user).length === 0) {
       return toast.error('Login first before adding product to cart');
       // return navigate('/login');
@@ -84,13 +87,14 @@ export default function ProductDetails() {
                 <h3>{productName}</h3>
                 <h2>Rp. {productPrice}</h2>
               </article>
+
               <button
                 onClick={() => {
                   handleAddToCart();
                 }}
                 className="btn  btn-accent my-3"
               >
-                add to cart
+                {reqPrescription ? 'prescription' : 'add to cart'}
               </button>
               <div>
                 <article className="prose">

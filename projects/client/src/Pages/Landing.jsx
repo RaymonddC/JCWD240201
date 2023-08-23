@@ -1,7 +1,7 @@
 import Footer from '../Components/Layout/Footer';
 import NavBar from '../Components/Layout/Navbar';
 import ProductCard from '../Components/Products/ProductCard';
-import jumbotronImage from '../utils/images/jumbotronImage.png';
+import jumbotronImage from '../utils/images/jumbotronImage.svg';
 import prescriptionImage from '../utils/images/prescription.svg';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 import StoreLocation from '../Components/Landing/StoreLocation';
+import NavbarDrawer from '../Components/Layout/NavbarDrawer';
 
 export default function Landing() {
   const dispatch = useDispatch();
@@ -44,6 +45,7 @@ export default function Landing() {
   };
   useEffect(() => {
     // dispatch(getProducts({ page: 1, limit, search: '' }));
+    
     dispatch(
       getLabels({
         page: 1,
@@ -51,10 +53,11 @@ export default function Landing() {
         category: 'Jamu',
       }),
     );
-  }, [dispatch]);
+  }, []);
   return (
     <>
-      {/* <NavBar /> */}
+  
+      {/* <NavbarDrawer/> */}
       <div className="flex  justify-center">
         <article className="prose">
           <h2 className="mx-5 text-center lg:hidden">
@@ -62,9 +65,9 @@ export default function Landing() {
           </h2>
         </article>
       </div>
-      <div className="relative flex drop-shadow-md justify-end my-3 md:mx-9 border rounded-lg bg-[#92c3d1]">
-        <img src={jumbotronImage} alt="" />
-        <div className="absolute left-3 top-2">
+      <div className="relative flex drop-shadow-md justify-end my-3 md:mx-9 border rounded-lg bg-[#f6f8fc]">
+        <img className=" max-h-60" src={jumbotronImage} alt="" />
+        <div className="absolute left-6 top-3">
           <article className="prose">
             <h1 className="hidden lg:block">
               YOUR TRUSTED ONLINE PHARMACY STORE
@@ -83,7 +86,7 @@ export default function Landing() {
         </div>
       </div>
       <div className="flex my-5 px-3 justify-center">
-        <div className="w-fit items-center flex flex-col lg:flex-row drop-shadow-md mt-5 p-3 mx-5 bg-gray-200 rounded-xl">
+        <div className="w-fit items-center flex flex-col lg:flex-row drop-shadow-md mt-5 p-3 mx-5 bg-[#f6f8fc] rounded-xl">
           <img
             className="h-28 hidden lg:block "
             src={prescriptionImage}
