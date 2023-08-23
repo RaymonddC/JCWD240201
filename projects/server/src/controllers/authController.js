@@ -19,6 +19,8 @@ const {
 const sendVerifyEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
+    const isVerified = await User.findOne({ where: { email: email } });
+    if(isVerified.verified) throw {message: "Account is already verified"}
     let payload = { email: email };
     const token = jwt.sign(payload, 'verification-account', {
       expiresIn: '1h',
@@ -53,7 +55,7 @@ const sendVerifyEmail = async (req, res, next) => {
     return res.send({
       success: true,
       status: 200,
-      message: 'Send Verification Email Success',
+      message: 'Send verification email Success',
       data: null,
     });
   } catch (error) {
@@ -74,8 +76,13 @@ const verifyAccount = async (req, res, next) => {
 
     if (isVerified.verified) throw { message: 'Account is already verified' };
 
-    const getToken = await User.findOne({ where: { email: verifiedUser.email } });
-    if (token !== getToken.token) throw { message: 'Token is not found, please resend your verification request' };
+    const getToken = await User.findOne({
+      where: { email: verifiedUser.email },
+    });
+    if (token !== getToken.token)
+      throw {
+        message: 'Token is not found, please resend your verification request',
+      };
 
     const result = await User.update(
       { verified: true, token: '' },
