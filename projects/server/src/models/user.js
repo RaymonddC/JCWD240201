@@ -38,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       verified: DataTypes.BOOLEAN,
       google_login: DataTypes.BOOLEAN,
       token: DataTypes.STRING,
+      reset_password_token: DataTypes.STRING,
       deletedAt: DataTypes.DATE,
     },
     {

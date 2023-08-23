@@ -1,15 +1,16 @@
 import { useRef } from 'react';
 import { useState } from 'react';
-import { MdKeyboardBackspace } from 'react-icons/md';
 import toast from 'react-hot-toast';
 import { resetPassword } from '../API/authAPI';
 import { useSearchParams } from 'react-router-dom';
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from 'react-icons/md';
+import { useNavigate } from 'react-router-dom';
 
 export default function ResetPasswordForm() {
   const [disable, setDisable] = useState(false);
   const _newPassword = useRef();
   const _confirmNewPassword = useRef();
+  const navigate = useNavigate()
 
   //show password
   const [showPassword, setShowPassword] = useState(false);
@@ -69,6 +70,7 @@ export default function ResetPasswordForm() {
       _newPassword.current.value = '';
       _confirmNewPassword.current.value = '';
       setDisable(false);
+      navigate('/login')
     } catch (error) {
       setDisable(false);
       toast.error(error.response.data.message);
@@ -77,9 +79,6 @@ export default function ResetPasswordForm() {
   return (
     <>
       <div className="flex gap-4 border-b-2 h-14 p-3">
-        <div className="flex items-center">
-          <MdKeyboardBackspace size={25} />
-        </div>
         <div className="flex items-center font-semibold">Reset Password</div>
       </div>
       <div className="lg:flex lg:justify-center lg:p-4 md:flex md:justify-center md:p-4">

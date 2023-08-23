@@ -20,7 +20,7 @@ const sendVerifyEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
     const isVerified = await User.findOne({ where: { email: email } });
-    if(isVerified.verified) throw {message: "Account is already verified"}
+    if (isVerified.verified) throw { message: 'Account is already verified' };
     let payload = { email: email };
     const token = jwt.sign(payload, 'verification-account', {
       expiresIn: '1h',
@@ -244,7 +244,20 @@ const sendResetPasswordForm = async (req, res, next) => {
     const { email } = req.body;
     const isEmail = new RegExp(/\S+@\S+.\S+/);
     let payload = { email: email };
-    const token = jwt.sign(payload, 'reset-password');
+    const token = jwt.sign(payload, 'reset-password', {
+      expiresIn: '1h',
+    });
+
+    //input token to DB
+    await User.update(
+      { reset_password_token: token },
+      {
+        where: {
+          email: email,
+        },
+      },
+    );
+
     if (!isEmail.test(email))
       throw { status: 400, message: 'Email is not valid' };
 
@@ -301,9 +314,19 @@ const resetPassword = async (req, res, next) => {
 
     if (!getEmail) throw { message: 'Unauthorized request', status: 401 };
 
+    //checking token
+    const getToken = await User.findOne({
+      where: { email: getEmail.email },
+    });
+    if (token !== getToken.reset_password_token)
+      throw {
+        message:
+          'Token is not found, please resend your reset password request',
+      };
+
     //reset password
     await User.update(
-      { password: hashPassword },
+      { password: hashPassword, reset_password_token: '' },
       {
         where: {
           email: getEmail.email,
