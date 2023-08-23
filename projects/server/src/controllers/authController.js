@@ -170,12 +170,12 @@ const userLogin = async (req, res, next) => {
     //   result,
     // );
 
-    console.log(`result=>>>> ${result}`);
+    // console.log(`result=>>>> ${result}`);
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
-    if (!result.verified) {
-      throw { message: 'Please check verification email' };
-    }
+    // if (!result.verified) {
+    //   throw { message: 'Please check verification email' };
+    // }
     if (result.google_login) {
       throw { message: 'You account was signed up using a diferent method' };
     }
