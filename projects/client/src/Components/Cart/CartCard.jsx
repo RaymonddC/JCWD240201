@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';

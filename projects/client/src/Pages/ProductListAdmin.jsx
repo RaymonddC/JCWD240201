@@ -16,7 +16,6 @@ export default function ProductListAdmin() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
-
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sortType') || '');
@@ -24,7 +23,6 @@ export default function ProductListAdmin() {
     searchParams.get('sortOrder') || '',
   );
   const [category, setCategory] = useState(searchParams.get('category') || '');
-
   const [productId, setProductId] = useState(null);
   const [isDeleted, setIsDeleted] = useState(false);
   const ProductsStore = useSelector((state) => state?.products?.products);
@@ -105,7 +103,7 @@ export default function ProductListAdmin() {
           className="sticky bottom-6 bg-primary w-fit rounded-full hover:cursor-pointer"
           onClick={() => navigate('/products/new')}
         >
-          <MdAdd size={40} />
+          <MdAdd size={40} color='white' />
         </div>
       </div>
       <DeleteModal productId={productId} isDeleted={setIsDeleted} />

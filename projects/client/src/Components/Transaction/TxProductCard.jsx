@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 
 const TxProductCard = (props) => {
   return (

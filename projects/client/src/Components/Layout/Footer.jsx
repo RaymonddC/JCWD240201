@@ -1,4 +1,4 @@
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import { MdWhatsapp, MdMail, MdCall, MdFacebook } from 'react-icons/md';
 import { IoLogoTwitter } from 'react-icons/io';
 import { AiFillInstagram } from 'react-icons/ai';
