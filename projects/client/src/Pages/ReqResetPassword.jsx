@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { sendResetForm } from '../API/authAPI';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function ReqResetPassword() {
   const _email = useRef();
   const [emailValidation, setEmailValidation] = useState(true);
   const [disable, setDisable] = useState(false);
+  const navigate = useNavigate();
 
   //email validation
   const onEmail = (email) => {
@@ -42,7 +44,7 @@ export default function ReqResetPassword() {
   return (
     <>
       <div className="flex gap-4 border-b-2 h-14 p-3">
-        <div className="flex items-center">
+        <div onClick={() => navigate('/login')} className="flex items-center hover:cursor-pointer">
           <MdKeyboardBackspace size={25} />
         </div>
         <div className="flex items-center font-semibold">
