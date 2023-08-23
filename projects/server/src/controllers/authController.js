@@ -50,6 +50,13 @@ const sendVerifyEmail = async (req, res, next) => {
       to: email,
       subject: 'Account Verification',
       html: tempResult,
+      attachments: [
+        {
+          filename: 'Medicore.png',
+          path: `../server/public/logo/Medicore.png`,
+          cid: 'logo1',
+        },
+      ],
     });
 
     return res.send({
@@ -281,6 +288,13 @@ const sendResetPasswordForm = async (req, res, next) => {
         to: email,
         subject: 'Reset Password',
         html: tempResult,
+        attachments: [
+          {
+            filename: 'Medicore.png',
+            path: `../server/public/logo/Medicore.png`,
+            cid: 'logo1',
+          },
+        ],
       });
 
       return res.send({
