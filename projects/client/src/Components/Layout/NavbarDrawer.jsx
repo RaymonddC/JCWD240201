@@ -44,7 +44,7 @@ export default function NavbarDrawer() {
               </label>
             </div>
             <div>
-              <div className="w-72 hidden md:block">
+              <div className="w-60 hidden md:block">
                 <Link to="/">
                   <img className="px-2 h-20" src={Logo} alt="" />
                 </Link>
