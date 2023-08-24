@@ -15,6 +15,7 @@ export default function ChangePassword() {
   const _oldPassword = useRef();
   const _newPassword = useRef();
   const _confirmNewPassword = useRef();
+  const [isDisable, setIsDisable] = useState(false)
 
   // password validation
   const [passwordValidation, setPasswordValidation] = useState(true);
@@ -40,13 +41,14 @@ export default function ChangePassword() {
     }
   };
 
-  const onChangePassword = async () => {
+  const onChangePassword = async (e) => {
     try {
+      e.preventDefault();
+      setIsDisable(true)
       const oldPassword = _oldPassword.current.value;
       const newPassword = _newPassword.current.value;
       const confirmNewPassword = _confirmNewPassword.current.value;
       const passwordNotMatch = { message: 'Password does not match' };
-      console.log(oldPassword);
       if (newPassword !== confirmNewPassword) throw passwordNotMatch;
 
       const result = await changePassword(user.id, oldPassword, newPassword);
@@ -59,8 +61,10 @@ export default function ChangePassword() {
       _oldPassword.current.value = '';
       _newPassword.current.value = '';
       _confirmNewPassword.current.value = '';
+      setIsDisable(false)
     } catch (error) {
       toast.error(error.response.data.message);
+      setIsDisable(false)
     }
   };
 
@@ -92,38 +96,41 @@ export default function ChangePassword() {
                 </div>
               </div>
             </div>
-            <div>
-              <InputPassword
-                label={`Old Password`}
-                name="password"
-                defineRef={_oldPassword}
-              />
-              <InputPassword
-                label={`New Password`}
-                name="password"
-                defineRef={_newPassword}
-                className={passwordValidation ? '' : 'input-error'}
-                onChanged={() => onPassword(_newPassword.current.value)}
-              />
-              <InputPassword
-                label={`Confirm New Password`}
-                name="password"
-                defineRef={_confirmNewPassword}
-                className={passwordConfirmation ? '' : 'input-error'}
-                onChanged={() =>
-                  onConfirmPassword(
-                    _newPassword.current.value,
-                    _confirmNewPassword.current.value,
-                  )
-                }
-              />
-              <button
-                className="btn btn-primary w-full lg:w-6/12 md:w-6/12 text-white my-4"
-                onClick={() => onChangePassword()}
-              >
-                Save
-              </button>
-            </div>
+            <form onSubmit={onChangePassword}>
+              <div>
+                <InputPassword
+                  label={`Old Password`}
+                  name="password"
+                  defineRef={_oldPassword}
+                />
+                <InputPassword
+                  label={`New Password`}
+                  name="password"
+                  defineRef={_newPassword}
+                  className={passwordValidation ? '' : 'input-error'}
+                  onChanged={() => onPassword(_newPassword.current.value)}
+                />
+                <InputPassword
+                  label={`Confirm New Password`}
+                  name="password"
+                  defineRef={_confirmNewPassword}
+                  className={passwordConfirmation ? '' : 'input-error'}
+                  onChanged={() =>
+                    onConfirmPassword(
+                      _newPassword.current.value,
+                      _confirmNewPassword.current.value,
+                    )
+                  }
+                />
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full lg:w-6/12 md:w-6/12 text-white my-4"
+                  disabled={isDisable}
+                >
+                  Save
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
