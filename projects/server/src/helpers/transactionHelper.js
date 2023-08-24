@@ -20,12 +20,12 @@ const getUserTransactions = async (whereQuery, orderBy) => {
         ...whereQuery.transaction,
         [Op.and]: [
           sequelize.where(
-            sequelize.fn('date', sequelize.col('Transaction.createdAt')),
+            sequelize.fn('date', sequelize.col('transaction.createdAt')),
             '>=',
             whereQuery.dates.startDate,
           ),
           sequelize.where(
-            sequelize.fn('date', sequelize.col('Transaction.createdAt')),
+            sequelize.fn('date', sequelize.col('transaction.createdAt')),
             '<=',
             whereQuery.dates.endDate,
           ),
