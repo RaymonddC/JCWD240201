@@ -64,3 +64,15 @@ export function uploadPaymentAPI(token, data) {
     },
   );
 }
+
+export function handleMidtransPaymentAPI(token, values) {
+  return axios.post(
+    `${URL}/transactions/midtrans-payment`,
+    { ...values },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+}

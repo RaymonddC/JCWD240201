@@ -9,9 +9,7 @@ const transporter = require('../helpers/transporter');
 const { sequelize } = require('../models');
 
 const getAllTxStatus = async (req, res, next) => {
-  // const t = await sequelize.transaction();
   try {
-    // console.log('Getting all categories');
     const txStatus = await TxStatus.findAll();
 
     return res.status(200).send({
@@ -21,10 +19,6 @@ const getAllTxStatus = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    // return res.send({
-    //   success: false,
-    //   message: error.message,
-    // });
   }
 };
 

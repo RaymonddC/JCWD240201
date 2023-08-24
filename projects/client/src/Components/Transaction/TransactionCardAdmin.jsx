@@ -126,7 +126,12 @@ const TransactionCardAdmin = (props) => {
             </p>
           </div>
           <p className="font-bold">
-            Rp {props.tx.total_price?.toLocaleString(['id'])}
+            Rp{' '}
+            {(
+              props.tx.total_price +
+              props.tx.shipment_fee -
+              props.tx.total_discount
+            )?.toLocaleString(['id'])}
           </p>
         </div>
         <div className="action flex justify-end gap-5 items-center px-2 py-2">

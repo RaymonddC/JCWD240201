@@ -41,7 +41,7 @@ const getUserCarts = async (includes, whereQuery, order) => {
       ],
       attributes: {
         include: [
-          [sequelize.literal('CAST(price*discount/100 AS FLOAT)'), 'disc'],
+          [sequelize.literal('CAST(price*discount/100 AS INT)'), 'disc'],
           // [sequelize.literal('CAST(SUM(price) AS FLOAT)'), 'totalll'],
         ],
         // include: [[sequelize.fn('sum', sequelize.col('qty')), 'cartQty']],
@@ -49,7 +49,7 @@ const getUserCarts = async (includes, whereQuery, order) => {
       where: whereQuery,
       order: [
         ['createdAt', 'DESC'],
-        [Product, Promotion, 'createdAt', 'ASC'],
+        [Product, Promotion, 'promotion_type_id'],
       ],
       // limit: Number(limitPage),
       // offset: (Number(page) - 1) * limitPage,
