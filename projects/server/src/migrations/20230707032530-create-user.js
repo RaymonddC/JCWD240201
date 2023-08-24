@@ -39,6 +39,15 @@ module.exports = {
       verified: {
         type: Sequelize.BOOLEAN,
       },
+      google_login: {
+        type: Sequelize.BOOLEAN,
+      },
+      token: {
+        type: Sequelize.STRING,
+      },
+      reset_password_token: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

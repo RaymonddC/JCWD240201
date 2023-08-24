@@ -39,7 +39,7 @@ export default function EditProduct() {
       const categories = result?.data?.labels.map((value) => {
         return value.product_category;
       });
-      setImage(result?.data?.image?.image);
+      setImage(result?.data?.data?.product_images?.[0]?.image);
       setProduct(result?.data?.data);
       setSelectedCategories(categories);
     } catch (error) {}
@@ -298,6 +298,8 @@ export default function EditProduct() {
                 }}
                 label="Product Image"
                 refProp={fileInputRef}
+                touched={formik.touched?.image?.product}
+                errors={formik?.errors?.product}
               />
             </div>
             {formik?.values?.image?.product ? (
@@ -309,7 +311,7 @@ export default function EditProduct() {
             ) : (
               <img
                 className="w-6/12"
-                src={`http://localhost:8000/${image}`}
+                src={image ? `http://localhost:8000/${image}` : null}
                 alt="product_image"
               />
             )}
@@ -323,7 +325,7 @@ export default function EditProduct() {
             Cancel
           </button>
           <button
-            disabled={!formik.isValid || formik.isSubmitting}
+            disabled={ formik.isSubmitting}
             type="submit"
             className="btn w-full bg-primary text-white"
           >

@@ -15,6 +15,11 @@ export default function QnAUser() {
   let queryParams = {};
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
+  console.log(
+    '🚀 ~ file: QnAUser.jsx:19 ~ QnAUser ~ QnAStore?.answers?.data?.rows:',
+    QnAStore?.answers?.data?.rows,
+  );
+
   const totalPages = QnAStore?.answers?.totalPage;
   const questionCategories = QnAStore?.categories;
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
@@ -24,6 +29,10 @@ export default function QnAUser() {
   );
   const debouncedSearchValue = useDebounce(search, 1200);
   const limit = 2;
+  const [sortType, setSortType] = useState(searchParams.get('sort-type') || '');
+  const [sortOrder, setSortOrder] = useState(
+    searchParams.get('sort-order') || '',
+  );
 
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
@@ -50,6 +59,12 @@ export default function QnAUser() {
     if (debouncedSearchValue) {
       queryParams['search'] = debouncedSearchValue;
     }
+    if (sortType) {
+      queryParams['sort-type'] = sortType;
+    }
+    if (sortOrder) {
+      queryParams['sort-order'] = sortOrder;
+    }
     setSearchParams(queryParams);
     dispatch(
       getAnswers({
@@ -57,17 +72,31 @@ export default function QnAUser() {
         limit,
         question_category_id: questionCategory,
         search: debouncedSearchValue,
+        sortOrder,
+        sortType,
       }),
     );
     dispatch(getQuestionCategory());
-  }, [page, questionCategory, debouncedSearchValue]);
+  }, [page, questionCategory, debouncedSearchValue, sortType, sortOrder]);
   useEffect(() => {
     setPage(1);
   }, [questionCategory]);
 
   return (
     <>
-      <FilterBar setSearch={setSearch} />
+      <FilterBar
+        setSearch={setSearch}
+        setSortType={setSortType}
+        setSortOrder={setSortOrder}
+        option={[
+          { text: 'Oldest to latest', sortType: 'updatedAt', sortOrder: 'ASC' },
+          {
+            text: 'Latest to oldest',
+            sortType: 'updatedAt',
+            sortOrder: 'DESC',
+          },
+        ]}
+      />
 
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">
@@ -94,11 +123,19 @@ export default function QnAUser() {
               <div>
                 <div>
                   {QnAStore?.answers?.data?.rows ? (
-                    QnAStore?.answers?.data?.rows.map((value, index) => {
-                      return (
-                        <QuestionCard data={value} key={`question${index}`} />
-                      );
-                    })
+                    !QnAStore?.answers?.data?.rows.length ? (
+                      <div className="flex py-10 w-full justify-center">
+                        <article className="prose">
+                          <h4>--- No search result ---</h4>
+                        </article>
+                      </div>
+                    ) : (
+                      QnAStore?.answers?.data?.rows.map((value, index) => {
+                        return (
+                          <QuestionCard data={value} key={`question${index}`} />
+                        );
+                      })
+                    )
                   ) : (
                     <QnACardSkl limit={limit} />
                   )}

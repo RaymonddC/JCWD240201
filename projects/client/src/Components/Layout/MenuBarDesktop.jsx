@@ -1,10 +1,12 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 
 export default function MenuBarDesktop() {
+  const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   return (
     <div className="hidden lg:flex w-full h-fit lg:max-w-[255px] lg:flex-col flex-row mt-20 shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg">
       <Link
@@ -27,16 +29,18 @@ export default function MenuBarDesktop() {
       >
         Address
       </Link>
-      <Link
-        to="/user/change-password"
-        className={`p-3 cursor-pointer hover:font-bold border-b border-[#D5D7DD] ${
-          window.location.pathname === '/user/change-password'
-            ? 'text-primary font-bold'
-            : null
-        }`}
-      >
-        Change Passsword
-      </Link>
+      {user?.google_login ? null : (
+        <Link
+          to="/user/change-password"
+          className={`p-3 cursor-pointer hover:font-bold border-b border-[#D5D7DD] ${
+            window.location.pathname === '/user/change-password'
+              ? 'text-primary font-bold'
+              : null
+          }`}
+        >
+          Change Passsword
+        </Link>
+      )}
       <Link
         to="/user/transaction"
         className={`p-3 cursor-pointer hover:font-bold border-b border-[#D5D7DD] ${

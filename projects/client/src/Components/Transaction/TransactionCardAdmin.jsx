@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import { Link } from 'react-router-dom';
 import { BiReceipt } from 'react-icons/bi';
 import TransactionModal from './TransactionModal';

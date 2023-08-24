@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import { Link, useNavigate } from 'react-router-dom';
 import TransactionModal from './TransactionModal';
 import InputUserFile from '../Profile/Input/InputUserFile';
@@ -56,7 +56,7 @@ const TransactionCard = (props) => {
         }),
       );
       dispatch(getAllTransactionSlice());
-      // props?.setTogle(!props?.togle);
+      props?.setTogle(!props?.togle);
       // props.togle
     } catch (error) {}
   };
@@ -64,7 +64,7 @@ const TransactionCard = (props) => {
     try {
       await dispatch(
         updateTransactionHistorySlice({
-          transaction_status_id: 5,
+          transaction_status_id: 6,
           transaction_id: transactionId,
         }),
       );

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
+import StoreLocation from '../Components/Landing/StoreLocation';
 
 export default function Landing() {
   const dispatch = useDispatch();
@@ -116,7 +117,7 @@ export default function Landing() {
           </div>
         </div>
       </div>
-      <div className=" mt-10 flex justify-end pr-[10%]">
+      <div className=" flex justify-end pr-[10%]">
         <article className="prose">
           <Link to="/products">
             <h3>See all</h3>
@@ -131,6 +132,16 @@ export default function Landing() {
         </div>
         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
+        </div>
+      </div>
+      <div className=" mt-10 flex justify-end pr-[10%]">
+        <article className="prose">
+          <h3>Location</h3>
+        </article>
+      </div>
+      <div className="w-full flex justify-center p-5">
+        <div className="w-[70%]  " autoFocus={false} tabIndex={-1}>
+          <StoreLocation />
         </div>
       </div>
     </>

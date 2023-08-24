@@ -6,7 +6,7 @@ const APIKey =
 
 export function userVerification(token) {
   return axios.post(
-    `${URL}/auth/verifyEmail`,
+    `${URL}/auth/verify-email`,
     {},
     {
       headers: {
@@ -19,7 +19,7 @@ export function userVerification(token) {
 
 export function sendVerificationEmail(email) {
   return axios.post(
-    `${URL}/auth/sendVerify`,
+    `${URL}/auth/send-verify`,
     {
       email: email,
     },
@@ -33,7 +33,7 @@ export function sendVerificationEmail(email) {
 
 export function resetPassword(password, token) {
   return axios.patch(
-    `${URL}/auth/resetPassword`,
+    `${URL}/auth/reset-password`,
     {
       newPassword: password,
     },
@@ -47,7 +47,7 @@ export function resetPassword(password, token) {
 }
 
 export function keepLogin(token) {
-  return axios.get(`${URL}/auth/getUser`, {
+  return axios.get(`${URL}/auth/get-user`, {
     headers: {
       Authorization: `Bearer ${token}`,
       apiKey: APIKey,
@@ -85,7 +85,7 @@ export function checkCredential(data) {
 
 export function sendResetForm(email) {
   return axios.post(
-    `${URL}/auth/sendReset`,
+    `${URL}/auth/send-reset`,
     {
       email: email,
     },
@@ -97,13 +97,39 @@ export function sendResetForm(email) {
   );
 }
 
-export function changePassword(userId, oldPassword, newPassword){
+export function changePassword(userId, oldPassword, newPassword) {
   return axios.patch(
     `${URL}/auth/password/${userId}`,
     {
       oldPassword: oldPassword,
-      newPassword: newPassword
+      newPassword: newPassword,
     },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
+
+export function googleLoginAPI(data) {
+  return axios.post(
+    `${URL}/auth/google-login`,
+    {
+      ...data,
+    },
+    {
+      headers: {
+        apiKey: APIKey,
+      },
+    },
+  );
+}
+
+export function sendChangeEmailFormAPI(email) {
+  return axios.post(
+    `${URL}/auth/send-change-email`,
+    { email },
     {
       headers: {
         apiKey: APIKey,

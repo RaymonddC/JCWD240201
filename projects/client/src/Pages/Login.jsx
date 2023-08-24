@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { AuthForm } from '../Components/AuthForm/AuthForm';
 import LoginImage from '../utils/images/Frame.svg';
-import Logo from '../utils/images/logoHealthyMed.svg';
+import Logo from '../utils/images/Medicore.png';
 import { loginWithGoogleSlice } from '../Features/User/UserSlice';
-import { FcGoogle } from "react-icons/fc";
-
+import { FcGoogle } from 'react-icons/fc';
 
 export const Login = () => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state?.user);
 
   const [isRegis, setIsRegis] = useState(
@@ -37,7 +37,7 @@ export const Login = () => {
       <div className="formSide flex-1 flex flex-col h-[100vh] justify-center">
         <Link to={'/'}>
           <img
-            className="absolute h-[2em] sm:h-[2.5em] xl:h-[4em] top-5 left-5 "
+            className="absolute h-[2em] sm:h-[3em] xl:h-[6em] top-5 left-5 "
             src={Logo}
             alt=""
           />
@@ -53,6 +53,16 @@ export const Login = () => {
           </div>
 
           <AuthForm isRegis={isRegis} />
+          {/* <div>
+            <button
+              onClick={() => {
+                dispatch(loginWithGoogleSlice());
+              }}
+              className="btn btn-outline btn-secondary w-full"
+            >
+              <FcGoogle size={25} /> LOGIN / SIGN UP WITH GOOGLE 
+            </button>
+          </div> */}
 
           <Link to={'/'}>
             <span className="text-[#808080] text-left pb-3">

@@ -15,6 +15,7 @@ const initialState = {
   editAddressData: {},
   selectedAddress: {},
   cityUser: {},
+  loadCity: false,
 };
 
 export const AddressSlice = createSlice({
@@ -41,6 +42,9 @@ export const AddressSlice = createSlice({
     },
     setCityUser: (initialState, action) => {
       initialState.cityUser = action.payload;
+    },
+    setLoadCity: (initialState, action) => {
+      initialState.loadCity = action.payload;
     },
   },
 });
@@ -75,11 +79,14 @@ export const getProvinceAsync = () => async (dispatch) => {
 
 export const getCityAsync = (province_id) => async (dispatch) => {
   try {
+    dispatch(setLoadCity(true));
+    console.log('masuk');
     let token = localStorage.getItem('token');
-
     const response = await getCity(province_id, token);
-
-    dispatch(setCity(response.data.data));
+    if (response.data.success) {
+      dispatch(setCity(response.data.data));
+      dispatch(setLoadCity(false));
+    }
   } catch (error) {
     toast.error(error.message);
   }
@@ -105,6 +112,7 @@ export const {
   setEditAddressData,
   setSelectedAddress,
   setCityUser,
+  setLoadCity,
 } = AddressSlice.actions;
 
 export default AddressSlice.reducer;

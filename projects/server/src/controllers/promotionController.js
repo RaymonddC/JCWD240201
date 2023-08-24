@@ -22,22 +22,6 @@ const createDiscount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-const getPromotionType = async (req, res, next) => {
-  try {
-    const result = await promotionTypeDB.findAll();
-
-    return res.send({
-      success: true,
-      status: 200,
-      message: 'Get Promotion Type Success',
-      data: result,
-    });
-  } catch (error) {
     next(error);
   }
 };
@@ -111,6 +95,5 @@ const getPromotionList = async (req, res, next) => {
 
 module.exports = {
   createDiscount,
-  getPromotionType,
   getPromotionList,
 };

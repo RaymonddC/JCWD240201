@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Logo from '../../utils/images/logoHealthyMed.svg';
-import Logo1 from '../../utils/images/Medicore.png'
+import Logo from '../../utils/images/Medicore.png';
+import Logo1 from '../../utils/images/Medicore.png';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  console.log('🚀 ~ file: Navbar.jsx:15 ~ NavBar ~ user:', user);
   const { totalCart } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function NavBar() {
                 ''
               )}
               {user && Object.keys(user).length !== 0 ? (
-                <div className="flex gap-2 w-40 truncate">
+                <div className="flex gap-2">
                   <Link
                     to="/user/profile"
                     className="flex justify-center items-center gap-2 "
@@ -70,7 +71,9 @@ export default function NavBar() {
                     ) : (
                       <MdPerson className="w-[40px] h-[40px]" />
                     )}
-                    <span className="font-bold">{user?.full_name}</span>
+                    <span className="font-bold max-w-[132px] truncate">
+                      {user?.full_name}
+                    </span>
                   </Link>
                   {/* <button
                     className="btn btn-outline btn-secondary ml-3"

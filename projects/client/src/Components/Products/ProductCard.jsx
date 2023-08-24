@@ -23,7 +23,7 @@ export default function ProductCard(props) {
       }
     }
   }
-  console.log('><><><id',productId, promotions);
+
   const image = props?.data?.product_images
     ? props?.data?.product_images[0]?.image
     : '';
@@ -49,7 +49,7 @@ export default function ProductCard(props) {
           <Link to={`/products/${productId}`}>
             <div className="h-28 pt-1">
               <img
-                className="h-32"
+                className="h-28 object-scale-down"
                 src={image ? `http://localhost:8000/${image}` : null}
                 alt=""
               />
@@ -76,7 +76,7 @@ export default function ProductCard(props) {
                 onClick={() => {
                   handleAddToCart();
                 }}
-                className="btn btn-xs md:btn-sm btn-accent"
+                className="btn btn-xs md:btn-sm btn-primary btn-outline"
               >
                 {reqPrescripton ? 'prescription' : 'add to cart'}
               </button>

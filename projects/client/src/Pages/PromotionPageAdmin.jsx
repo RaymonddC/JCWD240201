@@ -17,6 +17,7 @@ export default function PromotionPage() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPromoType, setCurrentPromoType] = useState(null);
+  const [currentType, setCurrentType] = useState(null)
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -29,11 +30,15 @@ export default function PromotionPage() {
     validate: validateGetPromotion,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        console.log(values);
+        if(Number(currentType) !== Number(formik?.values?.promotionTypeId)){
+          setPage(1)
+          formik.setFieldValue('page', page);
+        }
         const result = await getPromotionAPI(values);
         setCurrentPromoType(result?.data?.data?.rows[0]?.promotion_type_id);
         setData(result?.data?.data?.rows);
         setTotalPages(result?.data?.totalPage);
+        setCurrentType(formik?.values?.promotionTypeId)
         setSubmitting(false);
       } catch (error) {
         toast.error(error.response.data.message);

@@ -19,8 +19,22 @@ const {
 const sendVerifyEmail = async (req, res, next) => {
   try {
     const { email } = req.body;
+    const isVerified = await User.findOne({ where: { email: email } });
+    if (isVerified.verified) throw { message: 'Account is already verified' };
     let payload = { email: email };
-    const token = jwt.sign(payload, 'verification-account');
+    const token = jwt.sign(payload, 'verification-account', {
+      expiresIn: '1h',
+    });
+
+    await User.update(
+      { token: token },
+      {
+        where: {
+          email: email,
+        },
+      },
+    );
+
     const data = fs.readFileSync(
       './src/helpers/verifyEmailTemplate.html',
       'utf-8',
@@ -36,16 +50,22 @@ const sendVerifyEmail = async (req, res, next) => {
       to: email,
       subject: 'Account Verification',
       html: tempResult,
+      attachments: [
+        {
+          filename: 'Medicore.png',
+          path: `../server/public/logo/Medicore.png`,
+          cid: 'logo1',
+        },
+      ],
     });
 
     return res.send({
       success: true,
       status: 200,
-      message: 'Send Verification Email Success',
+      message: 'Send verification email Success',
       data: null,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -63,8 +83,16 @@ const verifyAccount = async (req, res, next) => {
 
     if (isVerified.verified) throw { message: 'Account is already verified' };
 
+    const getToken = await User.findOne({
+      where: { email: verifiedUser.email },
+    });
+    if (token !== getToken.token)
+      throw {
+        message: 'Token is not found, please resend your verification request',
+      };
+
     const result = await User.update(
-      { verified: true },
+      { verified: true, token: '' },
       {
         where: {
           email: verifiedUser.email,
@@ -151,8 +179,20 @@ const userLogin = async (req, res, next) => {
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
+    // console.log(
+    //   '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
+    //   result,
+    // );
+
+    // console.log(`result=>>>> ${result}`);
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
+    // if (!result.verified) {
+    //   throw { message: 'Please check verification email' };
+    // }
+    if (result.google_login) {
+      throw { message: 'You account was signed up using a diferent method' };
+    }
 
     const isUserExists = await bcrypt.compare(password, result.password);
 
@@ -197,7 +237,7 @@ const getUserById = async (req, res, next) => {
     if (!user) throw { message: 'user not found!', code: 400 };
     return res.status(200).send({
       success: true,
-      message: 'get user success',
+      message: 'Get user success',
       data: user,
     });
   } catch (error) {
@@ -211,9 +251,22 @@ const sendResetPasswordForm = async (req, res, next) => {
     const { email } = req.body;
     const isEmail = new RegExp(/\S+@\S+.\S+/);
     let payload = { email: email };
-    const token = jwt.sign(payload, 'reset-password');
+    const token = jwt.sign(payload, 'reset-password', {
+      expiresIn: '1h',
+    });
+
+    //input token to DB
+    await User.update(
+      { reset_password_token: token },
+      {
+        where: {
+          email: email,
+        },
+      },
+    );
+
     if (!isEmail.test(email))
-      throw { status: 400, message: 'email is not valid' };
+      throw { status: 400, message: 'Email is not valid' };
 
     //find user
     const findUser = await User.findOne({
@@ -235,12 +288,19 @@ const sendResetPasswordForm = async (req, res, next) => {
         to: email,
         subject: 'Reset Password',
         html: tempResult,
+        attachments: [
+          {
+            filename: 'Medicore.png',
+            path: `../server/public/logo/Medicore.png`,
+            cid: 'logo1',
+          },
+        ],
       });
 
       return res.send({
         success: true,
         status: 200,
-        message: 'Send Reset Password Form Success',
+        message: 'Send reset password form success',
         data: null,
       });
     }
@@ -268,9 +328,19 @@ const resetPassword = async (req, res, next) => {
 
     if (!getEmail) throw { message: 'Unauthorized request', status: 401 };
 
+    //checking token
+    const getToken = await User.findOne({
+      where: { email: getEmail.email },
+    });
+    if (token !== getToken.reset_password_token)
+      throw {
+        message:
+          'Token is not found, please resend your reset password request',
+      };
+
     //reset password
-    User.update(
-      { password: hashPassword },
+    await User.update(
+      { password: hashPassword, reset_password_token: '' },
       {
         where: {
           email: getEmail.email,
@@ -331,7 +401,43 @@ const changePassword = async (req, res, next) => {
       throw { message: 'Wrong old password', code: 400 };
     }
   } catch (error) {
-    next(error)
+    next(error);
+  }
+};
+
+const sendChangeEmailForm = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
+    const isEmailExist = await User.findOne({
+      where: { email: email },
+    });
+    if (!isEmailExist) throw { message: 'Email not found', code: 404 };
+    let payload = { email: email };
+    const token = jwt.sign(payload, 'change-email');
+    const data = fs.readFileSync('./src/helpers/changeEmailForm.html', 'utf-8');
+    const tempCompile = await Handlebars.compile(data);
+    const tempResult = tempCompile({ token: token });
+
+    await transporter.sendMail({
+      from: 'pharmacy.jcwd2402@gmail.com',
+      to: email,
+      subject: 'Change Email',
+      html: tempResult,
+    });
+
+    console.log(`Email ==> ${email}`);
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'Please check your email to change your email',
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 };
 
@@ -344,4 +450,5 @@ module.exports = {
   sendResetPasswordForm,
   resetPassword,
   changePassword,
+  sendChangeEmailForm,
 };

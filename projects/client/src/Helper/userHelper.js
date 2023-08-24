@@ -6,6 +6,7 @@ export const convertDate = (date) => {
 };
 
 export const validationUserEditModal = (values) => {
+  const supportedImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
   const errors = {};
   if (!values.full_name) {
     errors.full_name = 'Full name is required';
@@ -21,6 +22,15 @@ export const validationUserEditModal = (values) => {
   }
   if (!values.birthdate) {
     errors.birthdate = 'Birthdate is required';
+  }
+  if (
+    values?.profile_image &&
+    !supportedImageTypes.includes(values?.profile_image?.type)
+  ) {
+    errors.profile_image = 'File must be in .JPG, .JPEG and .PNG format';
+  }
+  if (values?.profile_image && values?.profile_image?.size > 1048576) {
+    errors.profile_image = 'File max size 1 MB';
   }
   return errors;
 };
