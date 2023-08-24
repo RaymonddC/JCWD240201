@@ -9,6 +9,13 @@ import { checkoutTxSlice } from '../Features/Checkout/CheckoutSlice';
 import { CiDiscount1 } from 'react-icons/ci';
 import { AiOutlineRight } from 'react-icons/ai';
 import PromotionModal from '../Components/Cart/PromotionModal';
+import CartSummary from '../Components/Cart/CartSummary';
+import PaymentMethod from '../Components/Checkout/PaymentMethod';
+import {
+  handleMidtransPaymentSlice,
+  handleOnlinePaymentSlice,
+  openMidtransSnapSlice,
+} from '../Features/Transaction/TransactionSlice';
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -17,7 +24,6 @@ export default function Checkout() {
   const { shippingFee } = useSelector((state) => state.checkout);
   const { editAddressData, selectedAddress, cityUser, loadAddress } =
     useSelector((state) => state.address);
-  const [openPromotionModal, setOpenPromotionnModal] = useState(false);
   const {
     carts,
     totalCart,
@@ -32,6 +38,7 @@ export default function Checkout() {
     courier: null,
     duration: null,
   });
+  const [paymentMethod, setPaymentMethod] = useState();
 
   const [tokenMidtrans, setTokenMidtrans] = useState(null);
 
@@ -41,50 +48,8 @@ export default function Checkout() {
 
   useEffect(() => {
     console.log(tokenMidtrans, '================>>>>>>>>>>');
-    if (tokenMidtrans)
-      window.snap.pay(tokenMidtrans, {
-        onSuccess: function (result) {
-          /* You may add your own implementation here */
-          alert('payment success!');
-          console.log(result);
-        },
-        onPending: function (result) {
-          /* You may add your own implementation here */
-          alert('wating your payment!');
-          console.log(result);
-        },
-        onError: function (result) {
-          /* You may add your own implementation here */
-          alert('payment failed!');
-          console.log(result);
-        },
-        onClose: function () {
-          /* You may add your own implementation here */
-          alert('you closed the popup without finishing the payment');
-        },
-      });
+    dispatch(openMidtransSnapSlice(tokenMidtrans, navigate));
   }, [tokenMidtrans]);
-
-  //PaymentGateway
-  useEffect(() => {
-    // You can also change below url value to any script url you wish to load,
-    // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
-    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
-
-    let scriptTag = document.createElement('script');
-    scriptTag.src = midtransScriptUrl;
-
-    // Optional: set script attribute, for example snap.js have data-client-key attribute
-    // (change the value according to your client-key)
-    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY || '';
-    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
-
-    document.body.appendChild(scriptTag);
-
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  }, []);
 
   if (!token) return <Navigate to="/" />;
   if (totalCart === 0 && loadAddress === false) return <Navigate to="/cart" />;
@@ -99,7 +64,7 @@ export default function Checkout() {
         <div className="w-full max-w-[1000px] flex flex-col gap-4">
           <CheckoutAddress />
           <ShippingMethod setShipping={setShipping} />
-
+          <PaymentMethod setPaymentMethod={setPaymentMethod} />
           <div className="flex flex-col gap-4 shadow-md p-4 rounded-xl">
             {carts?.map((value) => {
               if (value?.is_check) {
@@ -119,104 +84,39 @@ export default function Checkout() {
             })}
           </div>
         </div>
-        <div
-          className={`card card-compact w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[11em] md:w-[30%] bg-base-100 shadow-xl h-fit  md:right-12  ${
-            totalCart === 0 ? 'hidden' : ''
-          }`}
-        >
-          <div className="card-body">
-            <label
-              htmlFor="my_modal_6"
-              onClick={() => setOpenPromotionnModal(true)}
-              className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
-            >
-              <CiDiscount1 size={'1.5em'} />
-              <p>Use Your Promo Here</p>
-              <AiOutlineRight />
-            </label>
-            <div className="summary hidden md:block">
-              <div className="ringkasan ">
-                <p className="md:my-3 text-[1em] md:text-[2em] font-bold leading-7">
-                  Order Summary
-                </p>
-              </div>
-              <div className="details py-3 border-b border-[#D5D7DD]">
-                <div className="detailPrice flex justify-between text-[16px]">
-                  <p>
-                    Total Price <br /> ({activeCart} item(s))
-                  </p>
-                  <span>Rp{totalPrice.toLocaleString(['id'])}</span>
-                </div>
-                <div className="detailPrice flex justify-between text-[16px]">
-                  <p>Shipping Fee</p>
-                  <span>Rp{shippingFee.toLocaleString(['id'])}</span>
-                </div>
-                <div className="detailDiscount flex justify-between text-[16px]">
-                  <p>Total Discount</p>
-                  <span>
-                    -Rp{(discount + amountPromotion).toLocaleString(['id'])}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="total flex md:block items-center">
-              <div className="lastPrice md:flex flex-grow justify-between  my-2 ">
-                <p className="md:font-bold text-[0.8em] md:text-[1.5em] lg:text-[2em]">
-                  Total Price
-                </p>
-                <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
-                  Rp
-                  {(
-                    totalPrice -
-                    discount +
-                    shippingFee -
-                    amountPromotion
-                  ).toLocaleString(['id'])}
-                </span>
-              </div>
-              <div className="orderNow  md:pt-5">
-                <button
-                  className="btn btn-sm md:btn-md  btn-primary w-full text-white"
-                  onClick={async () => {
-                    if (!shippingFee)
-                      return toast.error('Please choose your shipping courier');
-
-                    // if (
-                    const { url, midtransToken } = await dispatch(
-                      checkoutTxSlice(
-                        {
-                          shippingFee,
-                          discount: discount + amountPromotion,
-                          activeCart,
-                          promotionActive,
-                          ...shipping,
-                          totalPrice,
-                        },
-                        navigate,
-                      ),
-                    );
-                    console.log(midtransToken);
-                    setTokenMidtrans(midtransToken);
-                    // )
-                    // return navigate('/user/transaction');
-
-                    // Navigate({ to: '/' });
-                  }}
-                >
-                  Checkout ({activeCart})
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {openPromotionModal ? (
-        <PromotionModal
+        <CartSummary
+          totalCart={totalCart}
+          activeCart={activeCart}
           totalPrice={totalPrice}
-          openPromotionModal={openPromotionModal}
-          closeModal={() => setOpenPromotionnModal(false)}
+          shippingFee={shippingFee}
+          onSubmitText={'checkout'}
+          onSubmitFunc={async () => {
+            if (!shippingFee)
+              return toast.error('Please choose your shipping courier');
+            if (!paymentMethod)
+              return toast.error('Please choose payment method');
+
+            // if (
+            const { url, midtransToken } = await dispatch(
+              checkoutTxSlice(
+                {
+                  shippingFee,
+                  discount: discount + amountPromotion,
+                  activeCart,
+                  promotionActive,
+                  ...shipping,
+                  totalPrice,
+                  paymentMethod,
+                },
+                navigate,
+              ),
+            );
+            console.log(midtransToken);
+            if (paymentMethod === 'paymentGateway')
+              setTokenMidtrans(midtransToken);
+          }}
         />
-      ) : null}
+      </div>
     </div>
   );
 }

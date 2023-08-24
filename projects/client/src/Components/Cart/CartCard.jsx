@@ -166,7 +166,7 @@ const CartCard = (props) => {
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
             disabled={isRacik}
             onClick={(e) => {
-              props.cart.qty === 1
+              props.cart.qty <= 1
                 ? setOpenDeletemodal(true)
                 : props.setQty(e, '-', props.idx);
             }}
