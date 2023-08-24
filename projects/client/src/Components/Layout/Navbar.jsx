@@ -24,7 +24,7 @@ export default function NavBar() {
       <div className="flex relative gap-2 items-center px-5 pt-3 ">
         <div className="w-72">
           <Link to="/">
-            <img className="px-2 h-20" src={Logo1} alt="" />
+            <img className="px-2 h-10 md:h-20" src={Logo1} alt="" />
           </Link>
         </div>
         <div className="hidden sm:block w-full">
@@ -35,6 +35,9 @@ export default function NavBar() {
               </button>
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">DISCUSSIONS</Link>
+              </button>
+              <button className="btn btn-sm btn-ghost">
+                <Link to="/location">LOCATION</Link>
               </button>
             </div>
             <div className="flex items-center relative">
