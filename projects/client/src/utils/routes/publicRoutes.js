@@ -113,7 +113,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/maps',
+    path: '/location',
     element: <MapsPharmacy />,
   },
   {

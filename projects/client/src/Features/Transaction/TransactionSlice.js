@@ -11,6 +11,8 @@ import {
   deleteTransaction,
   getTransaction,
   getUserTransactions,
+  handleMidtransPaymentAPI,
+  handleOnlinePaymentAPI,
   updateUserTransactionHistoryAPI,
   uploadPaymentAPI,
 } from '../../API/transactionAPI';
@@ -75,6 +77,7 @@ export const uploadPaymentSlice = (data) => async (dispatch) => {
     return toast.error(error.message);
   }
 };
+
 export const getTransactionSlice = (values) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
@@ -110,6 +113,57 @@ export const cancelTransaction = (values) => async (dispatch) => {
     return toast.error(error.message);
   }
 };
+
+export const handleMidtransPaymentSlice = (values) => async (dispatch) => {
+  try {
+    let token = localStorage.getItem('token');
+    console.log(values);
+    // throw {};
+    const { data } = await handleMidtransPaymentAPI(token, values);
+
+    // dispatch(getAllTransactionSlice({ selectedStatusId: 1 }));
+  } catch (error) {
+    return toast.error(error.message);
+  }
+};
+
+export const openMidtransSnapSlice =
+  (tokenMidtrans, navigate) => async (dispatch) => {
+    try {
+      if (tokenMidtrans)
+        window.snap.pay(tokenMidtrans, {
+          onSuccess: async function (result) {
+            /* You may add your own implementation here */
+            await dispatch(handleMidtransPaymentSlice(result));
+            navigate('/user/transaction');
+            alert('payment success!');
+            console.log(result);
+          },
+          onPending: async function (result) {
+            /* You may add your own implementation here */
+            await dispatch(handleMidtransPaymentSlice(result));
+            navigate('/user/transaction');
+            alert('wating your payment!');
+            console.log(result);
+          },
+          onError: async function (result) {
+            /* You may add your own implementation here */
+            await dispatch(handleMidtransPaymentSlice(result));
+            alert('payment failed!');
+            console.log(result);
+          },
+          onClose: async function () {
+            /* You may add your own implementation here */
+            // await dispatch(handleMidtransPaymentSlice(result));
+            navigate('/user/transaction');
+            alert('you closed the popup without finishing the payment');
+          },
+        });
+    } catch (error) {
+      console.log(error);
+      return toast.error(error.message);
+    }
+  };
 
 export const { onGetData, onGetOne } = TransactionSlice.actions;
 

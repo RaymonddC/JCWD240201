@@ -1,7 +1,7 @@
 import Footer from '../Components/Layout/Footer';
 import NavBar from '../Components/Layout/Navbar';
 import ProductCard from '../Components/Products/ProductCard';
-import jumbotronImage from '../utils/images/jumbotronImage.png';
+import jumbotronImage from '../utils/images/jumbotronImage.svg';
 import prescriptionImage from '../utils/images/prescription.svg';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,9 @@ import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
+import StoreLocation from '../Components/Landing/StoreLocation';
+import NavbarDrawer from '../Components/Layout/NavbarDrawer';
+import { getAllLabelsAPI } from '../API/productAPI';
 
 export default function Landing() {
   const dispatch = useDispatch();
@@ -21,6 +24,25 @@ export default function Landing() {
   const [file, setFile] = useState(null);
   const handleChange = (file) => {
     setFile(file);
+  };
+  let [vitaminMap, setVitaminMap]= useState(null);
+  const getVitamin = async () => {
+    try {
+      const response = await getAllLabelsAPI({
+        page: 1,
+        limit,
+        category: 'Vitamin',
+      });
+      
+      const vitaminMap1 = response?.data?.data?.rows?.map((value, index) => {
+        return (
+          <div key={`vitamin${index}`} className="carousel-item ">
+            <ProductCard data={value.product} />
+          </div>
+        );
+      });
+      setVitaminMap(vitaminMap1)
+    } catch (error) {}
   };
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
@@ -42,7 +64,9 @@ export default function Landing() {
     } catch (error) {}
   };
   useEffect(() => {
+    getVitamin();
     // dispatch(getProducts({ page: 1, limit, search: '' }));
+
     dispatch(
       getLabels({
         page: 1,
@@ -50,10 +74,10 @@ export default function Landing() {
         category: 'Jamu',
       }),
     );
-  }, [dispatch]);
+  }, []);
   return (
     <>
-      {/* <NavBar /> */}
+      {/* <NavbarDrawer /> */}
       <div className="flex  justify-center">
         <article className="prose">
           <h2 className="mx-5 text-center lg:hidden">
@@ -61,9 +85,9 @@ export default function Landing() {
           </h2>
         </article>
       </div>
-      <div className="relative flex drop-shadow-md justify-end my-3 md:mx-9 border rounded-lg bg-[#92c3d1]">
-        <img src={jumbotronImage} alt="" />
-        <div className="absolute left-3 top-2">
+      <div className="relative flex drop-shadow-md justify-end my-3 md:mx-9 border rounded-lg bg-[#f6f8fc]">
+        <img className=" max-h-60" src={jumbotronImage} alt="" />
+        <div className="absolute left-6 top-3">
           <article className="prose">
             <h1 className="hidden lg:block">
               YOUR TRUSTED ONLINE PHARMACY STORE
@@ -82,7 +106,7 @@ export default function Landing() {
         </div>
       </div>
       <div className="flex my-5 px-3 justify-center">
-        <div className="w-fit items-center flex flex-col lg:flex-row drop-shadow-md mt-5 p-3 mx-5 bg-gray-200 rounded-xl">
+        <div className="w-fit items-center flex flex-col lg:flex-row drop-shadow-md mt-5 p-3 mx-5 bg-[#f6f8fc] rounded-xl">
           <img
             className="h-28 hidden lg:block "
             src={prescriptionImage}
@@ -116,7 +140,7 @@ export default function Landing() {
           </div>
         </div>
       </div>
-      <div className=" mt-10 flex justify-end pr-[10%]">
+      <div className=" flex justify-end pr-[10%]">
         <article className="prose">
           <Link to="/products">
             <h3>See all</h3>
@@ -131,6 +155,14 @@ export default function Landing() {
         </div>
         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
+        </div>
+        <div className="w-full flex pl-[15%] ">
+          <article className="prose">
+            <h3>Vitamin</h3>
+          </article>
+        </div>
+        <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
+          {vitaminMap ? <>{vitaminMap}</> : <ProductListSkl limit={limit} />}
         </div>
       </div>
     </>

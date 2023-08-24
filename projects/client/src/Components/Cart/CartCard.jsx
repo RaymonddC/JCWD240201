@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
@@ -150,7 +150,6 @@ const CartCard = (props) => {
         </div>
       </div>
       <div className="action flex justify-end text-[#009B90] gap-3 items-center py-1">
-        <span>Pindahkan Ke Wishlist</span>|
         <div className="delete flex items-center">
           <RiDeleteBin6Line
             size={'18px'}
@@ -161,12 +160,12 @@ const CartCard = (props) => {
             }}
           />
         </div>
-        <div className="join join-horizontal">
+        <div className={`join join-horizontal ${isRacik ? 'hidden' : ''}`}>
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
             disabled={isRacik}
             onClick={(e) => {
-              props.cart.qty === 1
+              props.cart.qty <= 1
                 ? setOpenDeletemodal(true)
                 : props.setQty(e, '-', props.idx);
             }}
@@ -185,7 +184,7 @@ const CartCard = (props) => {
             value={props.cart.qty}
           />
           <button
-            className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
+            className={`join-item bg-[#daf8ff] btn btn-sm text-[#009B90`}
             disabled={isRacik}
             onClick={(e) => props.setQty(e, '+', props.idx)}
           >

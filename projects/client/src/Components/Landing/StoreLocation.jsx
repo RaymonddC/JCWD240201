@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Map, { NavigationControl, Marker, Popup } from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import jumbotronImage from '../utils/images/pharmacy-store.jpg';
+import jumbotronImage from '../../utils/images/pharmacy-store.jpg';
 
 export default function StoreLocation() {
   const [showPopup, setShowPopup] = useState(true);
@@ -15,9 +15,9 @@ export default function StoreLocation() {
           latitude: -6.302263455530211,
           zoom: 14,
         }}
-        style={{ width: '100%', height: '800px' }}
+        style={{ width: '100%', height: '500px' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.REACT_APP_API_MAPTILER}`}
-        tabIndex
+        tabIndex={-1}
       >
         <NavigationControl position="top-right" />
         <Marker

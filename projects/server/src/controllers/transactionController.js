@@ -1,8 +1,13 @@
 const jwt = require('jsonwebtoken');
-
-const { Op } = require('sequelize');
+const axios = require('axios');
+const { Op, where } = require('sequelize');
 const db = require('../models');
-const { getCart, getCartByPk, getUserCarts } = require('../helpers/cartHelper');
+const {
+  getCart,
+  getCartByPk,
+  getUserCarts,
+  getPricePrescription,
+} = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Transaction = db.transaction;
@@ -24,9 +29,9 @@ const {
 } = require('../helpers/transactionHelper');
 const { getPromotionByProductId } = require('../helpers/promotionHelper');
 const { unitConversionHelper } = require('../helpers/unitConversionHelper');
+const { getMidtransSnap } = require('../helpers/paymentHelper');
 
 const checkout = async (req, res, next) => {
-  console.log('masuk checkout');
   const t = await sequelize.transaction();
   try {
     const userId = req.user.id;
@@ -38,6 +43,7 @@ const checkout = async (req, res, next) => {
       courier,
       duration,
       totalPrice,
+      paymentMethod,
     } = req.body;
 
     let whereQuery = { user_id: userId, is_check: true };
@@ -64,12 +70,13 @@ const checkout = async (req, res, next) => {
       console.log(promoTx);
       if (promoTx && promoTx.minimum_transaction < totalPrice) {
         if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
-        let disc = (totalPrice * promoTx.discount) / 100;
+        let disc = Math.round((totalPrice * promoTx.discount) / 100);
         totalDiscount +=
-          disc > promoTx.maximum_discount_amount
+          disc > (promoTx.maximum_discount_amount || disc + 1)
             ? promoTx.maximum_discount_amount
             : disc;
 
+        console.log(totalDiscount, disc, promoTx.dataValues);
         //update promo limit
         await Promotion.update(
           {
@@ -109,21 +116,28 @@ const checkout = async (req, res, next) => {
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
+        let pricePresc = 0;
         if (value.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
-            // console.log(value);
-            if (value.dataValues.disc != 0) {
+            console.log(value.dataValues);
+            console.log(value.dataValues.product.promotions);
+            console.log(value.dataValues.disc);
+            // console.log(value.dataValues.product.promotions);
+            if (value.dataValues.disc && value.dataValues.disc != 0) {
               //promo disc
+              console.log(value.dataValues, 'promoooooooooooooooooooo');
               totalDiscount += value.qty * value.dataValues.disc;
+              console.log('totalDiscount:', totalDiscount);
               if (value.product.promotions[0].limit < value.qty)
                 throw {
                   message: 'not enough stocks (Promotion)',
                   code: 400,
                   data: value,
                 };
+              // throw {};
             }
-
+            // throw { message: 'rizki a*g' };
             //update promo limit
             promotionData.push({
               ...value.product.promotions[0],
@@ -166,6 +180,10 @@ const checkout = async (req, res, next) => {
             total_stock: newStock,
           });
         } else {
+          pricePresc = await getPricePrescription(value.id);
+          console.log(pricePresc[0].total_price);
+          // throw {};
+          totalAllPriceDB += Number(pricePresc[0].total_price);
           const prescriptionCarts = await PrescriptionCartDB.findAll({
             where: {
               cart_id: value.id,
@@ -182,6 +200,7 @@ const checkout = async (req, res, next) => {
               );
             } catch (error) {
               //   console.log (error)
+              throw error;
             }
           });
         }
@@ -194,7 +213,10 @@ const checkout = async (req, res, next) => {
               : null,
           transaction_id: transaction.id,
           product_name: value.product.name,
-          price: value.product.price - (value.disc ? value.disc : 0),
+          price:
+            value.product_id !== 1
+              ? value.product.price - (value.disc ? value.disc : 0)
+              : pricePresc[0].total_price,
           prescription_image: value.prescription_image || null,
           qty: value.qty,
         };
@@ -225,7 +247,9 @@ const checkout = async (req, res, next) => {
       transaction: t,
     });
     await StockHistoryDB.bulkCreate(stockHistoryData, { transaction: t });
-    await TransactionDetail.bulkCreate(txDetailData, { transaction: t });
+    const txDetails = await TransactionDetail.bulkCreate(txDetailData, {
+      transaction: t,
+    });
 
     const cartIds = rows.map((value) => {
       return value.id;
@@ -242,12 +266,43 @@ const checkout = async (req, res, next) => {
       { transaction: t },
     );
     // throw { message: 'sabar' };
+
+    let paymentData = { paymentToken: null, url: null };
+    if (paymentMethod === 'paymentGateway') {
+      const user = await UserDB.findByPk(req.user.id);
+      const { paymentToken, redirect_url } = await getMidtransSnap({
+        totalPay:
+          transaction.total_price +
+          transaction.shipment_fee -
+          transaction.total_discount,
+        user,
+        txDetails,
+        shippingFee,
+        totalDiscount,
+        transaction,
+      });
+      await Transaction.update(
+        {
+          ...transaction,
+          payment_token: paymentToken,
+        },
+        { where: { id: transaction.id }, transaction: t },
+      );
+      paymentData = { paymentToken, url: redirect_url };
+      // paymentData.paymentToken = paymentToken;
+      // paymentData.url = redirect_url;
+      console.log(paymentData, '===============?????>>>>>>>>>>>>>>');
+      // throw {};
+    }
+    console.log(paymentMethod, paymentData);
+    // throw {};
     await t.commit();
 
     return res.status(200).send({
       success: true,
       message: 'Checkout Success',
       data: txDetailData,
+      paymentData,
       // pageCount: count,
     });
   } catch (error) {
@@ -378,6 +433,93 @@ const uploadPayment = async (req, res, next) => {
     next(error);
   }
 };
+
+const handleMidtransPayment = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    // const userId = req.user.id;
+    const { order_id } = req.body;
+    // cek ke api midtrans dlu statusnya baru write status
+
+    const responsePayment = await axios.get(
+      `${'https://api.sandbox.midtrans.com/v2/'}${order_id}${'/status'}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        auth: {
+          username: process.env.MIDTRANS_SERVER_KEY + ':',
+        },
+      },
+    );
+
+    let transaction_status_id = 1;
+    console.log(responsePayment, '================>>>>>>>>>>>>>');
+    const transaction_id = order_id.split('-')[1];
+    if (
+      responsePayment.data.transaction_status === 'settlement' ||
+      responsePayment.data.transaction_status === 'capture'
+    ) {
+      // console.log(responsePayment.data.payment_type);
+      const payment_method = responsePayment.data.payment_type;
+      transaction_status_id = 3;
+      const tx = await Transaction.findByPk(transaction_id);
+      await Transaction.update(
+        { ...tx, payment_method },
+        { where: { id: transaction_id } },
+      );
+
+      const txFind = await TransactionHistory.findOne({
+        where: { is_active: true, transaction_id },
+      });
+
+      if (txFind !== null) {
+        const txUpdate = await TransactionHistory.update(
+          { is_active: false },
+          {
+            where: { is_active: true, transaction_id },
+          },
+          { transaction: t },
+        );
+      }
+
+      const txCreate = await TransactionHistory.create(
+        {
+          is_active: true,
+          transaction_id,
+          transaction_status_id,
+        },
+        { transaction: t },
+      );
+      console.log(
+        transaction_id,
+        txCreate,
+        responsePayment,
+        responsePayment.data.va_numbers,
+      );
+    }
+    // throw {
+    //   data: {
+    //     transaction_status_id,
+    //     responsePayment,
+    //     txstatus: responsePayment.transaction_status,
+    //   },
+    // };
+    await t.commit();
+    return res.status(200).send({
+      success: true,
+      message: 'Payment Success',
+      data: [],
+    });
+  } catch (error) {
+    console.log(error);
+
+    await t.rollback();
+    next(error);
+  }
+};
+
 const cancelTransaction = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
@@ -522,10 +664,26 @@ const cancelTransaction = async (req, res, next) => {
   }
 };
 
+const payment = async (req, res, next) => {
+  try {
+    // await getMidtransSnap();
+    console.log('Success');
+    return res.status(200).send({
+      success: true,
+      message: 'Upload payment Success',
+      data: [],
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   checkout,
   getAllTransaction,
   getTransaction,
   uploadPayment,
   cancelTransaction,
+  handleMidtransPayment,
+  payment,
 };

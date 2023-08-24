@@ -4,7 +4,7 @@ const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function getPromotionTypeAPI() {
   const token = localStorage.getItem('token');
-  return axios.get(`${URL}/promotions/types`, {
+  return axios.get(`${URL}/promo-types/`, {
     headers: {
       apiKey: APIKey,
       authorization: `Bearer ${token}`,

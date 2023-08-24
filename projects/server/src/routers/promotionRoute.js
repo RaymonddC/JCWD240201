@@ -12,13 +12,6 @@ router.post(
   isAdmin,
   promotionController.createDiscount,
 );
-router.get(
-  '/types',
-  APIKey,
-  verifyToken,
-  isAdmin,
-  promotionController.getPromotionType,
-);
 router.get('/list', APIKey, verifyToken, promotionController.getPromotionList);
 
 module.exports = router;

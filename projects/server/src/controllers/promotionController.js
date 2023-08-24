@@ -22,22 +22,6 @@ const createDiscount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
-
-const getPromotionType = async (req, res, next) => {
-  try {
-    const result = await promotionTypeDB.findAll();
-
-    return res.send({
-      success: true,
-      status: 200,
-      message: 'Get Promotion Type Success',
-      data: result,
-    });
-  } catch (error) {
     next(error);
   }
 };
@@ -66,9 +50,9 @@ const getPromotionList = async (req, res, next) => {
           [
             sequelize.literal(
               `CASE
-              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS FLOAT)
+              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS INT)
               ELSE
-              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount)AS FLOAT)
+              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS INT)
               END`,
             ),
             'totalDiscount',
@@ -111,6 +95,5 @@ const getPromotionList = async (req, res, next) => {
 
 module.exports = {
   createDiscount,
-  getPromotionType,
   getPromotionList,
 };

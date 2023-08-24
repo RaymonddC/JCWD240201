@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import { Link } from 'react-router-dom';
 import { BiReceipt } from 'react-icons/bi';
 import TransactionModal from './TransactionModal';
@@ -126,7 +126,12 @@ const TransactionCardAdmin = (props) => {
             </p>
           </div>
           <p className="font-bold">
-            Rp {props.tx.total_price?.toLocaleString(['id'])}
+            Rp{' '}
+            {(
+              props.tx.total_price +
+              props.tx.shipment_fee -
+              props.tx.total_discount
+            )?.toLocaleString(['id'])}
           </p>
         </div>
         <div className="action flex justify-end gap-5 items-center px-2 py-2">

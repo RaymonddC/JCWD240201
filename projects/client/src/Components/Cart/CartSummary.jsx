@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { CiDiscount1 } from 'react-icons/ci';
 import { AiOutlineRight } from 'react-icons/ai';
 import toast from 'react-hot-toast';
-import AddressModal from '../Address/addressModal';
-import { useNavigate } from 'react-router-dom';
 import PromotionModal from './PromotionModal';
 
 const CartSummary = (props) => {
-  const navigate = useNavigate();
+  const { discount, amountPromotion } = useSelector((state) => state?.cart);
 
-  const {
-    // carts
-    discount,
-    amountPromotion,
-  } = useSelector((state) => state?.cart);
-  const { address, loadAddress } = useSelector((state) => state.address);
-  const [openPromotionModal, setOpenPromotionnModal] = useState(false);
+  const [openPromotionModal, setOpenPromotionModal] = useState(false);
 
-  const [openAddressModal, setOpenAddressModal] = useState(false);
+  // useEffect(() => {
+  //   return () => {};
+  // }, []);
 
   return (
     <div
@@ -27,15 +21,12 @@ const CartSummary = (props) => {
       }`}
     >
       <div className="card-body">
-        {/* <label
-      className="promo flex items-center gap-2 hover:cursor-pointer"
-      > */}
         <label
           htmlFor="my_modal_6"
           onClick={() => {
             props.activeCart === 0
               ? toast.error('Select Your Cart')
-              : props.setOpenPromotionnModal(true);
+              : setOpenPromotionModal(true);
           }}
           className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
         >
@@ -56,6 +47,14 @@ const CartSummary = (props) => {
               </p>
               <span>Rp{props.totalPrice.toLocaleString(['id'])}</span>
             </div>
+            {props.onSubmitText === 'checkout' ? (
+              <div className="detailPrice flex justify-between text-[16px]">
+                <p>Shipping Fee</p>
+                <span>Rp{props.shippingFee?.toLocaleString(['id'])}</span>
+              </div>
+            ) : (
+              ''
+            )}
             <div className="detailDiscount flex justify-between text-[16px]">
               <p>Total Discount</p>
               <span>
@@ -71,44 +70,29 @@ const CartSummary = (props) => {
             </p>
             <span className="font-bold text-[1em] md:text-[1.5em] lg:text-[2em]">
               Rp
-              {(props.totalPrice - discount - amountPromotion).toLocaleString([
-                'id',
-              ])}
+              {(
+                props.totalPrice +
+                (props?.shippingFee || 0) -
+                discount -
+                amountPromotion
+              ).toLocaleString(['id'])}
             </span>
           </div>
-          <div
-            className="orderNow  md:pt-5"
-            onClick={() => {
-              // checkoutAsync();
-              // navigate('/checkout');
-              if (props.activeCart === 0)
-                return toast.error('Select product to checkout');
-              if (!address.length) return setOpenAddressModal(true);
-              return navigate('/checkout');
-            }}
-          >
+          <div className="orderNow  md:pt-5" onClick={props.onSubmitFunc}>
             <button
               className="btn btn-sm md:btn-md  btn-primary w-full text-white"
               disabled={!props.activeCart}
             >
-              Proceed ({props.activeCart})
+              {props.onSubmitText} ({props.activeCart})
             </button>
           </div>
         </div>
       </div>
-      {openAddressModal ? (
-        <AddressModal
-          addAddress
-          navigate={'/checkout'}
-          openAddressModal={openAddressModal}
-          closeModal={() => setOpenAddressModal(false)}
-        />
-      ) : null}
       {openPromotionModal ? (
         <PromotionModal
           totalPrice={props.totalPrice}
           openPromotionModal={openPromotionModal}
-          closeModal={() => setOpenPromotionnModal(false)}
+          closeModal={() => setOpenPromotionModal(false)}
         />
       ) : null}
     </div>

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import Logo from '../../utils/images/logoHealthyMed.svg';
-import { Link } from 'react-router-dom';
+import Logo from '../../utils/images/Medicore.png';
+import { Link, useNavigate } from 'react-router-dom';
 import TransactionModal from './TransactionModal';
 import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
   cancelTransaction,
   getAllTransactionSlice,
+  openMidtransSnapSlice,
   updateTransactionHistorySlice,
   uploadPaymentSlice,
 } from '../../Features/Transaction/TransactionSlice';
@@ -16,6 +17,8 @@ import DeleteModal from '../DeleteModal/DeleteModal';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
@@ -53,7 +56,7 @@ const TransactionCard = (props) => {
         }),
       );
       dispatch(getAllTransactionSlice());
-      // props?.setTogle(!props?.togle);
+      props?.setTogle(!props?.togle);
       // props.togle
     } catch (error) {}
   };
@@ -61,7 +64,7 @@ const TransactionCard = (props) => {
     try {
       await dispatch(
         updateTransactionHistorySlice({
-          transaction_status_id: 5,
+          transaction_status_id: 6,
           transaction_id: transactionId,
         }),
       );
@@ -137,6 +140,17 @@ const TransactionCard = (props) => {
               onClick={() => onSubmit()}
             >
               Submit
+            </button>
+            <button
+              className="btn btn-sm btn-primary text-white "
+              disabled={!props.tx.payment_token}
+              onClick={() => {
+                dispatch(
+                  openMidtransSnapSlice(props.tx.payment_token, navigate),
+                );
+              }}
+            >
+              PaymentGateway
             </button>
             {/* <ConfirmationModal
               title="Confirmation"

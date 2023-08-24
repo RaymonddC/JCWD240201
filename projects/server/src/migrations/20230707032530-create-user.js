@@ -42,6 +42,12 @@ module.exports = {
       google_login: {
         type: Sequelize.BOOLEAN,
       },
+      token: {
+        type: Sequelize.STRING,
+      },
+      reset_password_token: {
+        type: Sequelize.STRING,
+      },
       change_email_token: {
         type: Sequelize.STRING,
       },

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Logo from '../../utils/images/logoHealthyMed.svg';
-import Logo1 from '../../utils/images/Medicore.png'
+import Logo from '../../utils/images/Medicore.png';
+import Logo1 from '../../utils/images/Medicore.png';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,7 +12,7 @@ import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 export default function NavBar() {
   let dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  console.log("🚀 ~ file: Navbar.jsx:15 ~ NavBar ~ user:", user)
+  console.log('🚀 ~ file: Navbar.jsx:15 ~ NavBar ~ user:', user);
   const { totalCart } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function NavBar() {
       <div className="flex relative gap-2 items-center px-5 pt-3 ">
         <div className="w-72">
           <Link to="/">
-            <img className="px-2 h-20" src={Logo1} alt="" />
+            <img className="px-2 h-10 md:h-20" src={Logo1} alt="" />
           </Link>
         </div>
         <div className="hidden sm:block w-full">
@@ -35,6 +35,9 @@ export default function NavBar() {
               </button>
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">DISCUSSIONS</Link>
+              </button>
+              <button className="btn btn-sm btn-ghost">
+                <Link to="/location">LOCATION</Link>
               </button>
             </div>
             <div className="flex items-center relative">

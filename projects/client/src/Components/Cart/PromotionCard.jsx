@@ -13,7 +13,10 @@ const PromotionCard = (props) => {
   ]).fromNow();
 
   useEffect(() => {
-    if (props.totalPrice < props.promotion.minimum_transaction)
+    if (
+      props.id === props.promotion.id &&
+      props.totalPrice < props.promotion.minimum_transaction
+    )
       props.setSelectedPromo({
         id: null,
         amount: 0,

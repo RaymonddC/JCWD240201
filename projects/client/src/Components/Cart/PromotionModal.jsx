@@ -46,13 +46,14 @@ const PromotionModal = (props) => {
                 className={`btn btn-sm p-1 rounded-lg ${
                   !selectedPromo.id ? 'btn-disabled' : ''
                 }`}
-                onClick={() =>
+                onClick={() => {
                   setSelectedPromo({
                     id: null,
                     amount: 0,
                     minPrice: 0,
-                  })
-                }
+                  });
+                  dispatch(newActivePromo(selectedPromo, () => {}));
+                }}
               >
                 Reset Promo
               </button>
@@ -69,6 +70,7 @@ const PromotionModal = (props) => {
             {promotions.map((value) => {
               return (
                 <PromotionCard
+                  key={'promo' + value.id}
                   id={selectedPromo.id}
                   promotion={value}
                   setSelectedPromo={setSelectedPromo}

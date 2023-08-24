@@ -7,13 +7,31 @@ import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
 import { formatDate } from '../Helper/formatDateHelper';
 import ChangeEmailConfirmation from '../Components/Profile/ChangeEmailConfirmation';
+import { sendVerificationEmail } from '../API/authAPI';
+import { toast } from 'react-hot-toast';
+import { useState } from 'react';
 
 export default function Profile() {
   let token = localStorage.getItem('token');
+  const [isRequest, setIsRequest] = useState(false);
 
   const { user } = useSelector((state) => state.user);
   console.log('🚀 ~ file: Profile.jsx:14 ~ Profile ~ user:', user);
   if (!token) return <Navigate to={'/login'} />;
+
+  const reqVerify = async () => {
+    try {
+      setIsRequest(true);
+      const result = await sendVerificationEmail(user?.email);
+      if (result?.data?.success) {
+        toast.success(result.data.message);
+      }
+      setIsRequest(false);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+      setIsRequest(false);
+    }
+  };
   return (
     <>
       <div className="flex flex-col items-center lg:flex-row lg:items-start lg:justify-center px-4 gap-4 pt-2">
@@ -63,7 +81,13 @@ export default function Profile() {
                 {user?.birthdate ? formatDate(new Date(user?.birthdate)) : '-'}
               </p>
             </div>
-            <div className="flex justify-between pt-4">
+            <div
+              className={
+                user?.verified
+                  ? 'flex justify-between pt-4'
+                  : 'flex justify-between py-4 border-b-2 border-[#eeeeee]'
+              }
+            >
               <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
                 Gender
               </p>
@@ -71,6 +95,20 @@ export default function Profile() {
                 {user?.gender ? user?.gender : '-'}
               </p>
             </div>
+            {user?.verified ? null : (
+              <div className="flex justify-between pt-4">
+                <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
+                  Email verification
+                </p>
+                <button
+                  disabled={isRequest}
+                  onClick={() => reqVerify()}
+                  className="btn btn-primary"
+                >
+                  Send request
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

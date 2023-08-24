@@ -13,8 +13,6 @@ import {
 } from '../Features/Address/AddressSlice';
 import AddressModal from '../Components/Address/addressModal';
 
-import PromotionModal from '../Components/Cart/PromotionModal';
-import { getPromotionsSlice } from '../Features/Promotion/PromotionSlice';
 import ProductCard from '../Components/Products/ProductCard';
 import { getLabels } from '../Features/Product/ProductSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
@@ -24,9 +22,11 @@ import CartSummary from '../Components/Cart/CartSummary';
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [openPromotionModal, setOpenPromotionnModal] = useState(false);
   const { user } = useSelector((state) => state?.user);
+  const { address, loadAddress } = useSelector((state) => state.address);
+  const [openAddressModal, setOpenAddressModal] = useState(false);
 
   const {
     carts,
@@ -37,7 +37,7 @@ const Cart = () => {
     amountPromotion,
   } = useSelector((state) => state?.cart);
   const [isCheck, setIsCheck] = useState(false);
-  // const [isForceCheck, setIsForceCheck] = useState(false);;
+  // const [isForceCheck, setIsForceCheck] = useState(false);
 
   const ProductsStore = useSelector((state) => state?.products?.products);
   let productMap;
@@ -156,15 +156,21 @@ const Cart = () => {
           totalCart={totalCart}
           activeCart={activeCart}
           totalPrice={totalPrice}
-          setOpenPromotionnModal={setOpenPromotionnModal}
+          onSubmitText={'Proceed'}
+          onSubmitFunc={() => {
+            if (activeCart === 0)
+              return toast.error('Select product to checkout');
+            if (!address.length) return setOpenAddressModal(true);
+            return navigate('/checkout');
+          }}
         />
       </div>
-
-      {openPromotionModal ? (
-        <PromotionModal
-          totalPrice={totalPrice}
-          openPromotionModal={openPromotionModal}
-          closeModal={() => setOpenPromotionnModal(false)}
+      {openAddressModal ? (
+        <AddressModal
+          addAddress
+          navigate={'/checkout'}
+          openAddressModal={openAddressModal}
+          closeModal={() => setOpenAddressModal(false)}
         />
       ) : null}
     </div>

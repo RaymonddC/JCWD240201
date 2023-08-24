@@ -45,6 +45,12 @@ module.exports = {
       shipment: {
         type: Sequelize.STRING,
       },
+      payment_token: {
+        type: Sequelize.STRING,
+      },
+      payment_method: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

@@ -14,13 +14,11 @@ const { getUser, generateToken } = require('../helpers/authHelper');
 const googleLogin = async (req, res, next) => {
   try {
     const { email, full_name, role } = req.body;
+    let result = await getUser(email, email);
     console.log(
-      '🚀 ~ file: googleLoginController.js:17 ~ googleLogin ~ req.body:',
-      req.body,
+      '🚀 ~ file: googleLoginController.js:23 ~ googleLogin ~ result.user.dataValues:',
+      result,
     );
-    // const response = await userDB.findOne({ where: { email: email } });
-    let result = await getUser(email, full_name);
-    
     if (!result) {
       result = await userDB.create({
         full_name,
@@ -31,11 +29,14 @@ const googleLogin = async (req, res, next) => {
         google_login: true,
       });
     }
+    if (!result.dataValues.google_login) {
+      throw{message: 'Your account was signed up using a diffrent method '}
+    }
     const token = await generateToken(result);
-    const user = await getUser(email, full_name, 'password');
+    const user = await getUser(email, email, 'password');
     return res.status(200).send({
       success: true,
-      message: 'Login Success',
+      message: 'Login success',
       data: user,
       token: token,
     });
