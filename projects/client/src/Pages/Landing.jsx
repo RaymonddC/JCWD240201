@@ -13,6 +13,7 @@ import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 import StoreLocation from '../Components/Landing/StoreLocation';
 import NavbarDrawer from '../Components/Layout/NavbarDrawer';
+import { getAllLabelsAPI } from '../API/productAPI';
 
 export default function Landing() {
   const dispatch = useDispatch();
@@ -23,6 +24,25 @@ export default function Landing() {
   const [file, setFile] = useState(null);
   const handleChange = (file) => {
     setFile(file);
+  };
+  let [vitaminMap, setVitaminMap]= useState(null);
+  const getVitamin = async () => {
+    try {
+      const response = await getAllLabelsAPI({
+        page: 1,
+        limit,
+        category: 'Vitamin',
+      });
+      
+      const vitaminMap1 = response?.data?.data?.rows?.map((value, index) => {
+        return (
+          <div key={`vitamin${index}`} className="carousel-item ">
+            <ProductCard data={value.product} />
+          </div>
+        );
+      });
+      setVitaminMap(vitaminMap1)
+    } catch (error) {}
   };
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
     return (
@@ -44,8 +64,9 @@ export default function Landing() {
     } catch (error) {}
   };
   useEffect(() => {
+    getVitamin();
     // dispatch(getProducts({ page: 1, limit, search: '' }));
-    
+
     dispatch(
       getLabels({
         page: 1,
@@ -56,8 +77,7 @@ export default function Landing() {
   }, []);
   return (
     <>
-  
-      {/* <NavbarDrawer/> */}
+      {/* <NavbarDrawer /> */}
       <div className="flex  justify-center">
         <article className="prose">
           <h2 className="mx-5 text-center lg:hidden">
@@ -136,15 +156,13 @@ export default function Landing() {
         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
         </div>
-      </div>
-      <div className=" mt-10 flex justify-end pr-[10%]">
-        <article className="prose">
-          <h3>Location</h3>
-        </article>
-      </div>
-      <div className="w-full flex justify-center p-5">
-        <div className="w-[70%]  " autoFocus={false} tabIndex={-1}>
-          <StoreLocation />
+        <div className="w-full flex pl-[15%] ">
+          <article className="prose">
+            <h3>Vitamin</h3>
+          </article>
+        </div>
+        <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
+          {vitaminMap ? <>{vitaminMap}</> : <ProductListSkl limit={limit} />}
         </div>
       </div>
     </>

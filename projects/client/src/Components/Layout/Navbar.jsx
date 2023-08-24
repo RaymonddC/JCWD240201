@@ -36,6 +36,9 @@ export default function NavBar() {
               <button className="btn btn-sm btn-ghost">
                 <Link to="/discussions">DISCUSSIONS</Link>
               </button>
+              <button className="btn btn-sm btn-ghost">
+                <Link to="/location">LOCATION</Link>
+              </button>
             </div>
             <div className="flex items-center relative">
               {user && Object.keys(user).length !== 0 ? (

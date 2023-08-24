@@ -15,6 +15,7 @@ import { useLocation } from 'react-router-dom';
 import getScrollbarWidth from './Helper/getScrollbarWidth';
 import useBodyScrollable from './Helper/useBodyScrollable';
 import { PublicLayout } from './Components/Layout/PublicLayout';
+import NavbarDrawer from './Components/Layout/NavbarDrawer';
 
 
 function App() {
@@ -68,7 +69,7 @@ function App() {
           <>
             {navbar ? (
               <>
-                <NavBar />
+                <NavbarDrawer />
                 <div className="relative md:px-[3em] md:py-[2em] flex-grow">
                   <PublicRoute />
                 </div>

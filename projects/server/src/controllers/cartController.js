@@ -18,7 +18,6 @@ const PackagingType = db.packaging_type;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
 
-// const getUserCarts = async (req, res, next) => {};
 const getCarts = async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -78,9 +77,10 @@ const addToCart = async (req, res, next) => {
     const product = await productDB.findOne({
       where: { id: productId },
     });
-
-    if (product.require_prescription) {
-      throw { message: 'This product requires prescription' };
+    if (productId !== '1') {
+      if (product.require_prescription) {
+        throw { message: 'This product requires prescription' };
+      }
     }
     const isCart = await getCart('', {
       product_id: productId,

@@ -106,35 +106,22 @@ export default function QnAAdmin() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div
-                  onClick={() => {
-                    setQuestionCategory('');
-                  }}
-                  className="btn btn-outline btn-accent btn-xs mx-3"
-                >
-                  all
+                <div className=' flex overflow-auto p-3'>
+                  <div
+                    onClick={() => {
+                      setQuestionCategory('');
+                    }}
+                    className="btn btn-outline btn-accent btn-xs mx-3"
+                  >
+                    all
+                  </div>
+                  {questionCategoriesMap}
                 </div>
-                {questionCategoriesMap}
               </div>
               <div>{questionMap}</div>
             </div>
             <Pagination setPage={setPage} page={page} totalPages={totalPages} />
-            {/* <div className="flex justify-center">
-              <div className="join w-64 grid grid-cols-2">
-                <button
-                  onClick={() => prev()}
-                  className="join-item btn btn-outline"
-                >
-                  {'<< Previous'}
-                </button>
-                <button
-                  onClick={() => next()}
-                  className="join-item btn btn-outline"
-                >
-                  {'Next >>'}
-                </button>
-              </div>
-            </div> */}
+           
           </div>
         </div>
       </div>
