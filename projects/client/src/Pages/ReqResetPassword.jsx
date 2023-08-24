@@ -22,8 +22,9 @@ export default function ReqResetPassword() {
   };
 
   //send reset password form
-  const onSendRequest = async () => {
+  const onSendRequest = async (e) => {
     try {
+      e.preventDefault();
       setDisable(true);
       const result = await sendResetForm(_email.current.value);
       const errorMessage = { message: result.data?.message };
@@ -44,43 +45,48 @@ export default function ReqResetPassword() {
   return (
     <>
       <div className="flex gap-4 border-b-2 h-14 p-3">
-        <div onClick={() => navigate('/login')} className="flex items-center hover:cursor-pointer">
+        <div
+          onClick={() => navigate('/login')}
+          className="flex items-center hover:cursor-pointer"
+        >
           <MdKeyboardBackspace size={25} />
         </div>
         <div className="flex items-center font-semibold">
           Request Reset Password
         </div>
       </div>
-      <div className="lg:flex lg:justify-center lg:py-12 md:flex md:justify-center md:py-12">
-        <div className="flex flex-col gap-4 p-4 lg:w-full lg:max-w-lg md:w-full md:max-w-lg">
-          <div className="form-control w-full">
-            <label className="label">
-              <span className="label-text">Enter your email</span>
-            </label>
-            <input
-              type="text"
-              placeholder="Email"
-              className={
-                emailValidation
-                  ? 'input input-bordered w-full'
-                  : 'input input-bordered input-error w-full'
-              }
-              ref={_email}
-              onChange={() => onEmail(_email.current.value)}
-            />
-            {emailValidation ? null : (
-              <div className="label-text">Invalid email</div>
-            )}
+      <form onSubmit={onSendRequest}>
+        <div className="lg:flex lg:justify-center lg:py-12 md:flex md:justify-center md:py-12">
+          <div className="flex flex-col gap-4 p-4 lg:w-full lg:max-w-lg md:w-full md:max-w-lg">
+            <div className="form-control w-full">
+              <label className="label">
+                <span className="label-text">Enter your email</span>
+              </label>
+              <input
+                type="text"
+                placeholder="Email"
+                className={
+                  emailValidation
+                    ? 'input input-bordered w-full'
+                    : 'input input-bordered input-error w-full'
+                }
+                ref={_email}
+                onChange={() => onEmail(_email.current.value)}
+              />
+              {emailValidation ? null : (
+                <div className="label-text">Invalid email</div>
+              )}
+            </div>
+            <button
+              type="submit"
+              className="btn btn-primary w-full text-white"
+              disabled={disable ? true : false}
+            >
+              Send Request
+            </button>
           </div>
-          <button
-            onClick={() => onSendRequest()}
-            className="btn btn-primary w-full text-white"
-            disabled={disable ? true : false}
-          >
-            Send Request
-          </button>
         </div>
-      </div>
+      </form>
     </>
   );
 }
