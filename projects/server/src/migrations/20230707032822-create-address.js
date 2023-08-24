@@ -18,6 +18,12 @@ module.exports = {
       province_id: {
         type: Sequelize.INTEGER,
       },
+      city_name: {
+        type: Sequelize.STRING,
+      },
+      province_name: {
+        type: Sequelize.STRING,
+      },
       notes: {
         type: Sequelize.STRING,
       },

@@ -46,7 +46,7 @@ export default function PrescriptionAdmin() {
   return (
     <div>
       <h1>Prescription</h1>
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4 gap-2">
         <input
           type="text"
           placeholder="Search user"

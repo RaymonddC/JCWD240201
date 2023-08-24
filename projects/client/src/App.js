@@ -15,7 +15,8 @@ import { useLocation } from 'react-router-dom';
 import getScrollbarWidth from './Helper/getScrollbarWidth';
 import useBodyScrollable from './Helper/useBodyScrollable';
 import { PublicLayout } from './Components/Layout/PublicLayout';
-
+import { Sidebar } from './Components/Layout/Sidebar';
+import NavbarAdmin from './Components/Layout/NavbarAdmin';
 
 function App() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ function App() {
   useEffect(() => {
     if (
       pathname === '/login' ||
-      pathname === '/register'||
+      pathname === '/register' ||
       pathname === '/verfication'
     ) {
       setNavbar(false);
@@ -63,7 +64,15 @@ function App() {
       <div className="min-h-[100vh] flex flex-col">
         <Toaster />
         {user.role?.role_name === 'admin' ? (
-          <AdminRoute />
+          <div className="flex flex-col sm:flex-row">
+            <Sidebar />
+            <NavbarAdmin />
+            <div className="lg:ml-[250px] sm:ml-[80px] ml-0 grow md:flex flex-col h-full w-full md:grow md:w-[50vw] ">
+              <div className="bg-gradient-to-b from-[#D6F5F3] from-10% via-[#F7FCFC] via-90% to-[#F1F5FC] min-h-[100vh] px-5 pt-5 pb-20">
+                <AdminRoute />
+              </div>
+            </div>
+          </div>
         ) : (
           <>
             {navbar ? (

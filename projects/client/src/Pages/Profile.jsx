@@ -12,7 +12,7 @@ export default function Profile() {
   let token = localStorage.getItem('token');
 
   const { user } = useSelector((state) => state.user);
-  console.log("🚀 ~ file: Profile.jsx:14 ~ Profile ~ user:", user)
+  console.log('🚀 ~ file: Profile.jsx:14 ~ Profile ~ user:', user);
   if (!token) return <Navigate to={'/login'} />;
   return (
     <>
@@ -43,7 +43,9 @@ export default function Profile() {
             <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
               <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">Email</p>
               <div className="flex gap-2">
-                <ChangeEmailConfirmation email={user?.email} />
+                {user.google_login ? null : (
+                  <ChangeEmailConfirmation email={user?.email} />
+                )}
                 <p className="md:text-[16px] text-[14px]">{user?.email}</p>
               </div>
             </div>

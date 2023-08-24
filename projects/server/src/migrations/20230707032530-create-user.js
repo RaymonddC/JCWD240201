@@ -42,6 +42,9 @@ module.exports = {
       google_login: {
         type: Sequelize.BOOLEAN,
       },
+      change_email_token: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

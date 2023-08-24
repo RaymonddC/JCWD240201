@@ -17,6 +17,7 @@ export default function StoreLocation() {
         }}
         style={{ width: '100%', height: '800px' }}
         mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.REACT_APP_API_MAPTILER}`}
+        tabIndex
       >
         <NavigationControl position="top-right" />
         <Marker

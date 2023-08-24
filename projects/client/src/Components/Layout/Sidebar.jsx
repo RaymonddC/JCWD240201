@@ -12,7 +12,7 @@ import { MdCategory } from 'react-icons/md';
 import { MdOutlineInventory2 } from 'react-icons/md';
 import { FaPrescriptionBottleMedical } from 'react-icons/fa6';
 import { MdInventory } from 'react-icons/md';
-import { MdDiscount } from 'react-icons/md';
+import { MdDiscount, MdHome } from 'react-icons/md';
 import { TbReportAnalytics } from 'react-icons/tb';
 
 export const Sidebar = () => {
@@ -21,8 +21,8 @@ export const Sidebar = () => {
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="fixed sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#B4B9C7]">
-      <div className="flex sm:flex-col gap-[0.5em] items-center lg:items-start  flex-row">
+    <div className="fixed hidden sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#B4B9C7]">
+      <div className="flex sm:flex-col gap-[0.5em] items-center lg:items-start">
         <Link to={'/'} className="w-full">
           <div className="cardSidebar sm:flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold hover:bg-[#8899a6] hover:bg-opacity-202 hidden justify-center ">
             <img className="h-10 px-2" src={Logo} alt="" />
@@ -30,7 +30,7 @@ export const Sidebar = () => {
         </Link>
         <Link to={'/'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start items-center">
-            <AiOutlineHome />
+            <MdHome />
             <p className="hidden lg:block">Dashboard</p>
           </div>
         </Link>
@@ -82,12 +82,12 @@ export const Sidebar = () => {
             <p className="hidden lg:block">Report</p>
           </div>
         </Link>
-        <Link to={'/sales_report'} className="w-full">
+        {/* <Link to={'/sales_report'} className="w-full">
           <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
             <TbReportAnalytics />
             <p className="hidden lg:block">Sales Report</p>
           </div>
-        </Link>
+        </Link> */}
       </div>
       <Link to={!user || Object.keys(user).length === 0 ? '/login' : ''}>
         <div className="profile min-w-[100%] p-[13px]   rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 lg:flex-row flex-col gap-2 lg:gap-0 items-center lg:items-start hidden sm:flex">

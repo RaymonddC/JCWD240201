@@ -65,14 +65,14 @@ export default function ConfirmationMainAddressModal(props) {
           onClick={() => setOpen(true)}
           className="w-fit text-primary cursor-pointer"
         >
-          Make it the main address
+          Make it main
         </button>
       ) : (
         <button
           onClick={() => setOpen(true)}
           className="w-fit text-primary cursor-pointer text-left"
         >
-          Make it the main address & select it
+          Make it main & select
         </button>
       )}
 
