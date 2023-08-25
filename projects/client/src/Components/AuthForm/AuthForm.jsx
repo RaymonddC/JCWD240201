@@ -182,6 +182,7 @@ export const AuthForm = (propss) => {
           </button>
           <div className="btnOther w-full text-[13px] font-bold ">
             <button
+             disabled={isSubmitting}
               type="button"
               onClick={() => {
                 dispatch(loginWithGoogleSlice());
