@@ -121,7 +121,7 @@ export default function Products() {
   return (
     <>
       <div className=" flex sticky top-3 mb-3 z-10 justify-center">
-        <FilterBar
+        {/* <FilterBar
           value={search}
           setSearch={setSearch}
           setSortType={setSortType}
@@ -144,9 +144,9 @@ export default function Products() {
               sortOrder: 'DESC',
             },
           ]}
-        />
+        /> */}
 
-        {/* <FilterBarDrawer
+        <FilterBarDrawer
           value={search}
           setSearch={setSearch}
           setSortType={setSortType}
@@ -171,7 +171,7 @@ export default function Products() {
               sortOrder: 'DESC',
             },
           ]}
-        /> */}
+        />
        
       </div>
       <div className="flex ">

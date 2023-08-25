@@ -37,7 +37,7 @@ const unitConversionHelper = async (data, t) => {
       openedStock = resOpenedStock.qty;
     } else {
       openedStock = 0;
-    } 
+    }
     const packaging_type = response.packaging_type.type_name;
     const unit = response.product_type.unit;
     const closedStock = resClosedStock.total_stock;
@@ -114,6 +114,7 @@ const unitConversionHelper = async (data, t) => {
       },
       { transaction: t },
     );
+  
     return {
       success: true,
       message: 'unit conversion completed successfully',

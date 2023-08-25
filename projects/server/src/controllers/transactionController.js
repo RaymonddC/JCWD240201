@@ -189,19 +189,24 @@ const checkout = async (req, res, next) => {
               cart_id: value.id,
             },
           });
-          prescriptionCarts.map(async (prescCart) => {
-            try {
-              await unitConversionHelper(
-                {
-                  product_id: prescCart.product_id,
-                  qty: value.qty,
-                },
-                t,
-              );
-            } catch (error) {
-              //   console.log (error)
-              throw error;
-            }
+          await Promise.all(
+            prescriptionCarts.map(async (prescCart) => {
+              try {
+                await unitConversionHelper(
+                  {
+                    product_id: prescCart.product_id,
+                    qty: prescCart.qty,
+                  },
+                  t,
+                );
+              } catch (error) {
+                console.log(error);
+                throw error;
+              }
+            }),
+          ).catch((error) => {
+            console.log(error.message);
+            throw error;
           });
         }
 

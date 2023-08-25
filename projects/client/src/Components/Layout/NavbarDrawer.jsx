@@ -124,7 +124,7 @@ export default function NavbarDrawer() {
             </div>
           </div>
         </div>
-        <div className="drawer-side z-10">
+        <div className="drawer-side z-20">
           <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
           <ul className="menu gap-2 p-4 w-52 h-full bg-base-200">
             {/* Sidebar content here */}

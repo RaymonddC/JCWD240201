@@ -40,7 +40,7 @@ export default function FilterBarDrawer(props) {
                 type="text"
                 placeholder="Search"
                 value={props.value}
-                className="input input-bordered w-full z-[-1] md:w-96 mx-3"
+                className="input input-bordered w-full md:w-96 mx-3"
                 onChange={(e) => {
                   // if (e.target.value.length > 2 || e.target.value.length === 0)
                   props?.setSearch(e.target.value);
@@ -51,11 +51,11 @@ export default function FilterBarDrawer(props) {
                 ''
               ) : (
                 <div className="dropdown dropdown-end hidden md:block mr-3">
-                  <label tabIndex={0} className="btn btn-primary text-white">
+                  <label tabIndex={1} className="btn btn-primary text-white">
                     Sort by <MdArrowDropDown size={25} />
                   </label>
                   <ul
-                    tabIndex={0}
+                    tabIndex={1}
                     className="menu dropdown-content z-5 p-2 shadow bg-base-100 rounded-box w-52 mt-4"
                   >
                     {props.option.map((value, index) => {
@@ -101,8 +101,8 @@ export default function FilterBarDrawer(props) {
                     tabIndex={1}
                     className="menu dropdown-content z-5 p-2 shadow bg-base-100 rounded-box w-72 mt-4"
                   >
-                    <li>
-                      <div className="w-full h-20 flex justify-center">
+                    <>
+                      <div className="w-full h-20 flex justify-center mt-3">
                         <MultiRangeSlider
                           min={0}
                           max={1000000}
@@ -113,7 +113,7 @@ export default function FilterBarDrawer(props) {
                           }}
                         />
                       </div>
-                    </li>
+                    </>
                   </ul>
                 </div>
               </div>
