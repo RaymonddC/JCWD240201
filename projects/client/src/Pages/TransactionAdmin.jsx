@@ -25,8 +25,8 @@ const TransactionAdmin = () => {
   );
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
 
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [selectedStatusId, setSelectedStatusId] = useState(1);
+  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedStatusId, setSelectedStatusId] = useState(null);
   const debouncedSearchValue = useDebounce(search, 1200);
   const [isCheck, setIsCheck] = useState(false);
   const [toggle, setToggle] = useState(false);
@@ -40,6 +40,10 @@ const TransactionAdmin = () => {
   }, [debouncedSearchValue, sortType, sortOrder]);
 
   useEffect(() => {
+    if (Number(searchParams.get('page')) === page) {
+      setPage(1);
+      // queryParams['page'] = 1;
+    }
     if (page) {
       queryParams['page'] = page;
     }
