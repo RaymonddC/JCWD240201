@@ -37,7 +37,7 @@ const Cart = () => {
     amountPromotion,
   } = useSelector((state) => state?.cart);
   const [isCheck, setIsCheck] = useState(false);
-  // const [isForceCheck, setIsForceCheck] = useState(false);
+  const [isForceCheck, setIsForceCheck] = useState(null);
 
   const ProductsStore = useSelector((state) => state?.products?.products);
   let productMap;
@@ -124,6 +124,10 @@ const Cart = () => {
               <input
                 type="checkbox"
                 className="h-3 w-3"
+                onClick={() => {
+                  setIsForceCheck(!isForceCheck);
+                  console.log(isForceCheck);
+                }}
                 onChange={() => {
                   setIsCheck(!isCheck);
                 }}
@@ -137,11 +141,11 @@ const Cart = () => {
                   <CartCard
                     key={idx}
                     cart={value}
-                    check={isCheck}
+                    isCheck={isCheck}
                     setCheck={setIsCheck}
                     setQty={handleQty}
                     idx={idx}
-                    // isForceCheck={isForceCheck}
+                    isForceCheck={isForceCheck}
                   />
                 );
               })}

@@ -40,22 +40,12 @@ const CartCard = (props) => {
   const [disc, setDisc] = useState(discount());
 
   useEffect(() => {
-    // const setCheck = async () => {
-    //   await props.setQty(null, null, props.idx, true);
-    // };
-    if (props.check) {
-      if (props.cart.confirmation && !props.cart.is_check) {
-        setIsCheckCart(true);
-        // props.setQty(null, null, props.idx, true);
-        // console.log('check');
-
-        // setCheck().catch(console.error);
-      }
-    }
-  }, [props.check]);
+    if (props.isForceCheck !== null) setIsCheckCart(props.isCheck);
+  }, [props.isForceCheck]);
 
   useEffect(() => {
     props.setQty(null, null, props.idx, isCheckCart);
+    if (!isCheckCart) props.setCheck(false);
   }, [isCheckCart]);
 
   useEffect(() => {

@@ -103,15 +103,15 @@ const TransactionCard = (props) => {
           />
         </div>
         <div className="detail flex-grow px-5">
-          <Link to={''}>
+          <Link to={`/products/${txDetail.product_id}`}>
             <p>{txDetail.product_name}</p>
+            <p>
+              {txDetail.qty}{' '}
+              {txDetail.product_id !== 1
+                ? txDetail?.product?.packaging_type?.type_name
+                : txDetail?.product?.product_type?.unit || 'pcs'}
+            </p>
           </Link>
-          <p>
-            {txDetail.qty}{' '}
-            {txDetail.product_id !== 1
-              ? txDetail?.product?.packaging_type?.type_name
-              : txDetail?.product?.product_type?.unit}
-          </p>
           {props.tx.transaction_details.length <= 1 ? (
             ''
           ) : (
