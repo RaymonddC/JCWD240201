@@ -110,15 +110,17 @@ export default function QnAUser() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div
-                  onClick={() => {
-                    setQuestionCategory('');
-                  }}
-                  className="btn btn-outline btn-accent btn-xs mx-3"
-                >
-                  all
+                <div className=" p-3 overflow-auto">
+                  <div
+                    onClick={() => {
+                      setQuestionCategory('');
+                    }}
+                    className="btn btn-outline btn-accent btn-xs mx-3"
+                  >
+                    all
+                  </div>
+                  {questionCategoriesMap}
                 </div>
-                {questionCategoriesMap}
               </div>
               <div>
                 <div>
