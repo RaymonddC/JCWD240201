@@ -156,7 +156,7 @@ export default function Landing() {
         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
           {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
         </div>
-        <div className="w-full flex pl-[15%] ">
+        <div className="w-full flex pl-[15%] mt-5">
           <article className="prose">
             <h3>Vitamin</h3>
           </article>

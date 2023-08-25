@@ -8,6 +8,7 @@ import Pagination from '../Components/Layout/Pagination';
 import { getAllCategories } from '../Features/Category/CategorySlice';
 import { useSearchParams } from 'react-router-dom';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export default function Products() {
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
   const [minPrice, setMinPrice] = useState(searchParams.get('min-price') || 0);
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('max-price') || 0);
+  const [maxPrice, setMaxPrice] = useState(searchParams.get('max-price') || 1000000);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
@@ -144,25 +145,34 @@ export default function Products() {
             },
           ]}
         />
-        {/* <div className="hidden md:block">
-          <div className="flex items-start">
-            <div>Price range: min =</div>
-            <div className="flex flex-col">
-              <input type="text" value={`Rp.${minPrice}`} />
-              <input
-                type="range"
-                min={0}
-                max="100"
-                value={minPrice}
-                className="range range-xs w-40"
-                onChange={(e) => {
-                  setMinPrice(e.target.value);
-                }}
-              />
-            </div>
-            <div>max =</div>
-          </div>
-        </div> */}
+
+        {/* <FilterBarDrawer
+          value={search}
+          setSearch={setSearch}
+          setSortType={setSortType}
+          setSortOrder={setSortOrder}
+          setMinPrice={setMinPrice}
+          setMaxPrice={setMaxPrice}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          sortBy={true}
+          priceRange={true}
+          option={[
+            { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+            { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+            {
+              text: 'Price low to high',
+              sortType: 'price',
+              sortOrder: 'ASC',
+            },
+            {
+              text: 'Price high to low',
+              sortType: 'price',
+              sortOrder: 'DESC',
+            },
+          ]}
+        /> */}
+       
       </div>
       <div className="flex ">
         <div className="hidden w-52 md:block pl-3">

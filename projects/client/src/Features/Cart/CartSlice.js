@@ -97,8 +97,7 @@ export const getCartUserAsync = () => async (dispatch) => {
     }
 
     let { data } = await getUserCarts(token);
-
-    console.log(data);
+    console.log("🚀 ~ file: CartSlice.js:100 ~ getCartUserAsync ~ data:", data)
 
     dispatch(onGetData(await processData(data.data)));
   } catch (error) {

@@ -110,7 +110,7 @@ export default function QnAUser() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div className=" p-3 overflow-auto">
+                <div className=" p-3 flex overflow-auto">
                   <div
                     onClick={() => {
                       setQuestionCategory('');
