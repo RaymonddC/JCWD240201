@@ -113,6 +113,7 @@ const checkout = async (req, res, next) => {
     let stockHistoryData = [],
       closedStockData = [],
       promotionData = [];
+
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
@@ -181,7 +182,9 @@ const checkout = async (req, res, next) => {
           });
         } else {
           pricePresc = await getPricePrescription(value.id);
+
           console.log(pricePresc[0].total_price);
+
           // throw {};
           totalAllPriceDB += Number(pricePresc[0].total_price);
           const prescriptionCarts = await PrescriptionCartDB.findAll({
@@ -189,21 +192,22 @@ const checkout = async (req, res, next) => {
               cart_id: value.id,
             },
           });
-          prescriptionCarts.map(async (prescCart) => {
-            try {
-              await unitConversionHelper(
+
+          await Promise.all(
+            prescriptionCarts.map(async (prescCart) => {
+              return await unitConversionHelper(
                 {
                   product_id: prescCart.product_id,
-                  qty: value.qty,
+                  qty: prescCart.qty,
                 },
                 t,
               );
-            } catch (error) {
-              //   console.log (error)
-              throw error;
-            }
+            }),
+          ).catch((error) => {
+            throw error;
           });
         }
+        // throw {};
 
         return {
           product_id: value.product_id,
@@ -221,7 +225,9 @@ const checkout = async (req, res, next) => {
           qty: value.qty,
         };
       }),
-    );
+    ).catch((error) => {
+      throw error;
+    });
 
     if (totalDiscount !== Number(discount))
       throw {
@@ -307,8 +313,11 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    console.log(error);
-    next(error);
+    console.log(error + 'luar');
+    return res.status(500).send({
+      data: error,
+    });
+    // next(error);
   }
 };
 

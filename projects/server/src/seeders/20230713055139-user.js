@@ -47,7 +47,8 @@ module.exports = {
         full_name: 'Raymond R',
         username: 'raymonds',
         email: 'raymond@gmail.com',
-        password: 'Raymonds1!',
+        password:
+          '$2b$10$LNEd92twemC83abFs/gmy.t4BFs5bKm0YoohcH7J5CkU5nI1w.ZaG',
         phone_number: '08146515145',
         role_id: 2,
         profile_image: null,
@@ -62,7 +63,8 @@ module.exports = {
         full_name: 'Admin R',
         username: 'AdminR',
         email: 'admin@gmail.com',
-        password: 'adminR1!',
+        password:
+          '$2b$10$LNEd92twemC83abFs/gmy.t4BFs5bKm0YoohcH7J5CkU5nI1w.ZaG',
         phone_number: '08146515145',
         role_id: 1,
         profile_image: null,

@@ -32,12 +32,11 @@ const unitConversionHelper = async (data, t) => {
       include: [packagingDB, productTypeDB],
       where: { id: product_id },
     });
-
     if (resOpenedStock !== null) {
       openedStock = resOpenedStock.qty;
     } else {
       openedStock = 0;
-    } 
+    }
     const packaging_type = response.packaging_type.type_name;
     const unit = response.product_type.unit;
     const closedStock = resClosedStock.total_stock;
@@ -69,10 +68,12 @@ const unitConversionHelper = async (data, t) => {
           { where: { product_id }, transaction: t },
         );
       }
+      // throw { message: 'inside' };
       const updateClosedStock = await closedStockDB.update(
         { total_stock: newClosedStock },
         { where: { product_id }, transaction: t },
       );
+      // throw { message: 'inside' };
       const updateStockHystoryClosedOut = await stockHistoryDB.create(
         {
           product_id,
