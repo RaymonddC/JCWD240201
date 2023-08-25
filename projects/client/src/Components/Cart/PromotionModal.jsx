@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 
 const PromotionModal = (props) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { promotions } = useSelector((state) => state.promotion);
   const { promotionActive, amountPromotion, minimumPricePromo } = useSelector(
     (state) => state.cart,
@@ -46,13 +45,22 @@ const PromotionModal = (props) => {
                 className={`btn btn-sm p-1 rounded-lg ${
                   !selectedPromo.id ? 'btn-disabled' : ''
                 }`}
-                onClick={() => {
+                onClick={async () => {
                   setSelectedPromo({
                     id: null,
                     amount: 0,
                     minPrice: 0,
                   });
-                  dispatch(newActivePromo(selectedPromo, () => {}));
+                  dispatch(
+                    newActivePromo(
+                      {
+                        id: null,
+                        amount: 0,
+                        minPrice: 0,
+                      },
+                      () => {},
+                    ),
+                  );
                 }}
               >
                 Reset Promo
@@ -79,7 +87,6 @@ const PromotionModal = (props) => {
               );
             })}
           </div>
-          {console.log(!selectedPromo.id, selectedPromo.id)}
           <div
             className={`totalDiscount sticky bottom-0 flex justify-between bg-white p-3 px-6 ${
               !selectedPromo.id ? 'hidden' : ''

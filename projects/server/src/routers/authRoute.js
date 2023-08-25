@@ -16,8 +16,8 @@ router.post(
 
 router.post(
   '/login',
-  APIKey.APIKey,
-  recaptcha.verify,
+  // APIKey.APIKey,
+  // recaptcha.verify,
   authController.userLogin,
 );
 

@@ -34,7 +34,12 @@ const TransactionCard = (props) => {
     })
     .split(',');
 
-  const time = dateTime.toLocaleTimeString([], { hour12: false });
+  const time = dateTime.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    // timeZoneName: 'short',
+  });
   const transactionStatusId =
     props?.tx?.transaction_histories[0]?.transaction_status_id;
   const transactionStatus =
@@ -84,8 +89,17 @@ const TransactionCard = (props) => {
         <div className="img">
           <img
             className="h-20 w-20"
-            src={props?.cart?.img || Logo}
-            alt={Logo}
+            src={
+              txDetail.prescription_image ||
+              txDetail.product?.product_images[0]?.image
+                ? `
+              ${process.env.REACT_APP_API_BASE_URL}/${
+                txDetail.prescription_image ||
+                txDetail.product?.product_images[0]?.image
+              }`
+                : Logo
+            }
+            alt={'Product'}
           />
         </div>
         <div className="detail flex-grow px-5">
@@ -216,13 +230,15 @@ const TransactionCard = (props) => {
           id={props?.tx.id}
         />
       ) : null}
-      <DeleteModal
-        open={openDeleteModal}
-        closeModal={() => setOpenDeletemodal(false)}
-        id={props?.tx?.id}
-        model={'Transaction'}
-        delFunc={cancelTransaction}
-      />
+      {openDeleteModal ? (
+        <DeleteModal
+          open={openDeleteModal}
+          closeModal={() => setOpenDeletemodal(false)}
+          id={props?.tx?.id}
+          model={'Transaction'}
+          delFunc={cancelTransaction}
+        />
+      ) : null}
     </div>
   );
 };
