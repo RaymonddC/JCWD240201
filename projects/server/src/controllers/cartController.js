@@ -82,6 +82,7 @@ const addToCart = async (req, res, next) => {
         throw { message: 'This product requires prescription' };
       }
     }
+
     const isCart = await getCart('', {
       product_id: productId,
       user_id: userId,
@@ -94,12 +95,14 @@ const addToCart = async (req, res, next) => {
     const stock = await ClosedStock.findOne({
       where: { product_id: productId },
     });
-    if (isCart && stock.total_stock <= isCart.qty)
+    if (Number(productId) !== 1 && isCart && stock.total_stock <= isCart.qty)
       throw { message: 'Out Of Stock' };
 
-    if (productId === 1 && !image) throw { message: 'Please upload image' };
+    if (Number(productId) === 1 && !image)
+      throw { message: 'Please upload image' };
+
     if (isCart && isCart.qty === qty) '';
-    else if (isCart && productId !== 1)
+    else if (isCart && Number(productId) !== 1)
       await Cart.update(
         {
           user_id: isCart.user_id,
@@ -111,7 +114,7 @@ const addToCart = async (req, res, next) => {
         },
         { where: { id: isCart.id } },
       );
-    else {
+    else
       await Cart.create({
         user_id: userId,
         product_id: productId,
@@ -120,7 +123,6 @@ const addToCart = async (req, res, next) => {
         confirmation: Number(productId) === 1 ? null : true,
         is_check: Number(productId) === 1 ? false : true,
       });
-    }
 
     const cart = await getCart('', { product_id: productId, user_id: userId });
 

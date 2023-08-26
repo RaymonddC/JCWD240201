@@ -80,18 +80,27 @@ const TransactionCardAdmin = (props) => {
             <div className="img">
               <img
                 className="h-20 w-20"
-                src={props?.cart?.img || Logo}
-                alt={Logo}
+                src={
+                  txDetail?.prescription_image ||
+                  txDetail?.product?.product_images[0]?.image
+                    ? `
+                  ${process.env.REACT_APP_API_BASE_URL}/${
+                    txDetail?.prescription_image ||
+                    txDetail?.product?.product_images[0]?.image
+                  }`
+                    : Logo
+                }
+                alt={'Product'}
               />
             </div>
             <div className="detail flex-grow px-5">
               <Link to={''}>
-                <p>{txDetail.product_name}</p>
+                <p>{txDetail?.product_name}</p>
               </Link>
               <p>
-                {txDetail.qty}{' '}
-                {txDetail.product_id !== 1
-                  ? txDetail.product?.packaging_type?.type_name
+                {txDetail?.qty}{' '}
+                {txDetail?.product_id !== 1
+                  ? txDetail?.product?.packaging_type?.type_name
                   : txDetail?.product?.product_type?.unit}
               </p>
               {props.tx.transaction_details.length <= 1 ? (

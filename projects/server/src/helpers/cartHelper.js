@@ -49,6 +49,7 @@ const getUserCarts = async (includes, whereQuery, order) => {
       where: whereQuery,
       order: [
         ['createdAt', 'DESC'],
+        ['id', 'DESC'],
         [Product, Promotion, 'promotion_type_id'],
       ],
       // limit: Number(limitPage),

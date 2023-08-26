@@ -8,6 +8,7 @@ const User = db.user;
 const AddressDB = db.address;
 const PackagingType = db.packaging_type;
 const ProductType = db.product_type;
+const ProductImageDB = db.product_image;
 const Promotion = db.promotion;
 const ClosedStock = db.closed_stock;
 const { Op } = require('sequelize');
@@ -72,6 +73,7 @@ const getUserTransactions = async (whereQuery, orderBy) => {
                   model: ProductType,
                   attributes: ['unit'],
                 },
+                { model: ProductImageDB, attributes: ['image'] },
               ],
             },
           ],
@@ -81,7 +83,7 @@ const getUserTransactions = async (whereQuery, orderBy) => {
             ],
           },
           where: whereQuery.transactionDetail,
-          right: true,
+          // right: true,
         },
       ],
       where: {
@@ -89,6 +91,7 @@ const getUserTransactions = async (whereQuery, orderBy) => {
       },
       order: order,
       ...whereQuery.pagination,
+      distinct: true,
     });
   } catch (error) {
     throw error;
@@ -128,6 +131,7 @@ const getTransactionById = async (id, admin) => {
                   model: ProductType,
                   attributes: ['unit'],
                 },
+                { model: ProductImageDB, attributes: ['image'] },
               ],
             },
           ],

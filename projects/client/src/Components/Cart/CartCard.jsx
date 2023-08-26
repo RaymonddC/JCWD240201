@@ -18,7 +18,7 @@ const CartCard = (props) => {
   const stock = props.cart.product?.closed_stocks[0]?.total_stock;
   const isRacik = props?.cart?.product?.id === 1;
 
-  const debouncedQtyValue = useDebounce(props.cart.qty, 500);
+  const debouncedQtyValue = useDebounce(props.cart.qty, 500, 0);
 
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
 
@@ -135,14 +135,14 @@ const CartCard = (props) => {
           <div className="summary flex gap-2 leading-6 h-fit items-center">
             <p
               className={`text-[#737A8D] text-[14px] line-through ${
-                disc.discount === 0 ? 'hidden' : ''
+                (props.cart.disc || 0) === 0 ? 'hidden' : ''
               }`}
             >
               Rp {props.cart.product.price.toLocaleString(['id'])}
             </p>
             <p className={``}>
               Rp{' '}
-              {(props.cart.product.price - disc.discount).toLocaleString([
+              {(props.cart.product.price - props.cart?.disc).toLocaleString([
                 'id',
               ])}
             </p>
@@ -173,7 +173,7 @@ const CartCard = (props) => {
             -
           </button>
           <input
-            className="join-item bg-[#daf8ff]  min-w-[50px] w-[10px] text-[#009B90] text-center"
+            className="join-item bg-[#daf8ff] min-w-[50px] w-[10px] text-[#009B90] text-center"
             type="number"
             disabled={isRacik}
             onChange={(e) => {

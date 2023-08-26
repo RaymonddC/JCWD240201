@@ -10,10 +10,6 @@ const CartSummary = (props) => {
 
   const [openPromotionModal, setOpenPromotionModal] = useState(false);
 
-  // useEffect(() => {
-  //   return () => {};
-  // }, []);
-
   return (
     <div
       className={`card card-compact w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[11em] md:w-[30%] bg-base-100 shadow-xl h-fit  md:right-12  ${
