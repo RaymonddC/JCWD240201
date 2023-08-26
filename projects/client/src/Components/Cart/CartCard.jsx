@@ -11,6 +11,7 @@ import {
 import { toast } from 'react-hot-toast';
 import useDebounce from '../../Hooks/useDebounce';
 import DeleteModal from '../DeleteModal/DeleteModal';
+import { Link } from 'react-router-dom';
 
 const CartCard = (props) => {
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ const CartCard = (props) => {
       />
       <div className="product flex justify-between ">
         <div className="check">
-          <div className="select cursor-default flex gap-5 items-center h-full">
+          <div className="cursor-default flex gap-5 items-center h-full p-3 pr-5">
             <input
               type="checkbox"
               className="h-3 w-3 cursor-pointer"
@@ -83,25 +84,29 @@ const CartCard = (props) => {
           </div>
         </div>
 
-        <div className="img">
-          <img
-            className="h-20 w-20"
-            src={
-              props.cart.prescription_image ||
-              props.cart.product.product_images[0]?.image
-                ? `
+        <Link to={`/products/${props.cart.product_id}`}>
+          <div className="img">
+            <img
+              className="h-20 w-20"
+              src={
+                props.cart.prescription_image ||
+                props.cart.product.product_images[0]?.image
+                  ? `
               ${process.env.REACT_APP_API_BASE_URL}/${
                 props.cart.prescription_image ||
                 props.cart.product.product_images[0]?.image
               }`
-                : Logo
-            }
-            alt={'Product'}
-          />
-        </div>
+                  : Logo
+              }
+              alt={'Product'}
+            />
+          </div>
+        </Link>
         <div className="cartDetail lg:flex flex-grow pl-3">
           <div className="detail flex-grow pb-2">
-            <p>{props?.cart?.product?.name}</p>
+            <Link to={`/products/${props.cart.product_id}`}>
+              <p>{props?.cart?.product?.name}</p>
+            </Link>
             <p>
               {props.cart.qty}{' '}
               {props?.cart?.product?.packaging_type?.type_name || 'buah'}

@@ -160,7 +160,13 @@ const TransactionCard = (props) => {
               disabled={!props.tx.payment_token}
               onClick={() => {
                 dispatch(
-                  openMidtransSnapSlice(props.tx.payment_token, navigate),
+                  openMidtransSnapSlice(
+                    {
+                      tokenMidtrans: props.tx.payment_token,
+                      transactionId: props.tx.id,
+                    },
+                    navigate,
+                  ),
                 );
               }}
             >

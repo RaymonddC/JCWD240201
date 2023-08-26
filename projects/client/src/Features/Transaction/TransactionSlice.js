@@ -126,43 +126,47 @@ export const handleMidtransPaymentSlice = (values) => async (dispatch) => {
   }
 };
 
-export const openMidtransSnapSlice =
-  (tokenMidtrans, navigate) => async (dispatch) => {
-    try {
-      if (tokenMidtrans)
-        window.snap.pay(tokenMidtrans, {
-          onSuccess: async function (result) {
-            /* You may add your own implementation here */
-            await dispatch(handleMidtransPaymentSlice(result));
-            navigate('/user/transaction');
-            alert('payment success!');
-            console.log(result);
-          },
-          onPending: async function (result) {
-            /* You may add your own implementation here */
-            await dispatch(handleMidtransPaymentSlice(result));
-            navigate('/user/transaction');
-            alert('wating your payment!');
-            console.log(result);
-          },
-          onError: async function (result) {
-            /* You may add your own implementation here */
-            await dispatch(handleMidtransPaymentSlice(result));
-            alert('payment failed!');
-            console.log(result);
-          },
-          onClose: async function () {
-            /* You may add your own implementation here */
-            // await dispatch(handleMidtransPaymentSlice(result));
-            navigate('/user/transaction');
-            alert('you closed the popup without finishing the payment');
-          },
-        });
-    } catch (error) {
-      console.log(error);
-      return toast.error(error.message);
-    }
-  };
+export const openMidtransSnapSlice = (values, navigate) => async (dispatch) => {
+  try {
+    let response;
+    if (values.tokenMidtrans)
+      window.snap.pay(values.tokenMidtrans, {
+        onSuccess: async function (result) {
+          response = await dispatch(handleMidtransPaymentSlice(result));
+          navigate('/user/transaction');
+          alert('payment success!');
+        },
+        onPending: async function (result) {
+          navigate('/user/transaction');
+          alert('wating your payment!');
+          console.log(result);
+        },
+        onError: async function (result) {
+          console.log(result);
+          response = await dispatch(
+            handleMidtransPaymentSlice({
+              result,
+              transactionId: values.transactionId,
+            }),
+          );
+          alert('payment failed!');
+          console.log(result);
+        },
+        onClose: async function () {
+          // await dispatch(handleMidtransPaymentSlice(result));
+          response = await dispatch(
+            handleMidtransPaymentSlice({ transactionId: values.transactionId }),
+          );
+          navigate('/user/transaction');
+          alert('you closed the popup without finishing the payment');
+        },
+      });
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+    return toast.error(error.message);
+  }
+};
 
 export const { onGetData, onGetOne } = TransactionSlice.actions;
 

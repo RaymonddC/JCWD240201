@@ -44,11 +44,16 @@ export default function Checkout() {
 
   useEffect(() => {
     dispatch(getCartUserAsync());
+
+    return () => {
+      setTokenMidtrans(null);
+    };
   }, []);
 
   useEffect(() => {
     console.log(tokenMidtrans, '================>>>>>>>>>>');
-    dispatch(openMidtransSnapSlice(tokenMidtrans, navigate));
+    if (tokenMidtrans)
+      dispatch(openMidtransSnapSlice({ tokenMidtrans }, navigate));
   }, [tokenMidtrans]);
 
   if (!token) return <Navigate to="/" />;
