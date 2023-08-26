@@ -26,6 +26,8 @@ export default function AddressModal(props) {
       phone_number: '',
       province_id: '0',
       city_id: '0',
+      city_name: '',
+      province_name: '',
       address: '',
       notes: '',
     },
@@ -34,17 +36,14 @@ export default function AddressModal(props) {
       try {
         setSubmitting(true);
         let result;
-
         if (props.data) {
           result = await updateAddress(
             props?.data?.id,
             values,
             localStorage.getItem('token'),
           );
-        } else {
+        } else
           result = await createAddress(values, localStorage.getItem('token'));
-        }
-
         if (result.data.success) {
           dispatch(getUserAddressAsync());
           toast.success(result.data.message);
@@ -63,8 +62,6 @@ export default function AddressModal(props) {
     if (props?.checkoutPage) props?.openSelectAddress();
     return props?.closeModal();
   };
-
-  console.log(loadCity);
 
   useEffect(() => {
     if (
@@ -90,6 +87,8 @@ export default function AddressModal(props) {
         reciever: props?.data?.reciever,
         phone_number: props?.data?.phone_number,
         province_id: props?.data?.province_id,
+        province_name: props?.data?.province_name,
+        city_name: props?.data?.city_name,
         city_id: props?.data?.city_id,
         address: props?.data?.address,
         notes: props?.data?.notes,
@@ -145,11 +144,7 @@ export default function AddressModal(props) {
               id="province_id"
               label="Province"
               name="province_id"
-              errors={formik?.errors?.province_id}
-              handleChange={formik?.handleChange}
-              onBlur={formik?.handleBlur}
-              touched={formik?.touched?.province_id}
-              values={formik?.values?.province_id}
+              formik={formik}
               placeholder="Select a province"
               data={province}
             />
@@ -157,11 +152,7 @@ export default function AddressModal(props) {
               id="city_id"
               name="city_id"
               label="City"
-              errors={formik?.errors?.city_id}
-              handleChange={formik?.handleChange}
-              onBlur={formik?.handleBlur}
-              touched={formik?.touched?.city_id}
-              values={formik?.values?.city_id}
+              formik={formik}
               placeholder="Select a city"
               data={city}
               loadCity={loadCity}

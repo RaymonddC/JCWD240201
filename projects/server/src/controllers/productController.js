@@ -31,7 +31,7 @@ const getAllProducts = async (req, res, next) => {
     if (sortType) {
       order = [[sortType, sortOrder]];
     } else {
-      order = [['updatedAt', 'DESC']];
+      order = [['name', 'ASC']];
     }
     console.log(sortType, sortOrder, search, order);
     const response = await productDB.findAndCountAll({
@@ -58,6 +58,7 @@ const getAllProducts = async (req, res, next) => {
       offset: offset,
       where: where,
       order: order,
+      distinct: true,
     });
     console.log('><><>.>>>', response.rows.length, pageLimit);
     const totalPage = Math.ceil(response.count / pageLimit);

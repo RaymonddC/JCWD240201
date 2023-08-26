@@ -6,7 +6,9 @@ const validateForm = (data) => {
     !data.address ||
     !data.phone_number ||
     !data.reciever ||
-    !data.province_id
+    !data.province_id ||
+    !data.province_name ||
+    !data.city_name
   ) {
     throw { message: 'Please fill your form correctly', code: 400 };
   }

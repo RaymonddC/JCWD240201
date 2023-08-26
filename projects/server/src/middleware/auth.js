@@ -1,4 +1,6 @@
 const jwt = require('jsonwebtoken');
+const db = require('./../models');
+const userDB = db.user;
 
 module.exports = {
   verifyToken: async (req, res, next) => {
@@ -29,7 +31,9 @@ module.exports = {
   },
 
   verifyTokenEmail: async (req, res, next) => {
-    let token = req.headers.authorization;
+    let token = req.headers.token_email;
+
+    console.log(req.headers.token_email);
 
     if (!token) {
       return res.status(401).send({
@@ -43,8 +47,15 @@ module.exports = {
       token = token.split(' ')[1];
       if (token === null || !token)
         throw { message: 'Unauthorized', code: 401 };
+
+      // console.log(getChangeEmailToken);
       let verifyUser = jwt.verify(token, 'change-email');
 
+      const getChangeEmailToken = await userDB.findOne({
+        where: { email: verifyUser.email },
+      });
+      if (getChangeEmailToken.change_email_token !== token)
+        throw { message: 'Link expired', code: 401 };
       if (!verifyUser) throw { message: 'Unauthorized', code: 401 };
 
       req.user = verifyUser;

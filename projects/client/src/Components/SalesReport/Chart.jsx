@@ -13,7 +13,7 @@ import {
 
 export default function Chart(props) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" className="custom-print">
       <BarChart id="tes-chart" data={props?.data}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />

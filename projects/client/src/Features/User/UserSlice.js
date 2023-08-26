@@ -20,6 +20,7 @@ import { auth } from '../../firebase';
 const provider = new GoogleAuthProvider();
 const initialState = {
   user: {},
+  loadUser: false,
 };
 
 export const UserSlice = createSlice({
@@ -29,8 +30,8 @@ export const UserSlice = createSlice({
     onSaveUser: (initialState, action) => {
       initialState.user = action.payload;
     },
-    setUser: (initialState, action) => {
-      initialState.user = action.payload;
+    setLoadUser: (initialState, action) => {
+      initialState.loadUser = action.payload;
     },
   },
 });
@@ -51,6 +52,7 @@ export const keepLoginAsync = () => async (dispatch) => {
     let token = localStorage.getItem('token');
     // if (token == null) throw { message: 'No User' };
     if (token) {
+      dispatch(setLoadUser(true));
       let response = await keepLogin(token);
 
       if (
@@ -59,7 +61,10 @@ export const keepLoginAsync = () => async (dispatch) => {
         response?.message
       )
         localStorage.removeItem('token');
-      dispatch(onSaveUser(response.data.data));
+      if (response.data.success) {
+        dispatch(onSaveUser(response.data.data));
+        dispatch(setLoadUser(false));
+      }
     }
   } catch (error) {
     if (error?.response?.data?.message === 'jwt expired')
@@ -164,11 +169,14 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
       // console.log(email);
       localStorage.removeItem('token');
       localStorage.setItem('token', result?.data?.token);
-      console.log("🚀 ~ file: UserSlice.js:167 ~ loginWithGoogleSlice ~ result?.data.token:", result?.data)
+      console.log(
+        '🚀 ~ file: UserSlice.js:167 ~ loginWithGoogleSlice ~ result?.data.token:',
+        result?.data,
+      );
       dispatch(onSaveUser(result.data.data));
       toast.success('Login success!');
     } else {
-      const message = 'Login failed'
+      const message = 'Login failed';
       throw message;
     }
   } catch (error) {
@@ -176,6 +184,6 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
     toast.error(error?.response?.data?.message);
   }
 };
-export const { onSaveUser, toggleBtn, setUser } = UserSlice.actions;
+export const { onSaveUser, toggleBtn, setLoadUser } = UserSlice.actions;
 
 export default UserSlice.reducer;

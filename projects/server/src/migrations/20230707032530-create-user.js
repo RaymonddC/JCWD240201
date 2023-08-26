@@ -48,6 +48,9 @@ module.exports = {
       reset_password_token: {
         type: Sequelize.STRING,
       },
+      change_email_token: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

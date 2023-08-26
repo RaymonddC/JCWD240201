@@ -10,12 +10,13 @@ import ChangeEmailConfirmation from '../Components/Profile/ChangeEmailConfirmati
 import { sendVerificationEmail } from '../API/authAPI';
 import { toast } from 'react-hot-toast';
 import { useState } from 'react';
+import ProfileSkl from '../Components/Profile/ProfileSkl';
 
 export default function Profile() {
   let token = localStorage.getItem('token');
   const [isRequest, setIsRequest] = useState(false);
 
-  const { user } = useSelector((state) => state.user);
+  const { user, loadUser } = useSelector((state) => state.user);
   console.log('🚀 ~ file: Profile.jsx:14 ~ Profile ~ user:', user);
   if (!token) return <Navigate to={'/login'} />;
 
@@ -44,70 +45,84 @@ export default function Profile() {
             </div>
             <UserEditModal data={user} />
           </div>
-          <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-8">
-            <div className="w-full flex flex-col items-center gap-2">
-              {user?.profile_image ? (
-                <img
-                  className="w-[125px] h-[125px] rounded-full"
-                  src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
-                  alt="profile"
-                />
-              ) : (
-                <MdPerson className="w-[100px] h-[100px]" />
-              )}
+          {loadUser ? (
+            <ProfileSkl />
+          ) : (
+            <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-8">
+              <div className="w-full flex flex-col items-center gap-2">
+                {user?.profile_image ? (
+                  <img
+                    className="w-[125px] h-[125px] rounded-full"
+                    src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                    alt="profile"
+                  />
+                ) : (
+                  <MdPerson size={100} className="rounded-full" />
+                )}
 
-              <p className="font-bold md:text-[18px]">{user?.full_name}</p>
-            </div>
-            <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
-              <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">Email</p>
-              <div className="flex gap-2">
-                <ChangeEmailConfirmation email={user?.email} />
-                <p className="md:text-[16px] text-[14px]">{user?.email}</p>
+                <p className="font-bold md:text-[18px]">{user?.full_name}</p>
               </div>
-            </div>
-            <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
-              <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
-                Phone number
-              </p>
-              <p className="md:text-[16px] text-[14px]">{user?.phone_number}</p>
-            </div>
-            <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
-              <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
-                Birth of date
-              </p>
-              <p className="text-[14px] md:text-[16px]">
-                {user?.birthdate ? formatDate(new Date(user?.birthdate)) : '-'}
-              </p>
-            </div>
-            <div
-              className={
-                user?.verified
-                  ? 'flex justify-between pt-4'
-                  : 'flex justify-between py-4 border-b-2 border-[#eeeeee]'
-              }
-            >
-              <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
-                Gender
-              </p>
-              <p className="text-[14px] md:text-[16px]">
-                {user?.gender ? user?.gender : '-'}
-              </p>
-            </div>
-            {user?.verified ? null : (
-              <div className="flex justify-between pt-4">
+              <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
                 <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
-                  Email verification
+                  Email
                 </p>
-                <button
-                  disabled={isRequest}
-                  onClick={() => reqVerify()}
-                  className="btn btn-primary"
-                >
-                  Send request
-                </button>
+                <div className="flex gap-2">
+                  {user.google_login ? null : (
+                    <ChangeEmailConfirmation email={user?.email} />
+                  )}
+                  <p className="md:text-[16px] text-[14px] overflow-hidden text-ellipsis max-w-[15ch] sm:max-w-none">
+                    {user?.email}
+                  </p>
+                </div>
               </div>
-            )}
-          </div>
+              <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
+                <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
+                  Phone number
+                </p>
+                <p className="md:text-[16px] text-[14px]">
+                  {user?.phone_number}
+                </p>
+              </div>
+              <div className="flex justify-between py-4 border-b-2 border-[#eeeeee]">
+                <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
+                  Birth of date
+                </p>
+                <p className="text-[14px] md:text-[16px]">
+                  {user?.birthdate
+                    ? formatDate(new Date(user?.birthdate))
+                    : '-'}
+                </p>
+              </div>
+              <div
+                className={
+                  user?.verified
+                    ? 'flex justify-between pt-4'
+                    : 'flex justify-between py-4 border-b-2 border-[#eeeeee]'
+                }
+              >
+                <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
+                  Gender
+                </p>
+                <p className="text-[14px] md:text-[16px]">
+                  {user?.gender ? user?.gender : '-'}
+                </p>
+              </div>
+              {user?.verified ? null : (
+                <div className="flex justify-between pt-4">
+                  <p className="text-[#7f7f7f] text-[14px] md:text-[16px]">
+                    Email verification
+                  </p>
+                  <button
+                    disabled={isRequest}
+                    onClick={() => reqVerify()}
+                    className="btn btn-primary"
+                  >
+                    Send request
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

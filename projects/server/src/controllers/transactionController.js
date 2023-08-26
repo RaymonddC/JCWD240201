@@ -359,7 +359,7 @@ const getAllTransaction = async (req, res, next) => {
       sortType,
       sortOrder,
     });
-    console.log(whereQuery);
+    // console.log(whereQuery);
     // console.log(startDate);
 
     return res.status(200).send({

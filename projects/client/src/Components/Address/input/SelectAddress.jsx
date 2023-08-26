@@ -10,7 +10,6 @@ export default function SelectAddress(props) {
         </div>
       ) : (
         <select
-          onBlur={props.onBlur}
           id={props.id}
           name={props.name}
           className={
@@ -18,8 +17,15 @@ export default function SelectAddress(props) {
               ? 'select select-error w-full font-normal mb-2'
               : 'select select-primary w-full font-normal mb-2'
           }
-          onChange={props.handleChange}
-          value={props.values}
+          onBlur={props?.formik?.handleBlur}
+          onChange={(e) => {
+            props?.formik?.setFieldValue(`${props?.id}`, e.target.value);
+            props?.formik?.setFieldValue(
+              props?.id === 'province_id' ? 'province_name' : 'city_name',
+              e.target[e.target.selectedIndex].textContent,
+            );
+          }}
+          value={props?.formik?.values?.[props.id]}
           disabled={!props?.data?.length ? true : false}
         >
           <option value="0" hidden>
@@ -43,8 +49,11 @@ export default function SelectAddress(props) {
               })}
         </select>
       )}
-      {props.errors && props.touched ? (
-        <p className="text-error text-[14px]">{props.errors}</p>
+      {props?.formik?.errors?.[props.id] &&
+      props?.formik?.touched?.[props.id] ? (
+        <p className="text-error text-[14px]">
+          {props?.formik?.errors?.[props.id]}
+        </p>
       ) : null}
     </>
   );
