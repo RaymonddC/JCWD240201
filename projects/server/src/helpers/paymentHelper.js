@@ -112,7 +112,7 @@ const getPaymentStatusMidtrans = async (values) => {
       },
     );
   } catch (error) {
-    throw { code: 400, message: 'Try Again' };
+    throw error;
   }
 };
 
