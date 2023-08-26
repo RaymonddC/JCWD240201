@@ -82,6 +82,18 @@ export default function MenuBarMobile() {
           </Link>
         </li>
         <li>
+          <Link
+            to="/user/discussions"
+            className={
+              window.location.pathname === '/user/transaction'
+                ? 'p-3 text-[#00A8B5] font-bold'
+                : 'p-3'
+            }
+          >
+            Discussions
+          </Link>
+        </li>
+        <li>
           <div
             onClick={() => {
               dispatch(logoutAsync(navigate));

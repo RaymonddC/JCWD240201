@@ -56,12 +56,13 @@ export default function QuestionModal() {
         question: question,
         question_category_id: Number(option),
         user,
-      }),
+      },setOpen),
     );
-    title.current.value = '';
-    // question.current.value = '';
-    select.selectedIndex = 0;
-    setEditorState(EditorState.createEmpty());
+    // title.current.value = '';
+    // // question.current.value = '';
+    // select.selectedIndex = 0;
+    // setEditorState(EditorState.createEmpty());
+    // setOpen(false);
   };
   // const editorState = editor;
   // useEffect(() => {

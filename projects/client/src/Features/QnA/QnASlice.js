@@ -31,7 +31,7 @@ export const QnASlice = createSlice({
   },
 });
 
-export const submitQuestion = (data) => async (dispatch) => {
+export const submitQuestion = (data, setOpen) => async (dispatch) => {
   try {
     // console.log(data);
     if (!data.title) return toast.error('Title field id required');
@@ -42,6 +42,7 @@ export const submitQuestion = (data) => async (dispatch) => {
     let response = await createQuestionAPI(data);
     if (response.data.success === true) {
       toast.success(response.data.message);
+      // setOpen(false)
     } else {
       toast.error(response.data.message);
     }
