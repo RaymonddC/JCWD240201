@@ -39,6 +39,7 @@ export default function UserEditModal({ data }) {
         }
       } catch (error) {
         toast.error(error.response.data.message);
+        console.log(error);
       }
     },
   });

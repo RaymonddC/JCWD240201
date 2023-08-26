@@ -9,23 +9,18 @@ export const validationAddressModal = (values) => {
   if (isNaN(Number(values.phone_number))) {
     errors.phone_number = 'Phone number should be a number';
   }
-  if (!values.province_id || values.province_id === '0') {
+  if (
+    !values.province_id ||
+    values.province_id === '0' ||
+    !values.province_name
+  ) {
     errors.province_id = 'Province is required';
   }
-  if (!values.city_id || values.city_id === '0') {
+  if (!values.city_id || values.city_id === '0' || !values.city_name) {
     errors.city_id = 'City is required';
   }
   if (!values.address) {
     errors.address = 'Address is required';
   }
-  //   if (!values.province_id) {
-  //     errors.phone_number = 'Phone number should be a number';
-  //   }
-  //   if (!values.gender) {
-  //     errors.gender = 'Gender is required';
-  //   }
-  //   if (!values.birthdate) {
-  //     errors.birthdate = 'Birthdate is required';
-  //   }
   return errors;
 };
