@@ -59,8 +59,11 @@ export default function CardAddress(props) {
         </h4>
         <p>{props?.data?.phone_number}</p>
         <p className="line-clamp-1">
-          {props?.data?.address}, {props?.data?.city_name},{' '}
-          {props?.data?.province_name}
+          {props?.data?.address}{' '}
+          {props?.data?.notes ? `(${props?.data?.notes})` : null}
+        </p>
+        <p className="line-clamp-1">
+          {props?.data?.city_name}, {props?.data?.province_name}
         </p>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-[14px] font-bold sm:items-center mt-2">
           <p onClick={updateHandler} className="text-primary cursor-pointer">

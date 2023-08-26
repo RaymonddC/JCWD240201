@@ -87,6 +87,8 @@ export default function AddressModal(props) {
         reciever: props?.data?.reciever,
         phone_number: props?.data?.phone_number,
         province_id: props?.data?.province_id,
+        province_name: props?.data?.province_name,
+        city_name: props?.data?.city_name,
         city_id: props?.data?.city_id,
         address: props?.data?.address,
         notes: props?.data?.notes,

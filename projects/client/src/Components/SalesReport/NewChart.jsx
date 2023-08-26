@@ -26,7 +26,7 @@ export default function NewChart(props) {
           {
             label: props?.label,
             data: props?.data?.map((item) => item[`${props?.dataKey}`]),
-            backgroundColor: 'rgb(130,202,157)',
+            backgroundColor: '#e11d48',
           },
         ],
       }}
