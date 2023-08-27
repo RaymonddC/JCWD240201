@@ -54,14 +54,18 @@ export function updateAnswerAPI(data) {
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }
-export function getQuestionsCategoriesAPI() {
+export function getQuestionsCategoriesAPI(data) {
   return axios.get(`${URL}/discussions/question-categories`, {
+    params: { ...data },
     headers: { apikey: APIKey },
   });
 }
 
-export function getUserQuestions() {
-  return axios.get(`${URL}/user/discussions`, {
+export function getUserQuestionsAPI(data) {
+  console.log("🚀 ~ file: QnAAPI.js:65 ~ getUserQuestionsAPI ~ data:", data)
+  
+  return axios.get(`${URL}/users/questions`, {
+    params: { ...data },
     headers: { apikey: APIKey },
   });
 }

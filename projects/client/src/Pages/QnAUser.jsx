@@ -15,11 +15,6 @@ export default function QnAUser() {
   let queryParams = {};
   const dispatch = useDispatch();
   const QnAStore = useSelector((state) => state?.QnA);
-  console.log(
-    '🚀 ~ file: QnAUser.jsx:19 ~ QnAUser ~ QnAStore?.answers?.data?.rows:',
-    QnAStore?.answers?.data?.rows,
-  );
-
   const totalPages = QnAStore?.answers?.totalPage;
   const questionCategories = QnAStore?.categories;
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
@@ -84,19 +79,25 @@ export default function QnAUser() {
 
   return (
     <>
-      <FilterBar
-        setSearch={setSearch}
-        setSortType={setSortType}
-        setSortOrder={setSortOrder}
-        option={[
-          { text: 'Oldest to latest', sortType: 'updatedAt', sortOrder: 'ASC' },
-          {
-            text: 'Latest to oldest',
-            sortType: 'updatedAt',
-            sortOrder: 'DESC',
-          },
-        ]}
-      />
+      <div className='pb-5'>
+        <FilterBar
+          setSearch={setSearch}
+          setSortType={setSortType}
+          setSortOrder={setSortOrder}
+          option={[
+            {
+              text: 'Oldest to latest',
+              sortType: 'updatedAt',
+              sortOrder: 'ASC',
+            },
+            {
+              text: 'Latest to oldest',
+              sortType: 'updatedAt',
+              sortOrder: 'DESC',
+            },
+          ]}
+        />
+      </div>
 
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">

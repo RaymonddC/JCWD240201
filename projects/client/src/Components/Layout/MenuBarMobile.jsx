@@ -83,14 +83,14 @@ export default function MenuBarMobile() {
         </li>
         <li>
           <Link
-            to="/user/discussions"
+            to="/user/questions"
             className={
-              window.location.pathname === '/user/transaction'
+              window.location.pathname === '/user/questions'
                 ? 'p-3 text-[#00A8B5] font-bold'
                 : 'p-3'
             }
           >
-            Discussions
+            Your questions
           </Link>
         </li>
         <li>

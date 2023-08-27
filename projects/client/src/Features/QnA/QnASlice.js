@@ -42,7 +42,7 @@ export const submitQuestion = (data, setOpen) => async (dispatch) => {
     let response = await createQuestionAPI(data);
     if (response.data.success === true) {
       toast.success(response.data.message);
-      // setOpen(false)
+      setOpen(false)
     } else {
       toast.error(response.data.message);
     }

@@ -52,14 +52,14 @@ export default function MenuBarDesktop() {
         Transaction
       </Link>
       <Link
-        to="/user/dicussions"
+        to="/user/questions"
         className={`p-3 cursor-pointer hover:font-bold border-b border-[#D5D7DD] ${
-          window.location.pathname === '/user/discussions'
+          window.location.pathname === '/user/questions'
             ? 'text-primary font-bold'
             : null
         }`}
       >
-        Discussions
+        Your questions
       </Link>
       <div
         onClick={() => {

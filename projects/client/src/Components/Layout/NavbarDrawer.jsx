@@ -55,7 +55,7 @@ export default function NavbarDrawer() {
               </div>
             </div>
             {user && Object.keys(user).length !== 0 ? (
-              <button className="btn btn-sm btn-ghost absolute right-6 md:right-44">
+              <button className="btn btn-sm btn-ghost absolute right-6 md:right-52">
                 <Link to={'/cart'}>
                   <SlBag size={25} />
                   {totalCart > 0 && Object.keys(user).length !== 0 ? (
@@ -75,7 +75,7 @@ export default function NavbarDrawer() {
 
             {/* <div className="flex-1 px-2 mx-2">Navbar Title</div> */}
             <div className=" hidden md:block w-full">
-              <div className=" justify-between w-full flex ">
+              <div className=" justify-between w-full flex pr-8 ">
                 {/* Navbar menu content here */}
                 <div>
                   <button className="btn btn-sm btn-ghost">
@@ -104,7 +104,7 @@ export default function NavbarDrawer() {
                         ) : (
                           <MdPerson className="w-[40px] h-[40px]" />
                         )}
-                        <span className="font-bold max-w-[132px] truncate">
+                        <span className="font-bold max-w-[132px] truncate mr-10">
                           {user?.username}
                         </span>
                       </Link>

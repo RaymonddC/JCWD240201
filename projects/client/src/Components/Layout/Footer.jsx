@@ -6,10 +6,10 @@ import { AiFillInstagram } from 'react-icons/ai';
 export default function Footer() {
   return (
     <>
-      <div className="grid justify-evenly md:flex gap-2  w-full py-6 px-5 ">
+      <div className="grid justify-evenly md:flex gap-2  w-full py-10 px-5 ">
         <div className="flex w-fit flex-col gap-3">
           <div>
-            <img className="h-10" src={Logo} alt="" />
+            <img className="h-12" src={Logo} alt="" />
           </div>
           <div className="flex px-3 items-center">
             <MdWhatsapp size={25} />
