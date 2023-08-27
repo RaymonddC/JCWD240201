@@ -51,6 +51,9 @@ module.exports = {
       payment_method: {
         type: Sequelize.STRING,
       },
+      payment_id: {
+        type: Sequelize.STRING,
+      },
       deletedAt: {
         type: Sequelize.DATE,
       },

@@ -21,6 +21,8 @@ const PromotionCard = (props) => {
         id: null,
         amount: 0,
         minPrice: 0,
+        maxPromo: null,
+        promoDisc: null,
       });
   }, []);
 
@@ -40,6 +42,8 @@ const PromotionCard = (props) => {
           id: props.promotion.id,
           amount: props.promotion.totalDiscount,
           minPrice: props.promotion.minimum_transaction,
+          maxPromo: props.promotion.maximum_discount_amount,
+          promoDisc: props.promotion.discount,
         });
       }}
     >

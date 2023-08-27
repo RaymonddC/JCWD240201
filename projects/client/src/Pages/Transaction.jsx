@@ -66,8 +66,8 @@ export default function Transaction() {
           </h3>
         </div>
       </div>
-      <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
-        <div className="sticky z-10 top-0 py-3 bg-white">
+      <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg pb-4">
+        <div className="sticky z-10 top-0 pt-7 pb-3 bg-white px-4 rounded-lg">
           <div className="top flex items-center justify-between">
             <input
               type="text"
@@ -105,7 +105,7 @@ export default function Transaction() {
             })}
           </div>
         </div>
-        <div className="div ">
+        <div className="div px-4 pb-4">
           {transactions.map((value) => {
             return (
               <TransactionCard

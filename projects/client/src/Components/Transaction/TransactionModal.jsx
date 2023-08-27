@@ -161,10 +161,12 @@ const TransactionModal = (props) => {
               </div>
             </div>
             <div className="payment bg-white py-2 px-6 mb-1">
-              <p className="font-bold text-base">Rincian Pembayaran</p>
+              <p className="font-bold text-base">Payment Details</p>
               <div className="method flex py-1  justify-between">
                 <p>Payment Method</p>
-                <p>{transaction?.payment_method || 'Waiting'}</p>
+                <p className="uppercase">
+                  {transaction?.payment_method || 'Waiting'}
+                </p>
               </div>
               <div className="calc border-y py-2 my-1">
                 <div className="totalPrice flex justify-between">
