@@ -5,6 +5,10 @@ const userDB = db.user;
 const roleDB = db.role;
 const fs = require('fs');
 const bcrypt = require('bcrypt');
+const { validateEmail } = require('../helpers/authHelper');
+const jwt = require('jsonwebtoken');
+const Handlebars = require('handlebars');
+const transporter = require('../helpers/transporter');
 
 const updateUserData = async (req, res, next) => {
   try {
@@ -12,16 +16,16 @@ const updateUserData = async (req, res, next) => {
     const image = req.file;
     const { full_name, phone_number, gender, birthdate } = req.body;
     validate({ full_name, phone_number, gender, birthdate });
-
+    console.log(req.body);
     if (image) {
-      const previousImage = await user.findOne({
+      const previousImage = await userDB.findOne({
         attributes: ['profile_image'],
         where: {
           id: auth.id,
         },
       });
 
-      await user.update(
+      await userDB.update(
         {
           full_name,
           phone_number,
@@ -44,7 +48,7 @@ const updateUserData = async (req, res, next) => {
         });
       }
     } else {
-      await user.update(
+      await userDB.update(
         {
           full_name,
           phone_number,
@@ -79,11 +83,10 @@ const updateEmail = async (req, res, next) => {
     const isEmailExist = await userDB.findOne({
       where: { email },
     });
-
     if (isEmailExist) throw { message: 'Email already in use', code: 400 };
 
     await userDB.update(
-      { email: email, verified: false },
+      { email: email, verified: false, change_email_token: null },
       { where: { email: previousEmail } },
     );
 
@@ -97,7 +100,50 @@ const updateEmail = async (req, res, next) => {
   }
 };
 
+const sendChangeEmailForm = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const isEmailValid = await validateEmail(email);
+    if (isEmailValid) throw isEmailValid;
+    const isEmailExist = await userDB.findOne({
+      where: { email: email },
+    });
+    if (!isEmailExist) throw { message: 'Email not found', code: 404 };
+    let payload = { email: email };
+    const token = jwt.sign(payload, 'change-email', {
+      expiresIn: '1h',
+    });
+    await userDB.update(
+      { change_email_token: token },
+      { where: { email: email } },
+    );
+    const data = fs.readFileSync('./src/helpers/changeEmailForm.html', 'utf-8');
+    const tempCompile = await Handlebars.compile(data);
+    const tempResult = tempCompile({ token: token });
+
+    await transporter.sendMail({
+      from: 'pharmacy.jcwd2402@gmail.com',
+      to: email,
+      subject: 'Change Email',
+      html: tempResult,
+    });
+
+    console.log(`Email ==> ${email}`);
+
+    return res.send({
+      success: true,
+      status: 200,
+      message: 'Please check your email to change your email',
+      data: null,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 module.exports = {
   updateUserData,
   updateEmail,
+  sendChangeEmailForm,
 };

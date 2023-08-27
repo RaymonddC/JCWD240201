@@ -16,8 +16,8 @@ router.post(
 
 router.post(
   '/login',
-  APIKey.APIKey,
-  recaptcha.verify,
+  // APIKey.APIKey,
+  // recaptcha.verify,
   authController.userLogin,
 );
 
@@ -34,11 +34,6 @@ router.post('/verify-email', APIKey.APIKey, authController.verifyAccount);
 router.post('/send-reset', APIKey.APIKey, authController.sendResetPasswordForm);
 router.patch('/reset-password', APIKey.APIKey, authController.resetPassword);
 router.patch('/password/:userId', APIKey.APIKey, authController.changePassword);
-router.post(
-  '/send-change-email',
-  APIKey.APIKey,
-  authController.sendChangeEmailForm,
-);
 router.post('/google-login', APIKey.APIKey, googleLoginController.googleLogin);
 
 module.exports = router;

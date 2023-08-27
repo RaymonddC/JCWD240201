@@ -1,7 +1,7 @@
 import { MdModeEdit } from 'react-icons/md';
 import { toast } from 'react-hot-toast';
-import { sendChangeEmailFormAPI } from '../../API/authAPI';
 import { useState } from 'react';
+import { sendChangeEmailFormAPI } from '../../API/userAPI';
 
 export default function ChangeEmailConfirmation(props) {
   const [openModal, setOpenModal] = useState(false);
@@ -9,14 +9,17 @@ export default function ChangeEmailConfirmation(props) {
   const changeEmailHandler = async () => {
     try {
       setLoad(true);
-      const result = await sendChangeEmailFormAPI(props?.email);
+      let token = localStorage.getItem('token');
+      const result = await sendChangeEmailFormAPI(props?.email, token);
       if (result.data.success) {
         toast.success(result.data.message);
         setOpenModal(false);
         setLoad(false);
       }
     } catch (error) {
+      console.log(error);
       toast.error(error.message);
+      setLoad(false);
     }
   };
   return (

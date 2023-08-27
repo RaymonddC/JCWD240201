@@ -46,7 +46,6 @@ export const checkoutTxSlice = (values, navigate) => async (dispatch) => {
     console.log(data);
     console.log(data.paymentData.url, data.paymentData.paymentToken);
     toast.success('Checkout Success');
-    // return navigate(data.url);
     if (values.paymentMethod === 'manual') navigate('/user/transaction');
     console.log(data.paymentData);
     return {

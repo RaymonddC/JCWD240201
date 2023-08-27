@@ -25,6 +25,8 @@ const initialState = {
   promotionActive: null,
   amountPromotion: 0,
   minimumPricePromo: 0,
+  maximumPromo: null,
+  promoDisc: 0,
 };
 
 export const CartSlice = createSlice({
@@ -36,6 +38,7 @@ export const CartSlice = createSlice({
         initialState.promotionActive = null;
         initialState.amountPromotion = 0;
         initialState.minimumPricePromo = 0;
+        toast.error('Promotion Updated! due to minimum transaction');
       }
       initialState.carts = action.payload.carts;
       initialState.totalCart = action.payload.totalCart;
@@ -43,6 +46,10 @@ export const CartSlice = createSlice({
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
       initialState.weight = action.payload.weight;
+      initialState.amountPromotion = Math.min(
+        Math.round((action.payload.totalPrice * initialState.promoDisc) / 100),
+        initialState.maximumPromo,
+      );
     },
     setPrescriptionCarts: (initialState, action) => {
       initialState.prescriptionCarts = action.payload;
@@ -54,6 +61,8 @@ export const CartSlice = createSlice({
       initialState.promotionActive = action.payload.id;
       initialState.amountPromotion = action.payload.amount;
       initialState.minimumPricePromo = action.payload.minPrice;
+      initialState.maximumPromo = action.payload.maxPromo;
+      initialState.promoDisc = action.payload.promoDisc;
     },
   },
 });
@@ -82,7 +91,8 @@ export const updateQtyAsync = (values) => async (dispatch) => {
       if (newQty > stock) return toast.error('Out of stock');
       else cart.qty = newQty;
     }
-    newCarts[idx] = cart;
+    newCarts[idx].qty = cart.qty;
+    newCarts[idx].is_check = cart.is_check;
     dispatch(onGetData(await processData(newCarts)));
   } catch (error) {
     console.log(error);
@@ -97,12 +107,9 @@ export const getCartUserAsync = () => async (dispatch) => {
     }
 
     let { data } = await getUserCarts(token);
-    console.log("🚀 ~ file: CartSlice.js:100 ~ getCartUserAsync ~ data:", data)
 
     dispatch(onGetData(await processData(data.data)));
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const addToCartAsync = (values) => async (dispatch) => {
@@ -210,7 +217,6 @@ export const updateConfirmationPrescriptionCartSlice =
 
 export const newActivePromo = (values, close) => async (dispatch) => {
   try {
-    console.log(values);
     dispatch(onChangeActivePromo(values));
     close();
   } catch (error) {

@@ -28,8 +28,18 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  const [minPrice, setMinPrice] = useState(searchParams.get('min-price') || 0);
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('max-price') || 1000000);
+  const [minPrice, setMinPrice] = useState(
+    searchParams.get('min-price') || '0',
+  );
+  const [maxPrice, setMaxPrice] = useState(
+    searchParams.get('max-price') || '1000000',
+  );
+  const debouncedMinPrice = useDebounce(minPrice, 1200, 1);
+  console.log(
+    '🚀 ~ file: Products.jsx:38 ~ Products ~ debouncedMinPrice:',
+    debouncedMinPrice,
+  );
+  const debouncedMaxPrice = useDebounce(maxPrice, 1200, 1);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
@@ -71,6 +81,8 @@ export default function Products() {
         search: debouncedSearchValue,
         sortType,
         sortOrder,
+        minPrice: debouncedMinPrice,
+        maxPrice: debouncedMaxPrice,
       }),
     );
   };
@@ -117,7 +129,15 @@ export default function Products() {
     } else {
       getProductsAsync();
     }
-  }, [page, debouncedSearchValue, sortType, sortOrder, category]);
+  }, [
+    page,
+    debouncedSearchValue,
+    sortType,
+    sortOrder,
+    category,
+    debouncedMaxPrice,
+    debouncedMinPrice,
+  ]);
   return (
     <>
       <div className=" flex sticky top-3 mb-3 z-10 justify-center">
@@ -172,7 +192,6 @@ export default function Products() {
             },
           ]}
         />
-       
       </div>
       <div className="flex ">
         <div className="hidden w-52 md:block pl-3">

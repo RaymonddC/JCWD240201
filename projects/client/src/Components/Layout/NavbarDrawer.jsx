@@ -42,6 +42,9 @@ export default function NavbarDrawer() {
                 </svg>
               </label>
             </div>
+            
+
+            <div className="flex px-2 mx-2">
             <div>
               <div className="w-60 hidden md:block">
                 <Link to="/">
@@ -72,10 +75,9 @@ export default function NavbarDrawer() {
             ) : (
               ''
             )}
-
-            {/* <div className="flex-1 px-2 mx-2">Navbar Title</div> */}
+            </div>
             <div className=" hidden md:block w-full">
-              <div className=" justify-between w-full flex pr-8 ">
+              <div className=" justify-between w-full flex">
                 {/* Navbar menu content here */}
                 <div>
                   <button className="btn btn-sm btn-ghost">
@@ -90,7 +92,7 @@ export default function NavbarDrawer() {
                 </div>
                 <div>
                   {user && Object.keys(user).length !== 0 ? (
-                    <div className="flex gap-2 w-40">
+                    <div className="flex gap-2">
                       <Link
                         to="/user/profile"
                         className="flex justify-center items-center gap-2 "
@@ -104,9 +106,9 @@ export default function NavbarDrawer() {
                         ) : (
                           <MdPerson className="w-[40px] h-[40px]" />
                         )}
-                        <span className="font-bold max-w-[132px] truncate mr-10">
+                        <div className="font-bold max-w-[132px] truncate">
                           {user?.username}
-                        </span>
+                        </div>
                       </Link>
                     </div>
                   ) : (

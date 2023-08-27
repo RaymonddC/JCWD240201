@@ -1,10 +1,22 @@
 @media print {
+  @page {
+    margin: 0cm;
+  }
   .react-printable-parent {
     grid-template-columns: 1fr;
-    gap: 700px;
+    gap: 1200px;
   }
   .react-print {
-    max-width: 200px;
+    width: 1150px;
+  }
+  .custom-print {
+    max-width: 1100px !important;
+    width: 1100px !important;
+    min-width: 1100px !important;
+  }
+  .react-print-wrapper {
+    flex-direction: column;
+    gap: 1200px;
   }
 }
 

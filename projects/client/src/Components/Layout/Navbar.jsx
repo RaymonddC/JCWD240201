@@ -30,20 +30,20 @@ export default function NavBar() {
         <div className="hidden sm:block w-full">
           <div className="flex justify-between pr-2 items-center">
             <div className="flex">
-              <button className="btn btn-sm btn-ghost">
-                <Link to="/products">SHOP</Link>
-              </button>
-              <button className="btn btn-sm btn-ghost">
-                <Link to="/discussions">DISCUSSIONS</Link>
-              </button>
-              <button className="btn btn-sm btn-ghost">
-                <Link to="/location">LOCATION</Link>
-              </button>
+              <Link to="/products">
+                <button className="btn btn-sm btn-ghost">SHOP</button>
+              </Link>
+              <Link to="/discussions">
+                <button className="btn btn-sm btn-ghost">DISCUSSIONS</button>
+              </Link>
+              <Link to="/location">
+                <button className="btn btn-sm btn-ghost">LOCATION</button>
+              </Link>
             </div>
             <div className="flex items-center relative">
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn btn-sm btn-ghost absolute right-44">
-                  <Link to={'/cart'}>
+                <Link to={'/cart'}>
+                  <button className="btn btn-sm btn-ghost absolute right-44">
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
@@ -54,8 +54,8 @@ export default function NavBar() {
                     ) : (
                       ''
                     )}
-                  </Link>
-                </button>
+                  </button>
+                </Link>
               ) : (
                 ''
               )}
@@ -89,12 +89,16 @@ export default function NavBar() {
                 </div>
               ) : (
                 <div className="flex gap-3">
-                  <button className="btn btn-sm btn-primary text-white">
-                    <Link to="/login">Login</Link>
-                  </button>
-                  <button className="btn btn-sm btn-outline btn-primary">
-                    <Link to="/register">Register</Link>
-                  </button>
+                  <Link to="/login">
+                    <button className="btn btn-sm btn-primary text-white">
+                      Login
+                    </button>
+                  </Link>
+                  <Link to="/register">
+                    <button className="btn btn-sm btn-outline btn-primary">
+                      Register
+                    </button>
+                  </Link>
                 </div>
               )}
             </div>

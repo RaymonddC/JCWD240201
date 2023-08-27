@@ -12,7 +12,19 @@ router.put(
   uploadProfile,
   userController.updateUserData,
 );
-router.patch('/email', APIKey, verifyTokenEmail, userController.updateEmail);
+router.patch(
+  '/email',
+  APIKey,
+  verifyToken,
+  verifyTokenEmail,
+  userController.updateEmail,
+);
+router.post(
+  '/sendChangeEmail',
+  APIKey,
+  verifyToken,
+  userController.sendChangeEmailForm,
+);
 // sementara
 // router.post('/', userController.bcrypt);
 router.get('/questions', APIKey,  QnAController.getUserQuestions);

@@ -109,7 +109,7 @@ export default function FilterBarDrawer(props) {
                           onChange={({ min, max }) => {
                             props?.setMinPrice(min);
                             props?.setMaxPrice(max);
-                            // console.log(`min = ${min}, max = ${max}`);
+                            console.log(`min = ${min}, max = ${max}`);
                           }}
                         />
                       </div>

@@ -13,7 +13,8 @@ import ExcelDownload from '../Components/SalesReport/ExcelDownload';
 import { DropdownSortSales } from '../Components/SalesReport/DropdownSortSales';
 import { TableTopSales } from '../Components/SalesReport/TableTopSales';
 import '../utils/print-style.css';
-import { BarChart } from 'recharts';
+import NewChart from '../Components/SalesReport/NewChart';
+// import BarChart from '../Components/SalesReport/BarChart';
 
 export default function SalesReport() {
   const dispatch = useDispatch();
@@ -89,14 +90,16 @@ export default function SalesReport() {
   };
 
   return (
-    <div className="">
+    <>
       <h1 className="font-bold text-xl">Sales Report</h1>
-      <div className="w-full flex justify-center mb-4">
+
+      <div className="w-full flex justify-center mb-4 gap-2">
         <div className="flex items-center">
-          <DateRangePicker range={range} setRange={setRange} />
-          <button onClick={() => setToggle(!toggle)} className="btn">
-            OK
-          </button>
+          <DateRangePicker
+            range={range}
+            setRange={setRange}
+            clickHandler={() => setToggle(!toggle)}
+          />
         </div>
         <DropdownSortSales sortHandler={sortHandler} />
         <button className="btn btn-primary text-white" onClick={PrintHandler}>
@@ -107,24 +110,36 @@ export default function SalesReport() {
 
       <div
         ref={chartAndTable}
-        className="w-full grid xl:grid-cols-2 gap-4 react-printable-parent"
+        className="w-full flex flex-col gap-4 react-printable-parent"
       >
-        <div className="w-full rounded-lg shadow-xl p-4 bg-white">
+        <div className="w-full rounded-lg shadow-xl p-4 bg-white react-print">
           <h1 className="ml-[65px] font-bold text-lg mb-4">Revenue</h1>
-          <div className="w-full h-[340px] react-print">
-            <Chart data={revenue} dataKey="today_revenue" />
+          <div className="w-full h-[340px] bar-chart">
+            <NewChart
+              data={revenue}
+              dataKey="today_revenue"
+              label="Today Revenue"
+            />
           </div>
         </div>
         <div className="w-full rounded-lg shadow-xl p-4 bg-white">
           <h1 className="ml-[65px] font-bold text-lg mb-4">Transaction</h1>
-          <div className="w-full h-[340px]">
-            <Chart data={totalTransaction} dataKey="total_transaction" />
+          <div className="w-full h-[340px] min-w-[0px]">
+            <NewChart
+              data={totalTransaction}
+              dataKey="total_transaction"
+              label="Total Transaction"
+            />
           </div>
         </div>
         <div className="w-full rounded-lg shadow-xl p-4  bg-white">
           <h1 className="ml-[65px] font-bold text-lg mb-4">User</h1>
           <div className="w-full h-[340px]">
-            <Chart data={totalUser} dataKey="total_user" />
+            <NewChart
+              data={totalUser}
+              dataKey="total_user"
+              label="Total User"
+            />
           </div>
         </div>
         <div className="w-full overflow-x-auto rounded-lg shadow-lg p-4 bg-white">
@@ -134,6 +149,6 @@ export default function SalesReport() {
           <TableTopSales />
         </div>
       </div>
-    </div>
+    </>
   );
 }

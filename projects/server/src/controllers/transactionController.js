@@ -29,7 +29,10 @@ const {
 } = require('../helpers/transactionHelper');
 const { getPromotionByProductId } = require('../helpers/promotionHelper');
 const { unitConversionHelper } = require('../helpers/unitConversionHelper');
-const { getMidtransSnap } = require('../helpers/paymentHelper');
+const {
+  getMidtransSnap,
+  getPaymentStatusMidtrans,
+} = require('../helpers/paymentHelper');
 
 const checkout = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -113,6 +116,7 @@ const checkout = async (req, res, next) => {
     let stockHistoryData = [],
       closedStockData = [],
       promotionData = [];
+
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
@@ -181,7 +185,9 @@ const checkout = async (req, res, next) => {
           });
         } else {
           pricePresc = await getPricePrescription(value.id);
+
           console.log(pricePresc[0].total_price);
+
           // throw {};
           totalAllPriceDB += Number(pricePresc[0].total_price);
           const prescriptionCarts = await PrescriptionCartDB.findAll({
@@ -189,26 +195,22 @@ const checkout = async (req, res, next) => {
               cart_id: value.id,
             },
           });
+
           await Promise.all(
             prescriptionCarts.map(async (prescCart) => {
-              try {
-                await unitConversionHelper(
-                  {
-                    product_id: prescCart.product_id,
-                    qty: prescCart.qty,
-                  },
-                  t,
-                );
-              } catch (error) {
-                console.log(error);
-                throw error;
-              }
+              return await unitConversionHelper(
+                {
+                  product_id: prescCart.product_id,
+                  qty: prescCart.qty,
+                },
+                t,
+              );
             }),
           ).catch((error) => {
-            console.log(error.message);
             throw error;
           });
         }
+        // throw {};
 
         return {
           product_id: value.product_id,
@@ -226,7 +228,9 @@ const checkout = async (req, res, next) => {
           qty: value.qty,
         };
       }),
-    );
+    ).catch((error) => {
+      throw error;
+    });
 
     if (totalDiscount !== Number(discount))
       throw {
@@ -270,26 +274,20 @@ const checkout = async (req, res, next) => {
       },
       { transaction: t },
     );
-    // throw { message: 'sabar' };
 
     let paymentData = { paymentToken: null, url: null };
     if (paymentMethod === 'paymentGateway') {
       const user = await UserDB.findByPk(req.user.id);
-      const { paymentToken, redirect_url } = await getMidtransSnap({
-        totalPay:
-          transaction.total_price +
-          transaction.shipment_fee -
-          transaction.total_discount,
+      const { paymentToken, redirect_url, orderId } = await getMidtransSnap({
         user,
         txDetails,
-        shippingFee,
-        totalDiscount,
         transaction,
       });
       await Transaction.update(
         {
           ...transaction,
           payment_token: paymentToken,
+          payment_id: orderId,
         },
         { where: { id: transaction.id }, transaction: t },
       );
@@ -312,8 +310,11 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    console.log(error);
-    next(error);
+    console.log(error + 'luar');
+    return res.status(500).send({
+      data: error,
+    });
+    // next(error);
   }
 };
 
@@ -355,7 +356,7 @@ const getAllTransaction = async (req, res, next) => {
       sortType,
       sortOrder,
     });
-    console.log(whereQuery);
+    // console.log(whereQuery);
     // console.log(startDate);
 
     return res.status(200).send({
@@ -443,25 +444,18 @@ const handleMidtransPayment = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     // const userId = req.user.id;
-    const { order_id } = req.body;
+    const { order_id, transactionId } = req.body;
     // cek ke api midtrans dlu statusnya baru write status
 
-    const responsePayment = await axios.get(
-      `${'https://api.sandbox.midtrans.com/v2/'}${order_id}${'/status'}`,
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        auth: {
-          username: process.env.MIDTRANS_SERVER_KEY + ':',
-        },
-      },
-    );
+    console.log(order_id);
+    const responsePayment = await getPaymentStatusMidtrans({ order_id });
 
     let transaction_status_id = 1;
     console.log(responsePayment, '================>>>>>>>>>>>>>');
-    const transaction_id = order_id.split('-')[1];
+    const transaction_id =
+      transactionId || (order_id && order_id.split('-')[1]) || null;
+    console.log(transaction_id, transactionId, '===============');
+    // console.log(order_id.split('-')[2] || 0);
     if (
       responsePayment.data.transaction_status === 'settlement' ||
       responsePayment.data.transaction_status === 'capture'
@@ -503,14 +497,27 @@ const handleMidtransPayment = async (req, res, next) => {
         responsePayment,
         responsePayment.data.va_numbers,
       );
+    } else if (responsePayment.data.status_code >= 404 && transaction_id) {
+      console.log('hereeeeeeeeeeeeeeeee');
+      const user = await UserDB.findByPk(req.user.id);
+      const transaction = await Transaction.findByPk(transaction_id);
+      const txDetails = await TransactionDetail.findAll({
+        where: { transaction_id: transaction_id },
+      });
+      const { paymentToken, redirect_url, orderId } = await getMidtransSnap({
+        user,
+        txDetails,
+        transaction,
+      });
+      await Transaction.update(
+        {
+          ...transaction,
+          payment_token: paymentToken,
+          payment_id: orderId,
+        },
+        { where: { id: transaction.id }, transaction: t },
+      );
     }
-    // throw {
-    //   data: {
-    //     transaction_status_id,
-    //     responsePayment,
-    //     txstatus: responsePayment.transaction_status,
-    //   },
-    // };
     await t.commit();
     return res.status(200).send({
       success: true,
@@ -546,7 +553,6 @@ const cancelTransaction = async (req, res, next) => {
     let promoUpdateData = [],
       stockUpdateData = [],
       openStockUpdateData = [];
-    //cek promotion
     if (transaction.promotion_id) {
       const promoTx = await Promotion.findByPk(transaction.promotion_id);
       if (promoTx)

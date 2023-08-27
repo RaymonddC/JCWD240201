@@ -125,15 +125,3 @@ export function googleLoginAPI(data) {
     },
   );
 }
-
-export function sendChangeEmailFormAPI(email) {
-  return axios.post(
-    `${URL}/auth/send-change-email`,
-    { email },
-    {
-      headers: {
-        apiKey: APIKey,
-      },
-    },
-  );
-}

@@ -8,15 +8,20 @@ import { useNavigate } from 'react-router-dom';
 
 const PromotionModal = (props) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { promotions } = useSelector((state) => state.promotion);
-  const { promotionActive, amountPromotion, minimumPricePromo } = useSelector(
-    (state) => state.cart,
-  );
+  const {
+    promotionActive,
+    amountPromotion,
+    minimumPricePromo,
+    maximumPromo,
+    promoDisc,
+  } = useSelector((state) => state.cart);
   const [selectedPromo, setSelectedPromo] = useState({
     id: promotionActive,
     amount: amountPromotion,
     minPrice: minimumPricePromo,
+    maxPromo: maximumPromo,
+    promoDisc: promoDisc,
   });
 
   useEffect(() => {
@@ -46,13 +51,26 @@ const PromotionModal = (props) => {
                 className={`btn btn-sm p-1 rounded-lg ${
                   !selectedPromo.id ? 'btn-disabled' : ''
                 }`}
-                onClick={() => {
+                onClick={async () => {
                   setSelectedPromo({
                     id: null,
                     amount: 0,
                     minPrice: 0,
+                    maxPromo: null,
+                    promoDisc: null,
                   });
-                  dispatch(newActivePromo(selectedPromo, () => {}));
+                  dispatch(
+                    newActivePromo(
+                      {
+                        id: null,
+                        amount: 0,
+                        minPrice: 0,
+                        maxPromo: null,
+                        promoDisc: null,
+                      },
+                      () => {},
+                    ),
+                  );
                 }}
               >
                 Reset Promo
@@ -67,19 +85,26 @@ const PromotionModal = (props) => {
             </label>
           </div>
           <div className="promotions  bg-white p-5 flex flex-col gap-3">
-            {promotions.map((value) => {
-              return (
-                <PromotionCard
-                  key={'promo' + value.id}
-                  id={selectedPromo.id}
-                  promotion={value}
-                  setSelectedPromo={setSelectedPromo}
-                  totalPrice={props.totalPrice}
-                />
-              );
-            })}
+            {promotions.length !== 0 ? (
+              promotions.map((value) => {
+                return (
+                  <PromotionCard
+                    key={'promo' + value.id}
+                    id={selectedPromo.id}
+                    promotion={value}
+                    setSelectedPromo={setSelectedPromo}
+                    totalPrice={props.totalPrice}
+                  />
+                );
+              })
+            ) : (
+              <>
+                <p className="text-center font-bold">
+                  -- Wait for our upcoming promotions later --
+                </p>
+              </>
+            )}
           </div>
-          {console.log(!selectedPromo.id, selectedPromo.id)}
           <div
             className={`totalDiscount sticky bottom-0 flex justify-between bg-white p-3 px-6 ${
               !selectedPromo.id ? 'hidden' : ''

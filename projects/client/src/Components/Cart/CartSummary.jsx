@@ -6,13 +6,11 @@ import toast from 'react-hot-toast';
 import PromotionModal from './PromotionModal';
 
 const CartSummary = (props) => {
-  const { discount, amountPromotion } = useSelector((state) => state?.cart);
+  const { discount, amountPromotion, promotionActive } = useSelector(
+    (state) => state?.cart,
+  );
 
   const [openPromotionModal, setOpenPromotionModal] = useState(false);
-
-  // useEffect(() => {
-  //   return () => {};
-  // }, []);
 
   return (
     <div
@@ -28,10 +26,21 @@ const CartSummary = (props) => {
               ? toast.error('Select Your Cart')
               : setOpenPromotionModal(true);
           }}
-          className="promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg p-4 hover:cursor-pointer"
+          className={`promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg px-4 h-16  gap-3 hover:cursor-pointer ${
+            promotionActive ? ' border-primary' : ''
+          }`}
         >
           <CiDiscount1 size={'1.5em'} />
-          <p>Use Your Promo Here</p>
+          {promotionActive ? (
+            <div className="w-full text-base">
+              <p>Applied Discount</p>
+              <p className="font-bold">
+                Rp{amountPromotion?.toLocaleString(['id'])}
+              </p>
+            </div>
+          ) : (
+            <p>Use Your Promo Here</p>
+          )}
           <AiOutlineRight />
         </label>
         <div className="summary hidden md:block">

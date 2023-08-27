@@ -119,7 +119,7 @@ const routerSource = (props) => [
   },
   {
     index: true,
-    path: '/change-email/:token',
+    path: '/change-email/:token_email',
     element: <ChangeEmailForm />,
   },
   {

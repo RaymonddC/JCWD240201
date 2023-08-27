@@ -26,7 +26,7 @@ export const updateProfile = (data, token) => {
   );
 };
 
-export const updateEmailAPI = (email, token) => {
+export const updateEmailAPI = (email, token, token_email) => {
   console.log(`Emailnya nih =>> ${email}`);
   return axios.patch(
     `${URL}/users/email`,
@@ -35,7 +35,21 @@ export const updateEmailAPI = (email, token) => {
       headers: {
         apikey: apikey,
         authorization: `Bearer ${token}`,
+        token_email: `Bearer ${token_email}`,
       },
     },
   );
 };
+
+export function sendChangeEmailFormAPI(email, token) {
+  return axios.post(
+    `${URL}/users/sendChangeEmail`,
+    { email },
+    {
+      headers: {
+        apiKey: apikey,
+        authorization: `Bearer ${token}`,
+      },
+    },
+  );
+}
