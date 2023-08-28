@@ -18,6 +18,7 @@ export default function FilterBarDrawer(props) {
   const location = useLocation();
   const pathname = location.pathname;
   const text = props.value;
+  const priceRange = props.priceRange || false;
   // const handleInput = (e) => {
   //   props.setMinValue(e.minValue);
   //   props.setMaxValue(e.maxValue);
@@ -93,29 +94,34 @@ export default function FilterBarDrawer(props) {
             </div>
             <div>max =</div>
           </div> */}
-                <div className="dropdown dropdown-end hidden md:block">
-                  <label tabIndex={1} className="btn btn-primary text-white">
-                    Price <MdArrowDropDown size={25} />
-                  </label>
-                  <ul
-                    tabIndex={1}
-                    className="menu dropdown-content z-5 p-2 shadow bg-base-100 rounded-box w-72 mt-4"
-                  >
-                    <>
-                      <div className="w-full h-20 flex justify-center mt-3">
-                        <MultiRangeSlider
-                          min={0}
-                          max={1000000}
-                          onChange={({ min, max }) => {
-                            props?.setMinPrice(min);
-                            props?.setMaxPrice(max);
-                            console.log(`min = ${min}, max = ${max}`);
-                          }}
-                        />
-                      </div>
-                    </>
-                  </ul>
-                </div>
+                {priceRange ? (
+                  <div className="dropdown dropdown-end hidden md:block">
+                    <label tabIndex={1} className="btn btn-primary text-white">
+                      Price <MdArrowDropDown size={25} />
+                    </label>
+                    <ul
+                      tabIndex={1}
+                      className="menu dropdown-content z-5 p-2 shadow bg-base-100 rounded-box w-[400px] mt-4"
+                    >
+                      <>
+                        <div className="w-full h-20 flex justify-center mt-3">
+                          <div className="text-center">Min price</div>
+                          <div className="px-3">
+                            <MultiRangeSlider
+                              min={0}
+                              max={1000000}
+                              onChange={({ min, max }) => {
+                                props?.setMinPrice(min);
+                                props?.setMaxPrice(max);
+                              }}
+                            />
+                          </div>
+                          <div className="text-center">Max price</div>
+                        </div>
+                      </>
+                    </ul>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className="flex-none md:hidden">

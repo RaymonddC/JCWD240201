@@ -61,12 +61,13 @@ const getAllProducts = async (req, res, next) => {
       limit: pageLimit,
       offset: offset,
       where: {
-        [Op.and]: [
-          {
-            price: { [Op.gte]: Number(minPrice) },
-            price: { [Op.lte]: Number(maxPrice) },
-          },
-        ],
+        ...where,
+        price: {
+          [Op.and]: [
+            { [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) },
+          ],
+        },
+        // price: { [Op.lte]: Number(maxPrice) },
       },
 
       order: order,

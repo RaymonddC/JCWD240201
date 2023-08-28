@@ -34,12 +34,12 @@ export default function Products() {
   const [maxPrice, setMaxPrice] = useState(
     searchParams.get('max-price') || '1000000',
   );
-  const debouncedMinPrice = useDebounce(minPrice, 1200, 1);
+  const debouncedMinPrice = useDebounce(minPrice, 1200, 0);
   console.log(
     '🚀 ~ file: Products.jsx:38 ~ Products ~ debouncedMinPrice:',
     debouncedMinPrice,
   );
-  const debouncedMaxPrice = useDebounce(maxPrice, 1200, 1);
+  const debouncedMaxPrice = useDebounce(maxPrice, 1200, 0);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
@@ -119,6 +119,12 @@ export default function Products() {
     }
     if (category) {
       queryParams['category'] = category;
+    }
+    if (minPrice) {
+      queryParams['min-price'] = debouncedMinPrice;
+    }
+    if (maxPrice) {
+      queryParams['max-price'] = debouncedMaxPrice;
     }
     setSearchParams(queryParams);
     if (debouncedSearchValue) {
@@ -208,21 +214,31 @@ export default function Products() {
         </div>
         <div className="flex justify-center w-full">
           <div className="flex flex-col max-w-fit justify-center ">
-            {!productMap?.length ? (
+            {/* {!productMap?.length ? (
               <div className="flex py-10 w-full justify-center">
                 <article className="prose">
                   <h4>--- No search result ---</h4>
                 </article>
               </div>
+            // ) : ( */}
+            {productMap ? (
+              !productMap?.length ? (
+                <div className="flex py-10 w-full justify-center">
+                  <article className="prose">
+                    <h4>--- No search result ---</h4>
+                  </article>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                  {productMap}
+                </div>
+              )
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-                {productMap ? (
-                  <>{productMap}</>
-                ) : (
-                  <ProductListSkl limit={limit} />
-                )}
+                <ProductListSkl limit={limit} />
               </div>
             )}
+          
             <div className="my-5">
               <Pagination
                 setPage={setPage}
