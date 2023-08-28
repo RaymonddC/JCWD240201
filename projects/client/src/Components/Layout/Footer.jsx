@@ -17,7 +17,7 @@ export default function Footer() {
           </div>
           <div className="flex px-3 items-center">
             <MdMail size={25} />
-            <div className="pl-2">contact@healthymed.com</div>
+            <div className="pl-2">contact@medicore.com</div>
           </div>
           <div className="flex px-3 items-center">
             <MdCall size={25} />
