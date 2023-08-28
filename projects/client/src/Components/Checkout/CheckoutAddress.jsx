@@ -47,7 +47,7 @@ export default function CheckoutAddress() {
           {selectedAddress?.city_name}, {selectedAddress?.province_name}
         </p>
       </div>
-      <div className="pt-4">
+      <div className="pt-2">
         <button
           onClick={() => setOpenSelectAddress(true)}
           className="btn btn-primary text-white"

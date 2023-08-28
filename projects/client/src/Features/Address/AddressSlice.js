@@ -74,7 +74,9 @@ export const getProvinceAsync = () => async (dispatch) => {
     const response = await getProvince(token);
 
     dispatch(setProvince(response.data.data));
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getCityAsync = (province_id) => async (dispatch) => {

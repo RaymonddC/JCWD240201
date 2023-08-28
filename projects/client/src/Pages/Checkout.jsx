@@ -17,6 +17,7 @@ import {
   openMidtransSnapSlice,
 } from '../Features/Transaction/TransactionSlice';
 import Logo from '../utils/images/medicore_icon.png';
+import CheckoutSkl from '../Components/Skeleton/CheckoutSkl';
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -68,44 +69,58 @@ export default function Checkout() {
         Checkout
       </h1>
       <div className="flex justify-between mb-[151px] sm:mb-0">
-        <div className="w-full max-w-[1000px] flex flex-col gap-4 md:w-[65%]">
-          <CheckoutAddress />
-          <ShippingMethod setShipping={setShipping} shipping={shipping} />
-          <PaymentMethod setPaymentMethod={setPaymentMethod} />
-          <div className="flex flex-col gap-4 shadow-md p-4 rounded-xl">
-            {carts?.map((value) => {
-              if (value?.is_check) {
-                return (
-                  <div key={value?.id} className="flex gap-2">
-                    <div>
-                      {/* <div className="w-[100px] h-[100px] bg-primary"> */}
-                      <img
-                        className="h-20 w-20"
-                        src={
-                          value?.prescription_image ||
-                          value?.product?.product_images[0]?.image
-                            ? `
+        {loadAddress && loadCarts ? (
+          <CheckoutSkl />
+        ) : (
+          <div className="w-full max-w-[1000px] flex flex-col gap-4 md:w-[65%]">
+            <CheckoutAddress />
+            <ShippingMethod setShipping={setShipping} shipping={shipping} />
+            <PaymentMethod setPaymentMethod={setPaymentMethod} />
+            <div className="shadow-md p-4 rounded-xl">
+              <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#D5D7DD]">
+                Product
+              </h2>
+              {carts?.map((value, index) => {
+                if (value?.is_check) {
+                  return (
+                    <div
+                      key={value?.id}
+                      className={`flex gap-2 ${
+                        carts?.length - 1 === index
+                          ? ''
+                          : 'border-b-2 border-[#D5D7DD]'
+                      }`}
+                    >
+                      <div>
+                        {/* <div className="w-[100px] h-[100px] bg-primary"> */}
+                        <img
+                          className="h-20 w-20"
+                          src={
+                            value?.prescription_image ||
+                            value?.product?.product_images[0]?.image
+                              ? `
                             ${process.env.REACT_APP_API_BASE_URL}/${
                               value?.prescription_image ||
                               value?.product?.product_images[0]?.image
                             }`
-                            : Logo
-                        }
-                        alt={'Product'}
-                      />
-                      {/* </div> */}
+                              : Logo
+                          }
+                          alt={'Product'}
+                        />
+                        {/* </div> */}
+                      </div>
+                      <div>
+                        <p>{value?.product?.name}</p>
+                        <p>{value?.qty} Item</p>
+                        <p>Rp.{value?.product?.price.toLocaleString(['id'])}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p>{value?.product?.name}</p>
-                      <p>{value?.qty} Item</p>
-                      <p>Rp.{value?.product?.price.toLocaleString(['id'])}</p>
-                    </div>
-                  </div>
-                );
-              }
-            })}
+                  );
+                }
+              })}
+            </div>
           </div>
-        </div>
+        )}
         <CartSummary
           totalCart={totalCart}
           activeCart={activeCart}
