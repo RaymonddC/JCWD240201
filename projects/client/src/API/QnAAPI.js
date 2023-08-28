@@ -3,7 +3,6 @@ const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function createQuestionAPI(data) {
- 
   return axios.post(
     `${URL}/discussions/questions`,
     {
@@ -20,7 +19,7 @@ export function getQuestionsAPI(data) {
   // console.log(data);
   return axios.get(`${URL}/discussions/questions`, {
     params: {
-      ...data
+      ...data,
     },
     headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey },
   });
@@ -39,7 +38,7 @@ export function getAnswersAPI(data) {
 export function postAnswerAPI(data) {
   return axios.post(
     `${URL}/discussions/answers`,
-    {...data},
+    { ...data },
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }
@@ -55,8 +54,18 @@ export function updateAnswerAPI(data) {
     { headers: { Authorization: 'Bearer ' + data.token, apikey: APIKey } },
   );
 }
-export function getQuestionsCategoriesAPI() {
+export function getQuestionsCategoriesAPI(data) {
   return axios.get(`${URL}/discussions/question-categories`, {
+    params: { ...data },
+    headers: { apikey: APIKey },
+  });
+}
+
+export function getUserQuestionsAPI(data) {
+  console.log("🚀 ~ file: QnAAPI.js:65 ~ getUserQuestionsAPI ~ data:", data)
+  
+  return axios.get(`${URL}/users/questions`, {
+    params: { ...data },
     headers: { apikey: APIKey },
   });
 }
