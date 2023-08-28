@@ -105,8 +105,8 @@ export default function Landing() {
           </article>
         </div>
       </div>
-      <div className="flex my-5 px-3 justify-center">
-        <div className="w-fit items-center flex flex-col lg:flex-row drop-shadow-md mt-5 p-3 mx-5 bg-[#f6f8fc] rounded-xl">
+      <div className="flex w-full my-5 px-4 justify-center">
+        <div className="w-full items-center flex flex-col lg:flex-row lg:justify-evenly drop-shadow-md mt-5 p-3 mx-5 bg-[#f6f8fc] rounded-xl">
           <img
             className="h-28 hidden lg:block "
             src={prescriptionImage}
@@ -130,7 +130,7 @@ export default function Landing() {
               />
               <article className="prose">
                 <p>
-                  {file ? `File name: ${file.name}` : 'no files uploaded yet'}
+                  {file ? `File name: ${file.name}` : 'No files uploaded yet'}
                 </p>
               </article>
             </div>
@@ -153,7 +153,7 @@ export default function Landing() {
             <h3>Jamu</h3>
           </article>
         </div>
-        <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
+        <div className="flex overflow-auto w-[72%] pb-4 px-4 space-x-4 rounded-box">
           {productMap ? <>{productMap}</> : <ProductListSkl limit={limit} />}
         </div>
         <div className="w-full flex pl-[15%] mt-5">
@@ -161,7 +161,7 @@ export default function Landing() {
             <h3>Vitamin</h3>
           </article>
         </div>
-        <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
+        <div className="flex overflow-auto w-[72%] pb-4 px-4 space-x-4 rounded-box">
           {vitaminMap ? <>{vitaminMap}</> : <ProductListSkl limit={limit} />}
         </div>
       </div>

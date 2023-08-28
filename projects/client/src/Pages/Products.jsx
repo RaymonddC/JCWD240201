@@ -146,8 +146,7 @@ export default function Products() {
   ]);
   return (
     <>
-      <div className=" flex sticky top-3 mb-3 z-10 justify-center">
-        {/* <FilterBar
+      {/* <FilterBar
           value={search}
           setSearch={setSearch}
           setSortType={setSortType}
@@ -172,33 +171,6 @@ export default function Products() {
           ]}
         /> */}
 
-        <FilterBarDrawer
-          value={search}
-          setSearch={setSearch}
-          setSortType={setSortType}
-          setSortOrder={setSortOrder}
-          setMinPrice={setMinPrice}
-          setMaxPrice={setMaxPrice}
-          minPrice={minPrice}
-          maxPrice={maxPrice}
-          sortBy={true}
-          priceRange={true}
-          option={[
-            { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
-            { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
-            {
-              text: 'Price low to high',
-              sortType: 'price',
-              sortOrder: 'ASC',
-            },
-            {
-              text: 'Price high to low',
-              sortType: 'price',
-              sortOrder: 'DESC',
-            },
-          ]}
-        />
-      </div>
       <div className="flex ">
         <div className="hidden w-52 md:block pl-3">
           <article className="prose">
@@ -214,6 +186,34 @@ export default function Products() {
         </div>
         <div className="flex justify-center w-full">
           <div className="flex flex-col max-w-fit justify-center ">
+            <div className=" flex sticky top-3 mb-3 z-10 justify-center">
+              <FilterBarDrawer
+                value={search}
+                setSearch={setSearch}
+                setSortType={setSortType}
+                setSortOrder={setSortOrder}
+                setMinPrice={setMinPrice}
+                setMaxPrice={setMaxPrice}
+                minPrice={minPrice}
+                maxPrice={maxPrice}
+                sortBy={true}
+                priceRange={true}
+                option={[
+                  { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+                  { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+                  {
+                    text: 'Price low to high',
+                    sortType: 'price',
+                    sortOrder: 'ASC',
+                  },
+                  {
+                    text: 'Price high to low',
+                    sortType: 'price',
+                    sortOrder: 'DESC',
+                  },
+                ]}
+              />
+            </div>
             {/* {!productMap?.length ? (
               <div className="flex py-10 w-full justify-center">
                 <article className="prose">
@@ -238,7 +238,7 @@ export default function Products() {
                 <ProductListSkl limit={limit} />
               </div>
             )}
-          
+
             <div className="my-5">
               <Pagination
                 setPage={setPage}
