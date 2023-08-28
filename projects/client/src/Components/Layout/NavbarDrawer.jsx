@@ -57,8 +57,8 @@ export default function NavbarDrawer() {
                 </div>
               </div>
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn btn-sm btn-ghost absolute right-6 md:right-52">
-                  <Link to={'/cart'}>
+                <button className="btn z-10 btn-sm btn-ghost absolute right-6 md:right-48">
+                  <Link to='/cart'>
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
@@ -76,7 +76,7 @@ export default function NavbarDrawer() {
               )}
             </div>
             <div className=" hidden md:block w-full">
-              <div className=" justify-between w-full flex">
+              <div className="relative justify-between w-full flex">
                 {/* Navbar menu content here */}
                 <div>
                   <Link to="/products">
@@ -91,7 +91,7 @@ export default function NavbarDrawer() {
                     <button className="btn btn-ghost btn-sm">LOCATION</button>
                   </Link>
                 </div>
-                <div>
+                <div className='absolute right-3 w-40'>
                   {user && Object.keys(user).length !== 0 ? (
                     <div className="flex gap-2">
                       <Link
@@ -107,7 +107,7 @@ export default function NavbarDrawer() {
                         ) : (
                           <MdPerson className="w-[40px] h-[40px]" />
                         )}
-                        <div className="font-bold max-w-[132px] truncate">
+                        <div className="font-bold w-24 truncate">
                           {user?.username}
                         </div>
                       </Link>
