@@ -32,7 +32,11 @@ export default function ProductListAdmin() {
   const productMap = productList?.map((value, index) => {
     return (
       <div key={`product${index}`} className="py-1 flex w-full justify-center">
-        <ProductCardAdmin data={value} setProductId={setProductId} detailProduct={true}/>
+        <ProductCardAdmin
+          data={value}
+          setProductId={setProductId}
+          detailProduct={true}
+        />
       </div>
     );
   });
@@ -72,6 +76,9 @@ export default function ProductListAdmin() {
   ]);
   return (
     <>
+      <article className="prose">
+        <h2>Products</h2>
+      </article>
       <div className="relative">
         <div className="sticky top-3 mb-3">
           <FilterBar
@@ -103,7 +110,7 @@ export default function ProductListAdmin() {
           className="sticky bottom-6 bg-primary w-fit rounded-full hover:cursor-pointer"
           onClick={() => navigate('/products/new')}
         >
-          <MdAdd size={40} color='white' />
+          <MdAdd size={40} color="white" />
         </div>
       </div>
       <DeleteModal productId={productId} isDeleted={setIsDeleted} />

@@ -91,7 +91,9 @@ export default function AddProduct() {
   }, [selectedOptions]);
   return (
     <>
-      <div className="font-bold text-xl">Add New Product</div>
+      <article className="prose">
+        <h2>Add New Product</h2>
+      </article>
       <form onSubmit={formik.handleSubmit}>
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
@@ -213,11 +215,14 @@ export default function AddProduct() {
                 className="w-full mb-2 border border-primary rounded-md select-none focus:outline-none text-[14px]"
                 label="test"
               />
-              {formik?.errors?.category && formik.touched?.category?.category_id ? (
-                <p className="text-error text-[14px]">{formik?.errors?.category}</p>
+              {formik?.errors?.category &&
+              formik.touched?.category?.category_id ? (
+                <p className="text-error text-[14px]">
+                  {formik?.errors?.category}
+                </p>
               ) : null}
             </div>
-            <div className='my-1'>
+            <div className="my-1">
               <InputProductImage
                 name="image.product"
                 id="product_image"
