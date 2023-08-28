@@ -3,7 +3,7 @@ import Logo from '../../utils/images/Medicore.png';
 import Logo1 from '../../utils/images/medicore_icon.png';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import { MdPerson } from 'react-icons/md';
 import { SlBag } from 'react-icons/sl';
@@ -11,8 +11,10 @@ import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 
 export default function NavbarDrawer() {
   let dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   const { totalCart } = useSelector((state) => state.cart);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -21,12 +23,22 @@ export default function NavbarDrawer() {
   return (
     <>
       <div className="drawer">
-        <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+        <input
+          readonly
+          checked={open}
+          id="my-drawer-3"
+          type="checkbox"
+          className="drawer-toggle"
+        />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
           <div className="w-full navbar flex  relative">
             <div className="flex-none md:hidden">
-              <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
+              <label
+                htmlFor="my-drawer-3"
+                className="btn btn-square btn-ghost"
+                onClick={() => setOpen(true)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -58,7 +70,7 @@ export default function NavbarDrawer() {
               </div>
               {user && Object.keys(user).length !== 0 ? (
                 <button className="btn z-10 btn-sm btn-ghost absolute right-6 md:right-48">
-                  <Link to='/cart'>
+                  <Link to="/cart">
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
@@ -91,7 +103,7 @@ export default function NavbarDrawer() {
                     <button className="btn btn-ghost btn-sm">LOCATION</button>
                   </Link>
                 </div>
-                <div className='absolute right-3 w-40'>
+                <div className="absolute right-3 w-40">
                   {user && Object.keys(user).length !== 0 ? (
                     <div className="flex gap-2">
                       <Link
@@ -128,7 +140,11 @@ export default function NavbarDrawer() {
           </div>
         </div>
         <div className="drawer-side z-20">
-          <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
+          <label
+            onClick={() => setOpen(false)}
+            htmlFor="my-drawer-3"
+            className="drawer-overlay"
+          ></label>
           <ul className="menu gap-2 p-4 w-52 h-full bg-base-200">
             {/* Sidebar content here */}
             {user && Object.keys(user).length !== 0 ? (
@@ -156,30 +172,60 @@ export default function NavbarDrawer() {
             ) : (
               <>
                 <li>
-                  <button className="btn btn-sm btn-primary text-white">
-                    <Link to="/login">Login</Link>
+                  <button
+                    className="btn btn-sm w-full btn-primary text-white"
+                    onClick={() => {
+                      setOpen(false);
+                      navigate('/login');
+                    }}
+                  >
+                    Login
                   </button>
                 </li>
                 <li>
-                  <button className="btn btn-sm btn-outline btn-primary">
-                    <Link to="/register">Register</Link>
+                  <button
+                    className="btn btn-sm btn-outline btn-primary"
+                    onClick={() => {
+                      setOpen(false);
+                      navigate('/register');
+                    }}
+                  >
+                    Register
                   </button>
                 </li>
               </>
             )}
             <li>
-              <button className="btn btn-ghost btn-sm">
-                <Link to="/products">SHOP</Link>
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={() => {
+                  setOpen(false);
+                  navigate('/products');
+                }}
+              >
+                shop
               </button>
             </li>
             <li>
-              <button className="btn btn-ghost btn-sm">
-                <Link to="/discussions">DISCUSSIONS</Link>
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={() => {
+                  setOpen(false);
+                  navigate('/discussions');
+                }}
+              >
+                discussions
               </button>
             </li>
             <li>
-              <button className="btn  btn-ghost btn-sm">
-                <Link to="/location">LOCATION</Link>
+              <button
+                className="btn btn-ghost btn-sm"
+                onClick={() => {
+                  setOpen(false);
+                  navigate('/location');
+                }}
+              >
+                location
               </button>
             </li>
           </ul>
