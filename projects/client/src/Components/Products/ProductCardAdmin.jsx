@@ -19,9 +19,13 @@ export default function ProductCardAdmin(props) {
       <label
         onClick={() => props.setProductId(productId)}
         htmlFor="detail_product"
-        className="flex bg-base-100  items-center w-full max-w-4xl shadow-xl rounded-lg hover:cursor-pointer hover:bg-slate-100 "
+        className={
+          props.detailProduct
+            ? 'flex bg-base-100  items-center w-full max-w-4xl shadow-xl rounded-lg hover:cursor-pointer hover:bg-slate-100 '
+            : 'flex bg-base-100  items-center w-full max-w-4xl shadow-xl rounded-lg'
+        }
       >
-        <div className='hidden md:block w-40 '>
+        <div className="hidden md:block w-40 ">
           <img
             className="h-24 hidden md:block px-5"
             src={image ? `http://localhost:8000/${image}` : null}
