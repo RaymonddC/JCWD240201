@@ -19,6 +19,7 @@ import ProfileLayout from '../../Components/Layout/ProfileLayout';
 import Checkout from '../../Pages/Checkout';
 import MapsPharmacy from '../../Pages/MapsPharmacy';
 import ChangeEmailForm from '../../Pages/ChangeEmailForm';
+import QuestionUser from '../../Pages/QuestionUser';
 
 const routerSource = (props) => [
   {
@@ -120,6 +121,17 @@ const routerSource = (props) => [
     index: true,
     path: '/change-email/:token_email',
     element: <ChangeEmailForm />,
+  },
+  {
+    path: '/user/questions',
+    element: (
+      // <PublicLayout>
+      <ProfileLayout>
+        <QuestionUser />
+      </ProfileLayout>
+
+      // </PublicLayout>
+    ),
   },
 
   { index: true, path: '/*', element: <>ERROR</> },

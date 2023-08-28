@@ -42,55 +42,58 @@ export default function NavbarDrawer() {
                 </svg>
               </label>
             </div>
-            <div>
-              <div className="w-60 hidden md:block">
-                <Link to="/">
-                  <img className="px-2 h-20" src={Logo} alt="" />
-                </Link>
-              </div>
-              <div className="md:hidden">
-                <Link to="/">
-                  <img className="px-2 h-20" src={Logo1} alt="" />
-                </Link>
-              </div>
-            </div>
-            {user && Object.keys(user).length !== 0 ? (
-              <button className="btn btn-sm btn-ghost absolute right-6 md:right-44">
-                <Link to={'/cart'}>
-                  <SlBag size={25} />
-                  {totalCart > 0 && Object.keys(user).length !== 0 ? (
-                    <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
-                      <span className="text-[12px] text-white">
-                        {totalCart}
-                      </span>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </Link>
-              </button>
-            ) : (
-              ''
-            )}
 
-            {/* <div className="flex-1 px-2 mx-2">Navbar Title</div> */}
+            <div className="flex px-2 mx-2">
+              <div>
+                <div className="w-60 hidden md:block">
+                  <Link to="/">
+                    <img className="px-2 h-20" src={Logo} alt="" />
+                  </Link>
+                </div>
+                <div className="md:hidden">
+                  <Link to="/">
+                    <img className="px-2 h-20" src={Logo1} alt="" />
+                  </Link>
+                </div>
+              </div>
+              {user && Object.keys(user).length !== 0 ? (
+                <button className="btn btn-sm btn-ghost absolute right-6 md:right-52">
+                  <Link to={'/cart'}>
+                    <SlBag size={25} />
+                    {totalCart > 0 && Object.keys(user).length !== 0 ? (
+                      <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
+                        <span className="text-[12px] text-white">
+                          {totalCart}
+                        </span>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </Link>
+                </button>
+              ) : (
+                ''
+              )}
+            </div>
             <div className=" hidden md:block w-full">
-              <div className=" justify-between w-full flex ">
+              <div className=" justify-between w-full flex">
                 {/* Navbar menu content here */}
                 <div>
-                  <button className="btn btn-sm btn-ghost">
-                    <Link to="/products">SHOP</Link>
-                  </button>
-                  <button className="btn btn-sm btn-ghost">
-                    <Link to="/discussions">DISCUSSIONS</Link>
-                  </button>
-                  <button className="btn  btn-ghost btn-sm">
-                    <Link to="/location">LOCATION</Link>
-                  </button>
+                  <Link to="/products">
+                    <button className="btn btn-sm btn-ghost">SHOP</button>
+                  </Link>
+                  <Link to="/discussions">
+                    <button className="btn btn-sm btn-ghost">
+                      DISCUSSIONS
+                    </button>
+                  </Link>
+                  <Link to="/location">
+                    <button className="btn btn-ghost btn-sm">LOCATION</button>
+                  </Link>
                 </div>
                 <div>
                   {user && Object.keys(user).length !== 0 ? (
-                    <div className="flex gap-2 w-40">
+                    <div className="flex gap-2">
                       <Link
                         to="/user/profile"
                         className="flex justify-center items-center gap-2 "
@@ -104,9 +107,9 @@ export default function NavbarDrawer() {
                         ) : (
                           <MdPerson className="w-[40px] h-[40px]" />
                         )}
-                        <span className="font-bold max-w-[132px] truncate">
+                        <div className="font-bold max-w-[132px] truncate">
                           {user?.username}
-                        </span>
+                        </div>
                       </Link>
                     </div>
                   ) : (
@@ -124,7 +127,7 @@ export default function NavbarDrawer() {
             </div>
           </div>
         </div>
-        <div className="drawer-side z-10">
+        <div className="drawer-side z-20">
           <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
           <ul className="menu gap-2 p-4 w-52 h-full bg-base-200">
             {/* Sidebar content here */}

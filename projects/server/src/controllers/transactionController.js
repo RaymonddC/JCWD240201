@@ -310,7 +310,7 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    console.log(error + 'luar');
+    console.log(error, '==============luar');
     return res.status(500).send({
       data: error,
     });
@@ -596,6 +596,7 @@ const cancelTransaction = async (req, res, next) => {
       });
       await Promise.all(
         prescriptionDetail.map(async (value) => {
+          console.log(value.product_id, value.transaction_id);
           if (value.unit === 0) {
             const stockProduct = await ClosedStock.findOne({
               where: { product_id: value.product_id },
@@ -609,9 +610,11 @@ const cancelTransaction = async (req, res, next) => {
             const stockProduct = await OpenStock.findOne({
               where: { product_id: value.product_id },
             });
+
+            console.log(stockProduct, '>>>>>>>>', value.product_id);
             openStockUpdateData.push({
               ...stockProduct.dataValues,
-              total_stock: stockProduct.total_stock + value.qty,
+              qty: stockProduct.qty + value.qty,
             });
           }
         }),
@@ -627,7 +630,7 @@ const cancelTransaction = async (req, res, next) => {
       transaction: t,
     });
     await OpenStock.bulkCreate(openStockUpdateData, {
-      updateOnDuplicate: ['total_stock'],
+      updateOnDuplicate: ['qty'],
       transaction: t,
     });
     //stockHistory
