@@ -75,7 +75,7 @@ const verifyAccount = async (req, res, next) => {
     token = token.split(' ')[1];
     let verifiedUser = jwt.verify(token, 'verification-account');
 
-    if (!verifiedUser) throw { message: 'Unauthorized request', status: 401 };
+    if (!verifiedUser) throw { message: 'Unauthorized request', code: 401 };
 
     const isVerified = await User.findOne({
       where: { email: verifiedUser.email },
@@ -266,13 +266,13 @@ const sendResetPasswordForm = async (req, res, next) => {
     );
 
     if (!isEmail.test(email))
-      throw { status: 400, message: 'Email is not valid' };
+      throw { code: 400, message: 'Email is not valid' };
 
     //find user
     const findUser = await User.findOne({
       where: { email: email },
     });
-    if (!findUser) throw { message: 'Account is not found', status: 400 };
+    if (!findUser) throw { message: 'Account is not found', code: 400 };
 
     //send reset password form
     const data = fs.readFileSync(
@@ -317,7 +317,7 @@ const resetPassword = async (req, res, next) => {
       '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})',
     );
     if (!isPasswordValid.test(newPassword))
-      throw { message: 'Password is not Valid', status: 400 };
+      throw { message: 'Password is not Valid', code: 400 };
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(newPassword, salt);
 
@@ -326,7 +326,7 @@ const resetPassword = async (req, res, next) => {
     token = token.split(' ')[1];
     let getEmail = jwt.verify(token, 'reset-password');
 
-    if (!getEmail) throw { message: 'Unauthorized request', status: 401 };
+    if (!getEmail) throw { message: 'Unauthorized request', code: 401 };
 
     //checking token
     const getToken = await User.findOne({
