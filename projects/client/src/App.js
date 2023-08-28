@@ -71,7 +71,7 @@ function App() {
     if (
       pathname === '/login' ||
       pathname === '/register' ||
-      pathname === '/verfication'
+      pathname === '/verification'
     ) {
       setNavbar(false);
       setFooter(false);
