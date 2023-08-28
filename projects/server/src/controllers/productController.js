@@ -33,6 +33,12 @@ const getAllProducts = async (req, res, next) => {
     where.name = { [Op.like]: `%${search}%` };
     where.id = { [Op.not]: 1 };
 
+    if (minPrice && maxPrice) {
+      where.price = {
+        [Op.and]: [{ [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) }],
+      };
+    }
+
     if (sortType) {
       order = [[sortType, sortOrder]];
     } else {
@@ -60,15 +66,16 @@ const getAllProducts = async (req, res, next) => {
       ],
       limit: pageLimit,
       offset: offset,
-      where: {
-        ...where,
-        price: {
-          [Op.and]: [
-            { [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) },
-          ],
-        },
-        // price: { [Op.lte]: Number(maxPrice) },
-      },
+      where: where,
+      //  {
+      //   ...where,
+      //   price: {
+      //     [Op.and]: [
+      //       { [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) },
+      //     ],
+      //   },
+      //   // price: { [Op.lte]: Number(maxPrice) },
+      // },
 
       order: order,
       distinct: true,

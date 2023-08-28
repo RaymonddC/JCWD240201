@@ -164,6 +164,24 @@ export default function FilterBarDrawer(props) {
                 </li>
               );
             })}
+            {priceRange ? (
+              <li>
+                <div className="w-full h-20 flex justify-center mt-3">
+                  <div className="text-center">Min price</div>
+                  <div className="px-3">
+                    <MultiRangeSlider
+                      min={0}
+                      max={1000000}
+                      onChange={({ min, max }) => {
+                        props?.setMinPrice(min);
+                        props?.setMaxPrice(max);
+                      }}
+                    />
+                  </div>
+                  <div className="text-center">Max price</div>
+                </div>
+              </li>
+            ) : null}
           </ul>
         </div>
       </div>
