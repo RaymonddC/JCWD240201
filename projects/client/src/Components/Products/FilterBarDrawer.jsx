@@ -148,7 +148,7 @@ export default function FilterBarDrawer(props) {
         </div>
         <div className="drawer-side z-10">
           <label htmlFor="my-drawer-filter" className="drawer-overlay"></label>
-          <ul className="menu gap-2 p-4 w-52 h-full bg-base-200">
+          <ul className="menu gap-2 p-4 h-full bg-base-200">
             {/* Sidebar content here */}
             {props.option.map((value, index) => {
               return (
@@ -165,9 +165,9 @@ export default function FilterBarDrawer(props) {
               );
             })}
             {priceRange ? (
-              <li>
-                <div className="w-full h-20 flex justify-center mt-3">
-                  <div className="text-center">Min price</div>
+              <>
+                <div className="pl-4">Price range</div>
+                <div className="w-full h-20 flex justify-center">
                   <div className="px-3">
                     <MultiRangeSlider
                       min={0}
@@ -178,9 +178,8 @@ export default function FilterBarDrawer(props) {
                       }}
                     />
                   </div>
-                  <div className="text-center">Max price</div>
                 </div>
-              </li>
+              </>
             ) : null}
           </ul>
         </div>

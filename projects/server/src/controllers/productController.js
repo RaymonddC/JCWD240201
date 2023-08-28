@@ -21,10 +21,6 @@ const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, limit, sortType, sortOrder, minPrice, maxPrice } =
       req.query;
-    console.log(
-      '🚀 ~ file: productController.js:24 ~ getAllProducts ~ req.query:',
-      req.query,
-    );
     const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
