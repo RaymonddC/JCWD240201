@@ -32,7 +32,7 @@ export default function ProductListAdmin() {
   const productMap = productList?.map((value, index) => {
     return (
       <div key={`product${index}`} className="py-1 flex w-full justify-center">
-        <ProductCardAdmin data={value} setProductId={setProductId} />
+        <ProductCardAdmin data={value} setProductId={setProductId} detailProduct={true}/>
       </div>
     );
   });
