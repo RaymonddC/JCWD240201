@@ -21,10 +21,6 @@ const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, limit, sortType, sortOrder, minPrice, maxPrice } =
       req.query;
-    console.log(
-      '🚀 ~ file: productController.js:24 ~ getAllProducts ~ req.query:',
-      req.query,
-    );
     const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
@@ -32,6 +28,12 @@ const getAllProducts = async (req, res, next) => {
     let order = [];
     where.name = { [Op.like]: `%${search}%` };
     where.id = { [Op.not]: 1 };
+
+    if (minPrice && maxPrice) {
+      where.price = {
+        [Op.and]: [{ [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) }],
+      };
+    }
 
     if (sortType) {
       order = [[sortType, sortOrder]];
@@ -60,15 +62,16 @@ const getAllProducts = async (req, res, next) => {
       ],
       limit: pageLimit,
       offset: offset,
-      where: {
-        ...where,
-        price: {
-          [Op.and]: [
-            { [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) },
-          ],
-        },
-        // price: { [Op.lte]: Number(maxPrice) },
-      },
+      where: where,
+      //  {
+      //   ...where,
+      //   price: {
+      //     [Op.and]: [
+      //       { [Op.gte]: Number(minPrice), [Op.lte]: Number(maxPrice) },
+      //     ],
+      //   },
+      //   // price: { [Op.lte]: Number(maxPrice) },
+      // },
 
       order: order,
       distinct: true,

@@ -17,7 +17,7 @@ export default function PromotionPage() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPromoType, setCurrentPromoType] = useState(null);
-  const [currentType, setCurrentType] = useState(null)
+  const [currentType, setCurrentType] = useState(null);
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -30,15 +30,15 @@ export default function PromotionPage() {
     validate: validateGetPromotion,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        if(Number(currentType) !== Number(formik?.values?.promotionTypeId)){
-          setPage(1)
+        if (Number(currentType) !== Number(formik?.values?.promotionTypeId)) {
+          setPage(1);
           formik.setFieldValue('page', page);
         }
         const result = await getPromotionAPI(values);
         setCurrentPromoType(result?.data?.data?.rows[0]?.promotion_type_id);
         setData(result?.data?.data?.rows);
         setTotalPages(result?.data?.totalPage);
-        setCurrentType(formik?.values?.promotionTypeId)
+        setCurrentType(formik?.values?.promotionTypeId);
         setSubmitting(false);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -63,7 +63,9 @@ export default function PromotionPage() {
   }, [page]);
   return (
     <>
-      <div className="font-bold text-xl">Promotion</div>
+      <article className="prose">
+        <h2>Promotions</h2>
+      </article>
       <form onSubmit={formik.handleSubmit}>
         <div className="flex justify-evenly gap-3">
           <div className="w-full">
@@ -94,7 +96,7 @@ export default function PromotionPage() {
             />
           </div>
         </div>
-        <div className='grid grid-cols-2 gap-4 mb-6'>
+        <div className="grid grid-cols-2 gap-4 mb-6">
           <button
             disabled={!formik.isValid || formik.isSubmitting}
             type="submit"

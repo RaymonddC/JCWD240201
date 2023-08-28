@@ -8,6 +8,7 @@ import QuestionModal from '../Components/QnA/QuestionModal';
 import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
 import QnACardSkl from '../Components/Skeleton/QnACardSkl';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function QnAUser() {
   const user = useSelector((state) => state?.user?.user);
@@ -79,8 +80,9 @@ export default function QnAUser() {
 
   return (
     <>
-      <div className='pb-5'>
-        <FilterBar
+      <div className="pb-5">
+        <FilterBarDrawer
+          value={search}
           setSearch={setSearch}
           setSortType={setSortType}
           setSortOrder={setSortOrder}
@@ -97,6 +99,23 @@ export default function QnAUser() {
             },
           ]}
         />
+        {/* <FilterBar
+          setSearch={setSearch}
+          setSortType={setSortType}
+          setSortOrder={setSortOrder}
+          option={[
+            {
+              text: 'Oldest to latest',
+              sortType: 'updatedAt',
+              sortOrder: 'ASC',
+            },
+            {
+              text: 'Latest to oldest',
+              sortType: 'updatedAt',
+              sortOrder: 'DESC',
+            },
+          ]}
+        /> */}
       </div>
 
       <div className="px-5">

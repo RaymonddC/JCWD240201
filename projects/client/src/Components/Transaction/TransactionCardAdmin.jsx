@@ -180,7 +180,8 @@ const TransactionCardAdmin = (props) => {
             </label>
           </button>
           {props?.tx?.transaction_histories[0]?.transaction_status?.status !==
-          'Cancelled' ? (
+          'Cancelled' && props?.tx?.transaction_histories[0]?.transaction_status?.status !==
+          'Complete' ? (
             <button
               className="btn btn-sm btn-error text-white "
               disabled={false}
