@@ -163,7 +163,9 @@ export default function EditProduct() {
   }, [selectedCategory]);
   return (
     <>
-      <div className="font-bold text-xl">Edit Product</div>
+      <article className="prose">
+        <h2>Edit Product</h2>
+      </article>
       <form onSubmit={formik.handleSubmit}>
         <div className="grid lg:grid-cols-2 gap-4">
           <div>
@@ -325,7 +327,7 @@ export default function EditProduct() {
             Cancel
           </button>
           <button
-            disabled={ formik.isSubmitting}
+            disabled={formik.isSubmitting}
             type="submit"
             className="btn w-full bg-primary text-white"
           >
