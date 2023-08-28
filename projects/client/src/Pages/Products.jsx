@@ -8,6 +8,7 @@ import Pagination from '../Components/Layout/Pagination';
 import { getAllCategories } from '../Features/Category/CategorySlice';
 import { useSearchParams } from 'react-router-dom';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -27,8 +28,18 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  const [minPrice, setMinPrice] = useState(searchParams.get('min-price') || 0);
-  const [maxPrice, setMaxPrice] = useState(searchParams.get('max-price') || 0);
+  const [minPrice, setMinPrice] = useState(
+    searchParams.get('min-price') || '0',
+  );
+  const [maxPrice, setMaxPrice] = useState(
+    searchParams.get('max-price') || '1000000',
+  );
+  const debouncedMinPrice = useDebounce(minPrice, 1200, 0);
+  console.log(
+    '🚀 ~ file: Products.jsx:38 ~ Products ~ debouncedMinPrice:',
+    debouncedMinPrice,
+  );
+  const debouncedMaxPrice = useDebounce(maxPrice, 1200, 0);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {
     return (
@@ -70,6 +81,8 @@ export default function Products() {
         search: debouncedSearchValue,
         sortType,
         sortOrder,
+        minPrice: debouncedMinPrice,
+        maxPrice: debouncedMaxPrice,
       }),
     );
   };
@@ -107,6 +120,12 @@ export default function Products() {
     if (category) {
       queryParams['category'] = category;
     }
+    if (minPrice) {
+      queryParams['min-price'] = debouncedMinPrice;
+    }
+    if (maxPrice) {
+      queryParams['max-price'] = debouncedMaxPrice;
+    }
     setSearchParams(queryParams);
     if (debouncedSearchValue) {
       getProductsAsync();
@@ -116,11 +135,19 @@ export default function Products() {
     } else {
       getProductsAsync();
     }
-  }, [page, debouncedSearchValue, sortType, sortOrder, category]);
+  }, [
+    page,
+    debouncedSearchValue,
+    sortType,
+    sortOrder,
+    category,
+    debouncedMaxPrice,
+    debouncedMinPrice,
+  ]);
   return (
     <>
       <div className=" flex sticky top-3 mb-3 z-10 justify-center">
-        <FilterBar
+        {/* <FilterBar
           value={search}
           setSearch={setSearch}
           setSortType={setSortType}
@@ -143,26 +170,34 @@ export default function Products() {
               sortOrder: 'DESC',
             },
           ]}
+        /> */}
+
+        <FilterBarDrawer
+          value={search}
+          setSearch={setSearch}
+          setSortType={setSortType}
+          setSortOrder={setSortOrder}
+          setMinPrice={setMinPrice}
+          setMaxPrice={setMaxPrice}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          sortBy={true}
+          priceRange={true}
+          option={[
+            { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+            { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+            {
+              text: 'Price low to high',
+              sortType: 'price',
+              sortOrder: 'ASC',
+            },
+            {
+              text: 'Price high to low',
+              sortType: 'price',
+              sortOrder: 'DESC',
+            },
+          ]}
         />
-        {/* <div className="hidden md:block">
-          <div className="flex items-start">
-            <div>Price range: min =</div>
-            <div className="flex flex-col">
-              <input type="text" value={`Rp.${minPrice}`} />
-              <input
-                type="range"
-                min={0}
-                max="100"
-                value={minPrice}
-                className="range range-xs w-40"
-                onChange={(e) => {
-                  setMinPrice(e.target.value);
-                }}
-              />
-            </div>
-            <div>max =</div>
-          </div>
-        </div> */}
       </div>
       <div className="flex ">
         <div className="hidden w-52 md:block pl-3">
@@ -179,21 +214,31 @@ export default function Products() {
         </div>
         <div className="flex justify-center w-full">
           <div className="flex flex-col max-w-fit justify-center ">
-            {!productMap?.length ? (
+            {/* {!productMap?.length ? (
               <div className="flex py-10 w-full justify-center">
                 <article className="prose">
                   <h4>--- No search result ---</h4>
                 </article>
               </div>
+            // ) : ( */}
+            {productMap ? (
+              !productMap?.length ? (
+                <div className="flex py-10 w-full justify-center">
+                  <article className="prose">
+                    <h4>--- No search result ---</h4>
+                  </article>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
+                  {productMap}
+                </div>
+              )
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6">
-                {!productMap ? (
-                  <>{productMap}</>
-                ) : (
-                  <ProductListSkl limit={limit} />
-                )}
+                <ProductListSkl limit={limit} />
               </div>
             )}
+
             <div className="my-5">
               <Pagination
                 setPage={setPage}

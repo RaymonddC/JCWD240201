@@ -23,7 +23,7 @@ const TransactionCard = (props) => {
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
-  const [disabled, setdisabled] = useState(true);
+  const [disabled, setdisabled] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
 
   const dateTime = new Date(props.tx.createdAt);
@@ -38,11 +38,12 @@ const TransactionCard = (props) => {
   const txDetail = props?.tx.transaction_details[0];
   const onSubmit = async () => {
     // console.log(paymentProofFile.type.split('/')[1]);
-    const imageType = paymentProofFile.type.split('/')[1];
+    const imageType = paymentProofFile?.type.split('/')[1];
     if (imageType !== 'jpeg' && imageType !== 'png' && imageType !== 'jpg') {
       return toast.error('Image type must be JPEG or JPG or PNG');
     }
     try {
+      setdisabled(true);
       await dispatch(
         uploadPaymentSlice({
           transaction_status_id: 2,
@@ -122,27 +123,44 @@ const TransactionCard = (props) => {
         {transactionStatus === 'Waiting for payment' ||
         transactionStatusId === 1 ? (
           <>
-            <button className="btn btn-sm btn-primary text-white">
-              <input
-                className="hidden"
-                name="paymentProof"
-                id="paymentProof"
-                type="file"
-                ref={paymentProofRef}
-                onChange={(e) => {
-                  setPaymentProofFile(e.target.files[0]);
-                  setdisabled(false);
-                }}
-              />
-              <label htmlFor="paymentProof">Upload payment proof</label>
-            </button>
-            <button
+            {!disabled ? (
+              <button
+                // disabled={disabled}
+                className="btn btn-sm btn-primary text-white"
+              >
+                <input
+                  className="hidden"
+                  name="paymentProof"
+                  id="paymentProof"
+                  type="file"
+                  ref={paymentProofRef}
+                  onChange={(e) => {
+                    setPaymentProofFile(e.target.files[0]);
+                    setdisabled(true);
+                    // setTimeout(() => {
+                    //   onSubmit();
+                    //   // setdisabled(false);
+                    // }, 1000);
+                  }}
+                />
+                <label htmlFor="paymentProof">Upload payment proof</label>
+              </button>
+            ) : (
+              <button
+                className="btn btn-sm btn-primary text-white "
+                // disabled={disabled}
+                onClick={() => onSubmit()}
+              >
+                Submit
+              </button>
+            )}
+            {/* <button
               className="btn btn-sm btn-primary text-white "
               disabled={disabled}
               onClick={() => onSubmit()}
             >
               Submit
-            </button>
+            </button> */}
             <button
               className="btn btn-sm btn-primary text-white "
               disabled={!props.tx.payment_token}

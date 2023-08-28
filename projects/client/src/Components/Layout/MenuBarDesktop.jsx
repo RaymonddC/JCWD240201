@@ -51,6 +51,16 @@ export default function MenuBarDesktop() {
       >
         Transaction
       </Link>
+      <Link
+        to="/user/questions"
+        className={`p-3 cursor-pointer hover:font-bold border-b border-[#D5D7DD] ${
+          window.location.pathname === '/user/questions'
+            ? 'text-primary font-bold'
+            : null
+        }`}
+      >
+        Your questions
+      </Link>
       <div
         onClick={() => {
           dispatch(logoutAsync(navigate));

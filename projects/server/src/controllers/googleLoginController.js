@@ -15,10 +15,7 @@ const googleLogin = async (req, res, next) => {
   try {
     const { email, full_name, role } = req.body;
     let result = await getUser(email, email);
-    console.log(
-      '🚀 ~ file: googleLoginController.js:23 ~ googleLogin ~ result.user.dataValues:',
-      result,
-    );
+    
     if (!result) {
       result = await userDB.create({
         full_name,
@@ -30,7 +27,10 @@ const googleLogin = async (req, res, next) => {
       });
     }
     if (!result.dataValues.google_login) {
-      throw{message: 'Your account was signed up using a diffrent method '}
+      throw {
+        message: 'Your account was signed up using a diffrent method',
+        code: 400,
+      };
     }
     const token = await generateToken(result);
     const user = await getUser(email, email, 'password');

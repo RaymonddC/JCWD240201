@@ -48,13 +48,7 @@ export const ProductSlice = createSlice({
 
 export const getProducts = (data) => async (dispatch) => {
   try {
-    let response = await getAllProductsAPI({
-      page: data.page,
-      limit: data.limit,
-      search: data.search,
-      sortType: data.sortType,
-      sortOrder: data.sortOrder,
-    });
+    let response = await getAllProductsAPI(data);
     // console.log(response?.data.data);
     if (response.data.success) {
       dispatch(products(response?.data));

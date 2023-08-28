@@ -45,7 +45,7 @@ export const Login = () => {
         <div className="px-[2%] sm:px-[10%] max-h-[100vh] py-[20%] md:py-[10%] lg:py-0">
           <div className="header px-[5%]">
             <p className="text-[30px] ">
-              Welcome {isRegis ? 'to  HealthyMed' : 'Back'}!
+              Welcome {isRegis ? 'to  Medicore' : 'Back'}!
             </p>
             <p className="text-[15px] pb-[20px] text-[#808080]">
               Please {isRegis ? 'Sign Up ' : 'Sign In '} to continue

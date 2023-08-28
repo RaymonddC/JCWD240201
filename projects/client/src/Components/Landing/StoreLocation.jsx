@@ -38,7 +38,7 @@ export default function StoreLocation() {
             anchor="top"
           >
             <div className="w-[200px] flex flex-col items-center gap-2">
-              <h3 className="font-bold text-[20px]">Healthymed BSD</h3>
+              <h3 className="font-bold text-[20px]">Medicore BSD</h3>
               <img className="w-full" src={jumbotronImage} alt="store" />
               <p className="text-[14px]">The best pharmacy in the world</p>
             </div>

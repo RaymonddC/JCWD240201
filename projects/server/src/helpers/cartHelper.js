@@ -43,7 +43,7 @@ const getUserCarts = async (includes, whereQuery, order) => {
         include: [
           [sequelize.literal('CAST(price*discount/100 AS SIGNED)'), 'disc'],
           // [sequelize.literal('CAST(SUM(price) AS FLOAT)'), 'totalll'],
-        ],
+        ]
         // include: [[sequelize.fn('sum', sequelize.col('qty')), 'cartQty']],
       },
       where: whereQuery,
@@ -56,6 +56,8 @@ const getUserCarts = async (includes, whereQuery, order) => {
       // offset: (Number(page) - 1) * limitPage,
     });
   } catch (error) {
+    console.log('🚀 ~ file: cartHelper.js:58 ~ getUserCarts ~ error:', error);
+
     throw error;
   }
 };

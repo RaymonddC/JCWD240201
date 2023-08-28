@@ -10,6 +10,18 @@ const { Op } = require('sequelize');
 const createDiscount = async (req, res, next) => {
   try {
     const { data } = req.body;
+    const productId = Number(data.product_id);
+    if (productId) {
+      const getData = await productDB.findOne({
+        where: { id: productId },
+      });
+
+      if (getData.require_prescription)
+        throw {
+          code: 400,
+          message: 'Promotion cannot be applied on prescription drug',
+        };
+    }
     const result = await promotionDB.create(data);
 
     if (result) {

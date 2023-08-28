@@ -5,14 +5,7 @@ const APIKey = `${process.env.REACT_APP_API_KEY}`;
 export function getAllProductsAPI(data) {
   // console.log(data);
   return axios.get(`${URL}/products`, {
-    params: {
-      page: data?.page,
-      limit: data?.limit,
-      search: data?.search,
-      category: data?.category,
-      sortType: data?.sortType,
-      sortOrder: data?.sortOrder,
-    },
+    params: { ...data },
     headers: { apikey: APIKey },
   });
 }
@@ -94,7 +87,7 @@ export function updateProduct(values, productId) {
     {
       product_images: values?.image?.product,
       data: JSON.stringify(values.product),
-      categoryId: JSON.stringify(values.category.category_id[0])
+      categoryId: JSON.stringify(values.category.category_id[0]),
     },
     {
       headers: {

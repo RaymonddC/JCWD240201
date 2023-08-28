@@ -82,6 +82,18 @@ export default function MenuBarMobile() {
           </Link>
         </li>
         <li>
+          <Link
+            to="/user/questions"
+            className={
+              window.location.pathname === '/user/questions'
+                ? 'p-3 text-[#00A8B5] font-bold'
+                : 'p-3'
+            }
+          >
+            Your questions
+          </Link>
+        </li>
+        <li>
           <div
             onClick={() => {
               dispatch(logoutAsync(navigate));
