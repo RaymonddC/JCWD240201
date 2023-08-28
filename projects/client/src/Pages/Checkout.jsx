@@ -16,6 +16,7 @@ import {
   handleOnlinePaymentSlice,
   openMidtransSnapSlice,
 } from '../Features/Transaction/TransactionSlice';
+import Logo from '../utils/images/medicore_icon.png';
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -42,13 +43,20 @@ export default function Checkout() {
 
   const [tokenMidtrans, setTokenMidtrans] = useState(null);
 
+  console.log(shipping);
+
   useEffect(() => {
     dispatch(getCartUserAsync());
+
+    return () => {
+      setTokenMidtrans(null);
+    };
   }, []);
 
   useEffect(() => {
     console.log(tokenMidtrans, '================>>>>>>>>>>');
-    dispatch(openMidtransSnapSlice(tokenMidtrans, navigate));
+    if (tokenMidtrans)
+      dispatch(openMidtransSnapSlice({ tokenMidtrans }, navigate));
   }, [tokenMidtrans]);
 
   if (!token) return <Navigate to="/" />;
@@ -60,10 +68,10 @@ export default function Checkout() {
       <h1 className="font-bold text-[24px] mb-9 hidden sm:block md:text-left text-center">
         Checkout
       </h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-[151px] sm:mb-0">
         <div className="w-full max-w-[1000px] flex flex-col gap-4">
           <CheckoutAddress />
-          <ShippingMethod setShipping={setShipping} />
+          <ShippingMethod setShipping={setShipping} shipping={shipping} />
           <PaymentMethod setPaymentMethod={setPaymentMethod} />
           <div className="flex flex-col gap-4 shadow-md p-4 rounded-xl">
             {carts?.map((value) => {
@@ -71,7 +79,22 @@ export default function Checkout() {
                 return (
                   <div key={value?.id} className="flex gap-2">
                     <div>
-                      <div className="w-[100px] h-[100px] bg-primary"></div>
+                      {/* <div className="w-[100px] h-[100px] bg-primary"> */}
+                      <img
+                        className="h-20 w-20"
+                        src={
+                          value?.prescription_image ||
+                          value?.product?.product_images[0]?.image
+                            ? `
+                            ${process.env.REACT_APP_API_BASE_URL}/${
+                              value?.prescription_image ||
+                              value?.product?.product_images[0]?.image
+                            }`
+                            : Logo
+                        }
+                        alt={'Product'}
+                      />
+                      {/* </div> */}
                     </div>
                     <div>
                       <p>{value?.product?.name}</p>

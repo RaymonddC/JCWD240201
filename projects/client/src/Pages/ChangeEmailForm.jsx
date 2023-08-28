@@ -11,7 +11,7 @@ import { onSaveUser } from '../Features/User/UserSlice';
 export default function ChangeEmailForm() {
   const _email = useRef();
   const navigate = useNavigate();
-  const { token } = useParams();
+  const { token_email } = useParams();
   const [emailValidation, setEmailValidation] = useState(false);
   const [disable, setDisable] = useState(false);
   const dispatch = useDispatch();
@@ -25,14 +25,18 @@ export default function ChangeEmailForm() {
       setEmailValidation(false);
     }
   };
-  console.log(`Tokennya nih >>> ${token}`);
+  // console.log(`Tokennya nih >>> ${token}`);
 
   //send reset password form
   const onSendRequest = async () => {
     try {
       setDisable(true);
       let token = localStorage.getItem('token');
-      const result = await updateEmailAPI(_email?.current?.value, token);
+      const result = await updateEmailAPI(
+        _email?.current?.value,
+        token,
+        token_email,
+      );
       const sendVerifyEmail = await sendVerificationEmail(
         _email?.current?.value,
       );

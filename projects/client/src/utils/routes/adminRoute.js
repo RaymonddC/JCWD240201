@@ -28,146 +28,83 @@ const routerSource = (props) => [
   {
     index: true,
     path: '/',
-    element: (
-      <AdminLayout>
-        <Dashboard />,
-      </AdminLayout>
-    ),
+    element: <SalesReport />,
+    // element: <Dashboard />,
   },
   {
     index: true,
     path: '/discussions',
-    element: (
-      <AdminLayout>
-        <QnAAdmin />,
-      </AdminLayout>
-    ),
+    element: <QnAAdmin />,
   },
   {
     index: true,
     path: '/discussions/details/:id',
-    element: (
-      <AdminLayout>
-        <QuestionDetails />,
-      </AdminLayout>
-    ),
+    element: <QuestionDetails />,
   },
   {
     index: true,
     path: '/products',
-    element: (
-      <AdminLayout>
-        <ProductListAdmin />,
-      </AdminLayout>
-    ),
+    element: <ProductListAdmin />,
   },
   {
     index: true,
     path: '/categories',
-    element: (
-      <AdminLayout>
-        <CategoryAdmin />,
-      </AdminLayout>
-    ),
+    element: <CategoryAdmin />,
   },
   {
     index: true,
     path: '/products/new',
-    element: (
-      <AdminLayout>
-        <AddProduct />,
-      </AdminLayout>
-    ),
+    element: <AddProduct />,
   },
   {
     index: true,
     path: '/products/edit/admin',
-    element: (
-      <AdminLayout>
-        <EditProduct />,
-      </AdminLayout>
-    ),
+    element: <EditProduct />,
   },
   {
     index: true,
     path: '/stocks',
-    element: (
-      <AdminLayout>
-        <StockPageAdmin />,
-      </AdminLayout>
-    ),
+    element: <StockPageAdmin />,
   },
   {
     index: true,
     path: '/prescription',
-    element: (
-      <AdminLayout>
-        <PrescriptionAdmin />,
-      </AdminLayout>
-    ),
+    element: <PrescriptionAdmin />,
   },
   {
     index: true,
     path: '/promotions/new',
-    element: (
-      <AdminLayout>
-        <AddPromotion />,
-      </AdminLayout>
-    ),
+    element: <AddPromotion />,
   },
   {
     index: true,
     path: '/transactions',
-    element: (
-      <AdminLayout>
-        <TransactionAdmin />,
-      </AdminLayout>
-    ),
+    element: <TransactionAdmin />,
   },
   {
     index: true,
     path: '/prescription/:id',
-    element: (
-      <AdminLayout>
-        <PrescriptionCopyAdmin />,
-      </AdminLayout>
-    ),
+    element: <PrescriptionCopyAdmin />,
   },
   {
     index: true,
     path: '/report',
-    element: (
-      <AdminLayout>
-        <ReportPage />,
-      </AdminLayout>
-    ),
+    element: <ReportPage />,
   },
   {
     index: true,
     path: '/report/stock_history',
-    element: (
-      <AdminLayout>
-        <StockHistory />,
-      </AdminLayout>
-    ),
+    element: <StockHistory />,
   },
   {
     index: true,
     path: '/promotions',
-    element: (
-      <AdminLayout>
-        <PromotionPage />,
-      </AdminLayout>
-    ),
+    element: <PromotionPage />,
   },
   {
     index: true,
     path: '/sales_report',
-    element: (
-      <AdminLayout>
-        <SalesReport />,
-      </AdminLayout>
-    ),
+    element: <SalesReport />,
   },
 
   { index: true, path: '/*', element: <>ERROR</> },

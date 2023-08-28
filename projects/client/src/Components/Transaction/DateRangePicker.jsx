@@ -16,14 +16,14 @@ const DateRangePicker = (props) => {
 
   const formatDate = (date) => format(date, 'yyyy-MM-dd');
 
-  const clickHandler = () => {
-    setOpen(false);
-    // dispatch();
-    //   getDataGraph({
-    //     start: formatDate(range[0].startDate),
-    //     end: formatDate(range[0].endDate),
-    //   }),
-  };
+  // const clickHandler = () => {
+  //   setOpen(false);
+  //   // dispatch();
+  //   //   getDataGraph({
+  //   //     start: formatDate(range[0].startDate),
+  //   //     end: formatDate(range[0].endDate),
+  //   //   }),
+  // };
 
   return (
     <div className="hidden md:block min-w-[40%] ">
@@ -51,12 +51,12 @@ const DateRangePicker = (props) => {
           )}
         </div>
         <div className="flex items-center">
-          {/* <button
+          <button
             className="btn btn-md bg-primary text-white"
-            onClick={() => clickHandler()}
+            onClick={() => props?.clickHandler()}
           >
             SEARCH
-          </button> */}
+          </button>
         </div>
       </div>
 

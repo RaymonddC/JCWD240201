@@ -17,6 +17,7 @@ export default function Transaction() {
   const { txStatuses } = useSelector((state) => state.txStatus);
   const { transactions } = useSelector((state) => state.transaction);
   const [togle, setTogle] = useState(false);
+  const [toggleDateRange, setToggleDateRange] = useState(false);
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedStatus, setSelectedStatus] = useState('Waiting for payment');
@@ -46,7 +47,7 @@ export default function Transaction() {
         date: range[0],
       }),
     );
-  }, [debouncedSearchValue, selectedStatusId, range, togle]);
+  }, [debouncedSearchValue, selectedStatusId, togle, toggleDateRange]);
 
   useEffect(() => {
     if (selectedStatus) queryParams['status'] = selectedStatus;
@@ -65,8 +66,8 @@ export default function Transaction() {
           </h3>
         </div>
       </div>
-      <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-4">
-        <div className="sticky z-10 top-0 py-3 bg-white">
+      <div className="text-[16px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg pb-4">
+        <div className="sticky z-10 top-0 pt-7 pb-3 bg-white px-4 rounded-lg">
           <div className="top flex items-center justify-between">
             <input
               type="text"
@@ -76,7 +77,11 @@ export default function Transaction() {
                 setSearch(e.target.value);
               }}
             />
-            <DateRangePicker range={range} setRange={setRange} />
+            <DateRangePicker
+              range={range}
+              setRange={setRange}
+              clickHandler={() => setToggleDateRange(!toggleDateRange)}
+            />
           </div>
           <div className="status flex overflow-x-auto">
             {/* <span className="font-bold">Status</span> */}
@@ -100,7 +105,7 @@ export default function Transaction() {
             })}
           </div>
         </div>
-        <div className="div ">
+        <div className="div px-4 pb-4">
           {transactions.map((value) => {
             return (
               <TransactionCard

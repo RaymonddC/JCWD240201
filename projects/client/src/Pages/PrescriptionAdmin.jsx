@@ -38,7 +38,7 @@ export default function PrescriptionAdmin() {
         confirmation: confirmation,
         sort: sort,
         page: page,
-        limit: 1,
+        limit: 5,
       }),
     );
   }, [debouncedSearchValue, confirmation, sort, page]);
@@ -46,7 +46,7 @@ export default function PrescriptionAdmin() {
   return (
     <div>
       <h1>Prescription</h1>
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-4 gap-2">
         <input
           type="text"
           placeholder="Search user"
@@ -55,7 +55,7 @@ export default function PrescriptionAdmin() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <div className="dropdown dropdown-end hidden md:block">
-          <label tabIndex={0} className="btn btn-secondary">
+          <label tabIndex={0} className="btn btn-primary">
             Sort by <MdArrowDropDown size={25} />
           </label>
           <ul
@@ -71,7 +71,7 @@ export default function PrescriptionAdmin() {
           </ul>
         </div>
         <div className="dropdown dropdown-end hidden md:block">
-          <label tabIndex={0} className="btn btn-secondary">
+          <label tabIndex={0} className="btn btn-primary">
             Status <MdArrowDropDown size={25} />
           </label>
           <ul

@@ -1,5 +1,6 @@
 const { error } = require('console');
 const midtransClient = require('midtrans-client');
+const axios = require('axios');
 
 let snap = new midtransClient.Snap({
   // Set to true if you want Production Environment (accept real transaction).
@@ -12,10 +13,18 @@ const date = new Date();
 const getMidtransSnap = async (values) => {
   try {
     console.log(date.toJSON());
+    const count =
+      (values.transaction.payment_id &&
+        Number(values.transaction.payment_id.split('-')[2]) + 1) ||
+      1;
+    const orderId = '100-' + values.transaction.id + '-' + count;
     let parameter = {
       transaction_details: {
-        order_id: '100-' + values.transaction.id,
-        gross_amount: values.totalPay,
+        order_id: orderId,
+        gross_amount:
+          values.transaction.total_price +
+          values.transaction.shipment_fee -
+          values.transaction.total_discount,
       },
       credit_card: {
         secure: true,
@@ -47,10 +56,14 @@ const getMidtransSnap = async (values) => {
             price: value.price,
           };
         }),
-        { price: values.shippingFee, name: 'Shipping Fee', quantity: 1 },
+        {
+          price: values.transaction.shipment_fee,
+          name: 'Shipping Fee',
+          quantity: 1,
+        },
         {
           name: 'Discount',
-          price: -values.totalDiscount,
+          price: -values.transaction.total_discount,
           quantity: 1,
           // id: 'D01',
         },
@@ -78,10 +91,29 @@ const getMidtransSnap = async (values) => {
     const { token, redirect_url } = await snap.createTransaction(parameter);
 
     console.log('transactionToken:', token, redirect_url);
-    return { paymentToken: token, redirect_url };
+    return { paymentToken: token, redirect_url, orderId };
   } catch (error) {
     throw error;
   }
 };
 
-module.exports = { getMidtransSnap };
+const getPaymentStatusMidtrans = async (values) => {
+  try {
+    return await axios.get(
+      `${'https://api.sandbox.midtrans.com/v2/'}${values.order_id}${'/status'}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        auth: {
+          username: process.env.MIDTRANS_SERVER_KEY + ':',
+        },
+      },
+    );
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = { getMidtransSnap, getPaymentStatusMidtrans };

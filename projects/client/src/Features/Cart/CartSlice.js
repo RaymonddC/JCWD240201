@@ -25,6 +25,8 @@ const initialState = {
   promotionActive: null,
   amountPromotion: 0,
   minimumPricePromo: 0,
+  maximumPromo: null,
+  promoDisc: 0,
 };
 
 export const CartSlice = createSlice({
@@ -44,6 +46,10 @@ export const CartSlice = createSlice({
       initialState.totalPrice = action.payload.totalPrice;
       initialState.discount = action.payload.discount;
       initialState.weight = action.payload.weight;
+      initialState.amountPromotion = Math.min(
+        Math.round((action.payload.totalPrice * initialState.promoDisc) / 100),
+        initialState.maximumPromo,
+      );
     },
     setPrescriptionCarts: (initialState, action) => {
       initialState.prescriptionCarts = action.payload;
@@ -55,6 +61,8 @@ export const CartSlice = createSlice({
       initialState.promotionActive = action.payload.id;
       initialState.amountPromotion = action.payload.amount;
       initialState.minimumPricePromo = action.payload.minPrice;
+      initialState.maximumPromo = action.payload.maxPromo;
+      initialState.promoDisc = action.payload.promoDisc;
     },
   },
 });

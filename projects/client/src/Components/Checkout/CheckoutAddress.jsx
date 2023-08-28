@@ -39,7 +39,10 @@ export default function CheckoutAddress() {
           ) : null}
         </p>
         <p>{selectedAddress?.phone_number}</p>
-        <p>{selectedAddress?.address}</p>
+        <p>
+          {selectedAddress?.address}, {selectedAddress?.city_name},{' '}
+          {selectedAddress?.province_name}
+        </p>
         {/* <p>{`${cityUser.city_name}, ${cityUser.province}, ${cityUser.postal_code}`}</p> */}
       </div>
       <div className="py-4 border-b-2 border-[#D5D7DD]">

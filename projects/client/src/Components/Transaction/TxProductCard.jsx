@@ -3,9 +3,11 @@ import Logo from '../../utils/images/Medicore.png';
 import { toast } from 'react-hot-toast';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
 import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 
 const TxProductCard = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleAddToCart = (id) => {
     if (props.txDet.prescription_image) {
       return toast.error('This product requires prescription');
@@ -18,7 +20,12 @@ const TxProductCard = (props) => {
   };
 
   return (
-    <div className="flex border border-slate-200 p-3">
+    <div
+      className="flex border border-slate-200 p-3"
+      onClick={() => {
+        navigate(`/products/${props.txDet.product_id}`);
+      }}
+    >
       <div className="prod w-2/3 flex border-r mr-2">
         <div className="img">
           <img
@@ -55,7 +62,8 @@ const TxProductCard = (props) => {
           className={`border rounded-lg border-primary py-1 ${
             props.txDet.prescription_image ? 'hidden' : ''
           }`}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             handleAddToCart();
           }}
         >

@@ -16,7 +16,7 @@ export function TableTopSales() {
         {topSale.length ? (
           topSale.map((value, index) => {
             return (
-              <tr>
+              <tr key={index}>
                 <th className="whitespace-nowrap">{index + 1}</th>
                 <td className="whitespace-nowrap">{value.name}</td>
                 <td className="whitespace-nowrap">{value.quantity_closed}</td>
