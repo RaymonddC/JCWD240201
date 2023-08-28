@@ -310,11 +310,8 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    console.log(error + 'luar');
-    return res.status(500).send({
-      data: error,
-    });
-    // next(error);
+    console.log(error);
+    next(error);
   }
 };
 

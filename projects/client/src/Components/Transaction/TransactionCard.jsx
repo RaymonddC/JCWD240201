@@ -14,6 +14,7 @@ import {
 } from '../../Features/Transaction/TransactionSlice';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
+import moment from 'moment';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
@@ -24,22 +25,11 @@ const TransactionCard = (props) => {
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(true);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
-  const dateTime = new Date(props.tx.createdAt);
-  const date = dateTime
-    .toLocaleDateString('EN-us', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-    .split(',');
 
-  const time = dateTime.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    // timeZoneName: 'short',
-  });
+  const dateTime = new Date(props.tx.createdAt);
+  console.log(moment(dateTime));
+  const date = moment(dateTime);
+
   const transactionStatusId =
     props?.tx?.transaction_histories[0]?.transaction_status_id;
   const transactionStatus =
@@ -80,9 +70,7 @@ const TransactionCard = (props) => {
   return (
     <div className="div border-b border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3 px-2">
-        <p>
-          {date[0]}, {date[1]} {date[2]}, {time} WIB
-        </p>
+        <p>{date.format('dddd, MMMM Do YYYY, HH:mm')}</p>
         <p>{props.tx.transaction_histories[0].transaction_status.status}</p>
       </div>
       <div className="product flex justify-between  border border-x-0 py-3">

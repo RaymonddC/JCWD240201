@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutAddress from '../Components/Checkout/CheckoutAddress';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { getCartUserAsync } from '../Features/Cart/CartSlice';
+import { getCartUserAsync, newActivePromo } from '../Features/Cart/CartSlice';
 import ShippingMethod from '../Components/Checkout/ShippingMethod';
 import { toast } from 'react-hot-toast';
 import { checkoutTxSlice } from '../Features/Checkout/CheckoutSlice';
@@ -43,8 +43,6 @@ export default function Checkout() {
 
   const [tokenMidtrans, setTokenMidtrans] = useState(null);
 
-  console.log(shipping);
-
   useEffect(() => {
     dispatch(getCartUserAsync());
 
@@ -79,7 +77,6 @@ export default function Checkout() {
                 return (
                   <div key={value?.id} className="flex gap-2">
                     <div>
-                      {/* <div className="w-[100px] h-[100px] bg-primary"> */}
                       <img
                         className="h-20 w-20"
                         src={
@@ -94,7 +91,6 @@ export default function Checkout() {
                         }
                         alt={'Product'}
                       />
-                      {/* </div> */}
                     </div>
                     <div>
                       <p>{value?.product?.name}</p>
@@ -134,7 +130,18 @@ export default function Checkout() {
                 navigate,
               ),
             );
-            console.log(midtransToken);
+            dispatch(
+              newActivePromo(
+                {
+                  id: null,
+                  amount: 0,
+                  minPrice: 0,
+                  maxPromo: null,
+                  promoDisc: null,
+                },
+                () => {},
+              ),
+            );
             if (paymentMethod === 'paymentGateway')
               setTokenMidtrans(midtransToken);
           }}

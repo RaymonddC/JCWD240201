@@ -26,13 +26,13 @@ const CartSummary = (props) => {
               ? toast.error('Select Your Cart')
               : setOpenPromotionModal(true);
           }}
-          className={`promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg px-4 h-16  gap-3 hover:cursor-pointer ${
+          className={`promo border text-[1em] md:text-[1.5em] flex items-center  justify-between rounded-lg h-11 px-4 md:h-16  gap-3 hover:cursor-pointer ${
             promotionActive ? ' border-primary' : ''
           }`}
         >
           <CiDiscount1 size={'1.5em'} />
           {promotionActive ? (
-            <div className="w-full text-base">
+            <div className="w-full text-[1em] md:text-base py-1">
               <p>Applied Discount</p>
               <p className="font-bold">
                 Rp{amountPromotion?.toLocaleString(['id'])}
@@ -73,7 +73,7 @@ const CartSummary = (props) => {
           </div>
         </div>
         <div className="total flex md:block items-center">
-          <div className="lastPrice md:flex flex-grow justify-between  my-2 ">
+          <div className="lastPrice md:flex flex-grow justify-between  my-1 ">
             <p className="md:font-bold text-[0.8em] md:text-[1.5em] lg:text-[2em]">
               Total Price
             </p>

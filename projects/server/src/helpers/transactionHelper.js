@@ -17,21 +17,30 @@ const { sequelize } = require('../models');
 const getUserTransactions = async (whereQuery, orderBy) => {
   try {
     if (whereQuery.dates.startDate) {
+      let startDate = new Date(whereQuery.dates.startDate + '');
+      let endDate = new Date(whereQuery.dates.endDate + '');
+
       whereQuery.transaction = {
         ...whereQuery.transaction,
         [Op.and]: [
           sequelize.where(
             sequelize.fn('date', sequelize.col('transaction.createdAt')),
             '>=',
-            whereQuery.dates.startDate,
+            new Date(startDate.setHours(startDate.getHours() + 7)),
           ),
           sequelize.where(
             sequelize.fn('date', sequelize.col('transaction.createdAt')),
             '<=',
-            whereQuery.dates.endDate,
+            new Date(endDate.setHours(endDate.getHours() + 24 + 7)),
           ),
         ],
       };
+      console.log(
+        startDate,
+        endDate.setDate(startDate.getDate() + 1),
+        endDate.toLocaleString(),
+        new Date(endDate),
+      );
     }
 
     let includes = [];

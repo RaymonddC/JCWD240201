@@ -9,13 +9,16 @@ import DateRangePicker from '../Components/Transaction/DateRangePicker';
 import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
 import { getAllTransactionSlice } from '../Features/Transaction/TransactionSlice';
+import Pagination from '../Components/Layout/Pagination';
 
 export default function Transaction() {
   let token = localStorage.getItem('token');
   const dispatch = useDispatch();
 
   const { txStatuses } = useSelector((state) => state.txStatus);
-  const { transactions } = useSelector((state) => state.transaction);
+  const { transactions, totalPages } = useSelector(
+    (state) => state.transaction,
+  );
   const [togle, setTogle] = useState(false);
   const [toggleDateRange, setToggleDateRange] = useState(false);
   const [search, setSearch] = useState('');
@@ -29,6 +32,7 @@ export default function Transaction() {
       key: 'selection',
     },
   ]);
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
 
   let queryParams = {};
 
@@ -40,19 +44,28 @@ export default function Transaction() {
   }, []);
 
   useEffect(() => {
+    if (Number(searchParams.get('page')) === page) {
+      setPage(1);
+      // queryParams['page'] = 1;
+    }
+    if (page) {
+      queryParams['page'] = page;
+    }
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
+    if (selectedStatus) queryParams['status'] = selectedStatus;
+    setSearchParams(queryParams);
     dispatch(
       getAllTransactionSlice({
         selectedStatusId,
         debouncedSearchValue,
+        page,
+        limitPage: 5,
         date: range[0],
       }),
     );
-  }, [debouncedSearchValue, selectedStatusId, togle, toggleDateRange]);
-
-  useEffect(() => {
-    if (selectedStatus) queryParams['status'] = selectedStatus;
-    setSearchParams(queryParams);
-  }, [selectedStatus]);
+  }, [page, debouncedSearchValue, togle, toggleDateRange, selectedStatusId]);
 
   if (!token) return <Navigate to={'/login'} />;
 
@@ -118,6 +131,11 @@ export default function Transaction() {
           })}
         </div>
       </div>
+      {totalPages > 0 && (
+        <div className="pagination ">
+          <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

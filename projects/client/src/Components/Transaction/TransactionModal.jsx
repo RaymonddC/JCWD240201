@@ -5,6 +5,7 @@ import { getTransactionSlice } from '../../Features/Transaction/TransactionSlice
 import TxProductCard from './TxProductCard';
 import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
 import TransactionStatusCard from './TransactionStatusCard';
+import moment from 'moment';
 
 const TransactionModal = (props) => {
   const dispatch = useDispatch();
@@ -20,15 +21,7 @@ const TransactionModal = (props) => {
   console.log(transaction);
 
   const dateTime = new Date(transaction?.createdAt);
-  const date = dateTime.toLocaleString('EN-us', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
-  // .split('');
+  const date = moment(dateTime);
 
   return (
     <div>
@@ -95,7 +88,7 @@ const TransactionModal = (props) => {
                 </div>
                 <div className="buyDate flex justify-between">
                   <p>Transaction Date</p>
-                  <p>{date} WIB</p>
+                  <p>{date.format('MMM DD, YYYY, HH:mm')}</p>
                 </div>
               </div>
             </div>

@@ -4,7 +4,7 @@ export default function QnACardSkl(props) {
 
   for (let i = 0; i < props.limit; i++) {
     cardSkl.push(
-      <div key={`prodSKl${i}`} className="py-3 flex justify-center">
+      <div key={`qnaSKl${i}`} className="py-3 flex justify-center">
         <div className="card card-compact h-30 w-full bg-base-100 shadow-xl mx-2">
           <ContentLoader height={120} width={700}>
             <rect x="10" y="20" rx="8" ry="8" width="400" height="20" />
