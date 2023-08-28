@@ -30,6 +30,7 @@ export default function QuestionDetails() {
   const answerId = QnAStore?.questions?.answers?.[0]?.id;
   const answerText = useRef();
   const [disabled, setDisabled] = useState(true);
+  const [toggle, setToggle] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   const onEditorStateChange = (newEditorState) => {
@@ -46,8 +47,7 @@ export default function QuestionDetails() {
 
   useEffect(() => {
     dispatch(getQuestionDetail({ id: Number(id) }));
-    console.log(answerText?.current?.value);
-  }, [dispatch, id, answerText, disabled]);
+  }, [id, answerText, disabled, toggle]);
   if (role === 1) {
     return (
       <>
@@ -116,8 +116,8 @@ export default function QuestionDetails() {
                           user_id: userId,
                         }),
                       );
+                    setDisabled(true)
                     }
-                    setDisabled(true);
                   }}
                   className=" btn btn-primary"
                 >
@@ -161,7 +161,7 @@ export default function QuestionDetails() {
                       user_id: userId,
                     }),
                   );
-                  setDisabled(true);
+                  setToggle(!toggle);
                 }}
                 className=" btn btn-primary"
               >
@@ -176,7 +176,7 @@ export default function QuestionDetails() {
     return (
       <>
         <div className="flex flex-col items-center w-full">
-          <div className='flex w-full max-w-3xl justify-start'>
+          <div className="flex w-full max-w-3xl justify-start">
             <Link to="/discussions">
               <button className="btn btn-ghost">
                 <MdOutlineArrowBack size={25} /> back to dicussions
