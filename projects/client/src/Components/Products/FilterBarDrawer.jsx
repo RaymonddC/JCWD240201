@@ -41,7 +41,7 @@ export default function FilterBarDrawer(props) {
                 type="text"
                 placeholder="Search"
                 value={props.value}
-                className="input input-bordered w-full md:w-96 mx-3"
+                className="input input-bordered w-full  mx-3"
                 onChange={(e) => {
                   // if (e.target.value.length > 2 || e.target.value.length === 0)
                   props?.setSearch(e.target.value);
@@ -53,7 +53,10 @@ export default function FilterBarDrawer(props) {
               ) : (
                 <div className="dropdown dropdown-end hidden md:block mr-3">
                   <label tabIndex={1} className="btn btn-primary text-white">
-                    Sort by <MdArrowDropDown size={25} />
+                    <div className="flex items-center">
+                      <div className='w-20'>Sort by</div>
+                      <MdArrowDropDown size={25} />
+                    </div>
                   </label>
                   <ul
                     tabIndex={1}
