@@ -115,7 +115,7 @@ const Cart = () => {
       </p>
       <div className="flex justify-between">
         <div
-          className={`card card-compact w-[100%] md:w-[65%] bg-base-100 shadow-xl mb-[7em] md:mb-0 max-w-[1000px] ${
+          className={`card card-compact w-[100%] bg-base-100 shadow-xl md:w-[65%] mb-[7em] md:mb-0 max-w-[1000px] ${
             totalCart === 0 ? 'hidden' : ''
           } `}
         >

@@ -596,7 +596,7 @@ const cancelTransaction = async (req, res, next) => {
       });
       await Promise.all(
         prescriptionDetail.map(async (value) => {
-          if (unit === 0) {
+          if (value.unit === 0) {
             const stockProduct = await ClosedStock.findOne({
               where: { product_id: value.product_id },
             });

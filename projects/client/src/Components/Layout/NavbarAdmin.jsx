@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutAsync, onSaveUser } from '../../Features/User/UserSlice';
-import Logo from '../../utils/images/logoHealthyMed.svg';
+import Logo from '../../utils/images/Medicore.png';
 import TransactionIcon from '../../utils/images/Transaction.svg';
 import { BiSolidReport } from 'react-icons/bi';
 import { GiMedicines } from 'react-icons/gi';
@@ -20,11 +20,11 @@ export default function NavbarAdmin() {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
   return (
-    <div className="drawer w-full sm:hidden">
+    <div className="drawer w-full lg:hidden ">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content flex flex-col">
+      <div className="drawer-content flex flex-col ">
         {/* Navbar */}
-        <div className="w-full navbar bg-base-300">
+        <div className="w-full navbar bg-base-300 bg-white">
           <div className="flex-none lg:hidden">
             <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
               <svg
@@ -201,7 +201,7 @@ export default function NavbarAdmin() {
             </Link>
           </li>
           <li className="h-[260px] flex flex-col justify-end">
-            <div className="profile min-w-[100%] p-[13px] rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 lg:flex-row flex-col gap-2 lg:gap-0 items-center lg:items-start sm:flex">
+            <div className="profile min-w-[100%] p-[13px] rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 flex-row gap-2 lg:gap-0 items-center lg:items-start sm:flex">
               <div className={`detail align-middle grow text-left  my-auto`}>
                 <p className="username">{user?.username || 'Please Login'}</p>
                 <p className="email">

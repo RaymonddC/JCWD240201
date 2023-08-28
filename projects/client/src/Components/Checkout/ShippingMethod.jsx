@@ -13,19 +13,11 @@ export default function ShippingMethod(props) {
     (state) => state.checkout,
   );
 
-  // useEffect(() => {
-  //   if (courier) {
-  //     dispatch(
-  //       getCourierServiceSlice({
-  //         courier: courier,
-  //         origin: '501',
-  //         destination: selectedAddress.city_id,
-  //         weight: weight,
-  //       }),
-  //     );
-  //     dispatch(setShippingFee(0));
-  //   }
-  // }, [courier, selectedAddress]);
+  useEffect(() => {
+    return () => {
+      dispatch(setShippingFee(0));
+    };
+  }, []);
 
   const handleInputDuration = (e) => {
     const { name, value } = e.target;

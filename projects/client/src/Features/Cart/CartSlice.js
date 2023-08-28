@@ -27,6 +27,7 @@ const initialState = {
   minimumPricePromo: 0,
   maximumPromo: null,
   promoDisc: 0,
+  loadCarts: false,
 };
 
 export const CartSlice = createSlice({
@@ -63,6 +64,9 @@ export const CartSlice = createSlice({
       initialState.minimumPricePromo = action.payload.minPrice;
       initialState.maximumPromo = action.payload.maxPromo;
       initialState.promoDisc = action.payload.promoDisc;
+    },
+    setLoadCarts: (initialState, action) => {
+      initialState.loadCarts = action.payload;
     },
   },
 });
@@ -102,13 +106,18 @@ export const updateQtyAsync = (values) => async (dispatch) => {
 export const getCartUserAsync = () => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
+    dispatch(setLoadCarts(true));
     if (!token) {
+      dispatch(setLoadCarts(false));
       throw { message: 'No user' };
     }
 
     let { data } = await getUserCarts(token);
 
-    dispatch(onGetData(await processData(data.data)));
+    if (data.success) {
+      dispatch(onGetData(await processData(data.data)));
+      dispatch(setLoadCarts(false));
+    }
   } catch (error) {}
 };
 
@@ -231,6 +240,7 @@ export const {
   setPrescriptionCarts,
   setDetailprescriptionCart,
   onChangeActivePromo,
+  setLoadCarts,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;

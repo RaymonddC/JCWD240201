@@ -23,8 +23,7 @@ export default function Checkout() {
   const navigate = useNavigate();
   let token = localStorage.getItem('token');
   const { shippingFee } = useSelector((state) => state.checkout);
-  const { editAddressData, selectedAddress, cityUser, loadAddress } =
-    useSelector((state) => state.address);
+  const { loadAddress } = useSelector((state) => state.address);
   const {
     carts,
     totalCart,
@@ -33,6 +32,7 @@ export default function Checkout() {
     discount,
     promotionActive,
     amountPromotion,
+    loadCarts,
   } = useSelector((state) => state?.cart);
 
   const [shipping, setShipping] = useState({
@@ -42,8 +42,6 @@ export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState();
 
   const [tokenMidtrans, setTokenMidtrans] = useState(null);
-
-  console.log(shipping);
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -60,7 +58,8 @@ export default function Checkout() {
   }, [tokenMidtrans]);
 
   if (!token) return <Navigate to="/" />;
-  if (totalCart === 0 && loadAddress === false) return <Navigate to="/cart" />;
+  if (activeCart === 0 && loadAddress === false && loadCarts === false)
+    return <Navigate to="/cart" />;
   // if (!carts.length) return <Navigate to="/cart" />;
 
   return (
@@ -69,7 +68,7 @@ export default function Checkout() {
         Checkout
       </h1>
       <div className="flex justify-between mb-[151px] sm:mb-0">
-        <div className="w-full max-w-[1000px] flex flex-col gap-4">
+        <div className="w-full max-w-[1000px] flex flex-col gap-4 md:w-[65%]">
           <CheckoutAddress />
           <ShippingMethod setShipping={setShipping} shipping={shipping} />
           <PaymentMethod setPaymentMethod={setPaymentMethod} />
