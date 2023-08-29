@@ -123,8 +123,10 @@ const CartCard = (props) => {
             )}
             {!props.cart.confirmation ? (
               <p className="text-warning">Waiting for Confirmation</p>
+            ) : props.cart.confirmation === 0 ? (
+              <p>{props.cart.notes}</p>
             ) : (
-              ''
+              <p></p>
             )}
           </div>
           <div className="summary flex gap-2 leading-6 h-fit items-center">
@@ -145,16 +147,6 @@ const CartCard = (props) => {
         </div>
       </div>
       <div className="action flex justify-end text-[#009B90] gap-3 items-center py-1">
-        <div className="delete flex items-center">
-          <RiDeleteBin6Line
-            size={'18px'}
-            color="#009B90"
-            onClick={() => {
-              setOpenDeletemodal(true);
-              // dispatch(deleteCartAsync({ id: props.cart.id }));
-            }}
-          />
-        </div>
         <div className={`join join-horizontal ${isRacik ? 'hidden' : ''}`}>
           <button
             className=" join-item bg-[#daf8ff] btn btn-sm text-[#009B90]"
@@ -185,6 +177,15 @@ const CartCard = (props) => {
           >
             +
           </button>
+        </div>
+        <div className="delete flex items-center">
+          <RiDeleteBin6Line
+            size={'18px'}
+            color="#009B90"
+            onClick={() => {
+              setOpenDeletemodal(true);
+            }}
+          />
         </div>
       </div>
     </div>

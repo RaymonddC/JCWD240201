@@ -234,7 +234,9 @@ const getUserById = async (req, res, next) => {
     const User = db.user;
     const { getUser, validatePassword } = require('../helpers/authHelper');
 
-    if (!user) throw { message: 'user not found!', code: 400 };
+    if (!user) {
+      throw { message: 'user not found!', code: 400 };
+    }
     return res.status(200).send({
       success: true,
       message: 'Get user success',
