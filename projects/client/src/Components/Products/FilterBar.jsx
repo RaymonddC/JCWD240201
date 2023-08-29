@@ -36,7 +36,9 @@ export default function FilterBar(props) {
           className={
             props.add
               ? 'input input-bordered w-full max-w-2xl mx-3'
-              : 'input input-bordered w-full max-w-3xl mx-3'
+              : props.product
+              ? 'input input-bordered w-full max-w-3xl mx-3'
+              : 'input input-bordered w-full md:w-96 mx-3'
           }
           onChange={(e) => {
             // if (e.target.value.length > 2 || e.target.value.length === 0)

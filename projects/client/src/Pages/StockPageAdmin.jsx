@@ -89,6 +89,7 @@ export default function StockPageAdmin() {
             setSortType={setSortType}
             setSortOrder={setSortOrder}
             sortBy={true}
+            product={true}
           />
         </div>
         <div>{productMap}</div>
