@@ -92,6 +92,8 @@ const checkout = async (req, res, next) => {
     }
     //checkDiscount
     const address = await getOldIsSelected(userId);
+    // balikin address to main
+
     // console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
@@ -124,10 +126,6 @@ const checkout = async (req, res, next) => {
         if (value.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
-            console.log(value.dataValues);
-            console.log(value.dataValues.product.promotions);
-            console.log(value.dataValues.disc);
-            // console.log(value.dataValues.product.promotions);
             if (value.dataValues.disc && value.dataValues.disc != 0) {
               //promo disc
               console.log(value.dataValues, 'promoooooooooooooooooooo');
@@ -139,9 +137,7 @@ const checkout = async (req, res, next) => {
                   code: 400,
                   data: value,
                 };
-              // throw {};
             }
-            // throw { message: 'rizki a*g' };
             //update promo limit
             promotionData.push({
               ...value.product.promotions[0],
@@ -150,24 +146,25 @@ const checkout = async (req, res, next) => {
                 (value.disc == 0 ? 1 : value.qty),
             });
           }
-
           // cekStock
+
+          const reserveStock =
+            value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
+              ? value.qty +
+                (value.product.promotions[0].get -
+                  value.product.promotions[0].buy)
+              : //selisih, karna tdk berlaku kelipatan
+                value.qty;
+
           if (
             (value.product.closed_stocks.length !== 0,
-            value.product.closed_stocks[0].total_stock < value.qty)
+            value.product.closed_stocks[0].total_stock < reserveStock)
           ) {
             throw { message: 'not enough stocks', code: 400, data: value };
           }
 
           const newStock =
-            value.product.closed_stocks[0].total_stock -
-            (value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
-              ? value.qty +
-                (value.product.promotions[0].get -
-                  value.product.promotions[0].buy)
-              : //selisih, karna tdk berlaku kelipatan
-                value.qty);
-
+            value.product.closed_stocks[0].total_stock - reserveStock;
           closedStockData.push({
             ...value.product.closed_stocks[0].dataValues,
             total_stock: newStock,
@@ -179,17 +176,15 @@ const checkout = async (req, res, next) => {
             transaction_id: transaction.id,
             unit: 0,
             stock_history_type_id: 4,
-            qty: value.qty,
+            qty: reserveStock,
             action: 'out',
             total_stock: newStock,
           });
         } else {
           pricePresc = await getPricePrescription(value.id);
-
-          console.log(pricePresc[0].total_price);
-
-          // throw {};
           totalAllPriceDB += Number(pricePresc[0].total_price);
+
+          // ini berlaku cuma kalo harus open ya bang
           const prescriptionCarts = await PrescriptionCartDB.findAll({
             where: {
               cart_id: value.id,
@@ -198,13 +193,18 @@ const checkout = async (req, res, next) => {
 
           await Promise.all(
             prescriptionCarts.map(async (prescCart) => {
+              // if(prescCart.unit_conversion)
               return await unitConversionHelper(
                 {
                   product_id: prescCart.product_id,
                   qty: prescCart.qty,
+                  unit_conversion: prescCart.unit_conversion,
                 },
                 t,
               );
+              // else{
+
+              // }
             }),
           ).catch((error) => {
             throw error;

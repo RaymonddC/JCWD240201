@@ -33,7 +33,7 @@ const DateRangePicker = (props) => {
           onClick={() => setOpen((open) => !open)}
         >
           {!props.range[0].startDate ? (
-            <span> All</span>
+            <span className="text-gray-400"> Filter by Date (All)</span>
           ) : (
             <>
               <span>{`${format(
@@ -55,7 +55,7 @@ const DateRangePicker = (props) => {
             className="btn btn-md bg-primary text-white"
             onClick={() => props?.clickHandler()}
           >
-            SEARCH
+            FILTER
           </button>
         </div>
       </div>

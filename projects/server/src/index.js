@@ -41,7 +41,7 @@ const {
   prescriptionCartRoute,
   txHistoryRoute,
   stockHistoryRoute,
-  promoTypeRoute
+  promoTypeRoute,
 } = require('./routers');
 
 app.use('/auth', authRoute);
@@ -93,17 +93,17 @@ app.get('/api/greetings', (req, res, next) => {
 //   }
 // });
 
-app.use((err, req, res, next) => {
-  const errStatus = err.code || 500;
-  const errMessage = err.message || 'Something went wrong';
-  return res.status(errStatus).json({
-    success: false,
-    status: errStatus,
-    message: errMessage,
-    stack: err.stack,
-    data: err.data || null,
-  });
-});
+// app.use((err, req, res, next) => {
+//   const errStatus = err.code || 500;
+//   const errMessage = err.message || 'Something went wrong';
+//   return res.status(errStatus).json({
+//     success: false,
+//     status: errStatus,
+//     message: errMessage,
+//     stack: err.stack,
+//     data: err.data || null,
+//   });
+// });
 //#endregion
 
 //#region CLIENT

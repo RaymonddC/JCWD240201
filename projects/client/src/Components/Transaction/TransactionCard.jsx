@@ -14,6 +14,7 @@ import {
 } from '../../Features/Transaction/TransactionSlice';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
+import moment from 'moment';
 
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
@@ -24,22 +25,11 @@ const TransactionCard = (props) => {
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
-  const dateTime = new Date(props.tx.createdAt);
-  const date = dateTime
-    .toLocaleDateString('EN-us', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-    .split(',');
 
-  const time = dateTime.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    // timeZoneName: 'short',
-  });
+  const dateTime = new Date(props.tx.createdAt);
+  console.log(moment(dateTime));
+  const date = moment(dateTime);
+
   const transactionStatusId =
     props?.tx?.transaction_histories[0]?.transaction_status_id;
   const transactionStatus =
@@ -81,10 +71,10 @@ const TransactionCard = (props) => {
   return (
     <div className="div border-b border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3 px-2">
-        <p>
-          {date[0]}, {date[1]} {date[2]}, {time} WIB
+        <p>{date.format('dddd, MMMM Do YYYY, HH:mm')}</p>
+        <p className="badge badge-primary p-3 font-bold">
+          {props.tx.transaction_histories[0].transaction_status.status}
         </p>
-        <p>{props.tx.transaction_histories[0].transaction_status.status}</p>
       </div>
       <div className="product flex justify-between  border border-x-0 py-3">
         <div className="img">
@@ -135,35 +125,55 @@ const TransactionCard = (props) => {
         {transactionStatus === 'Waiting for payment' ||
         transactionStatusId === 1 ? (
           <>
-            {!disabled ? (
-              <button
-                // disabled={disabled}
-                className="btn btn-sm btn-primary text-white"
-              >
-                <input
-                  className="hidden"
-                  name="paymentProof"
-                  id="paymentProof"
-                  type="file"
-                  ref={paymentProofRef}
-                  onChange={(e) => {
-                    setPaymentProofFile(e.target.files[0]);
-                    setdisabled(true);
-                    // setTimeout(() => {
-                    //   onSubmit();
-                    //   // setdisabled(false);
-                    // }, 1000);
-                  }}
-                />
-                <label htmlFor="paymentProof">Upload payment proof</label>
-              </button>
+            {!props.tx.payment_token ? (
+              !disabled ? (
+                <button
+                  // disabled={disabled}
+                  className="btn btn-sm btn-primary text-white"
+                >
+                  <input
+                    className="hidden"
+                    name="paymentProof"
+                    id="paymentProof"
+                    type="file"
+                    ref={paymentProofRef}
+                    onChange={(e) => {
+                      setPaymentProofFile(e.target.files[0]);
+                      setdisabled(true);
+                      // setTimeout(() => {
+                      //   onSubmit();
+                      //   // setdisabled(false);
+                      // }, 1000);
+                    }}
+                  />
+                  <label htmlFor="paymentProof">Upload payment proof</label>
+                </button>
+              ) : (
+                <button
+                  className="btn btn-sm btn-primary text-white "
+                  // disabled={disabled}
+                  onClick={() => onSubmit()}
+                >
+                  Submit
+                </button>
+              )
             ) : (
               <button
                 className="btn btn-sm btn-primary text-white "
-                // disabled={disabled}
-                onClick={() => onSubmit()}
+                disabled={!props.tx.payment_token}
+                onClick={() => {
+                  dispatch(
+                    openMidtransSnapSlice(
+                      {
+                        tokenMidtrans: props.tx.payment_token,
+                        transactionId: props.tx.id,
+                      },
+                      navigate,
+                    ),
+                  );
+                }}
               >
-                Submit
+                Continue Payment
               </button>
             )}
             {/* <button
@@ -173,23 +183,7 @@ const TransactionCard = (props) => {
             >
               Submit
             </button> */}
-            <button
-              className="btn btn-sm btn-primary text-white "
-              disabled={!props.tx.payment_token}
-              onClick={() => {
-                dispatch(
-                  openMidtransSnapSlice(
-                    {
-                      tokenMidtrans: props.tx.payment_token,
-                      transactionId: props.tx.id,
-                    },
-                    navigate,
-                  ),
-                );
-              }}
-            >
-              PaymentGateway
-            </button>
+
             {/* <ConfirmationModal
               title="Confirmation"
               textLine1="Are you sure you want to confirm the arrival of this order?"
@@ -199,7 +193,7 @@ const TransactionCard = (props) => {
             /> */}
 
             <button
-              className="btn btn-sm btn-error text-white "
+              className="btn btn-sm btn-primary btn-outline "
               disabled={false}
               onClick={() => setOpenDeletemodal(true)}
             >

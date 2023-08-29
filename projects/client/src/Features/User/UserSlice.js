@@ -69,6 +69,7 @@ export const keepLoginAsync = () => async (dispatch) => {
   } catch (error) {
     if (error?.response?.data?.message === 'jwt expired')
       localStorage.removeItem('token');
+    dispatch(onSaveUser({}));
   }
 };
 
