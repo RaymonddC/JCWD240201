@@ -33,7 +33,7 @@ export default function QnAUser() {
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
-        <div key={`cat${index}`}>
+        <div key={`cat${index}`} className='flex items-center'>
           <div
             onClick={() => setQuestionCategory(value.id)}
             className="btn btn-outline btn-accent btn-xs mx-3"
@@ -80,42 +80,44 @@ export default function QnAUser() {
 
   return (
     <>
-      <div className="pb-5">
-        <FilterBarDrawer
-          value={search}
-          setSearch={setSearch}
-          setSortType={setSortType}
-          setSortOrder={setSortOrder}
-          option={[
-            {
-              text: 'Oldest to latest',
-              sortType: 'updatedAt',
-              sortOrder: 'ASC',
-            },
-            {
-              text: 'Latest to oldest',
-              sortType: 'updatedAt',
-              sortOrder: 'DESC',
-            },
-          ]}
-        />
-        {/* <FilterBar
-          setSearch={setSearch}
-          setSortType={setSortType}
-          setSortOrder={setSortOrder}
-          option={[
-            {
-              text: 'Oldest to latest',
-              sortType: 'updatedAt',
-              sortOrder: 'ASC',
-            },
-            {
-              text: 'Latest to oldest',
-              sortType: 'updatedAt',
-              sortOrder: 'DESC',
-            },
-          ]}
-        /> */}
+      {/* <FilterBar
+      setSearch={setSearch}
+      setSortType={setSortType}
+      setSortOrder={setSortOrder}
+      option={[
+        {
+          text: 'Oldest to latest',
+          sortType: 'updatedAt',
+          sortOrder: 'ASC',
+        },
+        {
+          text: 'Latest to oldest',
+          sortType: 'updatedAt',
+          sortOrder: 'DESC',
+        },
+      ]}
+    /> */}
+      <div className="pb-5 w-full flex justify-center">
+        <div className='max-w-3xl w-full'>
+          <FilterBarDrawer
+            value={search}
+            setSearch={setSearch}
+            setSortType={setSortType}
+            setSortOrder={setSortOrder}
+            option={[
+              {
+                text: 'Oldest to latest',
+                sortType: 'updatedAt',
+                sortOrder: 'ASC',
+              },
+              {
+                text: 'Latest to oldest',
+                sortType: 'updatedAt',
+                sortOrder: 'DESC',
+              },
+            ]}
+          />
+        </div>
       </div>
 
       <div className="px-5">
@@ -130,7 +132,7 @@ export default function QnAUser() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div className=" p-3 flex overflow-auto">
+                <div className=" p-3 flex items-center overflow-auto">
                   <div
                     onClick={() => {
                       setQuestionCategory('');

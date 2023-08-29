@@ -34,14 +34,14 @@ export default function FilterBarDrawer(props) {
         />
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
-          <div className="w-full navbar flex  relative">
+          <div className="w-full flex  relative">
             <div className="flex w-full justify-center">
               <input
                 // ref={text}
                 type="text"
                 placeholder="Search"
                 value={props.value}
-                className="input input-bordered w-full  mx-3"
+                className="input input-bordered w-full  mr-3"
                 onChange={(e) => {
                   // if (e.target.value.length > 2 || e.target.value.length === 0)
                   props?.setSearch(e.target.value);
@@ -54,7 +54,7 @@ export default function FilterBarDrawer(props) {
                 <div className="dropdown dropdown-end hidden md:block mr-3">
                   <label tabIndex={1} className="btn btn-primary text-white">
                     <div className="flex items-center">
-                      <div className='w-20'>Sort by</div>
+                      <div className="w-20">Sort by</div>
                       <MdArrowDropDown size={25} />
                     </div>
                   </label>
@@ -100,7 +100,10 @@ export default function FilterBarDrawer(props) {
                 {priceRange ? (
                   <div className="dropdown dropdown-end hidden md:block">
                     <label tabIndex={1} className="btn btn-primary text-white">
-                      Price <MdArrowDropDown size={25} />
+                      <div className="flex items-center">
+                        <div className="w-20">Price</div>
+                        <MdArrowDropDown size={25} />
+                      </div>
                     </label>
                     <ul
                       tabIndex={1}
