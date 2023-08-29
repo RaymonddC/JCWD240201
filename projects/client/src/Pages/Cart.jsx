@@ -83,30 +83,30 @@ const Cart = () => {
     else setIsCheck(false);
   }, [carts, isCheck]);
 
-  // if (carts && totalCart === 0) {
-  //   return (
-  //     <>
-  //       <div className="text-lg font-bold">Start Add Product to cart</div>
-  //       <div className=" mt-10 flex justify-end pr-[10%]">
-  //         <article className="prose">
-  //           <Link to="/products">
-  //             <h3>See all</h3>
-  //           </Link>
-  //         </article>
-  //       </div>
-  //       <div className="flex flex-col mb-20 items-center justify-center">
-  //         <div className="w-full flex pl-[15%] ">
-  //           <article className="prose">
-  //             <h3>Jamu</h3>
-  //           </article>
-  //         </div>
-  //         <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
-  //           {productMap ? <>{productMap}</> : <ProductListSkl limit={9} />}
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // }
+  if (carts && totalCart === 0) {
+    return (
+      <>
+        <div className="text-lg font-bold">Start Add Product to cart</div>
+        <div className=" mt-10 flex justify-end pr-[10%]">
+          <article className="prose">
+            <Link to="/products">
+              <h3>See all</h3>
+            </Link>
+          </article>
+        </div>
+        <div className="flex flex-col mb-20 items-center justify-center">
+          <div className="w-full flex pl-[15%] ">
+            <article className="prose">
+              <h3>Jamu</h3>
+            </article>
+          </div>
+          <div className="flex overflow-auto w-[72%] p-4 space-x-4 rounded-box">
+            {productMap ? <>{productMap}</> : <ProductListSkl limit={9} />}
+          </div>
+        </div>
+      </>
+    );
+  }
   console.log(carts);
 
   return (

@@ -121,10 +121,24 @@ const CartCard = (props) => {
             ) : (
               ''
             )}
-            {!props.cart.confirmation ? (
-              <p className="text-warning">Waiting for Confirmation</p>
-            ) : props.cart.confirmation === 0 ? (
-              <p>{props.cart.notes}</p>
+            {props.cart.product.price === 0
+              ? console.log(
+                  props.cart.confirmation,
+                  props.cart.confirmation === false,
+                  !props.cart.confirmation,
+                )
+              : ''}
+            {Number(props.cart.product.price) === 0 ? (
+              props.cart.confirmation === false ? (
+                <>
+                  <p className="text-error">Prescription Rejected</p>
+                  <p className="text-error font-bold">
+                    Reason: {props.cart.notes}
+                  </p>
+                </>
+              ) : (
+                <p className="text-warning">Waiting for Confirmation</p>
+              )
             ) : (
               <p></p>
             )}

@@ -2,12 +2,13 @@ import React from 'react';
 import Logo from '../../utils/images/Medicore.png';
 import { toast } from 'react-hot-toast';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 const TxProductCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
   const handleAddToCart = (id) => {
     if (props.txDet.prescription_image) {
       return toast.error('This product requires prescription');
@@ -60,7 +61,9 @@ const TxProductCard = (props) => {
         </div>
         <button
           className={`border rounded-lg border-primary py-1 ${
-            props.txDet.prescription_image ? 'hidden' : ''
+            props.txDet.prescription_image || user.role?.role_name === 'admin'
+              ? 'hidden'
+              : ''
           }`}
           onClick={(e) => {
             e.stopPropagation();

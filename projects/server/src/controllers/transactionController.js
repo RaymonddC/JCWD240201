@@ -193,6 +193,7 @@ const checkout = async (req, res, next) => {
 
           await Promise.all(
             prescriptionCarts.map(async (prescCart) => {
+              // if(prescCart.unit_conversion)
               return await unitConversionHelper(
                 {
                   product_id: prescCart.product_id,
@@ -201,6 +202,9 @@ const checkout = async (req, res, next) => {
                 },
                 t,
               );
+              // else{
+
+              // }
             }),
           ).catch((error) => {
             throw error;

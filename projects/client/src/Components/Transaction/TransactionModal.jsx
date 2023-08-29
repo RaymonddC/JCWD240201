@@ -18,8 +18,6 @@ const TransactionModal = (props) => {
     dispatch(getTransactionSlice({ id: props.id }));
   }, []);
 
-  console.log(transaction);
-
   const dateTime = new Date(transaction?.createdAt);
   const date = moment(dateTime);
 
@@ -48,7 +46,13 @@ const TransactionModal = (props) => {
             <div className="status mb-1 py-2 bg-white px-6">
               <div className="transStatus  py-2 border-b text-base">
                 <div className="status flex justify-between">
-                  <p className="font-bold">Done</p>
+                  <p className="font-bold">
+                    {
+                      transaction.transaction_histories[
+                        transaction.transaction_histories.length - 1
+                      ].transaction_status.status
+                    }
+                  </p>
                   <button
                     className="text-primary flex items-center gap-1"
                     onClick={() => setOpenStatus(!openStatus)}
@@ -136,7 +140,7 @@ const TransactionModal = (props) => {
                   <p>Shipment</p>
                   <p>:</p>
                 </div>
-                <p className="col-span-3">{transaction.shipment}</p>
+                <p className="col-span-3 uppercase">{transaction.shipment}</p>
                 <div className="flex justify-between ">
                   <p>Resi Number</p>
                   <p>:</p>
