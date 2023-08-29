@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CheckoutAddress from '../Components/Checkout/CheckoutAddress';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { getCartUserAsync } from '../Features/Cart/CartSlice';
+import { getCartUserAsync, newActivePromo } from '../Features/Cart/CartSlice';
 import ShippingMethod from '../Components/Checkout/ShippingMethod';
 import { toast } from 'react-hot-toast';
 import { checkoutTxSlice } from '../Features/Checkout/CheckoutSlice';
@@ -57,6 +57,23 @@ export default function Checkout() {
     if (tokenMidtrans)
       dispatch(openMidtransSnapSlice({ tokenMidtrans }, navigate));
   }, [tokenMidtrans]);
+
+  //PaymentGateway
+  useEffect(() => {
+    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
+
+    let scriptTag = document.createElement('script');
+    scriptTag.src = midtransScriptUrl;
+
+    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY || '';
+    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
 
   if (!token) return <Navigate to="/" />;
   if (activeCart === 0 && loadAddress === false && loadCarts === false)
@@ -158,7 +175,18 @@ export default function Checkout() {
                     navigate,
                   ),
                 );
-                console.log(midtransToken);
+                dispatch(
+                  newActivePromo(
+                    {
+                      id: null,
+                      amount: 0,
+                      minPrice: 0,
+                      maxPromo: null,
+                      promoDisc: null,
+                    },
+                    () => {},
+                  ),
+                );
                 if (paymentMethod === 'paymentGateway')
                   setTokenMidtrans(midtransToken);
               }}

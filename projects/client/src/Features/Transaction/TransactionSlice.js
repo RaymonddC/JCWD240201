@@ -25,6 +25,7 @@ const initialState = {
   transaction: {},
   transactionDetails: [],
   totalPages: null,
+  isProcessing: false,
 };
 
 export const TransactionSlice = createSlice({
@@ -41,11 +42,15 @@ export const TransactionSlice = createSlice({
     onGetTxDetails: (initialState, action) => {
       initialState.transactionDetails = action.payload.data;
     },
+    onProcess: (initialState, action) => {
+      initialState.isProcessing = action.payload.data;
+    },
   },
 });
 
 export const getAllTransactionSlice = (values) => async (dispatch) => {
   try {
+    dispatch(onProcess(true));
     let token = localStorage.getItem('token');
 
     const { data } = await getUserTransactions(token, values);
@@ -54,6 +59,8 @@ export const getAllTransactionSlice = (values) => async (dispatch) => {
   } catch (error) {
     toast.error(error.message);
     console.log(error);
+  } finally {
+    dispatch(onProcess(false));
   }
 };
 export const updateTransactionHistorySlice = (data) => async (dispatch) => {
@@ -169,6 +176,6 @@ export const openMidtransSnapSlice = (values, navigate) => async (dispatch) => {
   }
 };
 
-export const { onGetData, onGetOne } = TransactionSlice.actions;
+export const { onGetData, onGetOne, onProcess } = TransactionSlice.actions;
 
 export default TransactionSlice.reducer;

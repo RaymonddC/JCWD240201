@@ -19,6 +19,7 @@ import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 
 import toast from 'react-hot-toast';
 import CartSummary from '../Components/Cart/CartSummary';
+import CartCardSkl from '../Components/Skeleton/CartCardSkl';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -39,18 +40,6 @@ const Cart = () => {
   const [isCheck, setIsCheck] = useState(false);
   const [isForceCheck, setIsForceCheck] = useState(null);
 
-  const ProductsStore = useSelector((state) => state?.products?.products);
-  let productMap;
-  if (totalCart === 0) {
-    productMap = ProductsStore?.data?.rows?.map((value, index) => {
-      return (
-        <div key={`product${index}`} className="carousel-item ">
-          <ProductCard data={value.product} />
-        </div>
-      );
-    });
-  }
-
   const handleQty = (e, calc, idx, checked) => {
     dispatch(
       updateQtyAsync({
@@ -62,6 +51,18 @@ const Cart = () => {
       }),
     );
   };
+
+  const ProductsStore = useSelector((state) => state?.products?.products);
+  let productMap;
+  if (totalCart === 0) {
+    productMap = ProductsStore?.data?.rows?.map((value, index) => {
+      return (
+        <div key={`product${index}`} className="carousel-item ">
+          <ProductCard data={value.product} />
+        </div>
+      );
+    });
+  }
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -82,7 +83,7 @@ const Cart = () => {
     else setIsCheck(false);
   }, [carts, isCheck]);
 
-  if (totalCart === 0) {
+  if (carts && totalCart === 0) {
     return (
       <>
         <div className="text-lg font-bold">Start Add Product to cart</div>
@@ -106,7 +107,7 @@ const Cart = () => {
       </>
     );
   }
-  // console.log(carts);
+  console.log(carts);
 
   return (
     <div className="min-h-[50vh]">
@@ -132,28 +133,30 @@ const Cart = () => {
                   setIsCheck(!isCheck);
                 }}
                 checked={isCheck}
+                disabled={!carts}
               />
               <p>Pilih Semua</p>
             </div>
             <div className="div">
-              {carts.map((value, idx) => {
-                return (
-                  <CartCard
-                    key={idx}
-                    cart={value}
-                    isCheck={isCheck}
-                    setCheck={setIsCheck}
-                    setQty={handleQty}
-                    idx={idx}
-                    isForceCheck={isForceCheck}
-                  />
-                );
-              })}
+              {carts.length ? (
+                carts.map((value, idx) => {
+                  return (
+                    <CartCard
+                      key={idx}
+                      cart={value}
+                      isCheck={isCheck}
+                      setCheck={setIsCheck}
+                      setQty={handleQty}
+                      idx={idx}
+                      isForceCheck={isForceCheck}
+                    />
+                  );
+                })
+              ) : (
+                <CartCardSkl limit={5} />
+              )}
             </div>
           </div>
-        </div>
-        <div className={`noCart ${totalCart === 0 ? '' : 'hidden'} `}>
-          <div className="p">Start Add Product to cart</div>
         </div>
         {/* //SummaryCard */}
         <div
