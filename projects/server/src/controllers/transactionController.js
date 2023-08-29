@@ -596,7 +596,7 @@ const cancelTransaction = async (req, res, next) => {
       });
       await Promise.all(
         prescriptionDetail.map(async (value) => {
-          console.log(value.product_id,value.transaction_id);
+          console.log(value.product_id, value.transaction_id);
           if (value.unit === 0) {
             const stockProduct = await ClosedStock.findOne({
               where: { product_id: value.product_id },
@@ -611,7 +611,7 @@ const cancelTransaction = async (req, res, next) => {
               where: { product_id: value.product_id },
             });
 
-            console.log(stockProduct,'>>>>>>>>', value.product_id);
+            console.log(stockProduct, '>>>>>>>>', value.product_id);
             openStockUpdateData.push({
               ...stockProduct.dataValues,
               qty: stockProduct.qty + value.qty,

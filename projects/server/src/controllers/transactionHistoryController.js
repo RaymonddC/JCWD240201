@@ -1,6 +1,3 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const Handlebars = require('handlebars');
 const fs = require('fs');
 const transporter = require('../helpers/transporter');
 const db = require('../models');
@@ -19,6 +16,7 @@ const {
 } = require('../helpers/transactionHistoryHelper');
 const txDB = db.transaction;
 const { sequelize } = require('../models');
+const moment = require('moment');
 
 const updateTxHistory = async (req, res, next) => {
   console.log('>>>> update tx history');

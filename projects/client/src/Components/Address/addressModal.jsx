@@ -184,7 +184,11 @@ export default function AddressModal(props) {
               >
                 close
               </button>
-              <button type="submit" className="btn btn-primary text-white">
+              <button
+                disabled={!formik.isValid || formik.isSubmitting}
+                type="submit"
+                className="btn btn-primary text-white"
+              >
                 SAVE
               </button>
             </div>

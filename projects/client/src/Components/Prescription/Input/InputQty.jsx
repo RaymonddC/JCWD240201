@@ -3,7 +3,7 @@ export default function InputQty(props) {
   return (
     <div className="flex flex-col">
       <label htmlFor="">Quantity</label>
-      <div className="join join-horizontal h-[48px] border border-primary">
+      <div className="join join-horizontal h-[48px] input input-bordered p-0">
         <button
           disabled={
             formik.values.unit_conversion && formik.values.qty > 1

@@ -57,7 +57,7 @@ export default function Profile() {
                     alt="profile"
                   />
                 ) : (
-                  <MdPerson size={100} className="rounded-full" />
+                  <MdPerson size={125} className="rounded-full" />
                 )}
 
                 <p className="font-bold md:text-[18px]">{user?.full_name}</p>

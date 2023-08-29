@@ -27,6 +27,8 @@ const initialState = {
   minimumPricePromo: 0,
   maximumPromo: null,
   promoDisc: 0,
+  loadCarts: false,
+  updatePrescriptionLoad: false,
 };
 
 export const CartSlice = createSlice({
@@ -63,6 +65,12 @@ export const CartSlice = createSlice({
       initialState.minimumPricePromo = action.payload.minPrice;
       initialState.maximumPromo = action.payload.maxPromo;
       initialState.promoDisc = action.payload.promoDisc;
+    },
+    setLoadCarts: (initialState, action) => {
+      initialState.loadCarts = action.payload;
+    },
+    setUpdatePrescriptionLoad: (initialState, action) => {
+      initialState.updatePrescriptionLoad = action.payload;
     },
   },
 });
@@ -102,13 +110,18 @@ export const updateQtyAsync = (values) => async (dispatch) => {
 export const getCartUserAsync = () => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
+    dispatch(setLoadCarts(true));
     if (!token) {
+      dispatch(setLoadCarts(false));
       throw { message: 'No user' };
     }
 
     let { data } = await getUserCarts(token);
 
-    dispatch(onGetData(await processData(data.data)));
+    if (data.success) {
+      dispatch(onGetData(await processData(data.data)));
+      dispatch(setLoadCarts(false));
+    }
   } catch (error) {}
 };
 
@@ -196,8 +209,9 @@ export const getPrescriptionCartSlice = (id) => async (dispatch) => {
 };
 
 export const updateConfirmationPrescriptionCartSlice =
-  (id, confirmation, navigate, notes) => async (dispatch) => {
+  (id, confirmation, navigate, setOpen, notes) => async (dispatch) => {
     try {
+      dispatch(setUpdatePrescriptionLoad(true));
       const token = localStorage.getItem('token');
       const response = await updateConfirmationPrescriptionCartAPI(
         token,
@@ -209,6 +223,8 @@ export const updateConfirmationPrescriptionCartSlice =
       if (response.data.success) {
         dispatch(getAllPrescriptionsCartsSlice());
         navigate('/prescription');
+        setOpen(false);
+        dispatch(setUpdatePrescriptionLoad(false));
       }
     } catch (error) {
       console.log(error);
@@ -231,6 +247,8 @@ export const {
   setPrescriptionCarts,
   setDetailprescriptionCart,
   onChangeActivePromo,
+  setLoadCarts,
+  setUpdatePrescriptionLoad,
 } = CartSlice.actions;
 
 export default CartSlice.reducer;

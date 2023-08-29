@@ -1,5 +1,5 @@
 import { toast } from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { updateConfirmationPrescriptionCartSlice } from '../../Features/Cart/CartSlice';
@@ -11,6 +11,7 @@ export default function DeclinePrescriptionModal(props) {
   const { id } = useParams();
 
   const reasonRef = useRef();
+  const { updatePrescriptionLoad } = useSelector((state) => state.cart);
 
   const deleteHandler = async () => {
     if (!reasonRef?.current?.value) return toast.error('Please input a reason');
@@ -19,10 +20,10 @@ export default function DeclinePrescriptionModal(props) {
         id,
         false,
         navigate,
+        setOpen,
         reasonRef?.current?.value,
       ),
     );
-    setOpen(false);
   };
 
   return (
@@ -59,12 +60,14 @@ export default function DeclinePrescriptionModal(props) {
           />
           <div className="modal-action">
             <button
+              disabled={updatePrescriptionLoad}
               onClick={() => setOpen(false)}
               className="btn btn-outline border-primary hover:border-primary hover:bg-primary"
             >
               Cancel
             </button>
             <button
+              disabled={updatePrescriptionLoad}
               onClick={deleteHandler}
               className="btn bg-primary text-white hover:bg-primary"
             >

@@ -35,6 +35,9 @@ export default function CategoryAdmin() {
 
   return (
     <div>
+      <article className="prose">
+        <h2>Category</h2>
+      </article>
       {openModalForm ? (
         <CategoryModalForm
           isOpen={openModalForm}
@@ -45,7 +48,7 @@ export default function CategoryAdmin() {
         <input
           type="text"
           placeholder="Search Category"
-          className="input input-bordered input-success w-full max-w-xs"
+          className="input input-bordered w-full md:w-96 mx-3"
           value={search}
           onChange={(e) => dispatch(setSearch(e.target.value))}
         />
