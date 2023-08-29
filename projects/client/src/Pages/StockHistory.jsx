@@ -94,7 +94,9 @@ export default function StockHistory() {
   }, [page]);
   return (
     <>
-      <div className="font-bold text-xl">Stock History</div>
+      <article className="prose">
+        <h2>Stock Histories</h2>
+      </article>
       <div className="collapse bg-base-200">
         <input type="checkbox" />
         <div className="collapse-title text-xl font-medium flex justify-between">

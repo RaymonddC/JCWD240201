@@ -65,6 +65,9 @@ export default function StockPageAdmin() {
   }, [debouncedSearchValue, dispatch, page, sortType, sortOrder, isUpdated]);
   return (
     <>
+      <article className="prose">
+        <h2>Stocks</h2>
+      </article>
       <div className="relative">
         <div className="sticky top-3 mb-3">
           <FilterBar

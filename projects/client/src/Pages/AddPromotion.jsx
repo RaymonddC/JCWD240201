@@ -25,7 +25,7 @@ export default function AddPromotion() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [openProduct, setOpenProduct] = useState(false);
   let productMap;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onSelectedProduct = (value) => {
     setSelectedProduct(value.name);
@@ -98,7 +98,9 @@ export default function AddPromotion() {
   }, [debouncedSearchValue]);
   return (
     <>
-      <div className="font-bold text-xl">Add Discount</div>
+      <article className="prose">
+        <h2>Add Discount</h2>
+      </article>
       <form onSubmit={formik.handleSubmit}>
         <Select
           id="promotion_type"
