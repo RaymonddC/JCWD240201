@@ -87,54 +87,52 @@ export default function NavbarDrawer() {
                 ''
               )}
             </div>
-            <div className=" hidden md:block w-full">
-              <div className="relative justify-between w-full flex">
-                {/* Navbar menu content here */}
-                <div>
+            <div className=" hidden relative  md:block w-full">
+              {/* Navbar menu content here */}
+              <div className="flex w-[80%] justify-center">
+                <div className="flex gap-3">
                   <Link to="/products">
-                    <button className="btn btn-sm btn-ghost">SHOP</button>
+                    <button className="btn btn-ghost font-bold w-32">SHOP</button>
                   </Link>
                   <Link to="/discussions">
-                    <button className="btn btn-sm btn-ghost">
-                      DISCUSSIONS
-                    </button>
+                    <button className="btn btn-ghost font-bold w-32">DISCUSSIONS</button>
                   </Link>
                   <Link to="/location">
-                    <button className="btn btn-ghost btn-sm">LOCATION</button>
+                    <button className="btn btn-ghost font-bold w-32">LOCATION</button>
                   </Link>
                 </div>
-                <div className="absolute right-3 w-40">
-                  {user && Object.keys(user).length !== 0 ? (
-                    <div className="flex gap-2">
-                      <Link
-                        to="/user/profile"
-                        className="flex justify-center items-center gap-2 "
-                      >
-                        {user?.profile_image ? (
-                          <img
-                            className="w-[40px] h-[40px] rounded-full"
-                            src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
-                            alt="profile"
-                          />
-                        ) : (
-                          <MdPerson className="w-[40px] h-[40px]" />
-                        )}
-                        <div className="font-bold w-24 truncate">
-                          {user?.username}
-                        </div>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="flex gap-3">
-                      <button className="btn btn-sm btn-primary text-white">
-                        <Link to="/login">Login</Link>
-                      </button>
-                      <button className="btn btn-sm btn-outline btn-primary">
-                        <Link to="/register">Register</Link>
-                      </button>
-                    </div>
-                  )}
-                </div>
+              </div>
+              <div className="absolute top-1 right-3 w-40">
+                {user && Object.keys(user).length !== 0 ? (
+                  <div className="flex gap-2">
+                    <Link
+                      to="/user/profile"
+                      className="flex justify-center items-center gap-2 "
+                    >
+                      {user?.profile_image ? (
+                        <img
+                          className="w-[40px] h-[40px] rounded-full"
+                          src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                          alt="profile"
+                        />
+                      ) : (
+                        <MdPerson className="w-[40px] h-[40px]" />
+                      )}
+                      <div className="font-bold w-24 truncate">
+                        {user?.username}
+                      </div>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex gap-3">
+                    <button className="btn btn-sm btn-primary text-white">
+                      <Link to="/login">Login</Link>
+                    </button>
+                    <button className="btn btn-sm btn-outline btn-primary">
+                      <Link to="/register">Register</Link>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

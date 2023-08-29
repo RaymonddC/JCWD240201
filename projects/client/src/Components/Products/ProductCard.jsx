@@ -44,7 +44,7 @@ export default function ProductCard(props) {
 
   return (
     <>
-      <div className="card card-compact w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2">
+      <div className="card relative card-compact w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2">
         <figure>
           <Link to={`/products/${productId}`}>
             <div className="h-28 pt-1">
@@ -58,20 +58,20 @@ export default function ProductCard(props) {
         </figure>
         <div className="card-body flex flex-col justify-between ">
           <div className="font-bold line-clamp-2">{productName}</div>
-          <div className=''>
+          <div className="">
             <div className=" flex flex-col h-14 ">
               <p>Rp. {price}</p>
-              <div className='flex'>
+              <div className="flex absolute top-6 right-[-3px] rotate-45">
                 {promotionType ? (
-                  <p className="badge badge-secondary badge-outline badge-xs md:badge-md mb-2">
+                  <p className=" badge badge-primary badge-xs md:badge-md mb-2">
                     {promotionType?.promotion_type_id === 1
-                      ? `${promotionType?.discount} % discount`
+                      ? `${promotionType?.discount}% off`
                       : `buy ${promotionType?.buy} get${promotionType?.get}`}
                   </p>
                 ) : null}
               </div>
             </div>
-            <div className="card-actions justify-end">
+            <div className="card-actions justify-center">
               <button
                 onClick={() => {
                   handleAddToCart();

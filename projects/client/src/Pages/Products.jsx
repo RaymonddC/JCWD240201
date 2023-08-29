@@ -186,7 +186,7 @@ export default function Products() {
         </div>
         <div className="flex justify-center w-full">
           <div className="flex flex-col max-w-fit justify-center ">
-            <div className=" flex sticky top-3 mb-3 z-10 justify-center">
+            <div className=" flex sticky top-3 px-2 mb-3 z-10 justify-center">
               <FilterBarDrawer
                 value={search}
                 setSearch={setSearch}
