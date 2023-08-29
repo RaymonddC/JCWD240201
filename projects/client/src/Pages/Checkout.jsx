@@ -94,7 +94,6 @@ export default function Checkout() {
                       }`}
                     >
                       <div>
-                        {/* <div className="w-[100px] h-[100px] bg-primary"> */}
                         <img
                           className="h-20 w-20"
                           src={
@@ -109,7 +108,6 @@ export default function Checkout() {
                           }
                           alt={'Product'}
                         />
-                        {/* </div> */}
                       </div>
                       <div>
                         <p>{value?.product?.name}</p>
