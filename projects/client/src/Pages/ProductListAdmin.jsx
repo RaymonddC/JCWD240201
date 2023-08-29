@@ -8,6 +8,7 @@ import Pagination from '../Components/Layout/Pagination';
 import DeleteModal from '../Components/Products/DeleteModal';
 import { useSearchParams } from 'react-router-dom';
 import DetailProductAdmin from '../Components/DetailProductModal/DetailProductModal';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function ProductListAdmin() {
   const dispatch = useDispatch();
@@ -77,28 +78,31 @@ export default function ProductListAdmin() {
         <h2>Products</h2>
       </article>
       <div className="relative">
-        <div className="sticky top-3 mb-3">
-          <FilterBar
-            add={true}
-            setSearch={setSearch}
-            setSortType={setSortType}
-            setSortOrder={setSortOrder}
-            sortBy={true}
-            option={[
-              { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
-              { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
-              {
-                text: 'Price low to high',
-                sortType: 'price',
-                sortOrder: 'ASC',
-              },
-              {
-                text: 'Price high to low',
-                sortType: 'price',
-                sortOrder: 'DESC',
-              },
-            ]}
-          />
+        <div className="sticky flex w-full justify-center top-3 mb-3 ">
+          <div className=' w-full max-w-4xl'>
+            <FilterBarDrawer
+              value={search}
+              add={true}
+              setSearch={setSearch}
+              setSortType={setSortType}
+              setSortOrder={setSortOrder}
+              sortBy={true}
+              option={[
+                { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+                { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+                {
+                  text: 'Price low to high',
+                  sortType: 'price',
+                  sortOrder: 'ASC',
+                },
+                {
+                  text: 'Price high to low',
+                  sortType: 'price',
+                  sortOrder: 'DESC',
+                },
+              ]}
+            />
+          </div>
         </div>
         <div>{productMap}</div>
         <div className="py-5">
