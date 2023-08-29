@@ -185,8 +185,8 @@ export default function Products() {
           {categoriesMap}
         </div>
         <div className="flex justify-center w-full">
-          <div className="flex flex-col max-w-fit justify-center ">
-            <div className=" flex sticky top-3 px-2 mb-3 z-10 justify-center">
+          <div className="flex flex-col w-full justify-start ">
+            <div className="flex sticky top-3 w-full px-5 mb-3 z-10 justify-center">
               <FilterBarDrawer
                 value={search}
                 setSearch={setSearch}
@@ -239,13 +239,15 @@ export default function Products() {
               </div>
             )}
 
-            <div className="my-5">
-              <Pagination
-                setPage={setPage}
-                page={page}
-                totalPages={totalPages}
-              />
-            </div>
+            {productMap?.length ? (
+              <div className="my-5">
+                <Pagination
+                  setPage={setPage}
+                  page={page}
+                  totalPages={totalPages}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

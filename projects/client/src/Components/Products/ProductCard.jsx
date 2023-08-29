@@ -10,6 +10,13 @@ export default function ProductCard(props) {
   const productName = props?.data?.name;
   const productId = props?.data?.id;
   const price = props?.data?.price?.toLocaleString(['id']);
+  console.log("🚀🚀🚀 ~ file: ProductCard.jsx:13 ~ ProductCard ~ props:", props.data)
+  const discount = ()=>{
+    if(props.data?.promotion?.promotion_type_id=== 1){
+      const disc =props.data?.promotion?.discount
+      return (price-(price*disc/100))
+    }
+  }
   const reqPrescripton = props?.data?.require_prescription;
   let promotionType;
   const promotions = props?.data?.promotions ? props.data.promotions : null;
@@ -60,6 +67,19 @@ export default function ProductCard(props) {
           <div className="font-bold line-clamp-2">{productName}</div>
           <div className="">
             <div className=" flex flex-col h-14 ">
+            <p
+              className={`text-[#737A8D] text-[14px] line-through ${
+                (props.data?.promotion?.promotion_type_id || 0) !== 1 ? 'hidden' : ''
+              }`}
+            >
+              Rp {price.toLocaleString(['id'])}
+            </p>
+            <p className={``}>
+              Rp{' '}
+              {(price - props.data?.promotion?.disc).toLocaleString([
+                'id',
+              ])}
+            </p>
               <p>Rp. {price}</p>
               <div className="flex absolute top-6 right-[-3px] rotate-45">
                 {promotionType ? (

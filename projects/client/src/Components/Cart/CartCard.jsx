@@ -18,9 +18,7 @@ const CartCard = (props) => {
   const [isCheckCart, setIsCheckCart] = useState(props.cart.is_check);
   const stock = props.cart.product?.closed_stocks[0]?.total_stock;
   const isRacik = props?.cart?.product?.id === 1;
-
   const debouncedQtyValue = useDebounce(props.cart.qty, 500, 0);
-
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
 
   const discount = () => {
@@ -154,8 +152,10 @@ const CartCard = (props) => {
             <p className={``}>
               Rp{' '}
               {(props.cart.product.price - props.cart?.disc).toLocaleString([
+                
                 'id',
-              ])}
+              ])
+              }
             </p>
           </div>
         </div>
