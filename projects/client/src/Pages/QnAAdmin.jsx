@@ -6,6 +6,7 @@ import Pagination from '../Components/Layout/Pagination';
 import FilterBar from '../Components/Products/FilterBar';
 import { useSearchParams } from 'react-router-dom';
 import useDebounce from '../Hooks/useDebounce';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function QnAAdmin() {
   const user = useSelector((state) => state?.user?.user);
@@ -78,14 +79,15 @@ export default function QnAAdmin() {
 
   return (
     <>
+      <article className="prose">
+        <h2>QnA</h2>
+      </article>
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">
           <div className="w-full max-w-3xl">
             <div>
-              <article className="prose">
-                <h2>QnA</h2>
-              </article>
-              <FilterBar
+              <FilterBarDrawer
+                value={search}
                 setSearch={setSearch}
                 setSortType={setSortType}
                 setSortOrder={setSortOrder}
@@ -106,7 +108,7 @@ export default function QnAAdmin() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div className=' flex overflow-auto p-3'>
+                <div className=" flex overflow-auto p-3">
                   <div
                     onClick={() => {
                       setQuestionCategory('');
@@ -121,7 +123,6 @@ export default function QnAAdmin() {
               <div>{questionMap}</div>
             </div>
             <Pagination setPage={setPage} page={page} totalPages={totalPages} />
-           
           </div>
         </div>
       </div>

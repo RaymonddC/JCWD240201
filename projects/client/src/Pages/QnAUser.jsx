@@ -33,7 +33,7 @@ export default function QnAUser() {
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
-        <div key={`cat${index}`} className='flex items-center'>
+        <div key={`cat${index}`} className="flex items-center">
           <div
             onClick={() => setQuestionCategory(value.id)}
             className="btn btn-outline btn-accent btn-xs mx-3"
@@ -97,32 +97,30 @@ export default function QnAUser() {
         },
       ]}
     /> */}
-      <div className="pb-5 w-full flex justify-center">
-        <div className='max-w-3xl w-full'>
-          <FilterBarDrawer
-            value={search}
-            setSearch={setSearch}
-            setSortType={setSortType}
-            setSortOrder={setSortOrder}
-            option={[
-              {
-                text: 'Oldest to latest',
-                sortType: 'updatedAt',
-                sortOrder: 'ASC',
-              },
-              {
-                text: 'Latest to oldest',
-                sortType: 'updatedAt',
-                sortOrder: 'DESC',
-              },
-            ]}
-          />
-        </div>
-      </div>
 
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">
           <div className="w-full max-w-3xl">
+            <div className='pb-5'>
+              <FilterBarDrawer
+                value={search}
+                setSearch={setSearch}
+                setSortType={setSortType}
+                setSortOrder={setSortOrder}
+                option={[
+                  {
+                    text: 'Oldest to latest',
+                    sortType: 'updatedAt',
+                    sortOrder: 'ASC',
+                  },
+                  {
+                    text: 'Latest to oldest',
+                    sortType: 'updatedAt',
+                    sortOrder: 'DESC',
+                  },
+                ]}
+              />
+            </div>
             <article className="prose">
               <h2>Dicussions</h2>
             </article>
