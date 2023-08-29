@@ -21,7 +21,7 @@ export default function InputSearchDropdown(props) {
       <div className="relative">
         <input
           disabled={data ? true : false}
-          className="input input-bordered input-primary w-full max-w-xs"
+          className="input input-bordered w-full max-w-xs"
           type="text"
           name="search"
           placeholder="Search Product"

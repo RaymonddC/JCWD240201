@@ -23,7 +23,7 @@ export const Sidebar = () => {
   const { user } = useSelector((state) => state.user);
 
   return (
-    <div className="fixed hidden sm:w-[80px] lg:w-[250px]  border  border-[#808080] sm:min-h-[100vh] sm:flex sm:flex-col justify-between bottom-0 w-[100vw] text-[#000000]">
+    <div className="fixed hidden lg:w-[250px]  border  border-[#808080] lg:min-h-[100vh] lg:flex lg:flex-col justify-between bottom-0 w-[100vw] text-[#000000]">
       <div className="flex sm:flex-col gap-[0.5em] items-center lg:items-start">
         <Link to={'/'} className="w-full">
           <div className="cardSidebar sm:flex rounded-[50px] gap-[20px] h-20 p-[13px] font-bold hover:bg-opacity-202 hidden justify-center ">

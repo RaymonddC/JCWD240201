@@ -44,7 +44,7 @@ export default function InputDropdownUnit(props) {
       <label htmlFor="">Unit</label>
       <select
         disabled={formik?.values?.product_id ? false : true}
-        className="select select-primary w-full"
+        className="select select-bordered w-full"
         onChange={(e) => changeHandler(e)}
         value={formik.values.unit_conversion}
       >
