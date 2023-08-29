@@ -9,19 +9,24 @@ import DateRangePicker from '../Components/Transaction/DateRangePicker';
 import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
 import { getAllTransactionSlice } from '../Features/Transaction/TransactionSlice';
+import Pagination from '../Components/Layout/Pagination';
+import CartCardSkl from '../Components/Skeleton/CartCardSkl';
 
 export default function Transaction() {
   let token = localStorage.getItem('token');
   const dispatch = useDispatch();
 
   const { txStatuses } = useSelector((state) => state.txStatus);
-  const { transactions } = useSelector((state) => state.transaction);
+  const { transactions, totalPages, isProcessing } = useSelector(
+    (state) => state.transaction,
+  );
   const [togle, setTogle] = useState(false);
   const [toggleDateRange, setToggleDateRange] = useState(false);
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedStatus, setSelectedStatus] = useState('Waiting for payment');
   const [selectedStatusId, setSelectedStatusId] = useState(1);
+  const [limitPage, setLimitPage] = useState(5);
   const [range, setRange] = useState([
     {
       startDate: null,
@@ -29,6 +34,7 @@ export default function Transaction() {
       key: 'selection',
     },
   ]);
+  const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
 
   let queryParams = {};
 
@@ -40,19 +46,45 @@ export default function Transaction() {
   }, []);
 
   useEffect(() => {
+    if (Number(searchParams.get('page')) === page) {
+      setPage(1);
+      // queryParams['page'] = 1;
+    }
+    if (page) {
+      queryParams['page'] = page;
+    }
+    if (debouncedSearchValue) {
+      queryParams['search'] = debouncedSearchValue;
+    }
+    if (selectedStatus) queryParams['status'] = selectedStatus;
+    setSearchParams(queryParams);
     dispatch(
       getAllTransactionSlice({
         selectedStatusId,
         debouncedSearchValue,
+        page,
+        limitPage,
         date: range[0],
       }),
     );
-  }, [debouncedSearchValue, selectedStatusId, togle, toggleDateRange]);
+  }, [page, debouncedSearchValue, togle, toggleDateRange, selectedStatusId]);
 
+  //PaymentGateway
   useEffect(() => {
-    if (selectedStatus) queryParams['status'] = selectedStatus;
-    setSearchParams(queryParams);
-  }, [selectedStatus]);
+    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
+
+    let scriptTag = document.createElement('script');
+    scriptTag.src = midtransScriptUrl;
+
+    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY || '';
+    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
 
   if (!token) return <Navigate to={'/login'} />;
 
@@ -106,18 +138,30 @@ export default function Transaction() {
           </div>
         </div>
         <div className="div px-4 pb-4">
-          {transactions.map((value) => {
-            return (
-              <TransactionCard
-                tx={value}
-                key={'tx' + value.id}
-                setTogle={setTogle}
-                togle={togle}
-              />
-            );
-          })}
+          {!isProcessing ? (
+            transactions.map((value) => {
+              return (
+                <TransactionCard
+                  tx={value}
+                  key={'tx' + value.id}
+                  setTogle={setTogle}
+                  togle={togle}
+                />
+              );
+            })
+          ) : (
+            <CartCardSkl limit={limitPage} />
+          )}
         </div>
+        <p className="p-5 font-bold text-center" hidden={transactions.length}>
+          -- There's no transaction here --
+        </p>
       </div>
+      {totalPages > 0 && (
+        <div className="pagination ">
+          <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 }

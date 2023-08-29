@@ -26,11 +26,11 @@ export default function NewChart(props) {
           {
             label: props?.label,
             data: props?.data?.map((item) => item[`${props?.dataKey}`]),
-            backgroundColor: '#e11d48',
+            backgroundColor: '#82ca9d',
           },
         ],
       }}
-      className="custom-print min-w-0"
+      className="custom-print"
     />
   );
 }

@@ -36,7 +36,7 @@ export default function PrescriptionCard(props) {
       >
         <p>
           {props?.data?.confirmation === null
-            ? 'New Prescription'
+            ? 'Waiting For Approval'
             : props?.data?.confirmation === true
             ? 'Accepted Prescription'
             : 'Rejected Prescription'}
@@ -51,16 +51,18 @@ export default function PrescriptionCard(props) {
           src={`${process.env.REACT_APP_API_BASE_URL}/${props?.data?.prescription_image}`}
           alt="prescription_image"
         />
-        <div>
+        <div className="w-full">
           <p>{props?.data?.user?.full_name}</p>
-          <button
-            className={`btn btn-primary text-white ${
-              props?.data?.confirmation !== null ? 'hidden' : ''
-            }`}
-            onClick={() => navigate(`/prescription/${props?.data?.id}`)}
-          >
-            Make Copy
-          </button>
+          <div className="w-full flex justify-end">
+            <button
+              className={`btn btn-primary text-white ${
+                props?.data?.confirmation !== null ? 'hidden' : ''
+              }`}
+              onClick={() => navigate(`/prescription/${props?.data?.id}`)}
+            >
+              Make Copy
+            </button>
+          </div>
         </div>
       </div>
     </div>

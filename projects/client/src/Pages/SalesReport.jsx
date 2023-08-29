@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Chart from '../Components/SalesReport/Chart';
 import DateRangePicker from '../Components/Transaction/DateRangePicker';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -91,7 +90,7 @@ export default function SalesReport() {
 
   return (
     <>
-      <h1 className="font-bold text-xl">Sales Report</h1>
+      <h1 className="font-bold text-xl mb-4">Sales Report</h1>
 
       <div className="w-full flex justify-center mb-4 gap-2">
         <div className="flex items-center">
@@ -114,7 +113,7 @@ export default function SalesReport() {
       >
         <div className="w-full rounded-lg shadow-xl p-4 bg-white react-print">
           <h1 className="ml-[65px] font-bold text-lg mb-4">Revenue</h1>
-          <div className="w-full h-[340px] bar-chart">
+          <div className="h-[340px] bar-chart">
             <NewChart
               data={revenue}
               dataKey="today_revenue"

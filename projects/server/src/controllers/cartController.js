@@ -62,8 +62,8 @@ const getCarts = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
-    console.log("🚀 ~ file: cartController.js:65 ~ getCarts ~ error:", error)
-    
+    console.log('🚀 ~ file: cartController.js:65 ~ getCarts ~ error:', error);
+
     next(error);
   }
 };

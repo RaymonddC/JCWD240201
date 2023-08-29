@@ -1,21 +1,15 @@
 import React from 'react';
 import { PiDotDuotone } from 'react-icons/pi';
+import moment from 'moment';
 
 const TransactionStatusCard = (props) => {
   const dateTime = new Date(props.txHistory.createdAt);
-  const date = dateTime.toLocaleString('EN-us', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-  });
-  // .split(',');
+  const date = moment(dateTime);
+
   return (
     <div className="flex justify-between text-sm ">
       <div className="flex items-center">
-        <p className="text-xs">{date} WIB</p>
+        <p className="text-xs">{date.format('MMM DD, YYYY, HH:mm')} WIB</p>
 
         <PiDotDuotone size={'2em'} />
       </div>

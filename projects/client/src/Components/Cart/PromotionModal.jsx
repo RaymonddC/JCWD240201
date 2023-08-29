@@ -45,10 +45,10 @@ const PromotionModal = (props) => {
       <div className="modal">
         <div className="modal-box p-0 text-sm relative">
           <div className="head flex justify-between pb-2 px-6 pt-6 border-b sticky top-0 bg-white">
-            <div className="heading flex justify-between w-full mr-5 items-center">
-              <p className="text-[24px] font-bold">Promotion</p>
+            <div className="heading flex flex-grow justify-between w-full mr-5 items-center gap-3">
+              <p className=" text-lg md:text-[24px] font-bold">Promotion</p>
               <button
-                className={`btn btn-sm p-1 rounded-lg ${
+                className={`btn btn-xs md:btn-sm p-1 rounded-lg ${
                   !selectedPromo.id ? 'btn-disabled' : ''
                 }`}
                 onClick={async () => {

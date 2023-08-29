@@ -1,16 +1,16 @@
 import ContentLoader from 'react-content-loader';
 export default function ProfileSkl() {
   return (
-    <div className="text-[16px] h-[413px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-8">
+    <div className="text-[16px] h-[438px] shadow-[0px_4px_16px_rgba(17,17,26,0.1),_0px_8px_24px_rgba(17,17,26,0.1),_0px_16px_56px_rgba(17,17,26,0.1)] rounded-lg p-8">
       <div className="flex flex-col items-center w-full gap-2">
-        <div>
+        <div className="w-[125px] h-[125px]">
           <ContentLoader
-            width="100" // Set the width to 100% for responsiveness
-            height={100} // Set the initial height of the skeleton
+            width="100%" // Set the width to 100% for responsiveness
+            height="100%" // Set the initial height of the skeleton
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
           >
-            <circle cx="50%" cy="50" r="50" />
+            <circle cx="60" cy="60" r="60" />
           </ContentLoader>
         </div>
         <div className="w-full max-w-[150px] flex justify-center">

@@ -164,7 +164,11 @@ export default function PrescriptionForm(props) {
           </button>
         ) : null}
         <button
-          disabled={!formik.values.product_id || !formik.isValid ? true : false}
+          disabled={
+            !formik.values.product_id || !formik.isValid || formik.isSubmitting
+              ? true
+              : false
+          }
           className="btn btn-primary text-white"
           type="submit"
         >

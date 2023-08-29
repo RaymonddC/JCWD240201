@@ -46,27 +46,6 @@ function App() {
   //   }
   // }, [bodyScrollable]);
 
-  //PaymentGateway
-  useEffect(() => {
-    // You can also change below url value to any script url you wish to load,
-    // for example this is snap.js for Sandbox Env (Note: remove `.sandbox` from url if you want to use production version)
-    const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
-
-    let scriptTag = document.createElement('script');
-    scriptTag.src = midtransScriptUrl;
-
-    // Optional: set script attribute, for example snap.js have data-client-key attribute
-    // (change the value according to your client-key)
-    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY || '';
-    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
-
-    document.body.appendChild(scriptTag);
-
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  }, []);
-
   useEffect(() => {
     if (
       pathname === '/login' ||
@@ -87,10 +66,10 @@ function App() {
       <div className="min-h-[100vh] flex flex-col">
         <Toaster />
         {user.role?.role_name === 'admin' ? (
-          <div className="flex flex-col sm:flex-row">
+          <div className="flex flex-col lg:flex-row">
             <Sidebar />
             <NavbarAdmin />
-            <div className="lg:ml-[250px] sm:ml-[80px] ml-0 grow md:flex flex-col h-full w-full md:grow md:w-[50vw] ">
+            <div className="lg:ml-[250px] ml-0 grow lg:flex flex-col h-full w-full lg:grow lg:w-[50vw] ">
               <div className="bg-gradient-to-b from-[#f8f6f6] from-10% via-[#f9f9f9] via-90% to-[#ebebeb] min-h-[100vh] px-5 pt-5 pb-20">
                 <AdminRoute />
               </div>
