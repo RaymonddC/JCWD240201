@@ -25,6 +25,7 @@ const TransactionCard = (props) => {
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
+  const [confirmationModalData, setConfirmationModalData] = useState(null);
 
   const dateTime = new Date(props.tx.createdAt);
   console.log(moment(dateTime));
@@ -200,11 +201,6 @@ const TransactionCard = (props) => {
               Cancel Order
             </button>
           </>
-        ) : transactionStatus === 'Waiting for confirmation' ||
-          transactionStatusId === 2 ? (
-          <div className="badge badge-primary">Waiting confirmation</div>
-        ) : transactionStatus === 'Process' || transactionStatusId === 3 ? (
-          <div className="badge badge-primary">Processing</div>
         ) : transactionStatus === 'On the way' || transactionStatusId === 4 ? (
           <>
             <ConfirmationModal
@@ -227,8 +223,6 @@ const TransactionCard = (props) => {
               confirm={confirm}
             />
           </>
-        ) : transactionStatus === 'Complete' || transactionStatusId === 6 ? (
-          <div className="badge badge-primary">Completed</div>
         ) : (
           ''
         )}

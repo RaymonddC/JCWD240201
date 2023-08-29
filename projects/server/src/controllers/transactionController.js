@@ -109,7 +109,7 @@ const checkout = async (req, res, next) => {
         shipment_fee: shippingFee,
         total_discount: discount,
         total_price: totalPrice,
-        shipment: courier + ' ' + duration,
+        shipment: courier + '-' + duration,
       },
       { transaction: t },
     );
