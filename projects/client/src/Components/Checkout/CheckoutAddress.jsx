@@ -27,7 +27,7 @@ export default function CheckoutAddress() {
   }, [selectedAddress]);
 
   return (
-    <div className="shadow-md p-4 rounded-xl">
+    <div className="shadow-md p-4 rounded-xl bg-base-100">
       <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#D5D7DD]">
         Shipping Address
       </h2>
@@ -40,12 +40,14 @@ export default function CheckoutAddress() {
         </p>
         <p>{selectedAddress?.phone_number}</p>
         <p>
-          {selectedAddress?.address}, {selectedAddress?.city_name},{' '}
-          {selectedAddress?.province_name}
+          {selectedAddress?.address}{' '}
+          {selectedAddress?.notes ? `(${selectedAddress?.notes})` : null}
         </p>
-        {/* <p>{`${cityUser.city_name}, ${cityUser.province}, ${cityUser.postal_code}`}</p> */}
+        <p>
+          {selectedAddress?.city_name}, {selectedAddress?.province_name}
+        </p>
       </div>
-      <div className="py-4 border-b-2 border-[#D5D7DD]">
+      <div className="pt-2">
         <button
           onClick={() => setOpenSelectAddress(true)}
           className="btn btn-primary text-white"

@@ -1,10 +1,12 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { MdArrowDropDown } from 'react-icons/md';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategories } from '../../Features/Category/CategorySlice';
+import { MdAdd } from 'react-icons/md';
 
 export default function FilterBar(props) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
@@ -25,13 +27,19 @@ export default function FilterBar(props) {
   }, []);
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center gap-2">
         <input
           // ref={text}
           type="text"
           placeholder="Search"
           value={props.value}
-          className="input input-bordered w-full md:w-96 mx-3"
+          className={
+            props.add
+              ? 'input input-bordered w-full max-w-2xl mx-3'
+              : props.product
+              ? 'input input-bordered w-full max-w-3xl mx-3'
+              : 'input input-bordered w-full md:w-96 mx-3'
+          }
           onChange={(e) => {
             // if (e.target.value.length > 2 || e.target.value.length === 0)
             props?.setSearch(e.target.value);
@@ -66,6 +74,14 @@ export default function FilterBar(props) {
             </ul>
           </div>
         )}
+        {props.add ? (
+          <div
+            className="flex justify-center items-center bg-primary w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:cursor-pointer"
+            onClick={() => navigate('/products/new')}
+          >
+            <MdAdd size={40} color="white" />
+          </div>
+        ) : null}
       </div>
     </>
   );

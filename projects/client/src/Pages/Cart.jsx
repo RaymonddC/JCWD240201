@@ -19,6 +19,7 @@ import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 
 import toast from 'react-hot-toast';
 import CartSummary from '../Components/Cart/CartSummary';
+import CartCardSkl from '../Components/Skeleton/CartCardSkl';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -39,18 +40,6 @@ const Cart = () => {
   const [isCheck, setIsCheck] = useState(false);
   const [isForceCheck, setIsForceCheck] = useState(null);
 
-  const ProductsStore = useSelector((state) => state?.products?.products);
-  let productMap;
-  if (totalCart === 0) {
-    productMap = ProductsStore?.data?.rows?.map((value, index) => {
-      return (
-        <div key={`product${index}`} className="carousel-item ">
-          <ProductCard data={value.product} />
-        </div>
-      );
-    });
-  }
-
   const handleQty = (e, calc, idx, checked) => {
     dispatch(
       updateQtyAsync({
@@ -62,6 +51,18 @@ const Cart = () => {
       }),
     );
   };
+
+  const ProductsStore = useSelector((state) => state?.products?.products);
+  let productMap;
+  if (totalCart === 0) {
+    productMap = ProductsStore?.data?.rows?.map((value, index) => {
+      return (
+        <div key={`product${index}`} className="carousel-item ">
+          <ProductCard data={value.product} />
+        </div>
+      );
+    });
+  }
 
   useEffect(() => {
     dispatch(getCartUserAsync());
@@ -82,7 +83,7 @@ const Cart = () => {
     else setIsCheck(false);
   }, [carts, isCheck]);
 
-  if (totalCart === 0) {
+  if (carts && totalCart === 0) {
     return (
       <>
         <div className="text-lg font-bold">Start Add Product to cart</div>
@@ -106,7 +107,7 @@ const Cart = () => {
       </>
     );
   }
-  // console.log(carts);
+  console.log(carts);
 
   return (
     <div className="min-h-[50vh]">
@@ -115,7 +116,7 @@ const Cart = () => {
       </p>
       <div className="flex justify-between">
         <div
-          className={`card card-compact w-[100%] md:w-[65%] bg-base-100 shadow-xl mb-[7em] md:mb-0 max-w-[1000px] ${
+          className={`card card-compact w-[100%] bg-base-100 shadow-xl md:w-[65%] mb-[132px] md:mb-0 max-w-[1000px] ${
             totalCart === 0 ? 'hidden' : ''
           } `}
         >
@@ -132,42 +133,50 @@ const Cart = () => {
                   setIsCheck(!isCheck);
                 }}
                 checked={isCheck}
+                disabled={!carts}
               />
               <p>Pilih Semua</p>
             </div>
             <div className="div">
-              {carts.map((value, idx) => {
-                return (
-                  <CartCard
-                    key={idx}
-                    cart={value}
-                    isCheck={isCheck}
-                    setCheck={setIsCheck}
-                    setQty={handleQty}
-                    idx={idx}
-                    isForceCheck={isForceCheck}
-                  />
-                );
-              })}
+              {carts.length ? (
+                carts.map((value, idx) => {
+                  return (
+                    <CartCard
+                      key={idx}
+                      cart={value}
+                      isCheck={isCheck}
+                      setCheck={setIsCheck}
+                      setQty={handleQty}
+                      idx={idx}
+                      isForceCheck={isForceCheck}
+                    />
+                  );
+                })
+              ) : (
+                <CartCardSkl limit={5} />
+              )}
             </div>
           </div>
         </div>
-        <div className={`noCart ${totalCart === 0 ? '' : 'hidden'} `}>
-          <div className="p">Start Add Product to cart</div>
-        </div>
         {/* //SummaryCard */}
-        <CartSummary
-          totalCart={totalCart}
-          activeCart={activeCart}
-          totalPrice={totalPrice}
-          onSubmitText={'Proceed'}
-          onSubmitFunc={() => {
-            if (activeCart === 0)
-              return toast.error('Select product to checkout');
-            if (!address.length) return setOpenAddressModal(true);
-            return navigate('/checkout');
-          }}
-        />
+        <div
+          className={`card card-compact w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[0px] md:w-[30%] bg-base-100 shadow-xl h-fit  md:right-12  ${
+            totalCart === 0 ? 'hidden' : ''
+          }`}
+        >
+          <CartSummary
+            totalCart={totalCart}
+            activeCart={activeCart}
+            totalPrice={totalPrice}
+            onSubmitText={'Proceed'}
+            onSubmitFunc={() => {
+              if (activeCart === 0)
+                return toast.error('Select product to checkout');
+              if (!address.length) return setOpenAddressModal(true);
+              return navigate('/checkout');
+            }}
+          />
+        </div>
       </div>
       {openAddressModal ? (
         <AddressModal

@@ -17,7 +17,7 @@ const getMidtransSnap = async (values) => {
       (values.transaction.payment_id &&
         Number(values.transaction.payment_id.split('-')[2]) + 1) ||
       1;
-    const orderId = '100-' + values.transaction.id + '-' + count;
+    const orderId = '101-' + values.transaction.id + '-' + count;
     let parameter = {
       transaction_details: {
         order_id: orderId,

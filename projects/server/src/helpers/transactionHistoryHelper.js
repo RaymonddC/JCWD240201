@@ -97,7 +97,7 @@ const getRevenueQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
+    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
@@ -126,7 +126,7 @@ const getTotalTransactionQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
+    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
@@ -147,7 +147,7 @@ const getUserTransactionQuery = (query) => {
     WHERE transaction_histories.is_active = true 
     AND transaction_histories.transaction_status_id = 6 
     AND transaction_histories.is_active = true
-    AND (DATE(transaction_histories.createdAt) BETWEEN DATE(:startDate) AND DATE(:endDate))
+    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN DATE(:startDate) AND DATE(:endDate))
     GROUP BY DATE(transaction_histories.createdAt)
     ORDER BY ${sort_type} ${sort_order};`,
     {
@@ -169,7 +169,7 @@ const getTopSaleProductQuery = (start_date, end_date) => {
     WHERE transaction_histories.is_active = true
     AND transaction_histories.transaction_status_id = 6 
     AND stock_histories.stock_history_type_id = 4
-    AND (DATE(transaction_histories.createdAt) BETWEEN :start_date AND :end_date)
+    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN :start_date AND :end_date)
     GROUP BY stock_histories.product_id
     ORDER BY quantity_closed DESC;`,
     {

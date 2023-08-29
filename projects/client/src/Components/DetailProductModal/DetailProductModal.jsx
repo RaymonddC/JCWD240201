@@ -29,9 +29,13 @@ export default function DetailProductAdmin(props) {
       <input type="checkbox" id="detail_product" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box relative">
-          <label htmlFor="detail_product" className="absolute right-3 top-3">
-            <GrClose size={'24px'} />
-          </label>
+          <div className="sticky right-0 top-0">
+            <div className="flex justify-end">
+              <label htmlFor="detail_product" className='hover:cursor-pointer'>
+                <GrClose size={'24px'} />
+              </label>
+            </div>
+          </div>
           <div className="flex flex-col gap-3">
             <div className="flex justify-evenly gap-3">
               <img
@@ -53,7 +57,7 @@ export default function DetailProductAdmin(props) {
                 <div className="flex flex-wrap gap-2">
                   {categories?.map((value) => {
                     return (
-                      <div className="text-xs bg-primary text-white rounded p-[0.1rem] px-[0.1rem]">
+                      <div className="text-xs bg-primary text-white rounded py-[0.2rem] px-[0.5rem]">
                         {value.category_name}
                       </div>
                     );
