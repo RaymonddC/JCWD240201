@@ -20,13 +20,43 @@ const unitConversionHelper = async (data, t) => {
     if (!qty) throw { message: 'please provide quantity', code: 400 };
 
     if (!unit_conversion) {
-      const chekStock = await closedStockDB.findOne({
+      const resStockHistoryType = await stockHistoryTypeDB.findOne({
+        where: { type: 'sales' },
+      });
+      const stock_history_type_id = resStockHistoryType.id;
+      const checkStock = await closedStockDB.findOne({
         where: { product_id: product_id },
       });
-      console.log("🚀 ~ file: unitConversionHelper.js:26 ~ unitConversionHelper ~ chekStock:", chekStock)
-      
-      
+      let updatedStock;
+      if (checkStock.total_stock >= qty) {
+        const newClosedStock = checkStock.total_stock - qty;
 
+        const updateClosedStock = await closedStockDB.update(
+          { total_stock: newClosedStock },
+          { where: { product_id }, transaction: t },
+        );
+        const updateStockHystoryClosedOut = await stockHistoryDB.create(
+          {
+            product_id,
+            unit: 0,
+            qty,
+            action: 'out',
+            stock_history_type_id,
+            total_stock: newClosedStock,
+          },
+          { transaction: t },
+        );
+        updatedStock = await closedStockDB.findOne({
+          where: { product_id: product_id },
+        });
+      }
+      return {
+        success: true,
+        message: 'Non unit conversion presciption sales completed successfully',
+        data: updatedStock,
+        closed_stock: updatedStock.total_stock,
+        type: 'sales',
+      };
     } else {
       const resStockHistoryType = await stockHistoryTypeDB.findOne({
         where: { type: 'unit conversion' },
@@ -114,13 +144,16 @@ const unitConversionHelper = async (data, t) => {
         { qty: newUpdateStock },
         { where: { product_id }, transaction: t },
       );
+      const resStockHistoryTypeSales = await stockHistoryTypeDB.findOne({
+        where: { type: 'sales' },
+      });
       const updateStockHystoryOpenOut = await stockHistoryDB.create(
         {
           product_id,
           unit: 1,
           qty,
           action: 'out',
-          stock_history_type_id,
+          stock_history_type_id: resStockHistoryTypeSales.id,
           total_stock: newUpdateStock,
         },
         { transaction: t },
@@ -133,8 +166,7 @@ const unitConversionHelper = async (data, t) => {
         net_content: netContent,
         closed_stock: closedStock,
         opened_stock: resOpenedStock1,
-        type: stock_history_type_id,
-      
+        type: 'unit_conversion',
       };
     }
   } catch (error) {
