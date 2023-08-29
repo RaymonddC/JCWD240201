@@ -72,11 +72,13 @@ export default function Checkout() {
         {loadAddress && loadCarts ? (
           <CheckoutSkl />
         ) : (
-          <div className="w-full max-w-[1000px] flex flex-col gap-4 md:w-[65%]">
+          <div className="w-full max-w-[1000px] flex flex-col mb-[132px] md:mb-0 gap-4 md:w-[65%]">
             <CheckoutAddress />
-            <ShippingMethod setShipping={setShipping} shipping={shipping} />
-            <PaymentMethod setPaymentMethod={setPaymentMethod} />
-            <div className="shadow-md p-4 rounded-xl">
+            <div className="flex flex-col gap-4 lg:hidden">
+              <ShippingMethod setShipping={setShipping} shipping={shipping} />
+              <PaymentMethod setPaymentMethod={setPaymentMethod} />
+            </div>
+            <div className="shadow-md p-4 rounded-xl bg-base-100">
               <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#D5D7DD]">
                 Product
               </h2>
@@ -121,38 +123,50 @@ export default function Checkout() {
             </div>
           </div>
         )}
-        <CartSummary
-          totalCart={totalCart}
-          activeCart={activeCart}
-          totalPrice={totalPrice}
-          shippingFee={shippingFee}
-          onSubmitText={'checkout'}
-          onSubmitFunc={async () => {
-            if (!shippingFee)
-              return toast.error('Please choose your shipping courier');
-            if (!paymentMethod)
-              return toast.error('Please choose payment method');
+        <div
+          className={`w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[0px] md:w-[30%]  h-fit  md:right-12 flex flex-col gap-2 ${
+            totalCart === 0 ? 'hidden' : ''
+          }`}
+        >
+          <div className="hidden lg:flex lg:flex-col lg:gap-2">
+            <ShippingMethod setShipping={setShipping} shipping={shipping} />
+            <PaymentMethod setPaymentMethod={setPaymentMethod} />
+          </div>
+          <div className="card card-compact shadow-xl bg-base-100">
+            <CartSummary
+              totalCart={totalCart}
+              activeCart={activeCart}
+              totalPrice={totalPrice}
+              shippingFee={shippingFee}
+              onSubmitText={'checkout'}
+              onSubmitFunc={async () => {
+                if (!shippingFee)
+                  return toast.error('Please choose your shipping courier');
+                if (!paymentMethod)
+                  return toast.error('Please choose payment method');
 
-            // if (
-            const { url, midtransToken } = await dispatch(
-              checkoutTxSlice(
-                {
-                  shippingFee,
-                  discount: discount + amountPromotion,
-                  activeCart,
-                  promotionActive,
-                  ...shipping,
-                  totalPrice,
-                  paymentMethod,
-                },
-                navigate,
-              ),
-            );
-            console.log(midtransToken);
-            if (paymentMethod === 'paymentGateway')
-              setTokenMidtrans(midtransToken);
-          }}
-        />
+                // if (
+                const { url, midtransToken } = await dispatch(
+                  checkoutTxSlice(
+                    {
+                      shippingFee,
+                      discount: discount + amountPromotion,
+                      activeCart,
+                      promotionActive,
+                      ...shipping,
+                      totalPrice,
+                      paymentMethod,
+                    },
+                    navigate,
+                  ),
+                );
+                console.log(midtransToken);
+                if (paymentMethod === 'paymentGateway')
+                  setTokenMidtrans(midtransToken);
+              }}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

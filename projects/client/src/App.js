@@ -90,7 +90,7 @@ function App() {
           <div className="flex flex-col lg:flex-row">
             <Sidebar />
             <NavbarAdmin />
-            <div className="lg:ml-[250px] sm:ml-[80px] ml-0 grow md:flex flex-col h-full w-full md:grow md:w-[50vw] ">
+            <div className="lg:ml-[250px] ml-0 grow lg:flex flex-col h-full w-full lg:grow lg:w-[50vw] ">
               <div className="bg-gradient-to-b from-[#f8f6f6] from-10% via-[#f9f9f9] via-90% to-[#ebebeb] min-h-[100vh] px-5 pt-5 pb-20">
                 <AdminRoute />
               </div>

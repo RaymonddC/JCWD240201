@@ -12,10 +12,12 @@ export default function AcceptSummaryModal(props) {
   const { prescriptionCartProductList } = useSelector(
     (state) => state.PrescriptionCart,
   );
+  const { updatePrescriptionLoad } = useSelector((state) => state.cart);
 
   const acceptHandler = async () => {
-    dispatch(updateConfirmationPrescriptionCartSlice(id, true, navigate));
-    setOpen(false);
+    dispatch(
+      updateConfirmationPrescriptionCartSlice(id, true, navigate, setOpen),
+    );
   };
 
   return (
@@ -70,6 +72,7 @@ export default function AcceptSummaryModal(props) {
           </div>
           <div className="modal-action">
             <button
+              disabled={updatePrescriptionLoad}
               onClick={() => setOpen(false)}
               className="btn btn-outline border-primary hover:border-primary hover:bg-primary"
             >
@@ -78,6 +81,7 @@ export default function AcceptSummaryModal(props) {
             <button
               onClick={acceptHandler}
               className="btn bg-primary text-white hover:bg-primary"
+              disabled={updatePrescriptionLoad}
             >
               Accept
             </button>

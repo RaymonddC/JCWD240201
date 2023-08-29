@@ -46,7 +46,7 @@ export default function CardAddress(props) {
     <div
       className={
         props?.data?.is_selected
-          ? 'p-4 h-fit flex flex-col lg:flex-row gap-2 justify-between border border-primary bg-green-50 rounded-lg'
+          ? 'p-4 h-fit flex flex-col lg:flex-row gap-2 justify-between border border-primary bg-red-50 rounded-lg'
           : 'p-4 h-fit flex flex-col lg:flex-row gap-2 justify-between border border-primary rounded-lg'
       }
     >

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 export default function PaymentMethod(props) {
   return (
-    <div className="shadow-md p-4 rounded-xl">
+    <div className="shadow-md p-4 rounded-xl bg-base-100">
       <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#D5D7DD]">
         Payment Method
       </h2>

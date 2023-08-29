@@ -9,7 +9,7 @@ export default function CardAddressSkl(props) {
         <div className="font-bold text-[18px] line-clamp-1">
           <ContentLoader
             width="100%" // Set the width to 100% for responsiveness
-            height={23} // Set the initial height of the skeleton
+            height={24} // Set the initial height of the skeleton
             backgroundColor="#f3f3f3"
             foregroundColor="#ecebeb"
           >
