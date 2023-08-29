@@ -18,8 +18,14 @@ const unitConversionHelper = async (data, t) => {
     let newClosedStock;
     if (!product_id) throw { message: 'please provide a product', code: 400 };
     if (!qty) throw { message: 'please provide quantity', code: 400 };
-    
+
     if (!unit_conversion) {
+      const chekStock = await closedStockDB.findOne({
+        where: { product_id: product_id },
+      });
+      console.log("🚀 ~ file: unitConversionHelper.js:26 ~ unitConversionHelper ~ chekStock:", chekStock)
+      
+      
 
     } else {
       const resStockHistoryType = await stockHistoryTypeDB.findOne({
@@ -128,6 +134,7 @@ const unitConversionHelper = async (data, t) => {
         closed_stock: closedStock,
         opened_stock: resOpenedStock1,
         type: stock_history_type_id,
+      
       };
     }
   } catch (error) {
