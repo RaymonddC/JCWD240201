@@ -10,7 +10,6 @@ export default function FilterBar(props) {
   const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
-  const text = props.value;
 
   // console.log(location);
   // const CategoryStore = useSelector((state) => state?.categories.categories);

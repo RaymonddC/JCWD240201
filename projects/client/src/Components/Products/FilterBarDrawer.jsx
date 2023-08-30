@@ -3,31 +3,28 @@ import Logo from '../../utils/images/Medicore.png';
 import Logo1 from '../../utils/images/medicore_icon.png';
 import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { logoutAsync } from '../../Features/User/UserSlice';
 import { MdPerson } from 'react-icons/md';
 import { SlBag } from 'react-icons/sl';
 import { getCartUserAsync } from '../../Features/Cart/CartSlice';
 import { MdArrowDropDown } from 'react-icons/md';
 import MultiRangeSlider from '../Layout/MultiRangeSlider/MultiRangeSlider.jsx';
+import { MdAdd } from 'react-icons/md';
 
 export default function FilterBarDrawer(props) {
-  let dispatch = useDispatch();
-  const { user } = useSelector((state) => state.user);
-  const { totalCart } = useSelector((state) => state.cart);
+  const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
-  const text = props.value;
   const priceRange = props.priceRange || false;
-  // const handleInput = (e) => {
-  //   props.setMinValue(e.minValue);
-  //   props.setMaxValue(e.maxValue);
-  // };
+  const [open, setOpen] = useState(false);
 
   return (
     <>
       <div className="drawer drawer-end">
         <input
+          readonly
+          checked={open}
           id="my-drawer-filter"
           type="checkbox"
           className="drawer-toggle"
@@ -35,7 +32,7 @@ export default function FilterBarDrawer(props) {
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
           <div className="w-full flex  relative">
-            <div className="flex w-full justify-center">
+            <div className="flex w-full ">
               <input
                 // ref={text}
                 type="text"
@@ -43,7 +40,6 @@ export default function FilterBarDrawer(props) {
                 value={props.value}
                 className="input input-bordered w-full  mr-3"
                 onChange={(e) => {
-                  // if (e.target.value.length > 2 || e.target.value.length === 0)
                   props?.setSearch(e.target.value);
                 }}
               />
@@ -51,7 +47,7 @@ export default function FilterBarDrawer(props) {
               {pathname === '/' ? (
                 ''
               ) : (
-                <div className="dropdown dropdown-end hidden md:block mr-3">
+                <div className="dropdown dropdown-end hidden md:block ">
                   <label tabIndex={1} className="btn btn-primary text-white">
                     <div className="flex items-center">
                       <div className="w-20">Sort by</div>
@@ -79,25 +75,8 @@ export default function FilterBarDrawer(props) {
                   </ul>
                 </div>
               )}
-              <div className="hidden md:block">
-                {/* <div className="flex items-start">
-            <div>Price range: min =</div>
-            <div className="flex flex-col">
-              <input type="text" value={`Rp.${props.minPrice}`} />
-              <input
-                type="range"
-                min={0}
-                max="100"
-                value={props.minPrice}
-                className="range range-xs w-40"
-                onChange={(e) => {
-                  props.setMinPrice(e.target.value);
-                }}
-              />
-            </div>
-            <div>max =</div>
-          </div> */}
-                {priceRange ? (
+              {priceRange ? (
+                <div className="hidden md:block ml-3">
                   <div className="dropdown dropdown-end hidden md:block">
                     <label tabIndex={1} className="btn btn-primary text-white">
                       <div className="flex items-center">
@@ -127,13 +106,24 @@ export default function FilterBarDrawer(props) {
                       </>
                     </ul>
                   </div>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
+              {props.add ? (
+                <div className="hidden md:block  self-center ml-3">
+                  <div
+                    className="flex justify-center items-center bg-primary w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:cursor-pointer"
+                    onClick={() => navigate('/products/new')}
+                  >
+                    <MdAdd size={40} color="white" />
+                  </div>
+                </div>
+              ) : null}
             </div>
             <div className="flex-none md:hidden">
               <label
                 htmlFor="my-drawer-filter"
                 className="btn btn-square btn-ghost"
+                onClick={() => setOpen(true)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +143,11 @@ export default function FilterBarDrawer(props) {
           </div>
         </div>
         <div className="drawer-side z-10">
-          <label htmlFor="my-drawer-filter" className="drawer-overlay"></label>
+          <label
+            htmlFor="my-drawer-filter"
+            className="drawer-overlay"
+            onClick={() => setOpen(false)}
+          ></label>
           <ul className="menu gap-2 p-4 h-full bg-base-200">
             {/* Sidebar content here */}
             {props.option.map((value, index) => {
@@ -163,6 +157,7 @@ export default function FilterBarDrawer(props) {
                     onClick={() => {
                       props?.setSortType(value.sortType);
                       props?.setSortOrder(value.sortOrder);
+                      setOpen(false);
                     }}
                   >
                     {value.text}
@@ -186,6 +181,16 @@ export default function FilterBarDrawer(props) {
                   </div>
                 </div>
               </>
+            ) : null}
+            {props.add ? (
+              <li>
+                <div onClick={() => navigate('/products/new')}>
+                  <div className="flex justify-center items-center bg-primary w-10 h-10 lg:w-12 lg:h-12 rounded-full hover:cursor-pointer">
+                    <MdAdd size={40} color="white" />
+                  </div>
+                  Add product
+                </div>
+              </li>
             ) : null}
           </ul>
         </div>
