@@ -46,9 +46,9 @@ export default function Products() {
       <div key={`cat${index}`} className="w-full">
         <div
           onClick={() => setCategory(value.category_name)}
-          className="btn btn-ghost btn-sm text-left"
+          className="btn btn-ghost btn-sm flex justify-start w-full"
         >
-          {value.category_name}
+          <div>{value.category_name}</div>
         </div>
       </div>
     );
@@ -172,15 +172,15 @@ export default function Products() {
         /> */}
 
       <div className="flex ">
-        <div className="hidden w-52 md:block pl-3">
+        <div className="hidden w-52 h-fit md:block pl-3 card bg-base-100 shadow-xl pb-3">
           <article className="prose">
             <h3 className="pb-5">Categories</h3>
           </article>
           <div
             onClick={() => setCategory('')}
-            className="btn btn-ghost btn-sm text-left"
+            className="btn btn-ghost btn-sm flex justify-start w-full"
           >
-            All
+            <div>All</div>
           </div>
           {categoriesMap}
         </div>
