@@ -13,7 +13,7 @@ const TransactionModal = (props) => {
   const { transaction } = useSelector((state) => state.transaction);
 
   const [openStatus, setOpenStatus] = useState(false);
-
+  const txActiveStatus = transaction.transaction_histories?.slice(-1)[0];
   useEffect(() => {
     dispatch(getTransactionSlice({ id: props.id }));
   }, []);
@@ -48,9 +48,7 @@ const TransactionModal = (props) => {
                 <div className="status flex justify-between">
                   <p className="font-bold">
                     {
-                      transaction.transaction_histories[
-                        transaction.transaction_histories.length - 1
-                      ].transaction_status.status
+                     txActiveStatus?.transaction_status?.status
                     }
                   </p>
                   <button
