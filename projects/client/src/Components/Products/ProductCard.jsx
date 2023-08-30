@@ -84,7 +84,7 @@ export default function ProductCard(props) {
                   promotionType?.promotion_type_id === 1 ? (
                     <div className="flex absolute top-6 right-[-3px] rotate-45">
                       <p className=" badge badge-primary badge-xs md:badge-md mb-2">
-                        {`${promotionType?.discount}% off`}
+                        {`${promotionType?.discount}%`}
                       </p>
                     </div>
                   ) : (

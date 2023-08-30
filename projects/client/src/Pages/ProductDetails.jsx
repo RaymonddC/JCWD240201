@@ -21,15 +21,38 @@ export default function ProductDetails() {
   productsStore?.data?.product_images
     ? (image = productsStore?.data?.product_images[0]?.image)
     : (image = '');
-  // console.log(productLabels);
-  console.log(productsStore?.data);
-  // console.log(reqPrescription)
   const dispatch = useDispatch();
   const params = useParams();
   const { id } = params;
   const productId = Number(id);
   const [descTab, setDescTab] = useState('tab-active');
   const [dosingTab, setDosingTab] = useState('');
+  let promotionType;
+  const promotions = productsStore?.data?.promotions
+    ? productsStore.data.promotions
+    : null;
+  console.log(
+    '🚀🚀🚀 ~ file: ProductDetails.jsx:36 ~ ProductDetails ~ promotions:',
+    promotions,
+  );
+  if (promotions) {
+    for (let i = 0; i < promotions.length; i++) {
+      if (promotions[i].promotion_type_id === 1) {
+        promotionType = promotions[i];
+        i = promotions.length;
+      } else {
+        promotionType = promotions[i];
+      }
+    }
+  }
+  const disc = promotionType?.discount;
+  const discount = () => {
+    if (promotionType?.promotion_type_id === 1) {
+      return Math.round((productPrice * disc) / 100);
+    } else {
+      return 0;
+    }
+  };
   const labelsMap = productLabels?.map((value, index) => {
     return (
       <div
@@ -85,9 +108,36 @@ export default function ProductDetails() {
             <div className="px-5 py-5 max-w-lg">
               <article className="prose">
                 <h3>{productName}</h3>
-                <h2>Rp. {productPrice}</h2>
+                {/* <h2>Rp {productPrice}</h2> */}
+                <h2 className={``}>
+                  Rp {(productPrice - discount())?.toLocaleString(['id'])}
+                </h2>
+                {promotionType?.promotion_type_id === 1 ? (
+                  <div className="flex items-center">
+                    <div className=" badge badge-primary badge-xs flex items-center font-bold md:badge-lg">
+                      {`${promotionType?.discount}%`}
+                    </div>
+                    <div className="text-[#737A8D] text-[18px] line-through mx-3">
+                      Rp {productPrice?.toLocaleString(['id'])}
+                    </div>
+                  </div>
+                ) : null}
               </article>
-
+              {/* {promotionType ? (
+                promotionType?.promotion_type_id === 1 ? (
+                  <div className="flex absolute top-6 right-[-3px] rotate-45">
+                    <p className=" badge badge-primary badge-xs md:badge-md mb-2">
+                      {`${promotionType?.discount}% off`}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center pb-2">
+                    <div className="badge badge-outline badge-secondary">
+                      {`Buy ${promotionType?.buy} Get ${promotionType?.get}`}
+                    </div>
+                  </div>
+                )
+              ) : null} */}
               <button
                 onClick={() => {
                   handleAddToCart();
