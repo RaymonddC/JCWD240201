@@ -178,9 +178,9 @@ export default function Products() {
         /> */}
 
       <div className="flex ">
-        <div className="hidden w-52 h-fit md:block pl-3 card bg-base-100 shadow-xl pb-3">
+        <div className="hidden w-52 h-fit md:block px-1 card bg-base-100 shadow-xl pb-3">
           <article className="prose">
-            <h3 className="pb-5">Categories</h3>
+            <h3 className="py-3 px-2">Categories</h3>
           </article>
           <div
             onClick={() => setCategory('')}
