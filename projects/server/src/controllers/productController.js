@@ -30,9 +30,10 @@ const getAllProducts = async (req, res, next) => {
     let order = [];
     where.name = { [Op.like]: `%${search}%` };
     where.id = { [Op.not]: 1 };
-    if(category_id){
-      label.category_id = category_id
-    }
+   
+    // if(category_id){
+    //   where.label = category_id
+    // }
 
     if (minPrice && maxPrice) {
       where.price = {
@@ -47,7 +48,7 @@ const getAllProducts = async (req, res, next) => {
     }
     const response = await productDB.findAndCountAll({
       include: [
-        { model: labelDB, where: label },
+        { model: labelDB},
         { model: packagingDB },
         { model: productTypeDB },
         { model: closedStockDB },

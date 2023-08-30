@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 // import { handleAddToCart } from '../../Helper/cartHelper';
 
 export default function ProductCard(props) {
+  console.log("🚀🚀🚀 ~ file: ProductCard.jsx:8 ~ ProductCard ~ props:", props)
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const productName = props?.data?.name;
