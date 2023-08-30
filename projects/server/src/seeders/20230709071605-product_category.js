@@ -45,7 +45,7 @@ module.exports = {
       },
       {
         // 6
-        category_name: 'Obat Sakit Tenggorokan',
+        category_name: 'Obat Tenggorokan',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
