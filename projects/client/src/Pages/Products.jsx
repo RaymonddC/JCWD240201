@@ -25,9 +25,11 @@ export default function Products() {
     searchParams.get('sort-order') || '',
   );
   const [category, setCategory] = useState(searchParams.get('category') || '');
+  const [categoryId, setCategoryId] = useState('');
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
+  console.log('🚀🚀🚀 ~ file: Products.jsx:31 ~ CategoryStore:', CategoryStore);
   const [minPrice, setMinPrice] = useState(
     searchParams.get('min-price') || '0',
   );
@@ -45,7 +47,10 @@ export default function Products() {
     return (
       <div key={`cat${index}`} className="w-full">
         <div
-          onClick={() => setCategory(value.category_name)}
+          onClick={() => {
+            setCategory(value.category_name);
+            setCategoryId(value.category_id);
+          }}
           className="btn btn-ghost btn-sm text-left"
         >
           {value.category_name}
@@ -81,6 +86,7 @@ export default function Products() {
         search: debouncedSearchValue,
         sortType,
         sortOrder,
+        // category_id: categoryId,
         minPrice: debouncedMinPrice,
         maxPrice: debouncedMaxPrice,
       }),
@@ -130,8 +136,8 @@ export default function Products() {
     if (debouncedSearchValue) {
       getProductsAsync();
       setCategory('');
-    } else if (category) {
-      getLabelsAsync();
+      } else if (category) {
+        getLabelsAsync();
     } else {
       getProductsAsync();
     }

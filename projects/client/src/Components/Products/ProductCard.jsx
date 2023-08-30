@@ -9,14 +9,7 @@ export default function ProductCard(props) {
   const dispatch = useDispatch();
   const productName = props?.data?.name;
   const productId = props?.data?.id;
-  const price = props?.data?.price?.toLocaleString(['id']);
-  console.log("🚀🚀🚀 ~ file: ProductCard.jsx:13 ~ ProductCard ~ props:", props.data)
-  const discount = ()=>{
-    if(props.data?.promotion?.promotion_type_id=== 1){
-      const disc =props.data?.promotion?.discount
-      return (price-(price*disc/100))
-    }
-  }
+  const price = props?.data?.price;
   const reqPrescripton = props?.data?.require_prescription;
   let promotionType;
   const promotions = props?.data?.promotions ? props.data.promotions : null;
@@ -30,6 +23,14 @@ export default function ProductCard(props) {
       }
     }
   }
+  const discount = () => {
+    if (promotionType?.promotion_type_id === 1) {
+      const disc = promotionType?.discount;
+      return Math.round((price * disc) / 100);
+    } else {
+      return 0;
+    }
+  };
 
   const image = props?.data?.product_images
     ? props?.data?.product_images[0]?.image
@@ -67,20 +68,17 @@ export default function ProductCard(props) {
           <div className="font-bold line-clamp-2">{productName}</div>
           <div className="">
             <div className=" flex flex-col h-14 ">
-            <p
-              className={`text-[#737A8D] text-[14px] line-through ${
-                (props.data?.promotion?.promotion_type_id || 0) !== 1 ? 'hidden' : ''
-              }`}
-            >
-              Rp {price.toLocaleString(['id'])}
-            </p>
-            <p className={``}>
-              Rp{' '}
-              {(price - props.data?.promotion?.disc).toLocaleString([
-                'id',
-              ])}
-            </p>
-              <p>Rp. {price}</p>
+              <p
+                className={`text-[#737A8D] text-[14px] line-through ${
+                  promotionType?.promotion_type_id !== 1 ? 'hidden' : ''
+                }`}
+              >
+                Rp {price?.toLocaleString(['id'])}
+              </p>
+              <p className={``}>
+                Rp {(price - discount())?.toLocaleString(['id'])}
+              </p>
+              {/* <p>Rp. {price.toLocaleString(['id'])}</p> */}
               <div className="flex absolute top-6 right-[-3px] rotate-45">
                 {promotionType ? (
                   <p className=" badge badge-primary badge-xs md:badge-md mb-2">
