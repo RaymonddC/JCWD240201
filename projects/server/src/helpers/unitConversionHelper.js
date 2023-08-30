@@ -11,7 +11,7 @@ const { sequelize } = require('../models');
 const unitConversionHelper = async (data, t) => {
   try {
     console.log('>>> unit conversion', data);
-    const { product_id, qty, unit_conversion } = data;
+    const { product_id, qty, unit_conversion, transaction_id } = data;
     let newOpenedStock;
     let openedStock;
     let resOpenedStock1;
@@ -40,6 +40,7 @@ const unitConversionHelper = async (data, t) => {
             product_id,
             unit: 0,
             qty,
+            transaction_id,
             action: 'out',
             stock_history_type_id,
             total_stock: newClosedStock,
