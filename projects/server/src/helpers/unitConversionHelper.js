@@ -10,7 +10,6 @@ const { sequelize } = require('../models');
 
 const unitConversionHelper = async (data, t) => {
   try {
-    console.log('>>> unit conversion', data);
     const { product_id, qty, unit_conversion, transaction_id } = data;
     let newOpenedStock;
     let openedStock;
@@ -92,7 +91,6 @@ const unitConversionHelper = async (data, t) => {
           openedFromStock++;
           newOpenedStock = newOpenedStock + netContent;
         }
-        console.log('stock', newOpenedStock);
 
         if (openedStock === 0) {
           resOpenedStock1 = await openedStockDB.create(

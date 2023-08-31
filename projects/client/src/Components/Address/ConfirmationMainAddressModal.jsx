@@ -19,8 +19,6 @@ export default function ConfirmationMainAddressModal(props) {
         localStorage.getItem('token'),
       );
 
-      console.log(response);
-
       if (response?.data?.success) {
         setOpen(false);
         toast.success(response.data.message);

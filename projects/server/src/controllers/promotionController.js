@@ -44,7 +44,6 @@ const getPromotionList = async (req, res, next) => {
     const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
-    console.log(totalPrice, 'totalPrice');
     let options = {};
     if (sortOrder) {
       options.order = [['createdAt', sortOrder]];
@@ -78,7 +77,6 @@ const getPromotionList = async (req, res, next) => {
     let whereQuery = [];
     if (user.role_id !== 1)
       whereQuery.push({ date_start: { [Op.lte]: today } });
-    console.log(...whereQuery);
     const getPromotion = await promotionDB.findAndCountAll({
       include: productDB,
       where: {

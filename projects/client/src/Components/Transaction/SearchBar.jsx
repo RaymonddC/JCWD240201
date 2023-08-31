@@ -7,7 +7,6 @@ import { getAllCategories } from '../../Features/Category/CategorySlice';
 export default function SearchBar(props) {
   const dispatch = useDispatch();
   const CategoryStore = useSelector((state) => state?.categories.categories);
-  // console.log(CategoryStore?.data);
   const categoriesMap = CategoryStore?.data?.map((value, index) => {
     return (
       <li key={`Category${index}`}>

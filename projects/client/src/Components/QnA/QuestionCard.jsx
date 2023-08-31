@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 var parse = require('html-react-parser');
 
 export default function QuestionCard(props) {
-  console.log('🚀 ~ file: QuestionCard.jsx:7 ~ QuestionCard ~ props:', props);
   const date = new Date(props?.data?.createdAt);
   const dateFormatted = date
     .toLocaleDateString('EN-us', {

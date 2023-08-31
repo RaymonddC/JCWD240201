@@ -22,7 +22,6 @@ export const ProductSlice = createSlice({
   initialState,
   reducers: {
     products: (initialState, action) => {
-      // console.log(action.payload);
       initialState.products = action.payload;
     },
     // page: (initialState, action) => {
@@ -49,15 +48,12 @@ export const ProductSlice = createSlice({
 export const getProducts = (data) => async (dispatch) => {
   try {
     let response = await getAllProductsAPI(data);
-    // console.log(response?.data.data);
     if (response.data.success) {
       dispatch(products(response?.data));
       dispatch(setProductDropdown(response?.data));
       dispatch(setIsLoad(false));
-      console.log(response.data);
     }
   } catch (error) {
-    console.log(error);
   }
 };
 export const getProductDetails = (data) => async (dispatch) => {
@@ -66,7 +62,6 @@ export const getProductDetails = (data) => async (dispatch) => {
     dispatch(products(response?.data));
     dispatch(setProductDetail(response?.data));
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -81,10 +76,8 @@ export const getLabels = (data) => async (dispatch) => {
       category: data.category,
     });
 
-    // console.log(response.data);
     dispatch(products(response?.data));
   } catch (error) {
-    console.log(error);
   }
 };
 

@@ -38,8 +38,6 @@ const validateStock = (getProduct, data) => {
 const checkProductAlreadyExist = (data) => {
   const { product_id, cart_id, unit_conversion } = data;
 
-  console.log(product_id, cart_id, unit_conversion);
-
   return prescriptionCartDB.findOne({
     where: { cart_id, product_id, unit_conversion: unit_conversion },
   });

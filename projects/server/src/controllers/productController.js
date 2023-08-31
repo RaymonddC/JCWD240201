@@ -21,7 +21,6 @@ const getAllProducts = async (req, res, next) => {
   try {
     const { page, search, limit, sortType, sortOrder, minPrice, maxPrice, category_id } =
     req.query;
-    console.log("🚀🚀🚀 ~ file: productController.js:23 ~ getAllProducts ~ category:", category_id)
     const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
@@ -101,7 +100,6 @@ const getAllProducts = async (req, res, next) => {
 const getProductDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log('id', req.params);
     const response = await productDB.findOne({
       include: [packagingDB, productTypeDB, productImageDB],
       where: { id },
@@ -120,7 +118,6 @@ const getProductDetails = async (req, res, next) => {
       where: { product_id: id },
     });
 
-    console.log(closedStock);
     return res.status(200).send({
       success: true,
       message: 'get product details success',

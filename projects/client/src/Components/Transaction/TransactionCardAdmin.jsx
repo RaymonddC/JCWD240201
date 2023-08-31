@@ -42,8 +42,6 @@ const TransactionCardAdmin = (props) => {
     }
   });
   const transactionStatus = activeStatus[0]?.transaction_status?.status;
-  // console.log(activeStatus);
-  // console.log(transactionStatus);
 
   return (
     <div className="div border border-[#D5D7DD] text-[16px]  card card-compact bg-base-100 shadow-md my-2 ">

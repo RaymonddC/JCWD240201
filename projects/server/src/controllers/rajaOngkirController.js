@@ -37,8 +37,6 @@ const shippmentMethod = async (req, res, next) => {
   try {
     const data = req.body;
     const result = await shippmentMethodRajaOngkir(data);
-    // console.log(data);
-    // process.exit();
     let modifiedData = result.data.rajaongkir;
 
     modifiedData.results.forEach((result) => {

@@ -12,7 +12,6 @@ export const CategorySlice = createSlice({
   initialState,
   reducers: {
     categories: (initialState, action) => {
-      console.log(action.payload);
       initialState.categories = action.payload;
     },
     setSearch: (initialState, action) => {
@@ -26,10 +25,8 @@ export const getAllCategories =
   async (dispatch) => {
     try {
       let response = await getAllCategoriesAPI(search_category);
-      // console.log(response?.data.data);
       dispatch(categories(response?.data?.data));
     } catch (error) {
-      console.log(error);
     }
   };
 

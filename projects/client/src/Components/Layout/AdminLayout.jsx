@@ -5,7 +5,6 @@ import Navbar from './Navbar';
 
 export const AdminLayout = (props) => {
   const { user } = useSelector((state) => state.user);
-  // console.log(props);
   useEffect(() => {
     setTimeout(
       () => {
@@ -15,7 +14,6 @@ export const AdminLayout = (props) => {
       5 * 60 * 1000,
     );
   }, []);
-  // console.log('layout', user);
   // if (!user) return <Navigate to={'/login'} />;
 
   return (

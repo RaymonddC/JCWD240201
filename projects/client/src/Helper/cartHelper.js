@@ -37,6 +37,5 @@ export const processData = (values) => {
       weight,
     };
   } catch (error) {
-    console.log(error);
   }
 };

@@ -33,8 +33,6 @@ module.exports = {
   verifyTokenEmail: async (req, res, next) => {
     let token = req.headers.token_email;
 
-    console.log(req.headers.token_email);
-
     if (!token) {
       return res.status(401).send({
         success: false,
@@ -48,7 +46,6 @@ module.exports = {
       if (token === null || !token)
         throw { message: 'Unauthorized', code: 401 };
 
-      // console.log(getChangeEmailToken);
       let verifyUser = jwt.verify(token, 'change-email');
 
       const getChangeEmailToken = await userDB.findOne({

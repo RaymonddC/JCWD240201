@@ -71,7 +71,6 @@ export default function ExcelDownload() {
     ];
 
     totalUser?.map((value) => {
-      console.log(value);
       return sheetUser.addRow({
         date: value?.date,
         total_user: value?.total_user,

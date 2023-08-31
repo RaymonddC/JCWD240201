@@ -21,9 +21,6 @@ export default function ProductDetails() {
   productsStore?.data?.product_images
     ? (image = productsStore?.data?.product_images[0]?.image)
     : (image = '');
-  // console.log(productLabels);
-  console.log(productsStore?.data);
-  // console.log(reqPrescription)
   const dispatch = useDispatch();
   const params = useParams();
   const { id } = params;
