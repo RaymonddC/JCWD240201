@@ -27,7 +27,6 @@ export default function Address() {
   if (!token) {
     return <Navigate to={'/login'} />;
   }
-  console.log(address);
   return (
     <>
       {/* <NavBar /> */}

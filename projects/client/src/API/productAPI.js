@@ -3,7 +3,6 @@ const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function getAllProductsAPI(data) {
-  // console.log(data);
   return axios.get(`${URL}/products`, {
     params: { ...data },
     headers: { apikey: APIKey },
@@ -81,7 +80,6 @@ export function deleteProduct(productId) {
 
 export function updateProduct(values, productId) {
   const token = localStorage.getItem('token');
-  console.log(values);
   return axios.put(
     `${URL}/products/${productId}`,
     {

@@ -28,7 +28,6 @@ export const checkoutAPI = (values, token) => {
       },
     );
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

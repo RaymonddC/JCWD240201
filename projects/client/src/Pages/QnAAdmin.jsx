@@ -47,7 +47,6 @@ export default function QnAAdmin() {
   );
 
   useEffect(() => {
-    // console.log(questionCategory)
     if (page) {
       queryParams['page'] = page;
     }

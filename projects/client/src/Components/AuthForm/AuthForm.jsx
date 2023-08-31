@@ -42,9 +42,6 @@ export const AuthForm = (propss) => {
     loadScriptByURL(
       key,
       `https://www.google.com/recaptcha/api.js?render=${key}`,
-      function () {
-        console.log('Script loaded!');
-      },
     );
   }, []);
   return (

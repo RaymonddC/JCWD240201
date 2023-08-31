@@ -16,7 +16,6 @@ export function createQuestionAPI(data) {
 }
 
 export function getQuestionsAPI(data) {
-  // console.log(data);
   return axios.get(`${URL}/discussions/questions`, {
     params: {
       ...data,
@@ -61,9 +60,7 @@ export function getQuestionsCategoriesAPI(data) {
   });
 }
 
-export function getUserQuestionsAPI(data) {
-  console.log("🚀 ~ file: QnAAPI.js:65 ~ getUserQuestionsAPI ~ data:", data)
-  
+export function getUserQuestionsAPI(data) {  
   return axios.get(`${URL}/users/questions`, {
     params: { ...data },
     headers: { apikey: APIKey },

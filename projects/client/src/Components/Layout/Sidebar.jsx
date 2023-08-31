@@ -104,7 +104,6 @@ export const Sidebar = () => {
           <div
             className={`detail align-middle grow text-left  my-auto hidden lg:block`}
           >
-            {/* {console.log(user)} */}
             <p className="username">{user?.username || 'Please Login'}</p>
             <p className="email">
               {user?.username ? `${user?.username}@gmail.com` : ''}
@@ -121,7 +120,6 @@ export const Sidebar = () => {
                 // localStorage.removeItem('token');
                 // dispatch(onSaveUser({}));
                 // navigate('/');
-                // console.log('MASUK');
                 // <Navigate to={'/login'} />;
               }}
             >

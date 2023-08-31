@@ -119,13 +119,6 @@ const CartCard = (props) => {
             ) : (
               ''
             )}
-            {props.cart.product.price === 0
-              ? console.log(
-                  props.cart.confirmation,
-                  props.cart.confirmation === false,
-                  !props.cart.confirmation,
-                )
-              : ''}
             {Number(props.cart.product.price) === 0 ? (
               props.cart.confirmation === false ? (
                 <>

@@ -21,8 +21,6 @@ export default function PrescriptionCard(props) {
     // timeZoneName: 'short',
   });
 
-  // console.log(props);
-
   return (
     <div className="rounded-xl shadow-xl bg-white flex flex-col w-full max-w-[896px]">
       <div

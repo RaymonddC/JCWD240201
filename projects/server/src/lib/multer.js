@@ -8,7 +8,6 @@ const fs = require('fs');
 let defaultPath = 'public';
 var storage = multer.diskStorage({
   destination: async (req, file, cb) => {
-    // console.log(file);
     // Check Directory (Exist or Not)
     let isDirectoryExist = fs.existsSync(`${defaultPath}/${file.fieldname}`);
 
@@ -53,8 +52,6 @@ var storage = multer.diskStorage({
 
 // 2. Setup File Filter
 var fileFilter = (req, file, cb) => {
-  // console.log('>>>');
-  // console.log(file);
   // if (
   //   file.mimetype.split('/')[1] === 'jpg' ||
   //   file.mimetype.split('/')[1] === 'jpeg' ||

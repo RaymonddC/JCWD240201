@@ -11,9 +11,7 @@ export default function FilterBar(props) {
   const location = useLocation();
   const pathname = location.pathname;
 
-  // console.log(location);
   // const CategoryStore = useSelector((state) => state?.categories.categories);
-  // console.log(CategoryStore?.data);
   // const categoriesMap = CategoryStore?.data?.map((value, index) => {
   //   return (
   //     <li key={`Category${index}`}>

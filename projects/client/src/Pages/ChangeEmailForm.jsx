@@ -25,7 +25,6 @@ export default function ChangeEmailForm() {
       setEmailValidation(false);
     }
   };
-  // console.log(`Tokennya nih >>> ${token}`);
 
   //send reset password form
   const onSendRequest = async () => {

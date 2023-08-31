@@ -37,8 +37,6 @@ export const createPrescriptionCartProductSlice =
     try {
       let token = localStorage.getItem('token');
 
-      console.log(data);
-
       const response = await createPrescriptionCartProductAPI(token, data);
       if (response.data.success)
         dispatch(getPrescriptionCartProductListSlice(cart_id));
@@ -52,8 +50,6 @@ export const updatePrescriptionCartProductSlice =
   (cart_id, id, data) => async (dispatch) => {
     try {
       let token = localStorage.getItem('token');
-
-      console.log(data);
 
       const response = await updatePrescriptionCartProductAPI(token, id, data);
       if (response.data.success)
