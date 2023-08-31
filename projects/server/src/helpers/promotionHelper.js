@@ -28,7 +28,7 @@ const getAllPromotion = async (whereQuerry) => {
   }
 };
 
-const promotionExpired = (data) => {
+const promotionExpired = (data, t) => {
   return db.sequelize.query(
     `CREATE EVENT promotion_expired${data.id} ON SCHEDULE AT "${data.date_end} 17:00:00"
     DO BEGIN
@@ -38,12 +38,48 @@ const promotionExpired = (data) => {
     {
       replacements: { id: data.id },
       type: db.sequelize.QueryTypes.CREATE,
+      transaction: t,
     },
   );
+};
+
+const promotionValidation = (data) => {
+  if (
+    Number(data.promotion_type_id) === 1 &&
+    (!data.product_id ||
+      !data.discount ||
+      !data.limit ||
+      !data.date_start ||
+      !data.date_end)
+  )
+    throw { message: 'Complete the form', code: 400 };
+
+  if (
+    Number(data.promotion_type_id) === 2 &&
+    (!data.discount ||
+      !data.limit ||
+      !data.minimum_transaction ||
+      !data.maximum_discount_amount ||
+      !data.date_start ||
+      !data.date_end)
+  )
+    throw { message: 'Complete the form', code: 400 };
+
+  if (
+    Number(data.promotion_type_id) === 3 &&
+    (!data.product_id ||
+      !data.limit ||
+      !data.buy ||
+      !data.get ||
+      !data.date_start ||
+      !data.date_end)
+  )
+    throw { message: 'Complete the form', code: 400 };
 };
 
 module.exports = {
   getPromotionByProductId,
   getAllPromotion,
   promotionExpired,
+  promotionValidation,
 };

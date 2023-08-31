@@ -221,10 +221,7 @@ export default function AddPromotion() {
               values={formik?.values?.maximum_discount_amount}
               touched={formik.touched?.maximum_discount_amount}
               isDisabled={
-                formik?.values?.promotion_type_id === '1' ||
-                formik?.values?.promotion_type_id === '2'
-                  ? false
-                  : true
+                formik?.values?.promotion_type_id === '2' ? false : true
               }
             />
           </div>
