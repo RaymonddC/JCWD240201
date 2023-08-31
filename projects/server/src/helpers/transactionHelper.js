@@ -151,7 +151,25 @@ const getTransactionById = async (id, admin) => {
   }
 };
 
+const updateCloseStock = async (product_id, qty, isAdd) => {
+  try {
+    const closeStockProduct = await ClosedStock.findOne({
+      where: { product_id: product_id },
+    });
+    const newStock = isAdd
+      ? closeStockProduct.total_stock + qty
+      : closeStockProduct.total_stock - qty;
+    return {
+      ...closeStockProduct.dataValues,
+      total_stock: newStock,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserTransactions,
   getTransactionById,
+  updateCloseStock,
 };
