@@ -36,5 +36,12 @@ router.get(
   isAdmin,
   txHistoryController.getTopSaleProduct,
 );
+router.get(
+  '/transaction-status-total',
+  APIKey,
+  verifyToken,
+  isAdmin,
+  txHistoryController.getAllTransactionStatusTotal,
+);
 
 module.exports = router;

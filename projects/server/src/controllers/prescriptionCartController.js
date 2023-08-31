@@ -13,6 +13,7 @@ const packagingDB = db.packaging_type;
 const productTypeDB = db.product_type;
 const openedStockDB = db.opened_stock;
 const closedStockDB = db.closed_stock;
+const promotionDB = db.closed_stock;
 
 const getAllPrescriptionCartProductList = async (req, res, next) => {
   try {
