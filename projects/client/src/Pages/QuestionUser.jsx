@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { getAnswers, getQuestionCategory } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
 import QuestionModal from '../Components/QnA/QuestionModal';
 import FilterBar from '../Components/Products/FilterBar';
@@ -10,12 +10,14 @@ import useDebounce from '../Hooks/useDebounce';
 import QnACardSkl from '../Components/Skeleton/QnACardSkl';
 import { getUserQuestionsAPI } from '../API/QnAAPI';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function QuestionUser() {
   const user = useSelector((state) => state?.user?.user);
+  let token = localStorage.getItem('token');
   const user_id = user.id;
   const location = useLocation();
-  const pathname = location.pathname
+  const pathname = location.pathname;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
   const dispatch = useDispatch();
@@ -38,7 +40,7 @@ export default function QuestionUser() {
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
-        <div key={`cat${index}`}>
+        <div key={`cat${index}`} className='flex items-center'>
           <div
             onClick={() => setQuestionCategory(value.id)}
             className="btn btn-outline btn-accent btn-xs mx-3"
@@ -104,6 +106,7 @@ export default function QuestionUser() {
   useEffect(() => {
     setPage(1);
   }, [questionCategory]);
+  if (!token) return <Navigate to={'/login'} />;
 
   return (
     <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
@@ -115,8 +118,9 @@ export default function QuestionUser() {
           </h3>
         </div>
       </div>
-      <div className="pb-5">
-        <FilterBar
+      <div className="pb-5 w-full flex">
+        <FilterBarDrawer
+          value={search}
           setSearch={setSearch}
           setSortType={setSortType}
           setSortOrder={setSortOrder}
@@ -135,8 +139,8 @@ export default function QuestionUser() {
         />
       </div>
 
-      <div className="px-5">
-        <div className="px-5 flex w-full justify-center">
+      <div className="">
+        <div className=" flex w-full justify-center">
           <div className="w-full max-w-3xl">
             <div>
               {/* <QuestionModal /> */}
@@ -144,7 +148,7 @@ export default function QuestionUser() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div className=" p-3 flex overflow-auto">
+                <div className=" p-3 flex items-center overflow-auto">
                   <div
                     onClick={() => {
                       setQuestionCategory('');
@@ -172,7 +176,11 @@ export default function QuestionUser() {
                     ) : (
                       questionList.map((value, index) => {
                         return (
-                          <QuestionCard data={value} pathname={pathname} key={`question${index}`} />
+                          <QuestionCard
+                            data={value}
+                            pathname={pathname}
+                            key={`question${index}`}
+                          />
                         );
                       })
                     )

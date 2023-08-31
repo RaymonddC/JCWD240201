@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getAnswers, getQuestionCategory } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
 import QuestionModal from '../Components/QnA/QuestionModal';
-import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
 import QnACardSkl from '../Components/Skeleton/QnACardSkl';
 import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
@@ -33,7 +32,7 @@ export default function QnAUser() {
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
-        <div key={`cat${index}`}>
+        <div key={`cat${index}`} className="flex items-center">
           <div
             onClick={() => setQuestionCategory(value.id)}
             className="btn btn-outline btn-accent btn-xs mx-3"
@@ -80,47 +79,29 @@ export default function QnAUser() {
 
   return (
     <>
-      <div className="pb-5">
-        <FilterBarDrawer
-          value={search}
-          setSearch={setSearch}
-          setSortType={setSortType}
-          setSortOrder={setSortOrder}
-          option={[
-            {
-              text: 'Oldest to latest',
-              sortType: 'updatedAt',
-              sortOrder: 'ASC',
-            },
-            {
-              text: 'Latest to oldest',
-              sortType: 'updatedAt',
-              sortOrder: 'DESC',
-            },
-          ]}
-        />
-        {/* <FilterBar
-          setSearch={setSearch}
-          setSortType={setSortType}
-          setSortOrder={setSortOrder}
-          option={[
-            {
-              text: 'Oldest to latest',
-              sortType: 'updatedAt',
-              sortOrder: 'ASC',
-            },
-            {
-              text: 'Latest to oldest',
-              sortType: 'updatedAt',
-              sortOrder: 'DESC',
-            },
-          ]}
-        /> */}
-      </div>
-
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">
           <div className="w-full max-w-3xl">
+            <div className="pb-5">
+              <FilterBarDrawer
+                value={search}
+                setSearch={setSearch}
+                setSortType={setSortType}
+                setSortOrder={setSortOrder}
+                option={[
+                  {
+                    text: 'Oldest to latest',
+                    sortType: 'updatedAt',
+                    sortOrder: 'ASC',
+                  },
+                  {
+                    text: 'Latest to oldest',
+                    sortType: 'updatedAt',
+                    sortOrder: 'DESC',
+                  },
+                ]}
+              />
+            </div>
             <article className="prose">
               <h2>Dicussions</h2>
             </article>
@@ -130,7 +111,7 @@ export default function QnAUser() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div className=" p-3 flex overflow-auto">
+                <div className=" p-3 flex items-center overflow-auto">
                   <div
                     onClick={() => {
                       setQuestionCategory('');
@@ -164,13 +145,15 @@ export default function QnAUser() {
                 </div>
               </div>
             </div>
-            <div className="my-5">
-              <Pagination
-                setPage={setPage}
-                page={page}
-                totalPages={totalPages}
-              />
-            </div>
+            {QnAStore?.answers?.data?.rows.length ? (
+              <div className="my-5">
+                <Pagination
+                  setPage={setPage}
+                  page={page}
+                  totalPages={totalPages}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

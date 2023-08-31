@@ -5,8 +5,15 @@ export default function ReportPage() {
   return (
     <>
       <div className="flex flex-col gap-3">
-        <div className="font-bold text-xl">Report</div>
-        <button onClick={() => navigate('/report/stock_history')} className="btn btn-primary text-white">Stock History</button>
+        <article className="prose">
+          <h2>Report</h2>
+        </article>
+        <button
+          onClick={() => navigate('/report/stock_history')}
+          className="btn btn-primary text-white"
+        >
+          Stock History
+        </button>
       </div>
     </>
   );

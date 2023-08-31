@@ -25,9 +25,11 @@ export default function Products() {
     searchParams.get('sort-order') || '',
   );
   const [category, setCategory] = useState(searchParams.get('category') || '');
+  const [categoryId, setCategoryId] = useState('');
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
+  console.log('🚀🚀🚀 ~ file: Products.jsx:31 ~ CategoryStore:', CategoryStore);
   const [minPrice, setMinPrice] = useState(
     searchParams.get('min-price') || '0',
   );
@@ -45,10 +47,13 @@ export default function Products() {
     return (
       <div key={`cat${index}`} className="w-full">
         <div
-          onClick={() => setCategory(value.category_name)}
-          className="btn btn-ghost btn-sm text-left"
+          onClick={() => {
+            setCategory(value.category_name);
+            setCategoryId(value.category_id);
+          }}
+          className="btn btn-ghost btn-sm flex justify-start w-full"
         >
-          {value.category_name}
+          <div>{value.category_name}</div>
         </div>
       </div>
     );
@@ -81,6 +86,7 @@ export default function Products() {
         search: debouncedSearchValue,
         sortType,
         sortOrder,
+        // category_id: categoryId,
         minPrice: debouncedMinPrice,
         maxPrice: debouncedMaxPrice,
       }),
@@ -130,8 +136,8 @@ export default function Products() {
     if (debouncedSearchValue) {
       getProductsAsync();
       setCategory('');
-    } else if (category) {
-      getLabelsAsync();
+      } else if (category) {
+        getLabelsAsync();
     } else {
       getProductsAsync();
     }
@@ -172,21 +178,21 @@ export default function Products() {
         /> */}
 
       <div className="flex ">
-        <div className="hidden w-52 md:block pl-3">
+        <div className="hidden w-52 h-fit md:block px-1 card bg-base-100 shadow-xl pb-3">
           <article className="prose">
-            <h3 className="pb-5">Categories</h3>
+            <h3 className="py-3 px-2">Categories</h3>
           </article>
           <div
             onClick={() => setCategory('')}
-            className="btn btn-ghost btn-sm text-left"
+            className="btn btn-ghost btn-sm flex justify-start w-full"
           >
-            All
+            <div>All</div>
           </div>
           {categoriesMap}
         </div>
         <div className="flex justify-center w-full">
-          <div className="flex flex-col max-w-fit justify-center ">
-            <div className=" flex sticky top-3 mb-3 z-10 justify-center">
+          <div className="flex flex-col w-full justify-start ">
+            <div className="flex sticky top-3 w-full px-5 mb-3 z-10 justify-center">
               <FilterBarDrawer
                 value={search}
                 setSearch={setSearch}
@@ -239,13 +245,15 @@ export default function Products() {
               </div>
             )}
 
-            <div className="my-5">
-              <Pagination
-                setPage={setPage}
-                page={page}
-                totalPages={totalPages}
-              />
-            </div>
+            {productMap?.length ? (
+              <div className="my-5">
+                <Pagination
+                  setPage={setPage}
+                  page={page}
+                  totalPages={totalPages}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

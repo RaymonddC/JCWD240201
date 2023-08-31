@@ -7,6 +7,7 @@ import FilterBar from '../Components/Products/FilterBar';
 import Pagination from '../Components/Layout/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import UpdateStockModal from '../Components/Stocks/UpdateStockModal';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
 
 export default function StockPageAdmin() {
   const navigate = useNavigate();
@@ -69,27 +70,29 @@ export default function StockPageAdmin() {
         <h2>Stocks</h2>
       </article>
       <div className="relative">
-        <div className="sticky top-3 mb-3">
-          <FilterBar
-            setSearch={setSearch}
-            option={[
-              { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
-              { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
-              {
-                text: 'Price low to high',
-                sortType: 'price',
-                sortOrder: 'ASC',
-              },
-              {
-                text: 'Price high to low',
-                sortType: 'price',
-                sortOrder: 'DESC',
-              },
-            ]}
-            setSortType={setSortType}
-            setSortOrder={setSortOrder}
-            sortBy={true}
-          />
+        <div className="sticky flex w-full justify-center top-3 mb-3 ">
+          <div className=" w-full max-w-4xl">
+            <FilterBarDrawer
+              value={search}
+              setSearch={setSearch}
+              setSortType={setSortType}
+              setSortOrder={setSortOrder}
+              option={[
+                { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
+                { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
+                {
+                  text: 'Price low to high',
+                  sortType: 'price',
+                  sortOrder: 'ASC',
+                },
+                {
+                  text: 'Price high to low',
+                  sortType: 'price',
+                  sortOrder: 'DESC',
+                },
+              ]}
+            />
+          </div>
         </div>
         <div>{productMap}</div>
         <div className="py-5">

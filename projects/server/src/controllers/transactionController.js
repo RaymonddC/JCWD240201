@@ -199,6 +199,7 @@ const checkout = async (req, res, next) => {
                   product_id: prescCart.product_id,
                   qty: prescCart.qty,
                   unit_conversion: prescCart.unit_conversion,
+                  transaction_id: transaction.id,
                 },
                 t,
               );

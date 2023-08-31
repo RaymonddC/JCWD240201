@@ -200,7 +200,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li className="h-[260px] flex flex-col justify-end">
+          <li className="flex flex-col justify-end">
             <div className="profile min-w-[100%] p-[13px] rounded-[50px]  text-[15px]  w-full  hover:bg-[#8899a6] hover:bg-opacity-20 flex-row gap-2 lg:gap-0 items-center lg:items-start sm:flex">
               <div className={`detail align-middle grow text-left  my-auto`}>
                 <p className="username">{user?.username || 'Please Login'}</p>
