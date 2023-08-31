@@ -93,7 +93,7 @@ export default function NavbarAdmin() {
                 <Link to={'/discussions'} className="w-full">
                   <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
                     <MdQuestionAnswer />
-                    <p>QnA</p>
+                    <p>Q&A</p>
                   </div>
                 </Link>
               </li>
@@ -172,7 +172,7 @@ export default function NavbarAdmin() {
             <Link to={'/discussions'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full hover:bg-[#8899a6] hover:bg-opacity-20 justify-center lg:justify-start">
                 <MdQuestionAnswer />
-                <p>QnA</p>
+                <p>Q&A</p>
               </div>
             </Link>
           </li>
