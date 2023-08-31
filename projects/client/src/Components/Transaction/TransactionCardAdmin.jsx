@@ -174,9 +174,9 @@ const TransactionCardAdmin = (props) => {
           >
             {transactionStatus === 'Cancelled' ? (
               <p className="text-primary">
-                {!props.tx?.notes
+                {!activeStatus[0]?.notes
                   ? `Cancelled by User`
-                  : `You cancel this order: ${props.tx.notes}`}
+                  : `You cancel this order: ${activeStatus[0].notes}`}
               </p>
             ) : (
               ''

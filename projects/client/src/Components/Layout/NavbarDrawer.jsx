@@ -69,8 +69,11 @@ export default function NavbarDrawer() {
                 </div>
               </div>
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn z-10 btn-sm btn-ghost absolute right-6 lg:right-48">
-                  <Link to="/cart">
+                <Link
+                  to="/cart"
+                  className="btn z-10 btn-sm btn-ghost absolute right-6 lg:right-48"
+                >
+                  <button className="">
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
                       <div className="cart absolute top-0 right-0  rounded-[100%] w-[22px] h-[22px] bg-[#3EBFB8] flex items-center justify-center">
@@ -81,8 +84,8 @@ export default function NavbarDrawer() {
                     ) : (
                       ''
                     )}
-                  </Link>
-                </button>
+                  </button>
+                </Link>
               ) : (
                 ''
               )}
@@ -92,13 +95,19 @@ export default function NavbarDrawer() {
               <div className="flex mr-44 justify-center">
                 <div className="flex gap-3">
                   <Link to="/products">
-                    <button className="btn btn-ghost font-bold w-36">SHOP</button>
+                    <button className="btn btn-ghost font-bold w-36">
+                      SHOP
+                    </button>
                   </Link>
                   <Link to="/discussions">
-                    <button className="btn btn-ghost font-bold w-36">DISCUSSIONS</button>
+                    <button className="btn btn-ghost font-bold w-36">
+                      DISCUSSIONS
+                    </button>
                   </Link>
                   <Link to="/location">
-                    <button className="btn btn-ghost font-bold w-36">LOCATION</button>
+                    <button className="btn btn-ghost font-bold w-36">
+                      LOCATION
+                    </button>
                   </Link>
                 </div>
               </div>
