@@ -55,10 +55,6 @@ export default function QuestionUser() {
     try {
       // if (user_id) {
       const response = await getUserQuestionsAPI(data);
-      console.log(
-        '🚀 ~ file: QuestionUser.jsx:51 ~ getUserQuestionList ~ response:',
-        response.data,
-      );
       setTotalPages(response.data.totalPage);
       setQuestioList(response.data.data.rows);
       // }
@@ -162,10 +158,6 @@ export default function QuestionUser() {
               </div>
               <div>
                 <div>
-                  {console.log(
-                    '🚀 ~ file: QuestionUser.jsx:154 ~ QuestionUser ~ questionList:',
-                    questionList,
-                  )}
                   {questionList ? (
                     !questionList.length ? (
                       <div className="flex py-10 w-full justify-center">

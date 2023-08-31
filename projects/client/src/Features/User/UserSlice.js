@@ -40,10 +40,8 @@ export const UserSlice = createSlice({
 // export const RequestGetDataUser = (user_id) => async (dispatch) => {
 //   try {
 //     let response = await getDataUser();
-//     console.log(response);
 //     dispatch(setUser(response.data));
 //   } catch (error) {
-//     console.log(error);
 //   }
 // };
 
@@ -121,7 +119,6 @@ export const onLoginAsync = (values, token) => async (dispatch) => {
     toast.success('Login success!');
     return true;
   } catch (error) {
-    console.log(error);
     toast.error(error.message);
   }
 };
@@ -157,7 +154,6 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
   // const dispatch = useDispatch()
   try {
     let response = await signInWithPopup(auth, provider);
-    // console.log(response);
     if (response) {
       const email = response.user.email;
       const full_name = response.user.displayName;
@@ -167,13 +163,8 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
         google_login: true,
         verified: true,
       });
-      // console.log(email);
       localStorage.removeItem('token');
       localStorage.setItem('token', result?.data?.token);
-      console.log(
-        '🚀 ~ file: UserSlice.js:167 ~ loginWithGoogleSlice ~ result?.data.token:',
-        result?.data,
-      );
       dispatch(onSaveUser(result.data.data));
       toast.success('Login success!');
     } else {
@@ -181,7 +172,6 @@ export const loginWithGoogleSlice = () => async (dispatch) => {
       throw message;
     }
   } catch (error) {
-    // console.log(error);
     toast.error(error?.response?.data?.message);
   }
 };

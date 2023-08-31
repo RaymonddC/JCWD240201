@@ -21,9 +21,7 @@ export const getPromotionsSlice = (values) => async (dispatch) => {
   try {
     let { data } = await getPromotionAPI(values);
     dispatch(onGetData(data));
-    console.log(data);
   } catch (error) {
-    console.log(error);
     toast.error(error.message);
   }
 };

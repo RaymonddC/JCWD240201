@@ -1,12 +1,12 @@
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import { handleAddToCart } from '../../Helper/cartHelper';
 
 export default function ProductCard(props) {
-  console.log('🚀🚀🚀 ~ file: ProductCard.jsx:8 ~ ProductCard ~ props:', props);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const productName = props?.data?.name;
   const productId = props?.data?.id;
@@ -38,7 +38,6 @@ export default function ProductCard(props) {
     : '';
 
   // const image=''
-  // console.log(promotion.promotion_type_id);
 
   const handleAddToCart = () => {
     if (reqPrescripton) {
@@ -53,8 +52,10 @@ export default function ProductCard(props) {
 
   return (
     <>
-      <Link to={`/products/${productId}`}>
-        <div className="card relative card-compact hover:bg-slate-100 w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2">
+      {/* <Link to={`/products/${productId}`}> */}
+        <div
+        onClick={()=>navigate(`/products/${productId}`)}
+         className="card relative card-compact hover:bg-slate-100 w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2">
           <figure>
             <div className="h-28 pt-2">
               <img
@@ -82,7 +83,7 @@ export default function ProductCard(props) {
                 {/* <div className="flex absolute top-6 right-[-3px] rotate-45"> */}
                 {promotionType ? (
                   promotionType?.promotion_type_id === 1 ? (
-                    <div className="flex absolute top-6 right-[-3px] rotate-45">
+                    <div className="flex absolute top-3 right-1 rotate-45">
                       <p className=" badge badge-primary badge-xs md:badge-md mb-2">
                         {`${promotionType?.discount}%`}
                       </p>
@@ -100,8 +101,8 @@ export default function ProductCard(props) {
               <div className="card-actions justify-center">
                 <button
                   onClick={(e) => {
-                    e.stopPropagation();
                     handleAddToCart();
+                    e.stopPropagation();
                   }}
                   className="btn btn-xs md:btn-sm btn-primary btn-outline"
                 >
@@ -111,7 +112,7 @@ export default function ProductCard(props) {
             </div>
           </div>
         </div>
-      </Link>
+      {/* </Link> */}
     </>
   );
 }

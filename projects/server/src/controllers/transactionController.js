@@ -65,7 +65,6 @@ const checkout = async (req, res, next) => {
           code: 400,
           data: promotionActive,
         };
-      console.log(promoTx);
       if (promoTx && promoTx.minimum_transaction < totalPrice) {
         if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
         let disc = Math.round((totalPrice * promoTx.discount) / 100);
@@ -74,7 +73,6 @@ const checkout = async (req, res, next) => {
             ? promoTx.maximum_discount_amount
             : disc;
 
-        console.log(totalDiscount, disc, promoTx.dataValues);
         //update promo limit
         await Promotion.update(
           {
@@ -89,7 +87,6 @@ const checkout = async (req, res, next) => {
     const address = await getOldIsSelected(userId);
     // balikin address to main
 
-    // console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
       {
@@ -125,7 +122,6 @@ const checkout = async (req, res, next) => {
             if (value.dataValues.disc && value.dataValues.disc != 0) {
               //promo disc
               totalDiscount += value.qty * value.dataValues.disc;
-              console.log('totalDiscount:', totalDiscount);
               if (value.product.promotions[0].limit < value.qty)
                 throw {
                   message: 'not enough stocks (Promotion)',
@@ -298,10 +294,8 @@ const checkout = async (req, res, next) => {
       paymentData = { paymentToken, url: redirect_url };
       // paymentData.paymentToken = paymentToken;
       // paymentData.url = redirect_url;
-      console.log(paymentData, '===============?????>>>>>>>>>>>>>>');
       // throw {};
     }
-    console.log(paymentMethod, paymentData);
     // throw {};
     await t.commit();
 
@@ -314,7 +308,6 @@ const checkout = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    console.log(error, '==============luar');
     return res.status(500).send({
       data: error,
     });
@@ -360,8 +353,6 @@ const getAllTransaction = async (req, res, next) => {
       sortType,
       sortOrder,
     });
-    // console.log(whereQuery);
-    // console.log(startDate);
 
     return res.status(200).send({
       success: true,
@@ -371,7 +362,6 @@ const getAllTransaction = async (req, res, next) => {
       totalPage: Math.ceil(count / (limitPage || 1)),
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -437,8 +427,6 @@ const uploadPayment = async (req, res, next) => {
       data: [],
     });
   } catch (error) {
-    console.log(error);
-
     await t.rollback();
     next(error);
   }
@@ -451,20 +439,15 @@ const handleMidtransPayment = async (req, res, next) => {
     const { order_id, transactionId } = req.body;
     // cek ke api midtrans dlu statusnya baru write status
 
-    console.log(order_id);
     const responsePayment = await getPaymentStatusMidtrans({ order_id });
 
     let transaction_status_id = 1;
-    console.log(responsePayment, '================>>>>>>>>>>>>>');
     const transaction_id =
       transactionId || (order_id && order_id.split('-')[1]) || null;
-    console.log(transaction_id, transactionId, '===============');
-    // console.log(order_id.split('-')[2] || 0);
     if (
       responsePayment.data.transaction_status === 'settlement' ||
       responsePayment.data.transaction_status === 'capture'
     ) {
-      // console.log(responsePayment.data.payment_type);
       const payment_method = responsePayment.data.payment_type;
       transaction_status_id = 3;
       const tx = await Transaction.findByPk(transaction_id);
@@ -495,14 +478,7 @@ const handleMidtransPayment = async (req, res, next) => {
         },
         { transaction: t },
       );
-      console.log(
-        transaction_id,
-        txCreate,
-        responsePayment,
-        responsePayment.data.va_numbers,
-      );
     } else if (responsePayment.data.status_code >= 404 && transaction_id) {
-      console.log('hereeeeeeeeeeeeeeeee');
       const user = await UserDB.findByPk(req.user.id);
       const transaction = await Transaction.findByPk(transaction_id);
       const txDetails = await TransactionDetail.findAll({
@@ -529,8 +505,6 @@ const handleMidtransPayment = async (req, res, next) => {
       data: [],
     });
   } catch (error) {
-    console.log(error);
-
     await t.rollback();
     next(error);
   }
@@ -726,7 +700,6 @@ const cancelTransaction = async (req, res, next) => {
       data: transaction,
     });
   } catch (error) {
-    console.log(error);
     await t.rollback();
     next(error);
   }
@@ -735,7 +708,6 @@ const cancelTransaction = async (req, res, next) => {
 const payment = async (req, res, next) => {
   try {
     // await getMidtransSnap();
-    console.log('Success');
     return res.status(200).send({
       success: true,
       message: 'Upload payment Success',

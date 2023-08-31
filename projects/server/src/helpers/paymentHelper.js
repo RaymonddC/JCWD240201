@@ -12,7 +12,6 @@ const date = new Date();
 
 const getMidtransSnap = async (values) => {
   try {
-    console.log(date.toJSON());
     const count =
       (values.transaction.payment_id &&
         Number(values.transaction.payment_id.split('-')[2]) + 1) ||
@@ -86,11 +85,9 @@ const getMidtransSnap = async (values) => {
         unit: 'hours',
       },
     };
-    console.log(parameter);
 
     const { token, redirect_url } = await snap.createTransaction(parameter);
 
-    console.log('transactionToken:', token, redirect_url);
     return { paymentToken: token, redirect_url, orderId };
   } catch (error) {
     throw error;

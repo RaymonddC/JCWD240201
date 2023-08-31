@@ -8,8 +8,6 @@ const uploadPrescription = (req, res, next) => {
   const multerResult = multerUpload.single('prescription_images');
   multerResult(req, res, function (err) {
     try {
-      console.log('masuk try upload', req.file);
-      console.log(req.body.productId);
       // if (req.body.productId !== 1) {
       if (err) throw err;
       // Validate each file size
@@ -63,7 +61,6 @@ const uploadMultiple = (req, res, next) => {
 };
 
 const uploadProfile = (req, res, next) => {
-  console.log(req.body);
   const multerResult = multerUpload.single('profile_image');
   multerResult(req, res, function (err) {
     try {
@@ -155,7 +152,6 @@ const uploadUpdateProduct = (req, res, next) => {
 };
 
 const uploadPayment = (req, res, next) => {
-  console.log('masuk try upload', req.file);
   const multerResult = multerUpload.single('payment_images');
   multerResult(req, res, function (err) {
     try {

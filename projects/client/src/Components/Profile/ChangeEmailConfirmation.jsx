@@ -17,7 +17,6 @@ export default function ChangeEmailConfirmation(props) {
         setLoad(false);
       }
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
       setLoad(false);
     }

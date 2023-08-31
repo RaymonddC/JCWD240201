@@ -19,7 +19,6 @@ const { sequelize } = require('../models');
 const moment = require('moment');
 
 const updateTxHistory = async (req, res, next) => {
-  console.log('>>>> update tx history');
   const t = await sequelize.transaction();
   const template = fs.readFileSync(
     './src/helpers/verifyEmailTemplate.html',
