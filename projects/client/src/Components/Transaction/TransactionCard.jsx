@@ -24,6 +24,7 @@ const TransactionCard = (props) => {
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
+  const [openConfModal, setOpenConfModal] = useState(false);
   const dateTime = new Date(props.tx.createdAt);
   const date = moment(dateTime);
   const transactionStatusId =
@@ -122,7 +123,7 @@ const TransactionCard = (props) => {
         transactionStatusId === 1 ? (
           <>
             {!props.tx.payment_token ? (
-              !disabled ? (
+              // !disabled ? (
                 <button
                   // disabled={disabled}
                   className="btn btn-sm btn-primary text-white"
@@ -136,6 +137,7 @@ const TransactionCard = (props) => {
                     onChange={(e) => {
                       setPaymentProofFile(e.target.files[0]);
                       setdisabled(true);
+                      setOpenConfModal(true)
                       // setTimeout(() => {
                       //   onSubmit();
                       //   // setdisabled(false);
@@ -144,16 +146,17 @@ const TransactionCard = (props) => {
                   />
                   <label htmlFor="paymentProof">Upload payment proof</label>
                 </button>
-              ) : (
-                <button
-                  className="btn btn-sm btn-primary text-white "
-                  // disabled={disabled}
-                  onClick={() => onSubmit()}
-                >
-                  Submit
-                </button>
-              )
-            ) : (
+              // ) : (
+              //   <button
+              //     className="btn btn-sm btn-primary text-white "
+              //     // disabled={disabled}
+              //     onClick={() => onSubmit()}
+              //   >
+              //     Submit
+              //   </button>
+              // )
+            ) 
+            : (
               <button
                 className="btn btn-sm btn-primary text-white "
                 disabled={!props.tx.payment_token}
@@ -270,6 +273,19 @@ const TransactionCard = (props) => {
           delFunc={cancelTransaction}
         />
       ) : null}
+      {openConfModal? 
+      <ConfirmationModal
+      open={openConfModal}
+      title="Confirmation"
+      textLine1="Are you sure you want to upload this image?"
+      label="upload"
+      labelStyle="text-white"
+      styling="hidden"
+      image ={paymentProofFile}
+      confirm={onSubmit}
+      
+      />
+      :null}
     </div>
   );
 };
