@@ -4,7 +4,6 @@ const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function getStockHistoryAPI(values) {
   const token = localStorage.getItem('token');
-  console.log(values);
   return axios.get(`${URL}/stock-histories`, {
     params: values,
     headers: { apikey: APIKey, authorization: `Bearer ${token}` },

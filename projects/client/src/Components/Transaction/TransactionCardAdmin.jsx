@@ -11,6 +11,8 @@ import { MdOutlineAttachment } from 'react-icons/md';
 import AttachmentModal from './AttachmentModal';
 import { TbTruckDelivery } from 'react-icons/tb';
 import SendOrderModal from './SendOrderModal';
+import moment from 'moment';
+import CancelTransactionModal from './CancelTransactionModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
@@ -19,20 +21,7 @@ const TransactionCardAdmin = (props) => {
   const [openAttachmentModal, setOpenAttachmentModal] = useState(false);
   const [openSendOrderModal, setOpenSendOrderModal] = useState(false);
   const dateTime = new Date(props.tx.createdAt);
-  const date = dateTime
-    .toLocaleDateString('EN-us', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    })
-    .split(',');
-
-  const time = dateTime.toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false,
-    // timeZoneName: 'short',
-  });
+  const date = moment(dateTime);
 
   //   const actionDateTime = new Date(props.tx.createdAt);
   const txDetail = props.tx.transaction_details[0];
@@ -42,15 +31,11 @@ const TransactionCardAdmin = (props) => {
     }
   });
   const transactionStatus = activeStatus[0]?.transaction_status?.status;
-  // console.log(activeStatus);
-  // console.log(transactionStatus);
 
   return (
     <div className="div border border-[#D5D7DD] text-[16px]  card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus border-b flex justify-between py-3 px-5 items-center">
-        <p>
-          {date[0]}, {date[1]} {date[2]}, {time} WIB
-        </p>
+        <p>{date.format('MMM Do YYYY, HH:mm')}</p>
         <div className="flex items-center">
           <div className="badge badge-accent badge-lg p-2 mx-3">
             {transactionStatus}
@@ -67,9 +52,6 @@ const TransactionCardAdmin = (props) => {
               </p>
             ) : (
               ''
-              // <p>
-              //   {props.tx.transaction_histories[0].transaction_status.status}
-              // </p>
             )}
           </div>
         </div>
@@ -94,7 +76,7 @@ const TransactionCardAdmin = (props) => {
               />
             </div>
             <div className="detail flex-grow px-5">
-              <Link to={''}>
+              <Link to={`/products?search=${txDetail?.product_name}`}>
                 <p>{txDetail?.product_name}</p>
               </Link>
               <p>
@@ -123,7 +105,7 @@ const TransactionCardAdmin = (props) => {
             </div>
             <div className="kurir w-[30%]">
               <p className="font-bold">Expedition</p>
-              <p>{props.tx.shipment}</p>
+              <p className="uppercase">{props.tx.shipment}</p>
             </div>
           </div>
         </div>
@@ -169,21 +151,14 @@ const TransactionCardAdmin = (props) => {
           ) : (
             ''
           )}
-          <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-primary">
-            <BiReceipt size={'1.5em'} />
-            <label
-              className="font-bold"
-              htmlFor="my_modal_6"
-              onClick={() => setOpenTransactionModal(true)}
-            >
-              Transaction Details
-            </label>
-          </button>
+
           {props?.tx?.transaction_histories[0]?.transaction_status?.status !==
-          'Cancelled' && props?.tx?.transaction_histories[0]?.transaction_status?.status !==
-          'Complete' ? (
+            'Cancelled' &&
+          props?.tx?.transaction_histories[0]?.transaction_status?.status !==
+            'Complete' ? (
+            // <CancelTransactionModal />
             <button
-              className="btn btn-sm btn-error text-white "
+              className="btn btn-primary btn-outline btn-sm text-white "
               disabled={false}
               onClick={() => setOpenDeletemodal(true)}
             >
@@ -192,6 +167,31 @@ const TransactionCardAdmin = (props) => {
           ) : (
             ''
           )}
+          <div
+            className={`flex justify-between  ${
+              transactionStatus === 'Cancelled' ? 'flex-grow' : ''
+            }`}
+          >
+            {transactionStatus === 'Cancelled' ? (
+              <p className="text-primary">
+                {!activeStatus[0]?.notes
+                  ? `Cancelled by User`
+                  : `You cancel this order: ${activeStatus[0].notes}`}
+              </p>
+            ) : (
+              ''
+            )}
+            <button className="flex items-center gap-1 hover:bg-[#F6FAFB] py-2 px-2 rounded-lg text-primary">
+              <BiReceipt size={'1.5em'} />
+              <label
+                className="font-bold"
+                htmlFor="my_modal_6"
+                onClick={() => setOpenTransactionModal(true)}
+              >
+                Transaction Details
+              </label>
+            </button>
+          </div>
         </div>
       </div>
       {openTransactionModal ? (
@@ -202,7 +202,7 @@ const TransactionCardAdmin = (props) => {
           id={props?.tx.id}
         />
       ) : null}{' '}
-      <DeleteModal
+      <CancelTransactionModal
         open={openDeleteModal}
         closeModal={() => setOpenDeletemodal(false)}
         id={props?.tx?.id}

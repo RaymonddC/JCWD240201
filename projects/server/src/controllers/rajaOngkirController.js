@@ -37,11 +37,11 @@ const shippmentMethod = async (req, res, next) => {
   try {
     const data = req.body;
     const result = await shippmentMethodRajaOngkir(data);
-    // console.log(data);
-    // process.exit();
     let modifiedData = result.data.rajaongkir;
 
     modifiedData.results.forEach((result) => {
+      if (!result.costs.length)
+        throw { message: 'Service is not available', code: 404 };
       result.costs.forEach((cost) => {
         cost.cost.forEach((item) => {
           item.etd = item.etd.replace(' HARI', '');

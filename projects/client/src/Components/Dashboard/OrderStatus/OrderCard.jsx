@@ -8,7 +8,7 @@ export const OrderCard = (props) => {
       <div className="card-body flex flex-row justify-between">
         <div className="div">
           <p>{props.title}</p>
-          <p className="card-title">10</p>
+          <p className="card-title">{props?.total}</p>
         </div>
       </div>
     </div>

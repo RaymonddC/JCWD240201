@@ -4,7 +4,6 @@ const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 const APIKey = `${process.env.REACT_APP_API_KEY}`;
 
 export function getUserTransactions(token, values) {
-  // console.log(values);
   return axios.get(`${URL}/transactions`, {
     params: {
       searchStatusId: values?.selectedStatusId,
@@ -30,8 +29,10 @@ export function getTransaction(token, id) {
     },
   });
 }
-export function deleteTransaction(token, id) {
-  return axios.delete(`${URL}/transactions/${id}`, {
+export function deleteTransaction(token, values) {
+  console.log(values);
+  return axios.delete(`${URL}/transactions/${values.id}`, {
+    data: { ...values },
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -4,6 +4,7 @@ const db = require('../models');
 const txHistoryDB = db.transaction_history;
 const transactionDB = db.transaction;
 const userDB = db.user;
+const transactionStatusDB = db.transaction_status;
 const { QueryTypes } = require('sequelize');
 const {
   getRevenueQuery,
@@ -19,7 +20,6 @@ const { sequelize } = require('../models');
 const moment = require('moment');
 
 const updateTxHistory = async (req, res, next) => {
-  console.log('>>>> update tx history');
   const t = await sequelize.transaction();
   const template = fs.readFileSync(
     './src/helpers/verifyEmailTemplate.html',
@@ -77,29 +77,43 @@ const updateTxHistory = async (req, res, next) => {
 
 const getRevenue = async (req, res, next) => {
   try {
-    const { start_date, end_date, sort_type, sort_order } = req.query;
-    const startDate = new Date(start_date + '');
-    const endDate = new Date(end_date + '');
-    validateDate(startDate, endDate);
+    const { start_date, end_date, sort_type, sort_order, today_date } =
+      req.query;
+    const startDate = start_date ? new Date(start_date + '') : null;
+    const endDate = end_date ? new Date(end_date + '') : null;
+    const todayDate = today_date ? new Date(today_date + '') : null;
+    console.log('today =>> ' + todayDate);
+    validateDate(startDate, endDate, todayDate);
     const data = await getRevenueQuery({
       startDate,
       endDate,
+      todayDate,
       sort_type,
       sort_order,
     });
-    const generatedDate = generateDate(startDate, endDate, sort_order);
-    let newData = validateIsValueExist({
-      data,
-      generatedDate,
-      sort_type,
-      sort_order,
-      key: 'today_revenue',
-    });
+    console.log(`data ==> ${data}`);
+    let newData;
+    if (startDate && endDate) {
+      const generatedDate = generateDate(startDate, endDate, sort_order);
+      newData = validateIsValueExist({
+        data,
+        generatedDate,
+        sort_type,
+        sort_order,
+        key: 'today_revenue',
+      });
+    } else {
+      newData = data.length
+        ? {
+            date: moment(todayDate).format('LL'),
+            today_revenue: Number(data[0].today_revenue),
+          }
+        : { date: moment(todayDate).format('LL'), today_revenue: 0 };
+    }
     return res.status(200).send({
       success: true,
       message: 'Get revenue Successfully',
       data: newData,
-      orginal: data,
     });
   } catch (error) {
     next(error);
@@ -108,27 +122,41 @@ const getRevenue = async (req, res, next) => {
 
 const getTotalTransaction = async (req, res, next) => {
   try {
-    const { start_date, end_date, sort_type, sort_order } = req.query;
-    const startDate = new Date(start_date + '');
-    const endDate = new Date(end_date + '');
-    validateDate(startDate, endDate);
+    const { start_date, end_date, sort_type, sort_order, today_date } =
+      req.query;
+    const startDate = start_date ? new Date(start_date + '') : null;
+    const endDate = end_date ? new Date(end_date + '') : null;
+    const todayDate = today_date ? new Date(today_date + '') : null;
+    validateDate(startDate, endDate, todayDate);
     const data = await getTotalTransactionQuery({
       startDate,
       endDate,
+      todayDate,
       sort_type,
       sort_order,
     });
-    const generatedDate = generateDate(startDate, endDate, sort_order);
-    let newData = validateIsValueExist({
-      data,
-      generatedDate,
-      sort_type,
-      sort_order,
-      key: 'total_transaction',
-    });
+
+    let newData;
+    if (startDate && endDate) {
+      const generatedDate = generateDate(startDate, endDate, sort_order);
+      newData = validateIsValueExist({
+        data,
+        generatedDate,
+        sort_type,
+        sort_order,
+        key: 'total_transaction',
+      });
+    } else {
+      newData = data.length
+        ? {
+            date: moment(todayDate).format('LL'),
+            total_transaction: Number(data[0].total_transaction),
+          }
+        : { date: moment(todayDate).format('LL'), total_transaction: 0 };
+    }
     return res.status(200).send({
       success: true,
-      message: 'Get revenue Successfully',
+      message: 'Get total transaction successfully',
       data: newData,
     });
   } catch (error) {
@@ -138,29 +166,43 @@ const getTotalTransaction = async (req, res, next) => {
 
 const getUserTransaction = async (req, res, next) => {
   try {
-    const { start_date, end_date, sort_type, sort_order } = req.query;
-    const startDate = new Date(start_date + '');
-    const endDate = new Date(end_date + '');
-    validateDate(startDate, endDate);
+    const { start_date, end_date, sort_type, sort_order, today_date } =
+      req.query;
+    const startDate = start_date ? new Date(start_date + '') : null;
+    const endDate = end_date ? new Date(end_date + '') : null;
+    const todayDate = today_date ? new Date(today_date + '') : null;
+    validateDate(startDate, endDate, todayDate);
     const data = await getUserTransactionQuery({
       startDate,
       endDate,
+      todayDate,
       sort_type,
       sort_order,
     });
-    const generatedDate = generateDate(startDate, endDate, sort_order);
-    const newData = validateIsValueExist({
-      data,
-      generatedDate,
-      sort_type,
-      sort_order,
-      key: 'total_user',
-    });
+
+    let newData;
+    if (startDate && endDate) {
+      const generatedDate = generateDate(startDate, endDate, sort_order);
+      newData = validateIsValueExist({
+        data,
+        generatedDate,
+        sort_type,
+        sort_order,
+        key: 'total_user',
+      });
+    } else {
+      newData = data.length
+        ? {
+            date: moment(todayDate).format('LL'),
+            total_user: Number(data[0].total_user),
+          }
+        : { date: moment(todayDate).format('LL'), total_user: 0 };
+    }
+
     return res.status(200).send({
       success: true,
-      message: 'Get revenue Successfully',
+      message: 'Get total user successfully',
       data: newData,
-      original: data,
     });
   } catch (error) {
     next(error);
@@ -184,10 +226,50 @@ const getTopSaleProduct = async (req, res, next) => {
   }
 };
 
+const getAllTransactionStatusTotal = async (req, res, next) => {
+  try {
+    const getTransactionStatuses = await transactionStatusDB.findAll();
+
+    let result = await Promise.all(
+      getTransactionStatuses.map(async (row) => {
+        try {
+          const data = await db.sequelize.query(
+            `SELECT COUNT(*) AS count_of_valid_transactions
+            FROM pharmacy.transaction_histories
+            WHERE transaction_status_id = :transaction_status_id
+            AND is_active = 1;`,
+            {
+              replacements: {
+                transaction_status_id: row.dataValues.id,
+              },
+              type: db.sequelize.QueryTypes.SELECT,
+            },
+          );
+          return {
+            status: row.dataValues.status,
+            total: data.length ? data[0].count_of_valid_transactions : 0,
+          };
+        } catch (error) {
+          throw { error };
+        }
+      }),
+    );
+
+    return res.status(200).send({
+      success: true,
+      message: 'Get all transaction status total successfully',
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   updateTxHistory,
   getRevenue,
   getTotalTransaction,
   getUserTransaction,
   getTopSaleProduct,
+  getAllTransactionStatusTotal,
 };

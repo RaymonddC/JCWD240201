@@ -35,26 +35,42 @@ export const SalesReportSlice = createSlice({
 
 export const getSalesReportSlice = (query) => async (dispatch) => {
   try {
-    const { startDate, endDate, sortType, sortOrder } = query;
+    const { startDate, endDate, sortType, sortOrder, today_date } = query;
     let token = localStorage.getItem('token');
-    const revenue = await getRevenueAPI(token, {
-      start_date: startDate,
-      end_date: endDate,
-      sort_type: sortType === 'transaction' ? 'today_revenue' : 'date',
-      sort_order: sortOrder,
-    });
-    const totalTransaction = await getTotalTransactionAPI(token, {
-      start_date: startDate,
-      end_date: endDate,
-      sort_type: sortType === 'transaction' ? 'total_transaction' : 'date',
-      sort_order: sortOrder,
-    });
-    const totalUser = await getTotalUserAPI(token, {
-      start_date: startDate,
-      end_date: endDate,
-      sort_type: sortType === 'transaction' ? 'total_user' : 'date',
-      sort_order: sortOrder,
-    });
+    const revenue = await getRevenueAPI(
+      token,
+      today_date
+        ? { today_date }
+        : {
+            start_date: startDate,
+            end_date: endDate,
+            sort_type: sortType === 'transaction' ? 'today_revenue' : 'date',
+            sort_order: sortOrder,
+          },
+    );
+    const totalTransaction = await getTotalTransactionAPI(
+      token,
+      today_date
+        ? { today_date }
+        : {
+            start_date: startDate,
+            end_date: endDate,
+            sort_type:
+              sortType === 'transaction' ? 'total_transaction' : 'date',
+            sort_order: sortOrder,
+          },
+    );
+    const totalUser = await getTotalUserAPI(
+      token,
+      today_date
+        ? { today_date }
+        : {
+            start_date: startDate,
+            end_date: endDate,
+            sort_type: sortType === 'transaction' ? 'total_user' : 'date',
+            sort_order: sortOrder,
+          },
+    );
 
     if (
       revenue.data.success &&
@@ -80,12 +96,10 @@ export const getTopSaleSlice = (query) => async (dispatch) => {
     });
 
     if (response.data.success) {
-      console.log(response);
       dispatch(setTopSale(response.data.data));
     }
   } catch (error) {
     toast.error(error.response.data.message);
-    console.log(error);
   }
 };
 

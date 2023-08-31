@@ -1,22 +1,13 @@
 import React from 'react';
 import { toast } from 'react-hot-toast';
-import { deleteAddress } from '../../API/addressAPI';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategories } from '../../Features/Category/CategorySlice';
-import { deleteCategory } from '../../API/categoryAPI';
 
 const DeleteModal = (props) => {
   const dispatch = useDispatch();
-  const { search } = useSelector((state) => state.categories);
 
   const deleteHandler = async () => {
     try {
-      const response = await dispatch(props.delFunc({ id: props.id }));
-      if (response?.success) {
-        props?.closeModal();
-        toast.success(response.data.message);
-        dispatch(getAllCategories(search));
-      }
+      await dispatch(props.delFunc({ id: props.id }, () => props.closeModal()));
     } catch (error) {
       toast.error(error.message);
     }

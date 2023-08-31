@@ -33,7 +33,6 @@ export const QnASlice = createSlice({
 
 export const submitQuestion = (data, setOpen) => async (dispatch) => {
   try {
-    // console.log(data);
     if (!data.title) return toast.error('Title field id required');
     if (!data.question) return toast.error('Please enter your question');
     if (!data.question_category_id)
@@ -47,7 +46,6 @@ export const submitQuestion = (data, setOpen) => async (dispatch) => {
       toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -56,10 +54,8 @@ export const getQuestions = (data) => async (dispatch) => {
     let response = await getQuestionsAPI({
       ...data,
     });
-    // console.log(response.data.data);
     dispatch(questions(response?.data));
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -68,20 +64,16 @@ export const getQuestionDetail = (data) => async (dispatch) => {
     let response = await getQuestionDetailsAPI({
       id: data.id,
     });
-    // console.log(response.data.data);
     dispatch(questions(response?.data.data));
   } catch (error) {
-    console.log(error);
   }
 };
 
 export const getAnswers = (data) => async (dispatch) => {
   try {
     let response = await getAnswersAPI({ ...data });
-    // console.log(response.data.data.rows);
     dispatch(answers(response?.data));
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -98,7 +90,6 @@ export const postAnswer = (data) => async (dispatch) => {
       toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -116,14 +107,11 @@ export const updateAnswer = (data) => async (dispatch) => {
       toast.error(response.data.message);
     }
   } catch (error) {
-    console.log(error);
   }
 };
 export const getQuestionCategory = () => async (dispatch) => {
   try {
-    // console.log('>>> get question category')
     const response = await getQuestionsCategoriesAPI();
-    // console.log(response);
     dispatch(questionCategory(response.data));
   } catch (error) {}
 };

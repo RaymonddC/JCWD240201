@@ -107,7 +107,6 @@ const Cart = () => {
       </>
     );
   }
-  console.log(carts);
 
   return (
     <div className="min-h-[50vh]">
@@ -127,7 +126,6 @@ const Cart = () => {
                 className="h-3 w-3"
                 onClick={() => {
                   setIsForceCheck(!isForceCheck);
-                  console.log(isForceCheck);
                 }}
                 onChange={() => {
                   setIsCheck(!isCheck);

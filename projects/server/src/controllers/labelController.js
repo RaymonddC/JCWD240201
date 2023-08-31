@@ -13,7 +13,6 @@ const transporter = require('../helpers/transporter');
 
 const getLabels = async (req, res, next) => {
   try {
-    console.log('get labels');
     const { page, search, limit, sortType, sortOrder, category } = req.query;
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
@@ -24,16 +23,13 @@ const getLabels = async (req, res, next) => {
     if (category) {
       whereCat.category_name = category;
     }
-    console.log(category);
     if (sortType) {
       order = [['product', sortType, sortOrder]];
     } else {
       order = [['product', 'updatedAt', 'DESC']];
     }
     const categories = await productCategoryDB.findOne({ where: whereCat });
-    // console.log('cataeg', categories);
     whereLabel.category_id = categories.dataValues.id;
-    // console.log('whereLabel', whereLabel);
     const response = await labelDB.findAndCountAll({
       include: [
         {
@@ -62,8 +58,6 @@ const getLabels = async (req, res, next) => {
       order: order,
     });
    
-    console.log("🚀🚀🚀 ~ file: labelController.js:63 ~ getLabels ~ response:", response)
-
     const totalPage = Math.ceil((response.count - 1) / pageLimit);
     const key = 'product';
     const uniqueResponse = [
@@ -84,7 +78,6 @@ const getLabels = async (req, res, next) => {
 const getProductLabels = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log('id', id);
     const response = await labelDB.findAll({
       include: productCategoryDB,
       where: { id: id },

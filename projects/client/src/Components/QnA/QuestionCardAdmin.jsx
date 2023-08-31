@@ -8,18 +8,15 @@ export default function QuestionCardAdmin(props) {
   const title = props?.data?.title;
   const id = props?.data?.id;
   const isAnswered = props?.data.answers.length;
-  // console.log(isAnswered);
-  // console.log(Object.keys(answer).length);
-  // console.log(props?.data.answers.length);
   return (
     <>
       <Link to={`/discussions/details/${id}`}>
         <div className="card card-compact w-full my-5 bg-base-100 shadow-xl hover:cursor-pointer">
           <div className="flex items-center justify-end px-3 ">
             {isAnswered ? (
-              <div className="badge badge-primary mx-6">answered</div>
+              <div className="badge badge-accent badge-lg mx-6">Status: Answered</div>
             ) : (
-              <div className="badge badge-accent mx-6">not answered</div>
+              <div className="badge badge-primary badge-lg mx-6">Status: Not answered</div>
             )}
             <div className="label">{date}</div>
           </div>

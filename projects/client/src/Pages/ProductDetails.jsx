@@ -33,7 +33,7 @@ export default function ProductDetails() {
     : null;
   console.log(
     '🚀🚀🚀 ~ file: ProductDetails.jsx:36 ~ ProductDetails ~ promotions:',
-    promotions,
+    productsStore
   );
   if (promotions) {
     for (let i = 0; i < promotions.length; i++) {

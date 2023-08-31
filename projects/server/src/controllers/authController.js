@@ -172,19 +172,16 @@ const userCreate = async (req, res, next) => {
 
 const userLogin = async (req, res, next) => {
   try {
-    console.log('test');
     const { usernameOrEmail, password } = req.body;
 
     if (!usernameOrEmail || !password)
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
-    // console.log(
+    // (
     //   '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
     //   result,
     // );
-
-    // console.log(`result=>>>> ${result}`);
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
     // if (!result.verified) {
@@ -198,8 +195,6 @@ const userLogin = async (req, res, next) => {
 
     if (!isUserExists) {
       //   const updateSuspend = await User.increment({ suspendCounter: 1 }, { where: { [Op.or]: [{ email: usernameOrEmail }, { username: usernameOrEmail }] } });
-
-      //   console.log(updateSuspend[0][1], 'hello');
 
       //   result = await getUser(usernameOrEmail, usernameOrEmail);
 
@@ -219,7 +214,6 @@ const userLogin = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log('error');
     next(error);
   }
 };

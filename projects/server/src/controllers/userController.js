@@ -16,7 +16,6 @@ const updateUserData = async (req, res, next) => {
     const image = req.file;
     const { full_name, phone_number, gender, birthdate } = req.body;
     validate({ full_name, phone_number, gender, birthdate });
-    console.log(req.body);
     if (image) {
       const previousImage = await userDB.findOne({
         attributes: ['profile_image'],
@@ -37,6 +36,15 @@ const updateUserData = async (req, res, next) => {
       );
 
       if (previousImage.dataValues.profile_image) {
+        let isDirectoryExist = fs.existsSync(
+          `public/deleted_user_profile_images`,
+        );
+
+        if (!isDirectoryExist) {
+          await fs.promises.mkdir(`public/deleted_user_profile_images`, {
+            recursive: true,
+          });
+        }
         const oldPath = previousImage.dataValues.profile_image;
         const fileName = previousImage.dataValues.profile_image.split('/');
         const newPath = `public/deleted_user_profile_images/${
@@ -128,8 +136,6 @@ const sendChangeEmailForm = async (req, res, next) => {
       html: tempResult,
     });
 
-    console.log(`Email ==> ${email}`);
-
     return res.send({
       success: true,
       status: 200,
@@ -137,7 +143,6 @@ const sendChangeEmailForm = async (req, res, next) => {
       data: null,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

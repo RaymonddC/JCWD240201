@@ -6,18 +6,21 @@ import { getCartUserAsync, newActivePromo } from '../Features/Cart/CartSlice';
 import ShippingMethod from '../Components/Checkout/ShippingMethod';
 import { toast } from 'react-hot-toast';
 import { checkoutTxSlice } from '../Features/Checkout/CheckoutSlice';
-import { CiDiscount1 } from 'react-icons/ci';
-import { AiOutlineRight } from 'react-icons/ai';
-import PromotionModal from '../Components/Cart/PromotionModal';
 import CartSummary from '../Components/Cart/CartSummary';
 import PaymentMethod from '../Components/Checkout/PaymentMethod';
 import {
-  handleMidtransPaymentSlice,
-  handleOnlinePaymentSlice,
+  // handleMidtransPaymentSlice,
+  // handleOnlinePaymentSlice,
   openMidtransSnapSlice,
 } from '../Features/Transaction/TransactionSlice';
 import Logo from '../utils/images/medicore_icon.png';
-import CheckoutSkl from '../Components/Skeleton/CheckoutSkl';
+import {
+  AddressCheckoutSkl,
+  ProductCheckoutSkl,
+  ShippingCheckoutSkl,
+  PaymentCheckoutSkl,
+} from '../Components/Skeleton/CheckoutSkl';
+import CartSummarySkl from '../Components/Skeleton/CartSummarySkl';
 
 export default function Checkout() {
   const dispatch = useDispatch();
@@ -53,7 +56,6 @@ export default function Checkout() {
   }, []);
 
   useEffect(() => {
-    console.log(tokenMidtrans, '================>>>>>>>>>>');
     if (tokenMidtrans)
       dispatch(openMidtransSnapSlice({ tokenMidtrans }, navigate));
   }, [tokenMidtrans]);
@@ -85,16 +87,28 @@ export default function Checkout() {
       <h1 className="font-bold text-[24px] mb-9 hidden sm:block md:text-left text-center">
         Checkout
       </h1>
-      <div className="flex justify-between mb-[151px] sm:mb-0">
-        {loadAddress && loadCarts ? (
-          <CheckoutSkl />
-        ) : (
-          <div className="w-full max-w-[1000px] flex flex-col mb-[132px] md:mb-0 gap-4 md:w-[65%]">
+      <div className="flex justify-between mb-[132px] md:mb-0">
+        <div className="w-full max-w-[1000px] flex flex-col  gap-4 md:w-[65%]">
+          {loadAddress && loadCarts ? (
+            <AddressCheckoutSkl />
+          ) : (
             <CheckoutAddress />
-            <div className="flex flex-col gap-4 lg:hidden">
+          )}
+          <div className="flex flex-col gap-4 md:hidden">
+            {loadAddress && loadCarts ? (
+              <ShippingCheckoutSkl />
+            ) : (
               <ShippingMethod setShipping={setShipping} shipping={shipping} />
+            )}
+            {loadAddress && loadCarts ? (
+              <PaymentCheckoutSkl />
+            ) : (
               <PaymentMethod setPaymentMethod={setPaymentMethod} />
-            </div>
+            )}
+          </div>
+          {loadAddress && loadCarts ? (
+            <ProductCheckoutSkl />
+          ) : (
             <div className="shadow-md p-4 rounded-xl bg-base-100">
               <h2 className="w-full font-bold text-[18px] pb-2 border-b-2 border-[#D5D7DD]">
                 Product
@@ -104,30 +118,27 @@ export default function Checkout() {
                   return (
                     <div
                       key={value?.id}
-                      className={`flex gap-2 ${
+                      className={`flex gap-2 py-2 ${
                         carts?.length - 1 === index
                           ? ''
                           : 'border-b-2 border-[#D5D7DD]'
                       }`}
                     >
-                      <div>
-                        {/* <div className="w-[100px] h-[100px] bg-primary"> */}
-                        <img
-                          className="h-20 w-20"
-                          src={
-                            value?.prescription_image ||
-                            value?.product?.product_images[0]?.image
-                              ? `
+                      <img
+                        className="h-20 w-20"
+                        src={
+                          value?.prescription_image ||
+                          value?.product?.product_images[0]?.image
+                            ? `
                             ${process.env.REACT_APP_API_BASE_URL}/${
                               value?.prescription_image ||
                               value?.product?.product_images[0]?.image
                             }`
-                              : Logo
-                          }
-                          alt={'Product'}
-                        />
-                        {/* </div> */}
-                      </div>
+                            : Logo
+                        }
+                        alt={'Product'}
+                      />
+
                       <div>
                         <p>{value?.product?.name}</p>
                         <p>{value?.qty} Item</p>
@@ -138,61 +149,73 @@ export default function Checkout() {
                 }
               })}
             </div>
-          </div>
-        )}
+          )}
+        </div>
         <div
-          className={`w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[0px] md:w-[30%]  h-fit  md:right-12 flex flex-col gap-2 ${
-            totalCart === 0 ? 'hidden' : ''
+          className={`w-full bottom-0 fixed md:sticky md:top-0 md:bottom-[15vh] lg:top-[0px] md:w-[30%]  h-fit  md:right-12 flex flex-col gap-2 z-10 ${
+            !loadCarts && totalCart === 0 ? 'hidden' : ''
           }`}
         >
-          <div className="hidden lg:flex lg:flex-col lg:gap-2">
-            <ShippingMethod setShipping={setShipping} shipping={shipping} />
-            <PaymentMethod setPaymentMethod={setPaymentMethod} />
+          <div className="hidden md:flex md:flex-col md:gap-2">
+            {loadAddress && loadCarts ? (
+              <ShippingCheckoutSkl />
+            ) : (
+              <ShippingMethod setShipping={setShipping} shipping={shipping} />
+            )}
+            {loadAddress && loadCarts ? (
+              <PaymentCheckoutSkl />
+            ) : (
+              <PaymentMethod setPaymentMethod={setPaymentMethod} />
+            )}
           </div>
           <div className="card card-compact shadow-xl bg-base-100">
-            <CartSummary
-              totalCart={totalCart}
-              activeCart={activeCart}
-              totalPrice={totalPrice}
-              shippingFee={shippingFee}
-              onSubmitText={'checkout'}
-              onSubmitFunc={async () => {
-                if (!shippingFee)
-                  return toast.error('Please choose your shipping courier');
-                if (!paymentMethod)
-                  return toast.error('Please choose payment method');
+            {loadAddress && loadCarts ? (
+              <CartSummarySkl />
+            ) : (
+              <CartSummary
+                totalCart={totalCart}
+                activeCart={activeCart}
+                totalPrice={totalPrice}
+                shippingFee={shippingFee}
+                onSubmitText={'checkout'}
+                onSubmitFunc={async () => {
+                  if (!shippingFee)
+                    return toast.error('Please choose your shipping courier');
+                  if (!paymentMethod)
+                    return toast.error('Please choose payment method');
 
-                // if (
-                const { url, midtransToken } = await dispatch(
-                  checkoutTxSlice(
-                    {
-                      shippingFee,
-                      discount: discount + amountPromotion,
-                      activeCart,
-                      promotionActive,
-                      ...shipping,
-                      totalPrice,
-                      paymentMethod,
-                    },
-                    navigate,
-                  ),
-                );
-                dispatch(
-                  newActivePromo(
-                    {
-                      id: null,
-                      amount: 0,
-                      minPrice: 0,
-                      maxPromo: null,
-                      promoDisc: null,
-                    },
-                    () => {},
-                  ),
-                );
-                if (paymentMethod === 'paymentGateway')
-                  setTokenMidtrans(midtransToken);
-              }}
-            />
+                  // if (
+                  const { url, midtransToken } = await dispatch(
+                    checkoutTxSlice(
+                      {
+                        shippingFee,
+                        discount: discount + amountPromotion,
+                        activeCart,
+                        promotionActive,
+                        ...shipping,
+                        totalPrice,
+                        paymentMethod,
+                      },
+                      navigate,
+                    ),
+                  );
+                  dispatch(
+                    newActivePromo(
+                      {
+                        id: null,
+                        amount: 0,
+                        minPrice: 0,
+                        maxPromo: null,
+                        promoDisc: null,
+                      },
+                      () => {},
+                    ),
+                  );
+                  if (paymentMethod === 'paymentGateway')
+                    setTokenMidtrans(midtransToken);
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -17,7 +17,6 @@ export default function Products() {
   const limit = 18;
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
-  // console.log('<<<<',searchParams.get('page'))
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [sortType, setSortType] = useState(searchParams.get('sort-type') || '');
@@ -29,7 +28,6 @@ export default function Products() {
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search, 1200);
   const CategoryStore = useSelector((state) => state?.categories?.categories);
-  console.log('🚀🚀🚀 ~ file: Products.jsx:31 ~ CategoryStore:', CategoryStore);
   const [minPrice, setMinPrice] = useState(
     searchParams.get('min-price') || '0',
   );
@@ -37,10 +35,6 @@ export default function Products() {
     searchParams.get('max-price') || '1000000',
   );
   const debouncedMinPrice = useDebounce(minPrice, 1200, 0);
-  console.log(
-    '🚀 ~ file: Products.jsx:38 ~ Products ~ debouncedMinPrice:',
-    debouncedMinPrice,
-  );
   const debouncedMaxPrice = useDebounce(maxPrice, 1200, 0);
   let productMap;
   const categoriesMap = CategoryStore?.map((value, index) => {

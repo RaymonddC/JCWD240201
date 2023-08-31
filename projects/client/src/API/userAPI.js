@@ -27,7 +27,6 @@ export const updateProfile = (data, token) => {
 };
 
 export const updateEmailAPI = (email, token, token_email) => {
-  console.log(`Emailnya nih =>> ${email}`);
   return axios.patch(
     `${URL}/users/email`,
     { email },

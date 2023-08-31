@@ -53,7 +53,7 @@ app.use('/products', productRoute);
 app.use('/categories', categoryRoute);
 app.use('/labels', labelRoute);
 app.use('/transactions', transactionRoute);
-app.use('/tx_status', txStatusRoute);
+app.use('/tx-status', txStatusRoute);
 app.use('/rajaongkir', rajaOngkirRoute);
 app.use('/stocks', stockRoute);
 app.use('/promotions', promotionRoute);
@@ -62,26 +62,26 @@ app.use('/prescriptioncarts', prescriptionCartRoute);
 app.use('/stock-histories', stockHistoryRoute);
 app.use('/promo-types', promoTypeRoute);
 
-app.get('/api', (req, res) => {
-  res.send(`Hello, this is my API`);
-});
+// app.get('/api', (req, res) => {
+//   res.send(`Hello, this is my API`);
+// });
 
-app.get('/api/greetings', (req, res, next) => {
-  res.status(200).json({
-    message: 'Hello, Student !',
-  });
-});
+// app.get('/api/greetings', (req, res, next) => {
+//   res.status(200).json({
+//     message: 'Hello, Student !',
+//   });
+// });
 
 // ===========================
 
 // not found
-// app.use((req, res, next) => {
-//   if (req.path.includes('/api/')) {
-//     res.status(404).send('Not found !');
-//   } else {
-//     next();
-//   }
-// });
+app.use((req, res, next) => {
+  if (req.path.includes('/')) {
+    res.status(404).send('Not found !');
+  } else {
+    next();
+  }
+});
 
 // error
 // app.use((err, req, res, next) => {
@@ -116,14 +116,21 @@ app.get('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  const errStatus = err.code || 500;
+  const errStatus = err.code && !isNaN(Number(err.code)) ? err.code : 500;
+  // console.log(
+  //   err.code,
+  //   isNaN(err.code),
+  //   Number(err.code),
+  //   isNaN(Number(err.code)),
+  //   errStatus,
+  // );
   const errMessage = err.message || 'Something went wrong';
   return res.status(errStatus).json({
     success: false,
     status: errStatus,
     message: errMessage,
     stack: err.stack,
-    data: null,
+    data: err.data,
   });
 });
 //#endregion
