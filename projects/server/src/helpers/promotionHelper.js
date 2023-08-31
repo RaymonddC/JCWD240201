@@ -28,7 +28,7 @@ const getAllPromotion = async (whereQuerry) => {
   }
 };
 
-const promotionExpired = (data) => {
+const promotionExpired = (data, t) => {
   return db.sequelize.query(
     `CREATE EVENT promotion_expired${data.id} ON SCHEDULE AT "${data.date_end} 17:00:00"
     DO BEGIN

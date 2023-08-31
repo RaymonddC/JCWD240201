@@ -77,11 +77,7 @@ const createDataStock = async (req, res, next) => {
     });
   } catch (error) {
     await t.rollback();
-    return res.send({
-      success: false,
-      message: error.message,
-      data: null,
-    });
+    next(error)
   }
 };
 
