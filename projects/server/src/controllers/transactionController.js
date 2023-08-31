@@ -2,12 +2,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const { Op, where } = require('sequelize');
 const db = require('../models');
-const {
-  getCart,
-  getCartByPk,
-  getUserCarts,
-  getPricePrescription,
-} = require('../helpers/cartHelper');
+const { getUserCarts, getPricePrescription } = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Transaction = db.transaction;
