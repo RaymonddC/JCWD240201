@@ -1,4 +1,7 @@
-const { promotionExpired } = require('../helpers/promotionHelper');
+const {
+  promotionExpired,
+  promotionValidation,
+} = require('../helpers/promotionHelper');
 const db = require('../models');
 const promotionDB = db.promotion;
 const promotionTypeDB = db.promotion_type;
@@ -11,6 +14,11 @@ const createDiscount = async (req, res, next) => {
   try {
     const { data } = req.body;
     const productId = Number(data.product_id);
+    if (!data.promotion_type_id)
+      throw { message: 'Please input promotion type', code: 400 };
+
+    promotionValidation(data);
+
     if (productId) {
       const getData = await productDB.findOne({
         where: { id: productId },
