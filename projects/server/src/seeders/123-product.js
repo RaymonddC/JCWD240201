@@ -765,8 +765,8 @@ module.exports = {
       {
         name: 'Entrasol Gold Vanila 185 gr',
         packaging_type_id: 3,
-        product_type_id: 8,
-        net_content: 4,
+        product_type_id: 3,
+        net_content: 185,
         description:
           'Entrasol Gold Vanila mengandung kalsium, vitamin D, magnesium, serat, omega 3 dan 6, yang dilengkapi dengan ekstrak buah zaitun serta 10 vitamin dan 5 mineral. Kombinasi nutrisi dalam susu ini berguna untuk menguatkan tulang dan gigi, mencegah osteoporosis, serta memelihara kesehatan tubuh secara keseluruhan. Dengan begitu, tubuh tetap sehat dan aktif di masa tua.',
         dosing:

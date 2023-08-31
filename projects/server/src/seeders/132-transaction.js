@@ -15,7 +15,7 @@ module.exports = {
     await queryInterface.bulkInsert('transactions', [
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -30,7 +30,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -45,7 +45,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -60,7 +60,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -75,7 +75,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -90,7 +90,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -105,7 +105,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -120,7 +120,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -135,7 +135,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -150,7 +150,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -165,7 +165,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -180,7 +180,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -195,7 +195,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -210,7 +210,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -225,7 +225,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -240,7 +240,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -255,7 +255,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -270,7 +270,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -285,7 +285,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -300,7 +300,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -315,7 +315,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -330,7 +330,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -345,7 +345,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -360,7 +360,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -375,7 +375,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -390,7 +390,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -405,7 +405,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -420,7 +420,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -435,7 +435,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -450,7 +450,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',
@@ -465,7 +465,7 @@ module.exports = {
       },
       {
         promotion_id: 1,
-        user_id: 5,
+        user_id: 4,
         image: null,
         city_id: 365,
         notes: 'Close to Indomaret',

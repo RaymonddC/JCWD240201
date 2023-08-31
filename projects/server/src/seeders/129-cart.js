@@ -14,7 +14,7 @@ module.exports = {
      */
     await queryInterface.bulkInsert('carts', [
       {
-        user_id: 5,
+        user_id: 4,
         product_id: 1,
         qty: 1,
         prescription_image: null,
@@ -25,7 +25,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        user_id: 5,
+        user_id: 4,
         product_id: 1,
         qty: 1,
         prescription_image: null,
@@ -36,7 +36,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        user_id: 5,
+        user_id: 4,
         product_id: 2,
         qty: 1,
         prescription_image: null,
