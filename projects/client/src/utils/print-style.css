@@ -1,0 +1,28 @@
+@media print {
+  @page {
+    margin: 0cm;
+  }
+  .react-printable-parent {
+    grid-template-columns: 1fr;
+    gap: 1200px;
+  }
+  .react-print {
+    width: 1150px;
+  }
+  .custom-print {
+    max-width: 1100px !important;
+    width: 1100px !important;
+    min-width: 1100px !important;
+  }
+  .react-print-wrapper {
+    flex-direction: column;
+    gap: 1200px;
+  }
+}
+
+/* @media (min-width: 1280px) {
+  @page {
+    size: landscape A3;
+    margin: 0cm;
+  }
+} */

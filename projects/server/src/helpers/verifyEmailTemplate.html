@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+  </head>
+  <body
+    style="
+      display: grid;
+      background-color: #f1f5fc;
+      font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+        'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    "
+  >
+    <img style="width: 15rem" src="cid:logo1" />
+    <div>
+      <h2>Welcome to Medicore!</h2>
+    </div>
+    <div style="display: grid">
+      <p>
+        You’re just one click away from getting started with Medicore. All you
+        need to do is verify your email address to activate your Medicore
+        account.
+      </p>
+    </div>
+    <div>
+      <button
+        style="
+          height: 3rem;
+          width: 6rem;
+          border-radius: 10%;
+          border: none;
+          background-color: #e11d48;
+        "
+      >
+        <a
+          style="color: white; text-decoration: none"
+          href="http://localhost:3000/verification?token={{token}}"
+          >Verify
+        </a>
+      </button>
+    </div>
+    <div>
+      <p>
+        Once your account is activated, you can start using all of Medicore’s
+        features.
+      </p>
+      <p>
+        You’re receiving this email because you recently created a new
+        Medicore account or added a new email address. If this wasn’t you,
+        please ignore this email.
+      </p>
+    </div>
+  </body>
+</html>

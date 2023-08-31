@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.error {
+  color: red;
+}
+
+.maplibregl-popup-close-button {
+  width: 20px;
+  height: 20px;
+}
+/* .wrapper-class {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  height: 200px;
+}
+.editor-class {
+  background-color:lightgray;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  height: 280px;
+}
+.toolbar-class {
+  border: 1px solid #ccc;
+  height: 280px;
+} */
+
+/* .bar-chart canvas {
+  width: 1400px;
+} */
