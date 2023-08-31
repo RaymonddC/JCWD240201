@@ -76,8 +76,8 @@ app.use('/promo-types', promoTypeRoute);
 
 // not found
 app.use((req, res, next) => {
-  if (req.path.includes('/')) {
-    res.status(404).send('Not found !');
+  if (req.path.includes("/api/")) {
+    res.status(404).send("Not found !");
   } else {
     next();
   }
