@@ -130,7 +130,7 @@ const checkout = async (req, res, next) => {
                 };
             } else {
               // promo buyget
-              if (value.product.promotion[0].buy > value.qty) {
+              if (value.product.promotions[0].buy > value.qty) {
                 // promo jgn diapply
                 promoSuccess = false;
               }
@@ -307,6 +307,7 @@ const checkout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
+    console.log(error);
     await t.rollback();
     return res.status(500).send({
       data: error,
@@ -515,6 +516,7 @@ const cancelTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { notes } = req.body;
+    console.log(notes, id);
 
     const user = await UserDB.findByPk(req.user.id);
 
@@ -678,17 +680,17 @@ const cancelTransaction = async (req, res, next) => {
         transaction_id: transaction.id,
         transaction_status_id: 7,
         is_active: true,
+        notes: notes,
       },
       { transaction: t },
     );
-
-    await Transaction.update(
-      {
-        ...transaction,
-        notes,
-      },
-      { where: { id: transaction.id } },
-    );
+    console.log('notes', notes);
+    // await Transaction.update(
+    //   {
+    //     ...transaction,
+    //   },
+    //   { where: { id: transaction.id } },
+    // );
 
     await t.commit();
 
