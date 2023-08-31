@@ -546,7 +546,9 @@ const cancelTransaction = async (req, res, next) => {
     }
 
     //detect kalo ada prescription
-    let isPrescription = false;
+    let isPrescription = false,
+      stockHistoryUpdateData = [],
+      stockHistoryId;
     await Promise.all(
       transaction.transaction_details.map(async (value) => {
         //getPromotionData
@@ -572,25 +574,39 @@ const cancelTransaction = async (req, res, next) => {
           isPrescription = true;
         }
       }),
-    );
+    ).catch((error) => {
+      throw error;
+    });
     if (isPrescription) {
       // kalo dalam 1 cart ada 2 resep
       const prescriptionDetail = await StockHistoryDB.findAll({
         where: {
           transaction_id: transaction.id,
-          stock_history_type_id: 4,
+          stock_history_type_id: { [Op.or]: [3, 4] },
         },
       });
 
-      // throw { data: prescriptionDetail };
+      stockHistoryId = prescriptionDetail.map((value) => {
+        return value.id;
+      });
+
+      const prescriptionDetailSales = prescriptionDetail.filter((value) => {
+        if (value.stock_history_type_id === 4) return value;
+      });
+
+      // console.log(stockHistoryId);
+      // throw { data: stockHistoryId };
+
+      // throw { data: prescriptionDetailSales };
       await Promise.all(
         // conversionPrescriptionDetail
 
-        prescriptionDetail.map(async (value) => {
+        prescriptionDetailSales.map(async (value) => {
           console.log(value.product_id, value.transaction_id, value.unit);
           const closeStockProduct = await ClosedStock.findOne({
             where: { product_id: value.product_id },
           });
+          let closeQty = 0;
           if (value.unit === false) {
             closeStockUpdateData.push({
               ...closeStockProduct.dataValues,
@@ -598,28 +614,13 @@ const cancelTransaction = async (req, res, next) => {
             });
           } else {
             // unit conversion
-            // let open
-            // await Promise.all().then(() => {});
             const openStockProduct = await OpenStock.findOne({
               where: { product_id: value.product_id },
             });
 
             const product = await Product.findByPk(value.product_id);
 
-            // throw { message: 'bangsat' };
-            // throw { data: stockProduct, message: 'OpenStock' };
-            console.log(value.product_id);
-            // console.log(
-            //   '=================',
-            //   openStockProduct.dataValues,
-            //   // value,
-            //   '========================',
-            //   openStockProduct,
-            // );
-
-            // throw { message: 'anjing' };
-            let closeQty = 0,
-              openQty = value.qty + openStockProduct.dataValues.qty;
+            openQty = value.qty + openStockProduct.dataValues.qty;
             console.log(openQty, openStockProduct.dataValues.qty);
             closeQty = Math.floor(openQty / product.net_content);
             openQty = openQty % product.net_content;
@@ -634,13 +635,46 @@ const cancelTransaction = async (req, res, next) => {
               ...openStockProduct.dataValues,
               qty: openQty,
             });
+
+            if (closeQty) {
+              const oldStockHistory = await StockHistoryDB.findOne({
+                where: {
+                  transaction_id: transaction.id,
+                  product_id: value.product_id,
+                  unit: 0,
+                },
+              });
+              // console.log(closeQty);
+              // throw { data: oldStockHistory };
+              if (oldStockHistory) {
+                const newQty = oldStockHistory.dataValues.qty - closeQty;
+                console.log(newQty);
+                if (newQty) {
+                  stockHistoryUpdateData.push({
+                    ...oldStockHistory.dataValues,
+                    qty: newQty,
+                    total_stock:
+                      oldStockHistory.dataValues.total_stock + closeQty,
+                  });
+                  stockHistoryId.splice(
+                    stockHistoryId.indexOf(oldStockHistory.dataValues.id),
+                    1,
+                  );
+                }
+              }
+              // return;
+              // continue;
+            }
           }
         }),
       ).catch((error) => {
         throw error;
       });
     }
-
+    // throw { data: stockHistoryUpdateData };
+    console.log(stockHistoryUpdateData);
+    // console.log(stockHistoryId);
+    // throw { message: stockHistoryId, data: stockHistoryId };
     // throw { data: prescriptionDetail, code: 400, message: 'salah' };
 
     await Promotion.bulkCreate(promoUpdateData, {
@@ -655,9 +689,15 @@ const cancelTransaction = async (req, res, next) => {
       updateOnDuplicate: ['qty'],
       transaction: t,
     });
+    await StockHistoryDB.bulkCreate(stockHistoryUpdateData, {
+      updateOnDuplicate: ['qty', 'total_stock'],
+      transaction: t,
+    });
+
+    // throw {};
     //stockHistory
     await StockHistoryDB.destroy({
-      where: { transaction_id: transaction.id },
+      where: { id: [...stockHistoryId] },
       transaction: t,
     });
 
@@ -702,6 +742,7 @@ const cancelTransaction = async (req, res, next) => {
       data: transaction,
     });
   } catch (error) {
+    console.log(error);
     await t.rollback();
     next(error);
   }
