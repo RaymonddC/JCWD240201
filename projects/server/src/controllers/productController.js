@@ -104,15 +104,28 @@ const getAllProducts = async (req, res, next) => {
 const getProductDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
+    const today = new Date();
     const response = await productDB.findOne({
-      include: [packagingDB, productTypeDB, productImageDB, promotionDB],
+      include: [
+        { model: packagingDB },
+        { model: productTypeDB },
+        { model: productImageDB },
+        {
+          model: promotionDB,
+          where: {
+            // [Op.and]: [
+              //  limit: { [Op.gt]: 0 } ,
+               date_start: { [Op.lte]: today } ,
+               date_end: { [Op.gte]: today } ,
+            // ],
+          },
+          required: false,
+        },
+      ],
       where: { id },
     });
     const labels = await labelDB.findAll({
       include: productCategoryDB,
-      where: { product_id: id },
-    });
-    const image = await productImageDB.findOne({
       where: { product_id: id },
     });
     const openedStock = await openedStockDB.findOne({

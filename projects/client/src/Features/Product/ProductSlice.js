@@ -59,6 +59,7 @@ export const getProducts = (data) => async (dispatch) => {
 export const getProductDetails = (data) => async (dispatch) => {
   try {
     let response = await getProductDetailsAPI({ id: data.id });
+    console.log("🚀🚀🚀 ~ file: ProductSlice.js:62 ~ getProductDetails ~ response:", response)
     dispatch(products(response?.data));
     dispatch(setProductDetail(response?.data));
   } catch (error) {
