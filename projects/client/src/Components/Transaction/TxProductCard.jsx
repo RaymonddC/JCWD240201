@@ -24,7 +24,13 @@ const TxProductCard = (props) => {
     <div
       className="flex border border-slate-200 p-3"
       onClick={() => {
-        navigate(`/products/${props.txDet.product_id}`);
+        navigate(
+          `/products${
+            user.role?.role_name === 'admin'
+              ? `?search=${props.txDet.product_name}`
+              : '/' + props.txDet.product_id
+          }`,
+        );
       }}
     >
       <div className="prod w-2/3 flex border-r mr-2">
@@ -45,18 +51,17 @@ const TxProductCard = (props) => {
           />
         </div>
         <div className="prodDetail w-4/5 mx-3">
-          <p>{props.txDet.product_name}</p>
+          <p className="font-bold">{props.txDet.product_name}</p>
           <p className="text-xs text-slate-500">
-            {props.txDet.qty} x Rp
-            {props.txDet.price?.toLocaleString(['id'])}
+            {props.txDet.qty} x Rp {props.txDet.price?.toLocaleString(['id'])}
           </p>
         </div>
       </div>
       <div className="linktoProd w-1/3 flex flex-col gap-2">
         <div className="price text-end">
           <p>Total Price</p>
-          <p>
-            Rp{(props.txDet.price * props.txDet.qty).toLocaleString(['id'])}
+          <p className="font-bold">
+            Rp {(props.txDet.price * props.txDet.qty).toLocaleString(['id'])}
           </p>
         </div>
         <button

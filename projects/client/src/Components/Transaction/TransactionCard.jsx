@@ -19,25 +19,21 @@ import moment from 'moment';
 const TransactionCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [openTransactionModal, setOpenTransactionModal] = useState(false);
   const paymentProofRef = useRef();
   const [paymentProofFile, setPaymentProofFile] = useState(null);
   const [disabled, setdisabled] = useState(false);
   const [openDeleteModal, setOpenDeletemodal] = useState(false);
-
   const dateTime = new Date(props.tx.createdAt);
-  console.log(moment(dateTime));
   const date = moment(dateTime);
-
   const transactionStatusId =
     props?.tx?.transaction_histories[0]?.transaction_status_id;
   const transactionStatus =
     props?.tx?.transaction_histories[0]?.transaction_status?.status;
   const transactionId = props?.tx?.id;
   const txDetail = props?.tx.transaction_details[0];
+
   const onSubmit = async () => {
-    // console.log(paymentProofFile.type.split('/')[1]);
     const imageType = paymentProofFile?.type.split('/')[1];
     if (imageType !== 'jpeg' && imageType !== 'png' && imageType !== 'jpg') {
       return toast.error('Image type must be JPEG or JPG or PNG');
@@ -53,9 +49,9 @@ const TransactionCard = (props) => {
       );
       dispatch(getAllTransactionSlice());
       props?.setTogle(!props?.togle);
-      // props.togle
     } catch (error) {}
   };
+
   const confirm = async () => {
     try {
       await dispatch(
@@ -112,7 +108,7 @@ const TransactionCard = (props) => {
         <div className="price w-[20%] text-center">
           <p>Total Belanja</p>
           <p className="font-bold">
-            Rp.{' '}
+            Rp{' '}
             {(
               props.tx.total_price +
               props.tx.shipment_fee -
@@ -200,12 +196,25 @@ const TransactionCard = (props) => {
               Cancel Order
             </button>
           </>
-        ) : transactionStatus === 'Waiting for confirmation' ||
-          transactionStatusId === 2 ? (
-          <div className="badge badge-primary">Waiting confirmation</div>
-        ) : transactionStatus === 'Process' || transactionStatusId === 3 ? (
-          <div className="badge badge-primary">Processing</div>
-        ) : transactionStatus === 'On the way' || transactionStatusId === 4 ? (
+        ) : // : transactionStatus === 'Waiting for confirmation' ||
+        //   transactionStatusId === 2 ? (
+        //   <div className="badge badge-primary">Waiting confirmation</div>
+        // ) : transactionStatus === 'Process' || transactionStatusId === 3 ? (
+        //   <div className="badge badge-primary">Processing</div>
+        // ) : transactionStatus === 'On the way' || transactionStatusId === 4 ? (
+        //   <div className="badge badge-primary">On the way</div>
+        //   // <>
+        //   //   <ConfirmationModal
+        //   //     title="Confirmation"
+        //   //     textLine1="Are you sure you want to confirm the arrival of this order?"
+        //   //     label="CONFIRM ARRIVAL"
+        //   //     labelStyle="text-white"
+        //   //     styling="btn btn-primary btn-sm"
+        //   //     confirm={confirm}
+        //   //   />
+        //   // </>
+        // )
+        transactionStatus === 'Arrived' || transactionStatusId === 5 ? (
           <>
             <ConfirmationModal
               title="Confirmation"
@@ -216,30 +225,34 @@ const TransactionCard = (props) => {
               confirm={confirm}
             />
           </>
-        ) : transactionStatus === 'Arrived' || transactionStatusId === 5 ? (
-          <>
-            <ConfirmationModal
-              title="Confirmation"
-              textLine1="Are you sure you want to confirm the arrival of this order?"
-              label="CONFIRM ARRIVAL"
-              labelStyle="text-white"
-              styling="btn btn-primary btn-sm"
-              confirm={confirm}
-            />
-          </>
-        ) : transactionStatus === 'Complete' || transactionStatusId === 6 ? (
-          <div className="badge badge-primary">Completed</div>
         ) : (
           ''
         )}
-        <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
-          <label
-            htmlFor="my_modal_6"
-            onClick={() => setOpenTransactionModal(true)}
-          >
-            Transaction Details
-          </label>
-        </button>
+        <div
+          className={`flex justify-between  ${
+            transactionStatus === 'Cancelled' || transactionStatusId === 7
+              ? 'flex-grow'
+              : ''
+          }`}
+        >
+          {transactionStatus === 'Cancelled' || transactionStatusId === 7 ? (
+            <p>
+              {props.tx?.notes
+                ? `Cancelled by Admin`
+                : `You cancel this order: ${props.tx.notes}`}
+            </p>
+          ) : (
+            ''
+          )}
+          <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
+            <label
+              htmlFor="my_modal_6"
+              onClick={() => setOpenTransactionModal(true)}
+            >
+              Transaction Details
+            </label>
+          </button>
+        </div>
       </div>
       {openTransactionModal ? (
         <TransactionModal

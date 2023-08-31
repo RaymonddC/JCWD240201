@@ -8,6 +8,7 @@ const productCategoryDB = db.product_category;
 const labelDB = db.label;
 const productDB = db.product;
 const productImageDB = db.product_image;
+const promotionDB = db.promotion;
 const transporter = require('../helpers/transporter');
 
 const getLabels = async (req, res, next) => {
@@ -16,6 +17,7 @@ const getLabels = async (req, res, next) => {
     const { page, search, limit, sortType, sortOrder, category } = req.query;
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
+    const today = new Date();
     let order = [];
     const whereLabel = {};
     const whereCat = {};
@@ -36,7 +38,20 @@ const getLabels = async (req, res, next) => {
       include: [
         {
           model: productDB,
-          include: [{ model: productImageDB }],
+          include: [
+            { model: productImageDB },
+            {
+              model: promotionDB,
+              where: {
+                [Op.and]: [
+                  { limit: { [Op.gt]: 0 } },
+                  { date_start: { [Op.lte]: today } },
+                  { date_end: { [Op.gte]: today } },
+                ],
+              },
+              required: false,
+            },
+          ],
           // where: { name: { [Op.like]: `%${search}%` } },
         },
         productCategoryDB,
@@ -46,7 +61,8 @@ const getLabels = async (req, res, next) => {
       where: whereLabel,
       order: order,
     });
-    console.log(response);
+   
+    console.log("🚀🚀🚀 ~ file: labelController.js:63 ~ getLabels ~ response:", response)
 
     const totalPage = Math.ceil((response.count - 1) / pageLimit);
     const key = 'product';

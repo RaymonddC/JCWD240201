@@ -33,7 +33,7 @@ export default function NavbarDrawer() {
         <div className="drawer-content flex flex-col">
           {/* Navbar */}
           <div className="w-full navbar flex  relative">
-            <div className="flex-none md:hidden">
+            <div className="flex-none lg:hidden">
               <label
                 htmlFor="my-drawer-3"
                 className="btn btn-square btn-ghost"
@@ -55,21 +55,21 @@ export default function NavbarDrawer() {
               </label>
             </div>
 
-            <div className="flex px-2 mx-2">
+            <div className="flex w-full justify-center mr-16 lg:mr-0 lg:w-fit lg:justify-normal px-2 mx-2">
               <div>
-                <div className="w-60 hidden md:block">
+                <div className="w-60 hidden lg:block">
                   <Link to="/">
                     <img className="px-2 h-20" src={Logo} alt="" />
                   </Link>
                 </div>
-                <div className="md:hidden">
+                <div className="flex lg:hidden">
                   <Link to="/">
                     <img className="px-2 h-20" src={Logo1} alt="" />
                   </Link>
                 </div>
               </div>
               {user && Object.keys(user).length !== 0 ? (
-                <button className="btn z-10 btn-sm btn-ghost absolute right-6 md:right-48">
+                <button className="btn z-10 btn-sm btn-ghost absolute right-6 lg:right-48">
                   <Link to="/cart">
                     <SlBag size={25} />
                     {totalCart > 0 && Object.keys(user).length !== 0 ? (
@@ -87,54 +87,52 @@ export default function NavbarDrawer() {
                 ''
               )}
             </div>
-            <div className=" hidden md:block w-full">
-              <div className="relative justify-between w-full flex">
-                {/* Navbar menu content here */}
-                <div>
+            <div className=" hidden relative  lg:block w-full">
+              {/* Navbar menu content here */}
+              <div className="flex mr-44 justify-center">
+                <div className="flex gap-3">
                   <Link to="/products">
-                    <button className="btn btn-sm btn-ghost">SHOP</button>
+                    <button className="btn btn-ghost font-bold w-36">SHOP</button>
                   </Link>
                   <Link to="/discussions">
-                    <button className="btn btn-sm btn-ghost">
-                      DISCUSSIONS
-                    </button>
+                    <button className="btn btn-ghost font-bold w-36">DISCUSSIONS</button>
                   </Link>
                   <Link to="/location">
-                    <button className="btn btn-ghost btn-sm">LOCATION</button>
+                    <button className="btn btn-ghost font-bold w-36">LOCATION</button>
                   </Link>
                 </div>
-                <div className="absolute right-3 w-40">
-                  {user && Object.keys(user).length !== 0 ? (
-                    <div className="flex gap-2">
-                      <Link
-                        to="/user/profile"
-                        className="flex justify-center items-center gap-2 "
-                      >
-                        {user?.profile_image ? (
-                          <img
-                            className="w-[40px] h-[40px] rounded-full"
-                            src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
-                            alt="profile"
-                          />
-                        ) : (
-                          <MdPerson className="w-[40px] h-[40px]" />
-                        )}
-                        <div className="font-bold w-24 truncate">
-                          {user?.username}
-                        </div>
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="flex gap-3">
-                      <button className="btn btn-sm btn-primary text-white">
-                        <Link to="/login">Login</Link>
-                      </button>
-                      <button className="btn btn-sm btn-outline btn-primary">
-                        <Link to="/register">Register</Link>
-                      </button>
-                    </div>
-                  )}
-                </div>
+              </div>
+              <div className="absolute top-1 right-3 w-40">
+                {user && Object.keys(user).length !== 0 ? (
+                  <div className="flex gap-2">
+                    <Link
+                      to="/user/profile"
+                      className="flex justify-center items-center gap-2 "
+                    >
+                      {user?.profile_image ? (
+                        <img
+                          className="w-[40px] h-[40px] rounded-full"
+                          src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                          alt="profile"
+                        />
+                      ) : (
+                        <MdPerson className="w-[40px] h-[40px]" />
+                      )}
+                      <div className="font-bold w-24 truncate">
+                        {user?.username}
+                      </div>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex mt-1  gap-3">
+                    <button className="btn btn-sm btn-primary text-white">
+                      <Link to="/login">Login</Link>
+                    </button>
+                    <button className="btn btn-sm btn-outline btn-primary">
+                      <Link to="/register">Register</Link>
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
