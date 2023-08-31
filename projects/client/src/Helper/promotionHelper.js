@@ -24,10 +24,7 @@ export const validatePromotion = (values) => {
   if (!values.minimum_transaction && values.promotion_type_id === '2') {
     errors.minimum_transaction = 'Min. transaction limit is required';
   }
-  if (
-    !values.maximum_discount_amount &&
-    (values.promotion_type_id === '1' || values.promotion_type_id === '2')
-  ) {
+  if (!values.maximum_discount_amount && values.promotion_type_id === '2') {
     errors.maximum_discount_amount = 'Max. discount amount is required';
   }
   if (!values.date_start) {
