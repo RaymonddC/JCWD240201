@@ -24,6 +24,7 @@ function App() {
   const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const pathname = location.pathname;
+  const search = location.search;
   const [navbar, setNavbar] = useState(false);
   const [footer, setFooter] = useState(false);
   const bodyScrollable = useBodyScrollable();
@@ -45,6 +46,14 @@ function App() {
   //     document.body.style.paddingRight = `${scrollbarWidth}px`;
   //   }
   // }, [bodyScrollable]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [search]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     if (

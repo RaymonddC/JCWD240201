@@ -37,6 +37,15 @@ const updateUserData = async (req, res, next) => {
       );
 
       if (previousImage.dataValues.profile_image) {
+        let isDirectoryExist = fs.existsSync(
+          `public/deleted_user_profile_images`,
+        );
+
+        if (!isDirectoryExist) {
+          await fs.promises.mkdir(`public/deleted_user_profile_images`, {
+            recursive: true,
+          });
+        }
         const oldPath = previousImage.dataValues.profile_image;
         const fileName = previousImage.dataValues.profile_image.split('/');
         const newPath = `public/deleted_user_profile_images/${

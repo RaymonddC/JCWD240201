@@ -59,7 +59,10 @@ export default function PrescriptionAdmin() {
           />
           <div className="dropdown dropdown-end hidden md:block">
             <label tabIndex={0} className="btn btn-primary w-[130px]">
-              Sort by <MdArrowDropDown size={25} />
+              <div className="flex items-center">
+                <div className="text-white">Sort By</div>
+                <MdArrowDropDown size={25} />
+              </div>
             </label>
             <ul
               tabIndex={0}
@@ -75,7 +78,10 @@ export default function PrescriptionAdmin() {
           </div>
           <div className="dropdown dropdown-end hidden md:block">
             <label tabIndex={0} className="btn btn-primary w-[120px]">
-              Status <MdArrowDropDown size={25} />
+              <div className="flex items-center">
+                <div className="text-white">Status</div>
+                <MdArrowDropDown size={25} />
+              </div>
             </label>
             <ul
               tabIndex={0}

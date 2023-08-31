@@ -25,7 +25,7 @@ export default function NavbarAdmin() {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col ">
         {/* Navbar */}
-        <div className="w-full navbar bg-base-300 bg-white">
+        <div className="w-full navbar bg-white">
           <div className="flex-none lg:hidden">
             <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
               <svg
