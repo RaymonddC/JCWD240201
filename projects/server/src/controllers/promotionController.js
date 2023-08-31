@@ -11,6 +11,7 @@ const { sequelize } = require('../models');
 const { Op } = require('sequelize');
 
 const createDiscount = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     const { data } = req.body;
     const productId = Number(data.product_id);
@@ -30,11 +31,14 @@ const createDiscount = async (req, res, next) => {
           message: 'Promotion cannot be applied on prescription drug',
         };
     }
-    const result = await promotionDB.create(data);
+    const result = await promotionDB.create(data, { transaction: t });
 
     if (result) {
-      await promotionExpired(result);
+      await promotionExpired(result, t);
     }
+
+    await t.commit();
+
     return res.send({
       success: true,
       status: 200,
@@ -42,6 +46,7 @@ const createDiscount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
+    await t.rollback();
     next(error);
   }
 };

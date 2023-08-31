@@ -32,7 +32,7 @@ const createDataStock = async (req, res, next) => {
         data.unit = false;
         data.product_id = productId;
         data.total_stock = addStock;
-        await stockHistoryDB.create(data);
+        await stockHistoryDB.create(data, { transaction: t });
       } else {
         updateStock = await closedStockDB.create(
           {
