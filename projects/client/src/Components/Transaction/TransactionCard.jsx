@@ -108,7 +108,7 @@ const TransactionCard = (props) => {
         <div className="price w-[20%] text-center">
           <p>Total Belanja</p>
           <p className="font-bold">
-            Rp.{' '}
+            Rp{' '}
             {(
               props.tx.total_price +
               props.tx.shipment_fee -
@@ -228,14 +228,31 @@ const TransactionCard = (props) => {
         ) : (
           ''
         )}
-        <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
-          <label
-            htmlFor="my_modal_6"
-            onClick={() => setOpenTransactionModal(true)}
-          >
-            Transaction Details
-          </label>
-        </button>
+        <div
+          className={`flex justify-between  ${
+            transactionStatus === 'Cancelled' || transactionStatusId === 7
+              ? 'flex-grow'
+              : ''
+          }`}
+        >
+          {transactionStatus === 'Cancelled' || transactionStatusId === 7 ? (
+            <p>
+              {props.tx?.notes
+                ? `Cancelled by Admin`
+                : `You cancel this order: ${props.tx.notes}`}
+            </p>
+          ) : (
+            ''
+          )}
+          <button className="hover:bg-[#F6FAFB] p-1 px-2 rounded-lg">
+            <label
+              htmlFor="my_modal_6"
+              onClick={() => setOpenTransactionModal(true)}
+            >
+              Transaction Details
+            </label>
+          </button>
+        </div>
       </div>
       {openTransactionModal ? (
         <TransactionModal

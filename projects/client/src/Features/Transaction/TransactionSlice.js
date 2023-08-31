@@ -16,14 +16,10 @@ import {
   updateUserTransactionHistoryAPI,
   uploadPaymentAPI,
 } from '../../API/transactionAPI';
-import { getAllTxStatus } from '../TransactionStatus/TransactionStatusSlice';
-import { async } from 'q';
-// import UrlApi from '../../Supports/Constants/URLAPI';
 
 const initialState = {
   transactions: [],
   transaction: {},
-  transactionDetails: [],
   totalPages: null,
   isProcessing: false,
 };
@@ -39,11 +35,8 @@ export const TransactionSlice = createSlice({
     onGetOne: (initialState, action) => {
       initialState.transaction = action.payload.data;
     },
-    onGetTxDetails: (initialState, action) => {
-      initialState.transactionDetails = action.payload.data;
-    },
     onProcess: (initialState, action) => {
-      initialState.isProcessing = action.payload.data;
+      initialState.isProcessing = action.payload;
     },
   },
 });
@@ -103,13 +96,14 @@ export const getTransactionSlice = (values) => async (dispatch) => {
 //   }
 // };
 
-export const cancelTransaction = (values) => async (dispatch) => {
+export const cancelTransaction = (values, closeFunc) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
 
-    const { data } = await deleteTransaction(token, values.id);
+    const { data } = await deleteTransaction(token, values);
 
     dispatch(getAllTransactionSlice({ selectedStatusId: 1 }));
+    closeFunc();
   } catch (error) {
     return toast.error(error.message);
   }

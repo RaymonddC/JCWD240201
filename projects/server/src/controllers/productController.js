@@ -19,8 +19,16 @@ const deleteFiles = require('../helpers/deleteFiles');
 
 const getAllProducts = async (req, res, next) => {
   try {
-    const { page, search, limit, sortType, sortOrder, minPrice, maxPrice, category_id } =
-    req.query;
+    const {
+      page,
+      search,
+      limit,
+      sortType,
+      sortOrder,
+      minPrice,
+      maxPrice,
+      category_id,
+    } = req.query;
     const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
@@ -29,10 +37,6 @@ const getAllProducts = async (req, res, next) => {
     let order = [];
     where.name = { [Op.like]: `%${search}%` };
     where.id = { [Op.not]: 1 };
-   
-    // if(category_id){
-    //   where.label = category_id
-    // }
 
     if (minPrice && maxPrice) {
       where.price = {
@@ -47,7 +51,7 @@ const getAllProducts = async (req, res, next) => {
     }
     const response = await productDB.findAndCountAll({
       include: [
-        { model: labelDB},
+        { model: labelDB },
         { model: packagingDB },
         { model: productTypeDB },
         { model: closedStockDB },
@@ -101,7 +105,7 @@ const getProductDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
     const response = await productDB.findOne({
-      include: [packagingDB, productTypeDB, productImageDB],
+      include: [packagingDB, productTypeDB, productImageDB, promotionDB],
       where: { id },
     });
     const labels = await labelDB.findAll({
