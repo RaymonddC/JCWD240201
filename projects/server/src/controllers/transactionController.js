@@ -2,12 +2,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const { Op, where } = require('sequelize');
 const db = require('../models');
-const {
-  getCart,
-  getCartByPk,
-  getUserCarts,
-  getPricePrescription,
-} = require('../helpers/cartHelper');
+const { getUserCarts, getPricePrescription } = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Transaction = db.transaction;
@@ -70,7 +65,6 @@ const checkout = async (req, res, next) => {
           code: 400,
           data: promotionActive,
         };
-      console.log(promoTx);
       if (promoTx && promoTx.minimum_transaction < totalPrice) {
         if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
         let disc = Math.round((totalPrice * promoTx.discount) / 100);
@@ -79,7 +73,6 @@ const checkout = async (req, res, next) => {
             ? promoTx.maximum_discount_amount
             : disc;
 
-        console.log(totalDiscount, disc, promoTx.dataValues);
         //update promo limit
         await Promotion.update(
           {
@@ -94,7 +87,6 @@ const checkout = async (req, res, next) => {
     const address = await getOldIsSelected(userId);
     // balikin address to main
 
-    // console.log(address, '>>>>');
     //create transaction
     const transaction = await Transaction.create(
       {
@@ -123,37 +115,44 @@ const checkout = async (req, res, next) => {
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
         let pricePresc = 0;
+        let promoSuccess = true;
         if (value.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
             if (value.dataValues.disc && value.dataValues.disc != 0) {
               //promo disc
-              console.log(value.dataValues, 'promoooooooooooooooooooo');
               totalDiscount += value.qty * value.dataValues.disc;
-              console.log('totalDiscount:', totalDiscount);
               if (value.product.promotions[0].limit < value.qty)
                 throw {
                   message: 'not enough stocks (Promotion)',
                   code: 400,
                   data: value,
                 };
+            } else {
+              // promo buyget
+              if (value.product.promotions[0].buy > value.qty) {
+                // promo jgn diapply
+                promoSuccess = false;
+              }
             }
             //update promo limit
-            promotionData.push({
-              ...value.product.promotions[0],
-              limit:
-                value.product.promotions[0].limit -
-                (value.disc == 0 ? 1 : value.qty),
-            });
+            if (promoSuccess)
+              promotionData.push({
+                ...value.product.promotions[0],
+                limit:
+                  value.product.promotions[0].limit -
+                  (value.disc == 0 ? 1 : value.qty),
+              });
           }
           // cekStock
 
           const reserveStock =
             value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
               ? value.qty +
-                (value.product.promotions[0].get -
-                  value.product.promotions[0].buy)
-              : //selisih, karna tdk berlaku kelipatan
+                // (
+                (promoSuccess ? value.product.promotions[0].get : 0)
+              : // -value.product.promotions[0].buy)
+                //selisih, karna tdk berlaku kelipatan
                 value.qty;
 
           if (
@@ -216,7 +215,7 @@ const checkout = async (req, res, next) => {
         return {
           product_id: value.product_id,
           promotion_id:
-            value.product.promotions.length !== 0
+            value.product.promotions.length !== 0 && promoSuccess
               ? value.product.promotions[0].id
               : null,
           transaction_id: transaction.id,
@@ -295,10 +294,8 @@ const checkout = async (req, res, next) => {
       paymentData = { paymentToken, url: redirect_url };
       // paymentData.paymentToken = paymentToken;
       // paymentData.url = redirect_url;
-      console.log(paymentData, '===============?????>>>>>>>>>>>>>>');
       // throw {};
     }
-    console.log(paymentMethod, paymentData);
     // throw {};
     await t.commit();
 
@@ -310,8 +307,8 @@ const checkout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
+    console.log(error);
     await t.rollback();
-    console.log(error, '==============luar');
     return res.status(500).send({
       data: error,
     });
@@ -357,8 +354,6 @@ const getAllTransaction = async (req, res, next) => {
       sortType,
       sortOrder,
     });
-    // console.log(whereQuery);
-    // console.log(startDate);
 
     return res.status(200).send({
       success: true,
@@ -368,7 +363,6 @@ const getAllTransaction = async (req, res, next) => {
       totalPage: Math.ceil(count / (limitPage || 1)),
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -434,8 +428,6 @@ const uploadPayment = async (req, res, next) => {
       data: [],
     });
   } catch (error) {
-    console.log(error);
-
     await t.rollback();
     next(error);
   }
@@ -448,20 +440,15 @@ const handleMidtransPayment = async (req, res, next) => {
     const { order_id, transactionId } = req.body;
     // cek ke api midtrans dlu statusnya baru write status
 
-    console.log(order_id);
     const responsePayment = await getPaymentStatusMidtrans({ order_id });
 
     let transaction_status_id = 1;
-    console.log(responsePayment, '================>>>>>>>>>>>>>');
     const transaction_id =
       transactionId || (order_id && order_id.split('-')[1]) || null;
-    console.log(transaction_id, transactionId, '===============');
-    // console.log(order_id.split('-')[2] || 0);
     if (
       responsePayment.data.transaction_status === 'settlement' ||
       responsePayment.data.transaction_status === 'capture'
     ) {
-      // console.log(responsePayment.data.payment_type);
       const payment_method = responsePayment.data.payment_type;
       transaction_status_id = 3;
       const tx = await Transaction.findByPk(transaction_id);
@@ -492,14 +479,7 @@ const handleMidtransPayment = async (req, res, next) => {
         },
         { transaction: t },
       );
-      console.log(
-        transaction_id,
-        txCreate,
-        responsePayment,
-        responsePayment.data.va_numbers,
-      );
     } else if (responsePayment.data.status_code >= 404 && transaction_id) {
-      console.log('hereeeeeeeeeeeeeeeee');
       const user = await UserDB.findByPk(req.user.id);
       const transaction = await Transaction.findByPk(transaction_id);
       const txDetails = await TransactionDetail.findAll({
@@ -526,8 +506,6 @@ const handleMidtransPayment = async (req, res, next) => {
       data: [],
     });
   } catch (error) {
-    console.log(error);
-
     await t.rollback();
     next(error);
   }
@@ -538,6 +516,7 @@ const cancelTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { notes } = req.body;
+    console.log(notes, id);
 
     const user = await UserDB.findByPk(req.user.id);
 
@@ -547,15 +526,16 @@ const cancelTransaction = async (req, res, next) => {
     if (user.role_id !== 1 && user.id !== transaction.user_id)
       throw { message: 'transaction not found', code: 400 };
 
-    const status = await TransactionHistory.findOne({
+    const txStatus = await TransactionHistory.findOne({
       where: { transaction_id: transaction.id, is_active: true },
     });
 
-    if (status.status === 'Cancelled') throw { message: 'Already Cancelled' };
+    if (txStatus.status === 'Cancelled') throw { message: 'Already Cancelled' };
 
     let promoUpdateData = [],
-      stockUpdateData = [],
+      closeStockUpdateData = [],
       openStockUpdateData = [];
+    //cek transaction Promo
     if (transaction.promotion_id) {
       const promoTx = await Promotion.findByPk(transaction.promotion_id);
       if (promoTx)
@@ -565,6 +545,7 @@ const cancelTransaction = async (req, res, next) => {
         });
     }
 
+    //detect kalo ada prescription
     let isPrescription = false;
     await Promise.all(
       transaction.transaction_details.map(async (value) => {
@@ -583,7 +564,7 @@ const cancelTransaction = async (req, res, next) => {
           const stockProduct = await ClosedStock.findOne({
             where: { product_id: value.product_id },
           });
-          stockUpdateData.push({
+          closeStockUpdateData.push({
             ...stockProduct.dataValues,
             total_stock: stockProduct.total_stock + value.qty,
           });
@@ -595,40 +576,78 @@ const cancelTransaction = async (req, res, next) => {
     if (isPrescription) {
       // kalo dalam 1 cart ada 2 resep
       const prescriptionDetail = await StockHistoryDB.findAll({
-        where: { transaction_id: transaction.id, stock_history_type_id: 4 },
+        where: {
+          transaction_id: transaction.id,
+          stock_history_type_id: 4,
+        },
       });
+
+      // throw { data: prescriptionDetail };
       await Promise.all(
+        // conversionPrescriptionDetail
+
         prescriptionDetail.map(async (value) => {
-          console.log(value.product_id, value.transaction_id);
-          if (value.unit === 0) {
-            const stockProduct = await ClosedStock.findOne({
-              where: { product_id: value.product_id },
-            });
-            stockUpdateData.push({
-              ...stockProduct.dataValues,
-              total_stock: stockProduct.total_stock + value.qty,
+          console.log(value.product_id, value.transaction_id, value.unit);
+          const closeStockProduct = await ClosedStock.findOne({
+            where: { product_id: value.product_id },
+          });
+          if (value.unit === false) {
+            closeStockUpdateData.push({
+              ...closeStockProduct.dataValues,
+              total_stock: closeStockProduct.total_stock + value.qty,
             });
           } else {
             // unit conversion
-            const stockProduct = await OpenStock.findOne({
+            // let open
+            // await Promise.all().then(() => {});
+            const openStockProduct = await OpenStock.findOne({
               where: { product_id: value.product_id },
             });
 
-            console.log(stockProduct, '>>>>>>>>', value.product_id);
+            const product = await Product.findByPk(value.product_id);
+
+            // throw { message: 'bangsat' };
+            // throw { data: stockProduct, message: 'OpenStock' };
+            console.log(value.product_id);
+            // console.log(
+            //   '=================',
+            //   openStockProduct.dataValues,
+            //   // value,
+            //   '========================',
+            //   openStockProduct,
+            // );
+
+            // throw { message: 'anjing' };
+            let closeQty = 0,
+              openQty = value.qty + openStockProduct.dataValues.qty;
+            console.log(openQty, openStockProduct.dataValues.qty);
+            closeQty = Math.floor(openQty / product.net_content);
+            openQty = openQty % product.net_content;
+
+            if (closeQty)
+              closeStockUpdateData.push({
+                ...closeStockProduct.dataValues,
+                total_stock: closeStockProduct.total_stock + closeQty,
+              });
+
             openStockUpdateData.push({
-              ...stockProduct.dataValues,
-              qty: stockProduct.qty + value.qty,
+              ...openStockProduct.dataValues,
+              qty: openQty,
             });
           }
         }),
-      );
+      ).catch((error) => {
+        throw error;
+      });
     }
+
+    // throw { data: prescriptionDetail, code: 400, message: 'salah' };
 
     await Promotion.bulkCreate(promoUpdateData, {
       updateOnDuplicate: ['limit'],
       transaction: t,
     });
-    await ClosedStock.bulkCreate(stockUpdateData, {
+    await ClosedStock.bulkCreate(closeStockUpdateData, {
       updateOnDuplicate: ['total_stock'],
       transaction: t,
     });
@@ -661,17 +680,17 @@ const cancelTransaction = async (req, res, next) => {
         transaction_id: transaction.id,
         transaction_status_id: 7,
         is_active: true,
+        notes: notes,
       },
       { transaction: t },
     );
-
-    await Transaction.update(
-      {
-        ...transaction,
-        notes,
-      },
-      { where: { id: transaction.id } },
-    );
+    console.log('notes', notes);
+    // await Transaction.update(
+    //   {
+    //     ...transaction,
+    //   },
+    //   { where: { id: transaction.id } },
+    // );
 
     await t.commit();
 
@@ -683,7 +702,6 @@ const cancelTransaction = async (req, res, next) => {
       data: transaction,
     });
   } catch (error) {
-    console.log(error);
     await t.rollback();
     next(error);
   }
@@ -692,7 +710,6 @@ const cancelTransaction = async (req, res, next) => {
 const payment = async (req, res, next) => {
   try {
     // await getMidtransSnap();
-    console.log('Success');
     return res.status(200).send({
       success: true,
       message: 'Upload payment Success',

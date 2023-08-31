@@ -19,7 +19,6 @@ export const Login = () => {
     setIsRegis(window.location.pathname === '/register');
   }, [window.location.pathname]);
 
-  // console.log(user);
   if (Object.keys(user).length !== 0) return <Navigate to={'/'} />;
 
   return (

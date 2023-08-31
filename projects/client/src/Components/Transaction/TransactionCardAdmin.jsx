@@ -31,8 +31,6 @@ const TransactionCardAdmin = (props) => {
     }
   });
   const transactionStatus = activeStatus[0]?.transaction_status?.status;
-  // console.log(activeStatus);
-  // console.log(transactionStatus);
 
   return (
     <div className="div border border-[#D5D7DD] text-[16px]  card card-compact bg-base-100 shadow-md my-2 ">
@@ -176,9 +174,9 @@ const TransactionCardAdmin = (props) => {
           >
             {transactionStatus === 'Cancelled' ? (
               <p className="text-primary">
-                {!props.tx?.notes
+                {!activeStatus[0]?.notes
                   ? `Cancelled by User`
-                  : `You cancel this order: ${props.tx.notes}`}
+                  : `You cancel this order: ${activeStatus[0].notes}`}
               </p>
             ) : (
               ''

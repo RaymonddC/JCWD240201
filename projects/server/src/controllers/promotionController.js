@@ -1,4 +1,7 @@
-const { promotionExpired } = require('../helpers/promotionHelper');
+const {
+  promotionExpired,
+  promotionValidation,
+} = require('../helpers/promotionHelper');
 const db = require('../models');
 const promotionDB = db.promotion;
 const promotionTypeDB = db.promotion_type;
@@ -8,9 +11,15 @@ const { sequelize } = require('../models');
 const { Op } = require('sequelize');
 
 const createDiscount = async (req, res, next) => {
+  const t = await sequelize.transaction();
   try {
     const { data } = req.body;
     const productId = Number(data.product_id);
+    if (!data.promotion_type_id)
+      throw { message: 'Please input promotion type', code: 400 };
+
+    promotionValidation(data);
+
     if (productId) {
       const getData = await productDB.findOne({
         where: { id: productId },
@@ -22,11 +31,14 @@ const createDiscount = async (req, res, next) => {
           message: 'Promotion cannot be applied on prescription drug',
         };
     }
-    const result = await promotionDB.create(data);
+    const result = await promotionDB.create(data, { transaction: t });
 
     if (result) {
-      await promotionExpired(result);
+      await promotionExpired(result, t);
     }
+
+    await t.commit();
+
     return res.send({
       success: true,
       status: 200,
@@ -34,6 +46,7 @@ const createDiscount = async (req, res, next) => {
       data: result,
     });
   } catch (error) {
+    await t.rollback();
     next(error);
   }
 };
@@ -44,7 +57,6 @@ const getPromotionList = async (req, res, next) => {
     const today = new Date();
     const pageLimit = Number(limit);
     const offset = (Number(page) - 1) * pageLimit;
-    console.log(totalPrice, 'totalPrice');
     let options = {};
     if (sortOrder) {
       options.order = [['createdAt', sortOrder]];
@@ -78,7 +90,6 @@ const getPromotionList = async (req, res, next) => {
     let whereQuery = [];
     if (user.role_id !== 1)
       whereQuery.push({ date_start: { [Op.lte]: today } });
-    console.log(...whereQuery);
     const getPromotion = await promotionDB.findAndCountAll({
       include: productDB,
       where: {

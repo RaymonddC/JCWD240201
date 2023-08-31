@@ -1,12 +1,12 @@
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
-import { Link } from 'react-router-dom';
-// import { handleAddToCart } from '../../Helper/cartHelper';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 export default function ProductCard(props) {
-  console.log('🚀🚀🚀 ~ file: ProductCard.jsx:8 ~ ProductCard ~ props:', props);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const productName = props?.data?.name;
   const productId = props?.data?.id;
@@ -24,6 +24,7 @@ export default function ProductCard(props) {
       }
     }
   }
+
   const discount = () => {
     if (promotionType?.promotion_type_id === 1) {
       const disc = promotionType?.discount;
@@ -36,9 +37,6 @@ export default function ProductCard(props) {
   const image = props?.data?.product_images
     ? props?.data?.product_images[0]?.image
     : '';
-
-  // const image=''
-  // console.log(promotion.promotion_type_id);
 
   const handleAddToCart = () => {
     if (reqPrescripton) {
@@ -53,65 +51,66 @@ export default function ProductCard(props) {
 
   return (
     <>
-      <Link to={`/products/${productId}`}>
-        <div className="card relative card-compact hover:bg-slate-100 w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2">
-          <figure>
-            <div className="h-28 pt-2">
-              <img
-                className="h-28 object-scale-down"
-                src={image ? `http://localhost:8000/${image}` : null}
-                alt=""
-              />
+      <div
+        onClick={() => navigate(`/products/${productId}`)}
+        className="card relative card-compact hover:bg-slate-100 w-32 h-72 md:w-40 bg-base-100 shadow-xl mx-2"
+      >
+        <figure>
+          <div className="h-28 pt-2">
+            <img
+              className="h-28 object-scale-down"
+              src={image ? `http://localhost:8000/${image}` : null}
+              alt=""
+            />
+          </div>
+        </figure>
+        <div className="card-body flex flex-col justify-between ">
+          <div className="font-bold line-clamp-2">{productName}</div>
+          <div className="">
+            <div className=" flex flex-col h-14 ">
+              <p
+                className={`text-[#737A8D] text-[14px] line-through ${
+                  promotionType?.promotion_type_id !== 1 ? 'hidden' : ''
+                }`}
+              >
+                Rp {price?.toLocaleString(['id'])}
+              </p>
+              <p className={``}>
+                Rp {(price - discount())?.toLocaleString(['id'])}
+              </p>
+              {/* <p>Rp. {price.toLocaleString(['id'])}</p> */}
+              {/* <div className="flex absolute top-6 right-[-3px] rotate-45"> */}
+              {promotionType ? (
+                promotionType?.promotion_type_id === 1 ? (
+                  <div className="flex absolute top-3 right-1 rotate-45">
+                    <p className=" badge badge-primary badge-xs md:badge-md mb-2">
+                      {`${promotionType?.discount}%`}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center pb-2">
+                    <div className="badge badge-outline badge-secondary">
+                      {`Buy ${promotionType?.buy} Get ${promotionType?.get}`}
+                    </div>
+                  </div>
+                )
+              ) : null}
+              {/* </div> */}
             </div>
-          </figure>
-          <div className="card-body flex flex-col justify-between ">
-            <div className="font-bold line-clamp-2">{productName}</div>
-            <div className="">
-              <div className=" flex flex-col h-14 ">
-                <p
-                  className={`text-[#737A8D] text-[14px] line-through ${
-                    promotionType?.promotion_type_id !== 1 ? 'hidden' : ''
-                  }`}
-                >
-                  Rp {price?.toLocaleString(['id'])}
-                </p>
-                <p className={``}>
-                  Rp {(price - discount())?.toLocaleString(['id'])}
-                </p>
-                {/* <p>Rp. {price.toLocaleString(['id'])}</p> */}
-                {/* <div className="flex absolute top-6 right-[-3px] rotate-45"> */}
-                {promotionType ? (
-                  promotionType?.promotion_type_id === 1 ? (
-                    <div className="flex absolute top-6 right-[-3px] rotate-45">
-                      <p className=" badge badge-primary badge-xs md:badge-md mb-2">
-                        {`${promotionType?.discount}%`}
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-center pb-2">
-                      <div className="badge badge-outline badge-secondary">
-                        {`Buy ${promotionType?.buy} Get ${promotionType?.get}`}
-                      </div>
-                    </div>
-                  )
-                ) : null}
-                {/* </div> */}
-              </div>
-              <div className="card-actions justify-center">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleAddToCart();
-                  }}
-                  className="btn btn-xs md:btn-sm btn-primary btn-outline"
-                >
-                  {reqPrescripton ? 'prescription' : 'add to cart'}
-                </button>
-              </div>
+            <div className="card-actions justify-center">
+              <button
+                onClick={(e) => {
+                  handleAddToCart();
+                  e.stopPropagation();
+                }}
+                className="btn btn-xs md:btn-sm btn-primary btn-outline"
+              >
+                {reqPrescripton ? 'prescription' : 'add to cart'}
+              </button>
             </div>
           </div>
         </div>
-      </Link>
+      </div>
     </>
   );
 }

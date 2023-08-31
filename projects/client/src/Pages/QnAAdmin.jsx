@@ -47,7 +47,6 @@ export default function QnAAdmin() {
   );
 
   useEffect(() => {
-    // console.log(questionCategory)
     if (page) {
       queryParams['page'] = page;
     }
@@ -80,7 +79,7 @@ export default function QnAAdmin() {
   return (
     <>
       <article className="prose">
-        <h2>QnA</h2>
+        <h2>Q&A</h2>
       </article>
       <div className="px-5">
         <div className="px-5 flex w-full justify-center">

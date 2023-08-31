@@ -45,15 +45,9 @@ export const getCourierServiceSlice = (data) => async (dispatch) => {
 export const checkoutTxSlice = (values, navigate) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
-
-    console.log(values);
-    // process.exit();
     const { data } = await checkoutAPI(values, token);
-    console.log(data);
-    console.log(data.paymentData.url, data.paymentData.paymentToken);
     toast.success('Checkout Success');
     if (values.paymentMethod === 'manual') navigate('/user/transaction');
-    console.log(data.paymentData);
     return {
       midtransToken: data.paymentData.paymentToken,
       url: data.paymentData.url,

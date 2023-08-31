@@ -41,7 +41,6 @@ const isFirstAddress = async (user_id) => {
     where: { user_id },
   });
 
-  // console.log(getAddress);
   if (getAddress.length) {
     return false;
   }

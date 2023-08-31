@@ -21,7 +21,6 @@ const ClosedStock = db.closed_stock;
 const getCarts = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    console.log('backend');
     let {
       searchCategory,
       ordered,
@@ -34,7 +33,6 @@ const getCarts = async (req, res, next) => {
     let whereQuery = { user_id: userId };
 
     const { count, rows } = await getUserCarts('', whereQuery);
-    // console.log(count, 'cart');
 
     const newRows = await Promise.all(
       rows.map(async (row) => {
@@ -62,14 +60,11 @@ const getCarts = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
-    console.log('🚀 ~ file: cartController.js:65 ~ getCarts ~ error:', error);
-
     next(error);
   }
 };
 
 const addToCart = async (req, res, next) => {
-  console.log('masuk add to cart');
   try {
     const { productId, qty } = req.body;
     const userId = req.user.id;
@@ -155,7 +150,6 @@ const updateCart = async (req, res, next) => {
       if (user.role.role_name === 'user')
         throw { code: 400, message: 'Cart Not Found' };
 
-    console.log(isCheck);
     if (isCart && isCart.qty === qty && isCart.is_check === isCheck) '';
     else if (isCart) {
       await Cart.update(

@@ -20,8 +20,6 @@ export default function PrescriptionForm(props) {
   const [openedStock, setOpenedStock] = useState(undefined);
   const [closedStock, setClosedStock] = useState(undefined);
 
-  console.log(closedStock, openedStock);
-
   const formik = useFormik({
     initialValues: {
       search: '',

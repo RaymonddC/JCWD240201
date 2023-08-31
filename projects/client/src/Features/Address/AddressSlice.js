@@ -75,14 +75,12 @@ export const getProvinceAsync = () => async (dispatch) => {
 
     dispatch(setProvince(response.data.data));
   } catch (error) {
-    console.log(error);
   }
 };
 
 export const getCityAsync = (province_id) => async (dispatch) => {
   try {
     dispatch(setLoadCity(true));
-    console.log('masuk');
     let token = localStorage.getItem('token');
     const response = await getCity(province_id, token);
     if (response.data.success) {

@@ -3,7 +3,6 @@ import { getProducts } from '../../Features/Product/ProductSlice';
 import useDebounce from '../../Hooks/useDebounce';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import InputDropdown from './InputDropdown';
 import PrescriptionForm from './PrescriptionForm';
 
 export default function EditPrescriptionModal(props) {

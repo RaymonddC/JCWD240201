@@ -16,7 +16,6 @@ const updateUserData = async (req, res, next) => {
     const image = req.file;
     const { full_name, phone_number, gender, birthdate } = req.body;
     validate({ full_name, phone_number, gender, birthdate });
-    console.log(req.body);
     if (image) {
       const previousImage = await userDB.findOne({
         attributes: ['profile_image'],
@@ -137,8 +136,6 @@ const sendChangeEmailForm = async (req, res, next) => {
       html: tempResult,
     });
 
-    console.log(`Email ==> ${email}`);
-
     return res.send({
       success: true,
       status: 200,
@@ -146,7 +143,6 @@ const sendChangeEmailForm = async (req, res, next) => {
       data: null,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

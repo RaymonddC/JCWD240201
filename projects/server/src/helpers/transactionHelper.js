@@ -35,12 +35,6 @@ const getUserTransactions = async (whereQuery, orderBy) => {
           ),
         ],
       };
-      console.log(
-        startDate,
-        endDate.setDate(startDate.getDate() + 1),
-        endDate.toLocaleString(),
-        new Date(endDate),
-      );
     }
 
     let includes = [];
@@ -50,7 +44,6 @@ const getUserTransactions = async (whereQuery, orderBy) => {
 
     let order = [['createdAt', 'DESC']];
     if (orderBy.sortType) {
-      console.log('test', orderBy);
       order = [[orderBy.sortType, orderBy.sortOrder]];
     }
 

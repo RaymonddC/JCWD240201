@@ -61,7 +61,6 @@ const validatePassword = async (password = '', confirmPassword = '') => {
     if (password.length < 8)
       throw { message: 'Pasword must be more than 8 characters', code: 400 };
 
-    console.log('validation');
     if (password.search(/\d/) == -1)
       throw { message: 'Password at least have 1 number', code: 400 };
 

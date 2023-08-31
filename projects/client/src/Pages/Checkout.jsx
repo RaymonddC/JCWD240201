@@ -56,7 +56,6 @@ export default function Checkout() {
   }, []);
 
   useEffect(() => {
-    console.log(tokenMidtrans, '================>>>>>>>>>>');
     if (tokenMidtrans)
       dispatch(openMidtransSnapSlice({ tokenMidtrans }, navigate));
   }, [tokenMidtrans]);

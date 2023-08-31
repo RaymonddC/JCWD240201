@@ -104,16 +104,28 @@ const getAllProducts = async (req, res, next) => {
 const getProductDetails = async (req, res, next) => {
   try {
     const { id } = req.params;
-    console.log('id', req.params);
+    const today = new Date();
     const response = await productDB.findOne({
-      include: [packagingDB, productTypeDB, productImageDB, promotionDB],
+      include: [
+        { model: packagingDB },
+        { model: productTypeDB },
+        { model: productImageDB },
+        {
+          model: promotionDB,
+          where: {
+            // [Op.and]: [
+              //  limit: { [Op.gt]: 0 } ,
+               date_start: { [Op.lte]: today } ,
+               date_end: { [Op.gte]: today } ,
+            // ],
+          },
+          required: false,
+        },
+      ],
       where: { id },
     });
     const labels = await labelDB.findAll({
       include: productCategoryDB,
-      where: { product_id: id },
-    });
-    const image = await productImageDB.findOne({
       where: { product_id: id },
     });
     const openedStock = await openedStockDB.findOne({
@@ -123,7 +135,6 @@ const getProductDetails = async (req, res, next) => {
       where: { product_id: id },
     });
 
-    console.log(closedStock);
     return res.status(200).send({
       success: true,
       message: 'get product details success',
@@ -204,6 +215,14 @@ const deleteProduct = async (req, res, next) => {
     );
 
     await t.commit();
+    let isDirectoryExist = fs.existsSync('public/deleted_product_images');
+
+    if (!isDirectoryExist) {
+      await fs.promises.mkdir('public/deleted_product_images', {
+        recursive: true,
+      });
+    }
+
     oldPath.map((value) => {
       const fileName = value.split('\\');
       const newPath = `public/deleted_product_images/${

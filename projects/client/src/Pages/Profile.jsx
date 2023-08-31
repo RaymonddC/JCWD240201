@@ -17,7 +17,6 @@ export default function Profile() {
   const [isRequest, setIsRequest] = useState(false);
 
   const { user, loadUser } = useSelector((state) => state.user);
-  console.log('🚀 ~ file: Profile.jsx:14 ~ Profile ~ user:', user);
   if (!token) return <Navigate to={'/login'} />;
 
   const reqVerify = async () => {

@@ -56,8 +56,6 @@ const getUserCarts = async (includes, whereQuery, order) => {
       // offset: (Number(page) - 1) * limitPage,
     });
   } catch (error) {
-    console.log('🚀 ~ file: cartHelper.js:58 ~ getUserCarts ~ error:', error);
-
     throw error;
   }
 };
@@ -107,8 +105,6 @@ const isPrescriptionCartProductListEmpty = async (cart_id) => {
     const getAllPrescriptionCartProductList = await prescriptionCartDB.findAll({
       where: { cart_id: cart_id },
     });
-
-    console.log(getAllPrescriptionCartProductList.length);
 
     if (getAllPrescriptionCartProductList.length) return false;
     return true;

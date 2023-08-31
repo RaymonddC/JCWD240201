@@ -37,7 +37,6 @@ export default function QuestionDetails() {
     setEditorState(newEditorState);
   };
   useEffect(() => {
-    console.log(answer);
     setEditorState(
       EditorState.createWithContent(
         ContentState.createFromBlockArray(convertFromHTML(answer || '<p></p>')),
@@ -153,7 +152,6 @@ export default function QuestionDetails() {
               <button
                 onClick={async () => {
                   const answer = convertToHTML(editorState.getCurrentContent());
-                  // console.log(answer);
                   await dispatch(
                     postAnswer({
                       answer: answer,

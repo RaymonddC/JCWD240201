@@ -96,12 +96,10 @@ export const getTopSaleSlice = (query) => async (dispatch) => {
     });
 
     if (response.data.success) {
-      console.log(response);
       dispatch(setTopSale(response.data.data));
     }
   } catch (error) {
     toast.error(error.response.data.message);
-    console.log(error);
   }
 };
 

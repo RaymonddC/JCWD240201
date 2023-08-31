@@ -103,7 +103,6 @@ export const updateQtyAsync = (values) => async (dispatch) => {
     newCarts[idx].is_check = cart.is_check;
     dispatch(onGetData(await processData(newCarts)));
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -127,7 +126,6 @@ export const getCartUserAsync = () => async (dispatch) => {
 
 export const addToCartAsync = (values) => async (dispatch) => {
   try {
-    // console.log('>>>>>>>', values);
     const { productId, qty, prescriptionImage } = values;
     const token = localStorage.getItem('token');
     if (!token) throw { message: 'Please login first' };
@@ -135,18 +133,15 @@ export const addToCartAsync = (values) => async (dispatch) => {
     if ((productId === 1) & !prescriptionImage) {
       throw { message: 'Please upload image' };
     }
-    console.log(qty);
     const response = await postCart(token, {
       productId,
       qty,
       prescription_images: prescriptionImage,
     });
-    // console.log(response);
 
     await dispatch(getCartUserAsync());
     toast.success('Add to cart Success');
   } catch (error) {
-    console.log(error);
     toast.error(error?.response?.data?.message || error?.message);
   }
 };
@@ -191,7 +186,6 @@ export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
       dispatch(setPrescriptionCarts(response.data.data));
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -204,7 +198,6 @@ export const getPrescriptionCartSlice = (id) => async (dispatch) => {
       dispatch(setDetailprescriptionCart(response.data.data));
     }
   } catch (error) {
-    console.log(error);
   }
 };
 
@@ -227,7 +220,6 @@ export const updateConfirmationPrescriptionCartSlice =
         dispatch(setUpdatePrescriptionLoad(false));
       }
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -236,7 +228,6 @@ export const newActivePromo = (values, close) => async (dispatch) => {
     dispatch(onChangeActivePromo(values));
     close();
   } catch (error) {
-    console.log(error);
     toast.error('error');
   }
 };
