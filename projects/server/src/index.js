@@ -130,7 +130,7 @@ app.use((err, req, res, next) => {
     status: errStatus,
     message: errMessage,
     stack: err.stack,
-    data: null,
+    data: err.data,
   });
 });
 //#endregion
