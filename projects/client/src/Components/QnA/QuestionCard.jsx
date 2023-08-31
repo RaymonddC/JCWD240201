@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createMarkup } from '../../Helper/createMarkup';
 import { useEffect, useState } from 'react';
-var parse = require('html-react-parser');
 
 export default function QuestionCard(props) {
   const date = new Date(props?.data?.createdAt);
@@ -29,13 +28,13 @@ export default function QuestionCard(props) {
     <>
       <Link to={`/discussions/details/${id}`}>
         <div className="card card-compact w-full my-5 bg-base-100 shadow-xl hover:cursor-pointer">
-          <div className="flex justify-between px-3">
-            <div className="flex items-center px-3 ">
+          <div className="flex justify-between px-3 pt-1">
+            <div className="flex items-center justify-start px-3 ">
               {label ? (
                 isAnswered ? (
-                  <div className="badge badge-primary badge-outline mx-6">Status: answered</div>
+                  <div className="badge badge-accent badge-lg mx-6">Status: Answered</div>
                 ) : (
-                  <div className="badge badge-accent badge-outline mx-6">Status: not answered</div>
+                  <div className="badge badge-primary badge-lg mx-6">Status: Not answered</div>
                 )
               ) : null}
               {/* <div className="label">{date}</div> */}

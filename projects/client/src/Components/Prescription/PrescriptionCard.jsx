@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { useState } from 'react';
 // import CopyPrescriptionModal from './CopyPrescriptionModal';
 import { useNavigate } from 'react-router-dom';
@@ -40,7 +41,7 @@ export default function PrescriptionCard(props) {
             : 'Rejected Prescription'}
         </p>
         <p>
-          {date[0]}, {date[1]} {date[2]}, {time} WIB
+          {moment(props?.data?.createdAt).format('dddd, MMMM Do YYYY, HH:mm')}
         </p>
       </div>
       <div className="flex gap-4 p-4">

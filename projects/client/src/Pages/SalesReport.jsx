@@ -7,7 +7,7 @@ import {
 } from '../Features/SalesReport/SalesReportSlice';
 import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from 'react-router-dom';
-import { formatDate, formatDateParams } from '../Helper/formatDateHelper';
+import { formatDateParams } from '../Helper/formatDateHelper';
 import ExcelDownload from '../Components/SalesReport/ExcelDownload';
 import { DropdownSortSales } from '../Components/SalesReport/DropdownSortSales';
 import { TableTopSales } from '../Components/SalesReport/TableTopSales';

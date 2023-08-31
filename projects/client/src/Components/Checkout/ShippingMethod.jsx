@@ -9,7 +9,7 @@ export default function ShippingMethod(props) {
   const dispatch = useDispatch();
   const { weight } = useSelector((state) => state?.cart);
   const { selectedAddress } = useSelector((state) => state.address);
-  const { courierServices, shippingFee } = useSelector(
+  const { courierServices, shippingFee, loadCourierService } = useSelector(
     (state) => state.checkout,
   );
 
@@ -67,7 +67,9 @@ export default function ShippingMethod(props) {
       </div>
       <div className="pt-2">
         <h3>Choose Service</h3>
-        {props?.shipping?.courier && !courierServices.length ? (
+        {props?.shipping?.courier &&
+        !courierServices.length &&
+        loadCourierService ? (
           <div className="select select-disabled items-center p-0 w-full select-bordered max-w-xs justify-center">
             <span className="loading h-fit loading-spinner loading-xs"></span>
           </div>
