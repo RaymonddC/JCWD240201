@@ -12,6 +12,9 @@ module.exports = (sequelize, DataTypes) => {
       promotion.belongsTo(models.product, {
         foreignKey: 'product_id',
       });
+      promotion.belongsTo(models.promotion_type, {
+        foreignKey: 'promotion_type_id',
+      });
     }
   }
   promotion.init(
