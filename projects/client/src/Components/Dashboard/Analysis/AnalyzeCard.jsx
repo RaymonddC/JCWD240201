@@ -8,11 +8,15 @@ export const AnalyzeCard = (props) => {
       <div className="card-body flex flex-row justify-between">
         <div className="div">
           <p>{props.title}</p>
-          <p className="card-title">Rp. 10.000.000</p>
-          <div className="summary flex gap-1 leading-6 items-center">
+          <p className="card-title">
+            {props?.name === 'today_revenue'
+              ? `Rp. ${props?.data?.[props.name]?.toLocaleString('id-ID')}`
+              : props?.data?.[props.name]}
+          </p>
+          {/* <div className="summary flex gap-1 leading-6 items-center">
             <img className="h-[10px]" src={ArrowDown} alt="" />
             <p className={`text-[#FF6B6B] text-[10px]`}>-5.700.000</p>
-          </div>
+          </div> */}
         </div>
         <div className="right">a</div>
       </div>

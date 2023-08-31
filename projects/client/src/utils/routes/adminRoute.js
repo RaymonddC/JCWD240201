@@ -1,7 +1,6 @@
 import { useRoutes } from 'react-router-dom';
 import React from 'react';
 import { Dashboard } from '../../Pages/Dashboard';
-import { AdminLayout } from '../../Components/Layout/AdminLayout';
 import QnAAdmin from '../../Pages/QnAAdmin';
 import QuestionDetails from '../../Pages/QuestionDetails';
 import ProductListAdmin from '../../Pages/ProductListAdmin';
@@ -28,8 +27,8 @@ const routerSource = (props) => [
   {
     index: true,
     path: '/',
-    element: <SalesReport />,
-    // element: <Dashboard />,
+    // element: <SalesReport />,
+    element: <Dashboard />,
   },
   {
     index: true,
