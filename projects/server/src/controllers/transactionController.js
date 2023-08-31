@@ -2,12 +2,7 @@ const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const { Op, where } = require('sequelize');
 const db = require('../models');
-const {
-  getCart,
-  getCartByPk,
-  getUserCarts,
-  getPricePrescription,
-} = require('../helpers/cartHelper');
+const { getUserCarts, getPricePrescription } = require('../helpers/cartHelper');
 const { getUserByPk } = require('../helpers/authHelper');
 const Cart = db.cart;
 const Transaction = db.transaction;
@@ -120,6 +115,7 @@ const checkout = async (req, res, next) => {
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
         let pricePresc = 0;
+        let promoSuccess = true;
         if (value.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
@@ -132,23 +128,31 @@ const checkout = async (req, res, next) => {
                   code: 400,
                   data: value,
                 };
+            } else {
+              // promo buyget
+              if (value.product.promotions[0].buy > value.qty) {
+                // promo jgn diapply
+                promoSuccess = false;
+              }
             }
             //update promo limit
-            promotionData.push({
-              ...value.product.promotions[0],
-              limit:
-                value.product.promotions[0].limit -
-                (value.disc == 0 ? 1 : value.qty),
-            });
+            if (promoSuccess)
+              promotionData.push({
+                ...value.product.promotions[0],
+                limit:
+                  value.product.promotions[0].limit -
+                  (value.disc == 0 ? 1 : value.qty),
+              });
           }
           // cekStock
 
           const reserveStock =
             value.product.promotions.length !== 0 && value.disc == 0 // promo buy get
               ? value.qty +
-                (value.product.promotions[0].get -
-                  value.product.promotions[0].buy)
-              : //selisih, karna tdk berlaku kelipatan
+                // (
+                (promoSuccess ? value.product.promotions[0].get : 0)
+              : // -value.product.promotions[0].buy)
+                //selisih, karna tdk berlaku kelipatan
                 value.qty;
 
           if (
@@ -211,7 +215,7 @@ const checkout = async (req, res, next) => {
         return {
           product_id: value.product_id,
           promotion_id:
-            value.product.promotions.length !== 0
+            value.product.promotions.length !== 0 && promoSuccess
               ? value.product.promotions[0].id
               : null,
           transaction_id: transaction.id,
@@ -303,6 +307,7 @@ const checkout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
+    console.log(error);
     await t.rollback();
     return res.status(500).send({
       data: error,
@@ -511,6 +516,7 @@ const cancelTransaction = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { notes } = req.body;
+    console.log(notes, id);
 
     const user = await UserDB.findByPk(req.user.id);
 
@@ -520,15 +526,16 @@ const cancelTransaction = async (req, res, next) => {
     if (user.role_id !== 1 && user.id !== transaction.user_id)
       throw { message: 'transaction not found', code: 400 };
 
-    const status = await TransactionHistory.findOne({
+    const txStatus = await TransactionHistory.findOne({
       where: { transaction_id: transaction.id, is_active: true },
     });
 
-    if (status.status === 'Cancelled') throw { message: 'Already Cancelled' };
+    if (txStatus.status === 'Cancelled') throw { message: 'Already Cancelled' };
 
     let promoUpdateData = [],
-      stockUpdateData = [],
+      closeStockUpdateData = [],
       openStockUpdateData = [];
+    //cek transaction Promo
     if (transaction.promotion_id) {
       const promoTx = await Promotion.findByPk(transaction.promotion_id);
       if (promoTx)
@@ -538,6 +545,7 @@ const cancelTransaction = async (req, res, next) => {
         });
     }
 
+    //detect kalo ada prescription
     let isPrescription = false;
     await Promise.all(
       transaction.transaction_details.map(async (value) => {
@@ -556,7 +564,7 @@ const cancelTransaction = async (req, res, next) => {
           const stockProduct = await ClosedStock.findOne({
             where: { product_id: value.product_id },
           });
-          stockUpdateData.push({
+          closeStockUpdateData.push({
             ...stockProduct.dataValues,
             total_stock: stockProduct.total_stock + value.qty,
           });
@@ -568,38 +576,78 @@ const cancelTransaction = async (req, res, next) => {
     if (isPrescription) {
       // kalo dalam 1 cart ada 2 resep
       const prescriptionDetail = await StockHistoryDB.findAll({
-        where: { transaction_id: transaction.id, stock_history_type_id: 4 },
+        where: {
+          transaction_id: transaction.id,
+          stock_history_type_id: 4,
+        },
       });
+
+      // throw { data: prescriptionDetail };
       await Promise.all(
+        // conversionPrescriptionDetail
+
         prescriptionDetail.map(async (value) => {
-          if (value.unit === 0) {
-            const stockProduct = await ClosedStock.findOne({
-              where: { product_id: value.product_id },
-            });
-            stockUpdateData.push({
-              ...stockProduct.dataValues,
-              total_stock: stockProduct.total_stock + value.qty,
+          console.log(value.product_id, value.transaction_id, value.unit);
+          const closeStockProduct = await ClosedStock.findOne({
+            where: { product_id: value.product_id },
+          });
+          if (value.unit === false) {
+            closeStockUpdateData.push({
+              ...closeStockProduct.dataValues,
+              total_stock: closeStockProduct.total_stock + value.qty,
             });
           } else {
             // unit conversion
-            const stockProduct = await OpenStock.findOne({
+            // let open
+            // await Promise.all().then(() => {});
+            const openStockProduct = await OpenStock.findOne({
               where: { product_id: value.product_id },
             });
 
+            const product = await Product.findByPk(value.product_id);
+
+            // throw { message: 'bangsat' };
+            // throw { data: stockProduct, message: 'OpenStock' };
+            console.log(value.product_id);
+            // console.log(
+            //   '=================',
+            //   openStockProduct.dataValues,
+            //   // value,
+            //   '========================',
+            //   openStockProduct,
+            // );
+
+            // throw { message: 'anjing' };
+            let closeQty = 0,
+              openQty = value.qty + openStockProduct.dataValues.qty;
+            console.log(openQty, openStockProduct.dataValues.qty);
+            closeQty = Math.floor(openQty / product.net_content);
+            openQty = openQty % product.net_content;
+
+            if (closeQty)
+              closeStockUpdateData.push({
+                ...closeStockProduct.dataValues,
+                total_stock: closeStockProduct.total_stock + closeQty,
+              });
+
             openStockUpdateData.push({
-              ...stockProduct.dataValues,
-              qty: stockProduct.qty + value.qty,
+              ...openStockProduct.dataValues,
+              qty: openQty,
             });
           }
         }),
-      );
+      ).catch((error) => {
+        throw error;
+      });
     }
+
+    // throw { data: prescriptionDetail, code: 400, message: 'salah' };
 
     await Promotion.bulkCreate(promoUpdateData, {
       updateOnDuplicate: ['limit'],
       transaction: t,
     });
-    await ClosedStock.bulkCreate(stockUpdateData, {
+    await ClosedStock.bulkCreate(closeStockUpdateData, {
       updateOnDuplicate: ['total_stock'],
       transaction: t,
     });
@@ -632,17 +680,17 @@ const cancelTransaction = async (req, res, next) => {
         transaction_id: transaction.id,
         transaction_status_id: 7,
         is_active: true,
+        notes: notes,
       },
       { transaction: t },
     );
-
-    await Transaction.update(
-      {
-        ...transaction,
-        notes,
-      },
-      { where: { id: transaction.id } },
-    );
+    console.log('notes', notes);
+    // await Transaction.update(
+    //   {
+    //     ...transaction,
+    //   },
+    //   { where: { id: transaction.id } },
+    // );
 
     await t.commit();
 

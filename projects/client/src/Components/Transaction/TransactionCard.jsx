@@ -33,6 +33,11 @@ const TransactionCard = (props) => {
     props?.tx?.transaction_histories[0]?.transaction_status?.status;
   const transactionId = props?.tx?.id;
   const txDetail = props?.tx.transaction_details[0];
+  const activeStatus = props?.tx?.transaction_histories?.map((value, index) => {
+    if (value.is_active === true) {
+      return value;
+    }
+  });
 
   const onSubmit = async () => {
     const imageType = paymentProofFile?.type.split('/')[1];
@@ -124,28 +129,29 @@ const TransactionCard = (props) => {
           <>
             {!props.tx.payment_token ? (
               // !disabled ? (
-                <button
-                  // disabled={disabled}
-                  className="btn btn-sm btn-primary text-white"
-                >
-                  <input
-                    className="hidden"
-                    name="paymentProof"
-                    id="paymentProof"
-                    type="file"
-                    ref={paymentProofRef}
-                    onChange={(e) => {
-                      setPaymentProofFile(e.target.files[0]);
-                      setdisabled(true);
-                      setOpenConfModal(true)
-                      // setTimeout(() => {
-                      //   onSubmit();
-                      //   // setdisabled(false);
-                      // }, 1000);
-                    }}
-                  />
-                  <label htmlFor="paymentProof">Upload payment proof</label>
-                </button>
+              <button
+                // disabled={disabled}
+                className="btn btn-sm btn-primary text-white"
+              >
+                <input
+                  className="hidden"
+                  name="paymentProof"
+                  id="paymentProof"
+                  type="file"
+                  ref={paymentProofRef}
+                  onChange={(e) => {
+                    setPaymentProofFile(e.target.files[0]);
+                    setdisabled(true);
+                    setOpenConfModal(true);
+                    // setTimeout(() => {
+                    //   onSubmit();
+                    //   // setdisabled(false);
+                    // }, 1000);
+                  }}
+                />
+                <label htmlFor="paymentProof">Upload payment proof</label>
+              </button>
+            ) : (
               // ) : (
               //   <button
               //     className="btn btn-sm btn-primary text-white "
@@ -155,8 +161,6 @@ const TransactionCard = (props) => {
               //     Submit
               //   </button>
               // )
-            ) 
-            : (
               <button
                 className="btn btn-sm btn-primary text-white "
                 disabled={!props.tx.payment_token}
@@ -240,9 +244,9 @@ const TransactionCard = (props) => {
         >
           {transactionStatus === 'Cancelled' || transactionStatusId === 7 ? (
             <p>
-              {props.tx?.notes
-                ? `Cancelled by Admin`
-                : `You cancel this order: ${props.tx.notes}`}
+              {activeStatus[0]?.notes
+                ? `Cancelled by Admin: ${activeStatus[0].notes}`
+                : `You cancel this order`}
             </p>
           ) : (
             ''
@@ -273,19 +277,18 @@ const TransactionCard = (props) => {
           delFunc={cancelTransaction}
         />
       ) : null}
-      {openConfModal? 
-      <ConfirmationModal
-      open={openConfModal}
-      title="Confirmation"
-      textLine1="Are you sure you want to upload this image?"
-      label="upload"
-      labelStyle="text-white"
-      styling="hidden"
-      image ={paymentProofFile}
-      confirm={onSubmit}
-      
-      />
-      :null}
+      {openConfModal ? (
+        <ConfirmationModal
+          open={openConfModal}
+          title="Confirmation"
+          textLine1="Are you sure you want to upload this image?"
+          label="upload"
+          labelStyle="text-white"
+          styling="hidden"
+          image={paymentProofFile}
+          confirm={onSubmit}
+        />
+      ) : null}
     </div>
   );
 };
