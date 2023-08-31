@@ -11,6 +11,7 @@ import useDebounce from '../Hooks/useDebounce';
 import { getAllTransactionSlice } from '../Features/Transaction/TransactionSlice';
 import Pagination from '../Components/Layout/Pagination';
 import CartCardSkl from '../Components/Skeleton/CartCardSkl';
+import TransactionCardSkl from '../Components/Skeleton/TransactionCardSkl';
 
 export default function Transaction() {
   let token = localStorage.getItem('token');
@@ -87,6 +88,7 @@ export default function Transaction() {
   }, []);
 
   if (!token) return <Navigate to={'/login'} />;
+  console.log(isProcessing);
 
   return (
     <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">
@@ -150,7 +152,7 @@ export default function Transaction() {
               );
             })
           ) : (
-            <CartCardSkl limit={limitPage} />
+            <TransactionCardSkl limit={limitPage} />
           )}
         </div>
         <p className="p-5 font-bold text-center" hidden={transactions.length}>

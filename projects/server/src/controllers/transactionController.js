@@ -109,7 +109,7 @@ const checkout = async (req, res, next) => {
         shipment_fee: shippingFee,
         total_discount: discount,
         total_price: totalPrice,
-        shipment: courier + ' ' + duration,
+        shipment: courier + ' - ' + duration,
       },
       { transaction: t },
     );
@@ -399,7 +399,7 @@ const uploadPayment = async (req, res, next) => {
     const imagePath = image ? image.path : undefined;
     if (!image) throw { message: 'Please upload image' };
     const updateTransaction = await Transaction.update(
-      { image: imagePath },
+      { image: imagePath, payment_method: 'Manual Payment' },
       { where: { id: transaction_id } },
       { transaction: t },
     );
@@ -537,6 +537,8 @@ const cancelTransaction = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { id } = req.params;
+    const { notes } = req.body;
+
     const user = await UserDB.findByPk(req.user.id);
 
     const transaction = await getTransactionById(id, user.role_id === 1);
@@ -661,6 +663,14 @@ const cancelTransaction = async (req, res, next) => {
         is_active: true,
       },
       { transaction: t },
+    );
+
+    await Transaction.update(
+      {
+        ...transaction,
+        notes,
+      },
+      { where: { id: transaction.id } },
     );
 
     await t.commit();
