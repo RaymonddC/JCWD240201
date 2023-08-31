@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const ConfirmationModal = (props) => {
   const dispatch = useDispatch();
   const { search } = useSelector((state) => state.categories);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(props.open || false);
   const notes = useRef();
 
   const confirmHandler = () => {
@@ -30,6 +30,15 @@ const ConfirmationModal = (props) => {
             <h3 className="font-bold text-center text-lg mb-4">
               {props?.title}
             </h3>
+            {props.image ? (
+              <div className='w-full'>
+                <img
+                  className="w-[100px] h-[100px] rounded-full"
+                  src={URL.createObjectURL(props.image)}
+                  alt="profile"
+                />
+              </div>
+            ) : null}
             <p className="text-center">{props?.textLine1}</p>
             <p className="text-center">{props?.textLine2} </p>
           </article>
