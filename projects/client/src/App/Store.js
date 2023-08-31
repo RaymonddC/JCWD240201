@@ -12,6 +12,7 @@ import CheckoutReducer from '../Features/Checkout/CheckoutSlice';
 import PrescriptionCartReducer from '../Features/PrescriptionCart/PrescriptionCartSlice';
 import SalesReportReducer from '../Features/SalesReport/SalesReportSlice';
 import PromotionReducer from '../Features/Promotion/PromotionSlice';
+import DashboardReducer from '../Features/Dashboard/DashboardSlice';
 
 export const Store = configureStore({
   reducer: {
@@ -27,5 +28,6 @@ export const Store = configureStore({
     PrescriptionCart: PrescriptionCartReducer,
     salesReport: SalesReportReducer,
     promotion: PromotionReducer,
+    dashboard: DashboardReducer,
   },
 });
