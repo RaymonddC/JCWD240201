@@ -101,13 +101,14 @@ export const getTransactionSlice = (values) => async (dispatch) => {
 //   }
 // };
 
-export const cancelTransaction = (values) => async (dispatch) => {
+export const cancelTransaction = (values, closeFunc) => async (dispatch) => {
   try {
     let token = localStorage.getItem('token');
 
-    const { data } = await deleteTransaction(token, values.id);
+    const { data } = await deleteTransaction(token, values);
 
     dispatch(getAllTransactionSlice({ selectedStatusId: 1 }));
+    closeFunc();
   } catch (error) {
     return toast.error(error.message);
   }

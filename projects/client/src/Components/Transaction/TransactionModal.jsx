@@ -55,21 +55,18 @@ const TransactionModal = (props) => {
                       className="text-primary flex items-center gap-1"
                       onClick={() => setOpenStatus(!openStatus)}
                     >
-                      {openStatus ? (
-                        <>
-                          See Less
-                          <AiOutlineUp />
-                        </>
-                      ) : (
-                        <>
-                          See Details
-                          <AiOutlineDown />
-                        </>
-                      )}
+                      <span>{openStatus ? 'See Less' : 'See Details'}</span>
+                      <p
+                        className={`transition-all  ${
+                          openStatus ? '' : 'rotate-180'
+                        }`}
+                      >
+                        <AiOutlineUp />
+                      </p>
                     </button>
                   </div>
                   <div
-                    className={`status border rounded-lg p-4 mt-2 flex flex-col gap-2 ${
+                    className={`status border rounded-lg p-4 mt-2 flex flex-col gap-2 transition-all ${
                       openStatus ? '' : 'hidden'
                     }`}
                   >
@@ -90,7 +87,7 @@ const TransactionModal = (props) => {
                   </div>
                   <div className="buyDate flex justify-between">
                     <p>Transaction Date</p>
-                    <p>{date.format('MMM DD, YYYY, HH:mm')}</p>
+                    <p>{date.format('ddd, MMM Do YYYY, HH:mm')}</p>
                   </div>
                 </div>
               </div>
@@ -196,7 +193,10 @@ const TransactionModal = (props) => {
                     )?.toLocaleString(['id'])}
                   </p>
                 </div>
-                <div className="discount bg-slate-200 rounded-lg p-2 my-1 border border-slate-400">
+                <div
+                  className="discount bg-slate-200 rounded-lg p-2 my-1 border border-slate-400"
+                  hidden={transaction.total_discount <= 0}
+                >
                   <p className="">
                     Discount Rp
                     {transaction.total_discount?.toLocaleString(['id']) || 0}

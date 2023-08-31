@@ -75,13 +75,15 @@ const TransactionAdmin = () => {
   return (
     <div className="min-h-[100vh]">
       <div className="head flex justify-between">
-        <p className="font-bold">All Transaction</p>
+        <article className="prose">
+          <h2>All Transaction</h2>
+        </article>
         <div className="flex gap-2 hidden">
           <button className="btn btn-sm">Download PDF</button>
           <button className="btn btn-sm">Excel</button>
         </div>
       </div>
-      <div className="filter flex mt-10 gap-3">
+      <div className="filter flex  gap-3 mb-4 justify-center">
         <FilterBar
           setSearch={setSearch}
           setSortType={setSortType}
@@ -102,6 +104,7 @@ const TransactionAdmin = () => {
             },
           ]}
         />
+        {/* </div> */}
         <div className="dropdown dropdown-end  md:block">
           <label tabIndex={0} className="btn btn-primary text-white">
             Filter By <MdArrowDropDown size={25} />
@@ -137,21 +140,8 @@ const TransactionAdmin = () => {
           </ul>
         </div>
       </div>
+
       <div className="AllTransaction px-3">
-        <div className="top flex  my-3 justify-end">
-          <div className="selectAll flex gap-5 items-center justify-between hidden">
-            <input
-              type="checkbox"
-              className="h-5 w-5"
-              onChange={() => setIsCheck(!isCheck)}
-              checked={isCheck}
-            />
-            <p>Pilih Semua</p>
-          </div>
-          <div className="pagination ">
-            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
-          </div>
-        </div>
         <div className="transactions">
           {transactions.map((value, index) => {
             return (
@@ -164,6 +154,11 @@ const TransactionAdmin = () => {
           })}
         </div>
       </div>
+      {totalPages > 0 && (
+        <div className="pagination ">
+          <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+        </div>
+      )}
     </div>
   );
 };
