@@ -215,6 +215,14 @@ const deleteProduct = async (req, res, next) => {
     );
 
     await t.commit();
+    let isDirectoryExist = fs.existsSync('public/deleted_product_images');
+
+    if (!isDirectoryExist) {
+      await fs.promises.mkdir('public/deleted_product_images', {
+        recursive: true,
+      });
+    }
+
     oldPath.map((value) => {
       const fileName = value.split('\\');
       const newPath = `public/deleted_product_images/${
