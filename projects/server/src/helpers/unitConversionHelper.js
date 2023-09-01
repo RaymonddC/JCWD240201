@@ -185,7 +185,6 @@ const unitConversionProcess = async (data, t) => {
   let resOpenedStock1;
   let newClosedStock;
   try {
-    throw {};
     if (!product_id) throw { message: 'please provide a product', code: 400 };
     if (!qty) throw { message: 'please provide quantity', code: 400 };
     const unitConversionTypeId = await stockHistoryTypeDB.findOne({
@@ -304,7 +303,7 @@ const unitConversionProcess = async (data, t) => {
         { transaction: t },
       );
 
-      throw { data: updateOpenedStockHistoryOut, message: 'áwdawda' };
+      // throw { data: updateOpenedStockHistoryOut, message: 'áwdawda' };
       return {
         success: true,
         message: 'unit conversion completed successfully',
