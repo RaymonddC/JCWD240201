@@ -184,8 +184,8 @@ const unitConversionProcess = async (data, t) => {
   let openedStock;
   let resOpenedStock1;
   let newClosedStock;
-
   try {
+    throw {};
     if (!product_id) throw { message: 'please provide a product', code: 400 };
     if (!qty) throw { message: 'please provide quantity', code: 400 };
     const unitConversionTypeId = await stockHistoryTypeDB.findOne({
@@ -304,6 +304,7 @@ const unitConversionProcess = async (data, t) => {
         { transaction: t },
       );
 
+      throw { data: updateOpenedStockHistoryOut, message: 'áwdawda' };
       return {
         success: true,
         message: 'unit conversion completed successfully',
@@ -329,44 +330,51 @@ const checkoutUnitConversion = async (data, t) => {
     });
 
     if (!unit_conversion) {
-      if (qty > getClosedStock.total_stock)
+      if (qty > getClosedStock.dataValues.total_stock)
         throw { message: 'Product is out of stock' };
 
       const updateClosedStock = await closedStockDB.update(
-        { total_stock: getClosedStock.total_stock - qty },
-        { where: { product_id } },
-        { transaction: t },
+        { total_stock: getClosedStock.dataValues.total_stock - qty },
+        { where: { product_id }, transaction: t },
       );
     } else {
-      const getOpenStock = await openedStockDB.findOne({
+      let getOpenStock = await openedStockDB.findOne({
         where: { product_id },
       });
-      if (qty <= getOpenStock.qty) {
-        const updateOpenStock = await openedStockDB.update(
-          { qty: qty - getOpenStock.qty },
-          { where: { product_id } },
+      if (!getOpenStock) {
+        getOpenStock = await openedStockDB.create(
+          { product_id: product_id, qty: 0 },
           { transaction: t },
         );
+      }
+      if (getOpenStock && qty <= getOpenStock.dataValues.qty) {
+        const updateOpenStock = await openedStockDB.update(
+          { qty: qty - getOpenStock.dataValues.qty },
+          { where: { product_id }, transaction: t },
+        );
       } else {
-        const getProduct = await productDB.findOne({ where: { product_id } });
-        const productNetContent = getProduct.net_content;
+        // throw { data: product_id };
+        const getProduct = await productDB.findOne({
+          where: { id: product_id },
+        });
+        const productNetContent = getProduct.dataValues.net_content;
         const productNeedToBeOpen = Math.ceil(
-          (qty - getOpenStock.qty) / productNetContent,
+          (qty - getOpenStock.dataValues.qty) / productNetContent,
         );
         if (productNeedToBeOpen > getClosedStock.total_stock)
           throw { message: 'Product is out of stock' };
 
         const updateClosedStock = await closedStockDB.update(
           { total_stock: getClosedStock.total_stock - productNeedToBeOpen },
-          { where: { product_id } },
-          { transaction: t },
+          { where: { product_id }, transaction: t },
         );
         const newOpenedStockQty =
-          getOpenStock.qty + productNeedToBeOpen * productNetContent - qty;
+          getOpenStock.dataValues.qty +
+          productNeedToBeOpen * productNetContent -
+          qty;
         const updateOpenStock = await openedStockDB.update(
           { qty: newOpenedStockQty },
-          { where: { product_id } },
-          { transaction: t },
+          { where: { product_id }, transaction: t },
         );
       }
     }
