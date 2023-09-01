@@ -5,7 +5,7 @@ const getLastStockHistory = async (whereQuery) => {
   try {
     return await StockHistoryDB.findOne({
       where: { ...whereQuery },
-      order: [['updatedAt', 'DESC']],
+      order: [['id', 'DESC']],
     });
   } catch (error) {
     throw error;
