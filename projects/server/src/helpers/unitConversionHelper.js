@@ -7,6 +7,7 @@ const productDB = db.product;
 const productTypeDB = db.product_type;
 const packagingDB = db.packaging_type;
 const { sequelize } = require('../models');
+const { updateCloseStock } = require('./transactionHelper');
 
 const unitConversionHelper = async (data, t) => {
   try {
@@ -170,6 +171,62 @@ const unitConversionHelper = async (data, t) => {
         opened_stock: resOpenedStock1,
         type: 'unit_conversion',
       };
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const checkoutUnitConversion = async (data, t) => {
+  try {
+    const { product_id, qty, unit_conversion } = data;
+    if (!product_id) throw { message: 'please provide a product', code: 400 };
+    if (!qty) throw { message: 'please provide quantity', code: 400 };
+    const getClosedStock = await closedStockDB.findOne({
+      where: { product_id },
+    });
+
+    if (!unit_conversion) {
+      if (qty > getClosedStock.total_stock)
+        throw { message: 'Product is out of stock' };
+
+      const updateClosedStock = await closedStockDB.update(
+        { total_stock: getClosedStock.total_stock - qty },
+        { where: { product_id } },
+        { transaction: t },
+      );
+    } else {
+      const getOpenStock = await openedStockDB.findOne({
+        where: { product_id },
+      });
+      if (qty <= getOpenStock.qty) {
+        const updateOpenStock = await openedStockDB.update(
+          { qty: qty - getOpenStock.qty },
+          { where: { product_id } },
+          { transaction: t },
+        );
+      } else {
+        const getProduct = await productDB.findOne({ where: { product_id } });
+        const productNetContent = getProduct.net_content;
+        const productNeedToBeOpen = Math.ceil(
+          (qty - getOpenStock.qty) / productNetContent,
+        );
+        if (productNeedToBeOpen > getClosedStock.total_stock)
+          throw { message: 'Product is out of stock' };
+
+        const updateClosedStock = await closedStockDB.update(
+          { total_stock: getClosedStock.total_stock - productNeedToBeOpen },
+          { where: { product_id } },
+          { transaction: t },
+        );
+        const newOpenedStockQty =
+          getOpenStock.qty + productNeedToBeOpen * productNetContent - qty;
+        const updateOpenStock = await openedStockDB.update(
+          { qty: newOpenedStockQty },
+          { where: { product_id } },
+          { transaction: t },
+        );
+      }
     }
   } catch (error) {
     throw error;
