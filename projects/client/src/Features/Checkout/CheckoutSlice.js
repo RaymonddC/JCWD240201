@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import { checkoutAPI, getCourierService } from '../../API/checkoutAPI';
+import { newActivePromo } from '../Cart/CartSlice';
 
 const initialState = {
   courierServices: [],
@@ -47,6 +48,18 @@ export const checkoutTxSlice = (values, navigate) => async (dispatch) => {
     let token = localStorage.getItem('token');
     const { data } = await checkoutAPI(values, token);
     toast.success('Checkout Success');
+    dispatch(
+      newActivePromo(
+        {
+          id: null,
+          amount: 0,
+          minPrice: 0,
+          maxPromo: null,
+          promoDisc: null,
+        },
+        () => {},
+      ),
+    );
     if (values.paymentMethod === 'manual') navigate('/user/transaction');
     return {
       midtransToken: data.paymentData.paymentToken,

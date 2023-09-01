@@ -79,13 +79,7 @@ const getUserTransactions = async (whereQuery, orderBy) => {
               ],
             },
           ],
-          attributes: {
-            include: [
-              // [sequelize.literal('COUNT(transaction_details.id)'), 'txDetail'],
-            ],
-          },
           where: whereQuery.transactionDetail,
-          // right: true,
         },
       ],
       where: {
@@ -137,12 +131,6 @@ const getTransactionById = async (id, admin) => {
               ],
             },
           ],
-          // attributes: {
-          //   include: [
-          //     // [sequelize.literal('COUNT(transaction_details.id)'), 'txDetail'],
-          //   ],
-          // },
-          // right: true,
         },
       ],
     });
@@ -168,8 +156,41 @@ const updateCloseStock = async (product_id, qty, isAdd) => {
   }
 };
 
+const updatePromoTx = async (promotion_id, qty, price) => {
+  try {
+    const promoTx = await Promotion.findByPk(promotion_id);
+    // throw { data: promoTx, message: 'promo' };
+    let totalDiscount;
+    if (!promoTx)
+      throw {
+        message: 'Promotion quota exceed!',
+        code: 400,
+        data: promotionActive,
+      };
+    else if (promoTx && promoTx.minimum_transaction < price) {
+      if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
+      let disc = Math.round((price * promoTx.discount) / 100);
+      totalDiscount =
+        disc > (promoTx.maximum_discount_amount || disc + 1)
+          ? promoTx.maximum_discount_amount
+          : disc;
+    }
+
+    return {
+      totalDiscount,
+      promoData: {
+        ...promoTx.dataValues,
+        limit: promoTx.limit - qty,
+      },
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserTransactions,
   getTransactionById,
   updateCloseStock,
+  updatePromoTx,
 };
