@@ -132,12 +132,16 @@ const createDataStock2 = async (req, res, next) => {
 
         //get last stock from stockhistory
         const lastStock = await getLastStockHistory({
-          profuct_id: productId,
+          product_id: productId,
           unit: 0,
         });
         data.unit = false;
         data.product_id = productId;
-        data.total_stock = Number(lastStock.total_stock) + Number(data.qty);
+        if (lastStock) {
+          data.total_stock = Number(lastStock.total_stock) + Number(data.qty);
+        } else {
+          data.total_stock = addStock;
+        }
         await stockHistoryDB.create(data, { transaction: t });
       } else {
         updateStock = await closedStockDB.create(
@@ -157,15 +161,15 @@ const createDataStock2 = async (req, res, next) => {
         where: { product_id: productId },
       });
       const lastStock = await getLastStockHistory({
-        profuct_id: productId,
+        product_id: productId,
         unit: 0,
       });
 
-      if (productStock && lastStock.total_stock) {
+      if (productStock && lastStock) {
         const outStock = Number(productStock.total_stock) - Number(data.qty);
         const totalStock = Number(lastStock.total_stock) - Number(data.qty);
-        if (totalStock < 0) throw { message: 'stock is minus' };
-        
+        if (totalStock < 0) throw { message: 'Stock is minus' };
+
         updateStock = await closedStockDB.update(
           { total_stock: outStock },
           { where: { product_id: productId }, transaction: t },
@@ -174,8 +178,21 @@ const createDataStock2 = async (req, res, next) => {
         data.product_id = productId;
         data.total_stock = totalStock;
         await stockHistoryDB.create(data, { transaction: t });
-      } else if (!productStock || !lastStock.total_stock) {
-        throw { message: 'stock is empty already' };
+      } else if (productStock && !lastStock) {
+        const outStock = Number(productStock.total_stock) - Number(data.qty);
+
+        if (outStock < 0) throw { message: 'Stock is minus' };
+
+        updateStock = await closedStockDB.update(
+          { total_stock: outStock },
+          { where: { product_id: productId }, transaction: t },
+        );
+        data.unit = false;
+        data.product_id = productId;
+        data.total_stock = outStock;
+        await stockHistoryDB.create(data, { transaction: t });
+      } else if (!productStock || !lastStock) {
+        throw { message: 'Stock is empty already' };
       }
     }
 
