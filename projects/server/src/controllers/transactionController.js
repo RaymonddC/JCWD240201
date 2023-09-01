@@ -28,6 +28,7 @@ const { getPromotionByProductId } = require('../helpers/promotionHelper');
 const {
   unitConversionHelper,
   unitConversionProcess,
+  checkoutUnitConversion,
 } = require('../helpers/unitConversionHelper');
 const {
   getMidtransSnap,
@@ -1117,12 +1118,12 @@ const newCheckout = async (req, res, next) => {
           await Promise.all(
             prescriptionCarts.map(async (prescCart) => {
               // if(prescCart.unit_conversion)
-              return await unitConversionHelper(
+              return await checkoutUnitConversion(
                 {
                   product_id: prescCart.product_id,
                   qty: prescCart.qty,
                   unit_conversion: prescCart.unit_conversion,
-                  transaction_id: transaction.id,
+                  // transaction_id: transaction.id,
                 },
                 t,
               );
