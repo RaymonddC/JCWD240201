@@ -128,6 +128,9 @@ const createDataStock2 = async (req, res, next) => {
           { total_stock: addStock },
           { where: { product_id: productId }, transaction: t },
         );
+
+        //get last stock from stockhistory
+        const lastStock = await getLastS
         data.unit = false;
         data.product_id = productId;
         data.total_stock = addStock;
