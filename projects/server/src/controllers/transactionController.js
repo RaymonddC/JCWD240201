@@ -25,7 +25,10 @@ const {
   updatePromoTx,
 } = require('../helpers/transactionHelper');
 const { getPromotionByProductId } = require('../helpers/promotionHelper');
-const { unitConversionHelper } = require('../helpers/unitConversionHelper');
+const {
+  unitConversionHelper,
+  unitConversionProcess,
+} = require('../helpers/unitConversionHelper');
 const {
   getMidtransSnap,
   getPaymentStatusMidtrans,
@@ -927,21 +930,30 @@ const processTransaction = async (req, res, next) => {
 
     await Promise.all(
       prescriptionDetail.map(async (value) => {
-        if (!value.unit) {
-          // closeStockUpdateData.push(
-          //   await updateCloseStock(value.product_id, value.qty, false),
-          // );
-          stockHistoryUpdateData.push(
-            await updateHistoryCloseStock(
-              id,
-              value.product_id,
-              value.qty,
-              false,
-            ),
-          );
-        } else {
-          //unit conversion
-        }
+        // if (!value.unit) {
+        // closeStockUpdateData.push(
+        //   await updateCloseStock(value.product_id, value.qty, false),
+        // );
+        // stockHistoryUpdateData.push(
+        //   await updateHistoryCloseStock(
+        //     id,
+        //     value.product_id,
+        //     value.qty,
+        //     false,
+        //   ),
+        // );
+        // } else {
+        // }\
+        //unit conversion
+        return await unitConversionProcess(
+          {
+            product_id: value.product_id,
+            qty: value.qty,
+            unit_conversion: value.unit_conversion,
+            transaction_id: transaction.id,
+          },
+          t,
+        );
       }),
     ).catch((error) => {
       throw error;
