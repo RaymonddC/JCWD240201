@@ -1,3 +1,4 @@
+const { getLastStockHistory } = require('../helpers/stockHistoryHelper');
 const { unitConversionHelper } = require('../helpers/unitConversionHelper');
 const db = require('../models');
 const stockHistoryDB = db.stock_history;
@@ -130,10 +131,13 @@ const createDataStock2 = async (req, res, next) => {
         );
 
         //get last stock from stockhistory
-        const lastStock = await getLastS
+        const lastStock = await getLastStockHistory({
+          profuct_id: productId,
+          unit: 0,
+        });
         data.unit = false;
         data.product_id = productId;
-        data.total_stock = addStock;
+        data.total_stock = Number(lastStock.total_stock) + Number(data.qty);
         await stockHistoryDB.create(data, { transaction: t });
       } else {
         updateStock = await closedStockDB.create(
@@ -152,19 +156,25 @@ const createDataStock2 = async (req, res, next) => {
       const productStock = await closedStockDB.findOne({
         where: { product_id: productId },
       });
+      const lastStock = await getLastStockHistory({
+        profuct_id: productId,
+        unit: 0,
+      });
 
-      if (productStock && productStock.total_stock) {
-        const addStock = Number(productStock.total_stock) - Number(data.qty);
-        if (addStock < 0) throw { message: 'stock is minus' };
+      if (productStock && lastStock.total_stock) {
+        const outStock = Number(productStock.total_stock) - Number(data.qty);
+        const totalStock = Number(lastStock.total_stock) - Number(data.qty);
+        if (totalStock < 0) throw { message: 'stock is minus' };
+        
         updateStock = await closedStockDB.update(
-          { total_stock: addStock },
+          { total_stock: outStock },
           { where: { product_id: productId }, transaction: t },
         );
         data.unit = false;
         data.product_id = productId;
-        data.total_stock = addStock;
+        data.total_stock = totalStock;
         await stockHistoryDB.create(data, { transaction: t });
-      } else if (!productStock || !productStock.total_stock) {
+      } else if (!productStock || !lastStock.total_stock) {
         throw { message: 'stock is empty already' };
       }
     }
