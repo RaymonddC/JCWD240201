@@ -11,7 +11,7 @@ router.post(
   APIKey,
   verifyToken,
   isAdmin,
-  stockController.createDataStock,
+  stockController.createDataStock2,
 );
 router.put('/unit-conversion',APIKey, stockController.unitConversion);
 router.get('/', APIKey, stockController.getStockHistoryType);
