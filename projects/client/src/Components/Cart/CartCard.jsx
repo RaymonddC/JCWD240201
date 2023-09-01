@@ -145,10 +145,8 @@ const CartCard = (props) => {
             <p className={``}>
               Rp{' '}
               {(props.cart.product.price - props.cart?.disc).toLocaleString([
-                
                 'id',
-              ])
-              }
+              ])}
             </p>
           </div>
         </div>

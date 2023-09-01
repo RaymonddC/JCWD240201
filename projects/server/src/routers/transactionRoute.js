@@ -5,7 +5,7 @@ const { transactionController } = require('../controllers');
 const { verifyToken } = require('../middleware/auth');
 const { uploadPayment } = require('../middleware/upload');
 
-router.post('/', verifyToken, transactionController.checkout);
+router.post('/', verifyToken, transactionController.newCheckout);
 router.get('/', verifyToken, transactionController.getAllTransaction);
 router.get('/:id', verifyToken, transactionController.getTransaction);
 router.delete('/:id', verifyToken, transactionController.cancelTransaction);
