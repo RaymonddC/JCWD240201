@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       answer: {
-        type: Sequelize.STRING(2000)
+        type: Sequelize.TEXT('medium')
       },
       question_id: {
         type: Sequelize.INTEGER
