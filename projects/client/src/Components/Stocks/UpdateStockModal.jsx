@@ -43,7 +43,7 @@ export default function UpdateStockModal(props) {
           throw errorMessage;
         }
       } catch (error) {
-        toast.error(error.message);
+        toast.error(error.response.data.message);
       }
     },
   });
