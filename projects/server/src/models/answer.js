@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   answer.init(
     {
-      answer: DataTypes.STRING,
+      answer: DataTypes.TEXT('medium'),
       question_id: DataTypes.INTEGER,
       user_id: DataTypes.INTEGER,
       deletedAt: DataTypes.DATE,

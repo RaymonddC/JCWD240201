@@ -1,5 +1,5 @@
 const { getLastStockHistory } = require('../helpers/stockHistoryHelper');
-const { unitConversionHelper } = require('../helpers/unitConversionHelper');
+const { unitConversionHelper, unitConversionProcess } = require('../helpers/unitConversionHelper');
 const db = require('../models');
 const stockHistoryDB = db.stock_history;
 const stockHistoryTypeDB = db.stock_history_type;
@@ -100,14 +100,17 @@ const getStockHistoryType = async (req, res, next) => {
 const unitConversion = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
-    const response = await unitConversionHelper(req.body, t);
+    // const response = await unitConversionHelper(req.body, t);
+    const result = await unitConversionProcess(req.body,t)
     await t.commit();
+    return res.status(200).send(result);
     return res.status(200).send(response);
   } catch (error) {
     await t.rollback();
     next(error);
   }
 };
+
 
 const createDataStock2 = async (req, res, next) => {
   const t = await sequelize.transaction();
