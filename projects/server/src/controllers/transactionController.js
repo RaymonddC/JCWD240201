@@ -21,6 +21,7 @@ const { getOldIsSelected } = require('../helpers/addressHelper');
 const {
   getUserTransactions,
   getTransactionById,
+  updateCloseStock,
 } = require('../helpers/transactionHelper');
 const { getPromotionByProductId } = require('../helpers/promotionHelper');
 const { unitConversionHelper } = require('../helpers/unitConversionHelper');
@@ -28,6 +29,10 @@ const {
   getMidtransSnap,
   getPaymentStatusMidtrans,
 } = require('../helpers/paymentHelper');
+const {
+  getLastStockHistory,
+  updateHistoryCloseStock,
+} = require('../helpers/stockHistoryHelper');
 
 const checkout = async (req, res, next) => {
   const t = await sequelize.transaction();
@@ -318,6 +323,13 @@ const checkout = async (req, res, next) => {
 
 const getAllTransaction = async (req, res, next) => {
   try {
+    // //
+    // const stockHistoryTest = await getLastStockHistory({
+    //   product_id: 26,
+    //   // unit: 1,
+    // });
+    // throw { data: stockHistoryTest };
+    //
     const user = await UserDB.findByPk(req.user.id);
 
     const {
@@ -522,8 +534,7 @@ const cancelTransaction = async (req, res, next) => {
 
     const transaction = await getTransactionById(id, user.role_id === 1);
 
-    if (!transaction) throw { message: 'transaction not found', code: 400 };
-    if (user.role_id !== 1 && user.id !== transaction.user_id)
+    if (!transaction || (user.role_id !== 1 && user.id !== transaction.user_id))
       throw { message: 'transaction not found', code: 400 };
 
     const txStatus = await TransactionHistory.findOne({
@@ -546,7 +557,9 @@ const cancelTransaction = async (req, res, next) => {
     }
 
     //detect kalo ada prescription
-    let isPrescription = false;
+    let isPrescription = false,
+      stockHistoryUpdateData = [],
+      stockHistoryId = [];
     await Promise.all(
       transaction.transaction_details.map(async (value) => {
         //getPromotionData
@@ -561,87 +574,97 @@ const cancelTransaction = async (req, res, next) => {
           }
 
           //getStockData
-          const stockProduct = await ClosedStock.findOne({
-            where: { product_id: value.product_id },
-          });
-          closeStockUpdateData.push({
-            ...stockProduct.dataValues,
-            total_stock: stockProduct.total_stock + value.qty,
-          });
+          closeStockUpdateData.push(
+            await updateCloseStock(value.product_id, value.qty, true),
+          );
         } else {
           isPrescription = true;
         }
       }),
-    );
+    ).catch((error) => {
+      throw error;
+    });
     if (isPrescription) {
       // kalo dalam 1 cart ada 2 resep
       const prescriptionDetail = await StockHistoryDB.findAll({
         where: {
           transaction_id: transaction.id,
-          stock_history_type_id: 4,
+          stock_history_type_id: { [Op.or]: [3, 4] },
         },
       });
 
-      // throw { data: prescriptionDetail };
+      stockHistoryId = prescriptionDetail.map((value) => {
+        return value.id;
+      });
+
+      const prescriptionDetailSales = prescriptionDetail.filter((value) => {
+        if (value.stock_history_type_id === 4) return value;
+      });
+
       await Promise.all(
         // conversionPrescriptionDetail
 
-        prescriptionDetail.map(async (value) => {
+        prescriptionDetailSales.map(async (value) => {
           console.log(value.product_id, value.transaction_id, value.unit);
-          const closeStockProduct = await ClosedStock.findOne({
-            where: { product_id: value.product_id },
-          });
+          let closeQty = 0;
           if (value.unit === false) {
-            closeStockUpdateData.push({
-              ...closeStockProduct.dataValues,
-              total_stock: closeStockProduct.total_stock + value.qty,
-            });
+            closeStockUpdateData.push(
+              await updateCloseStock(value.product_id, value.qty, true),
+            );
           } else {
             // unit conversion
-            // let open
-            // await Promise.all().then(() => {});
             const openStockProduct = await OpenStock.findOne({
               where: { product_id: value.product_id },
             });
 
             const product = await Product.findByPk(value.product_id);
 
-            // throw { message: 'bangsat' };
-            // throw { data: stockProduct, message: 'OpenStock' };
-            console.log(value.product_id);
-            // console.log(
-            //   '=================',
-            //   openStockProduct.dataValues,
-            //   // value,
-            //   '========================',
-            //   openStockProduct,
-            // );
-
-            // throw { message: 'anjing' };
-            let closeQty = 0,
-              openQty = value.qty + openStockProduct.dataValues.qty;
+            let openQty = value.qty + openStockProduct.dataValues.qty;
             console.log(openQty, openStockProduct.dataValues.qty);
             closeQty = Math.floor(openQty / product.net_content);
             openQty = openQty % product.net_content;
 
             if (closeQty)
-              closeStockUpdateData.push({
-                ...closeStockProduct.dataValues,
-                total_stock: closeStockProduct.total_stock + closeQty,
-              });
+              closeStockUpdateData.push(
+                await updateCloseStock(value.product_id, value.qty, true),
+              );
 
             openStockUpdateData.push({
               ...openStockProduct.dataValues,
               qty: openQty,
             });
+
+            if (closeQty) {
+              const oldStockHistory = await StockHistoryDB.findOne({
+                where: {
+                  transaction_id: transaction.id,
+                  product_id: value.product_id,
+                  unit: 0,
+                },
+              });
+              if (oldStockHistory) {
+                const newQty = oldStockHistory.dataValues.qty - closeQty;
+                console.log(newQty);
+                if (newQty) {
+                  stockHistoryUpdateData.push({
+                    ...oldStockHistory.dataValues,
+                    qty: newQty,
+                    total_stock:
+                      oldStockHistory.dataValues.total_stock + closeQty,
+                  });
+                  stockHistoryId.splice(
+                    stockHistoryId.indexOf(oldStockHistory.dataValues.id),
+                    1,
+                  );
+                }
+              }
+            }
           }
         }),
       ).catch((error) => {
         throw error;
       });
     }
-
-    // throw { data: prescriptionDetail, code: 400, message: 'salah' };
 
     await Promotion.bulkCreate(promoUpdateData, {
       updateOnDuplicate: ['limit'],
@@ -655,9 +678,15 @@ const cancelTransaction = async (req, res, next) => {
       updateOnDuplicate: ['qty'],
       transaction: t,
     });
+    await StockHistoryDB.bulkCreate(stockHistoryUpdateData, {
+      updateOnDuplicate: ['qty', 'total_stock'],
+      transaction: t,
+    });
+
     //stockHistory
+    // if (stockHistoryId)
     await StockHistoryDB.destroy({
-      where: { transaction_id: transaction.id },
+      where: { id: [...stockHistoryId] },
       transaction: t,
     });
 
@@ -665,7 +694,6 @@ const cancelTransaction = async (req, res, next) => {
     //none
 
     //transactionHistory
-    // const
     await TransactionHistory.update(
       {
         is_active: false,
@@ -684,17 +712,8 @@ const cancelTransaction = async (req, res, next) => {
       },
       { transaction: t },
     );
-    console.log('notes', notes);
-    // await Transaction.update(
-    //   {
-    //     ...transaction,
-    //   },
-    //   { where: { id: transaction.id } },
-    // );
 
     await t.commit();
-
-    // const updatedTransaction = await Transaction.findByPk(id);
 
     return res.status(200).send({
       success: true,
@@ -702,6 +721,7 @@ const cancelTransaction = async (req, res, next) => {
       data: transaction,
     });
   } catch (error) {
+    console.log(error);
     await t.rollback();
     next(error);
   }
@@ -720,6 +740,258 @@ const payment = async (req, res, next) => {
   }
 };
 
+const newCancel = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    const { id } = req.params;
+    const { notes } = req.body;
+    const user = await UserDB.findByPk(req.user.id);
+
+    const transaction = await getTransactionById(id, user.role_id === 1);
+
+    if (!transaction || (user.role_id !== 1 && user.id !== transaction.user_id))
+      throw { message: 'transaction not found', code: 400 };
+
+    const txStatus = await TransactionHistory.findOne({
+      where: { transaction_id: transaction.id, is_active: true },
+    });
+
+    if (txStatus.status === 'Cancelled')
+      throw { code: 400, message: 'Already Cancelled' };
+
+    //cek transaction Promo
+    if (transaction.promotion_id) {
+      const promoTx = await Promotion.findByPk(transaction.promotion_id);
+      if (promoTx)
+        promoUpdateData.push({
+          ...promoTx.dataValues,
+          limit: promoTx.limit + 1,
+        });
+    }
+
+    let pressCartId = [],
+      openStockUpdateData = [],
+      closeStockUpdateData = [];
+
+    //transactiondetail
+    await Promise.all(
+      transaction.transaction_details.map(async (value) => {
+        if (value.product_id === 1) pressCartId.push(value.id);
+        else {
+          if (value.promotion_id) {
+            const promoProd = await Promotion.findByPk(value.promotion_id);
+            promoUpdateData.push({
+              ...promoProd.dataValues,
+              limit: promoProd.limit + 1,
+            });
+          }
+          closeStockUpdateData.push(
+            await updateCloseStock(value.product_id, value.qty, true),
+          );
+        }
+      }),
+    ).catch((error) => {
+      throw error;
+    });
+    console.log(pressCartId);
+
+    await ClosedStock.bulkCreate(closeStockUpdateData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
+
+    //prescription
+    const prescriptionDetail = await PrescriptionCartDB.findAll({
+      where: {
+        id: { [Op.or]: pressCartId },
+      },
+    });
+    await Promise.all(
+      prescriptionDetail.map(async (value) => {
+        if (!value.unit) {
+          closeStockUpdateData.push(
+            await updateCloseStock(value.product_id, value.qty, true),
+          );
+        } else {
+          const openStockProduct = await OpenStock.findOne({
+            where: { product_id: value.product_id },
+          });
+          const product = await Product.findByPk(value.product_id);
+
+          let openQty = value.qty + openStockProduct.dataValues.qty;
+
+          closeQty = Math.floor(openQty / product.net_content);
+
+          openQty = openQty % product.net_content;
+
+          if (closeQty) {
+            closeStockUpdateData.push(
+              await updateCloseStock(value.product_id, value.qty, true),
+            );
+          }
+          openStockUpdateData.push({
+            ...openStockProduct.dataValues,
+            qty: openQty,
+          });
+        }
+      }),
+    ).catch((error) => {
+      throw error;
+    });
+    // throw { data: prescriptionDetail };
+
+    await OpenStock.bulkCreate(openStockUpdateData, {
+      updateOnDuplicate: ['qty'],
+      transaction: t,
+    });
+    await Promotion.bulkCreate(promoUpdateData, {
+      updateOnDuplicate: ['limit'],
+      transaction: t,
+    });
+
+    await TransactionHistory.update(
+      {
+        is_active: false,
+      },
+      {
+        where: { transaction_id: transaction.id, is_active: true },
+        transaction: t,
+      },
+    );
+    await TransactionHistory.create(
+      {
+        transaction_id: transaction.id,
+        transaction_status_id: 7,
+        is_active: true,
+        notes: notes,
+      },
+      { transaction: t },
+    );
+
+    await t.commit();
+
+    return res.status(200).send({
+      success: true,
+      message: 'Transaction Cancelled',
+      data: transaction,
+    });
+  } catch (error) {
+    console.log(error);
+    await t.rollback();
+    next(error);
+  }
+};
+
+const processTransaction = async (req, res, next) => {
+  const t = await sequelize.transaction();
+  try {
+    const { id } = req.params;
+    const user = await UserDB.findByPk(req.user.id);
+
+    const transaction = await getTransactionById(id, user.role_id === 1);
+
+    if (!transaction || (user.role_id !== 1 && user.id !== transaction.user_id))
+      throw { message: 'transaction not found', code: 400 };
+
+    const txStatus = await TransactionHistory.findOne({
+      where: { transaction_id: transaction.id, is_active: true },
+    });
+
+    // if (txStatus.status === 'Cancelled')
+    //   throw { code: 400, message: 'Already Cancelled' };
+
+    let closeStockUpdateData = [],
+      openStockUpdateData = [],
+      stockHistoryUpdateData = [];
+    await Promise.all(
+      transaction.transaction_details.map(async (value) => {
+        if (value.product_id === 1) pressCartId.push(value.id);
+        else {
+          let reserveStock = value.qty;
+          if (value.promotion_id) {
+            const prodPromotion = await Promotion.findByPk(value.promotion_id);
+            if (prodPromotion && prodPromotion.buy)
+              reserveStock = value.qty + value.product.promotions[0].get;
+          }
+          closeStockUpdateData.push(
+            await updateCloseStock(value.product_id, reserveStock, false),
+          );
+          stockHistoryUpdateData.push(
+            await updateHistoryCloseStock(
+              id,
+              value.product_id,
+              reserveStock,
+              false,
+            ),
+          );
+
+          // throw { data: closeStockUpdateData };
+        }
+      }),
+    ).catch((error) => {
+      throw error;
+    });
+
+    await ClosedStock.bulkCreate(closeStockUpdateData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
+
+    //prescription
+    const prescriptionDetail = await PrescriptionCartDB.findAll({
+      where: {
+        id: { [Op.or]: pressCartId },
+      },
+    });
+
+    await Promise.all(
+      prescriptionDetail.map(async (value) => {
+        if (!value.unit) {
+          closeStockUpdateData.push(
+            await updateCloseStock(value.product_id, value.qty, false),
+          );
+          stockHistoryUpdateData.push(
+            await updateHistoryCloseStock(
+              id,
+              value.product_id,
+              value.qty,
+              false,
+            ),
+          );
+        } else {
+        }
+      }),
+    ).catch((error) => {
+      throw error;
+    });
+
+    await ClosedStock.bulkCreate(closeStockUpdateData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
+    await OpenStock.bulkCreate(openStockUpdateData, {
+      updateOnDuplicate: ['qty'],
+      transaction: t,
+    });
+    await StockHistoryDB.bulkCreate(stockHistoryUpdateData, {
+      updateOnDuplicate: ['qty', 'total_stock'],
+      transaction: t,
+    });
+
+    await t.commit();
+
+    return res.status(200).send({
+      success: true,
+      message: 'Transaction Processed',
+      data: transaction,
+    });
+  } catch (error) {
+    console.log(error);
+    await t.rollback();
+    next(error);
+  }
+};
+
 module.exports = {
   checkout,
   getAllTransaction,
@@ -728,4 +1000,6 @@ module.exports = {
   cancelTransaction,
   handleMidtransPayment,
   payment,
+  newCancel,
+  processTransaction,
 };
