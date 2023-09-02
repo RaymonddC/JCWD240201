@@ -152,15 +152,6 @@ const TransactionCard = (props) => {
                 <label htmlFor="paymentProof">Upload payment proof</label>
               </button>
             ) : (
-              // ) : (
-              //   <button
-              //     className="btn btn-sm btn-primary text-white "
-              //     // disabled={disabled}
-              //     onClick={() => onSubmit()}
-              //   >
-              //     Submit
-              //   </button>
-              // )
               <button
                 className="btn btn-sm btn-primary text-white "
                 disabled={!props.tx.payment_token}

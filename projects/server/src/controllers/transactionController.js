@@ -11,6 +11,7 @@ const TransactionHistory = db.transaction_history;
 const ClosedStockDB = db.closed_stock;
 const Product = db.product;
 const PrescriptionCartDB = db.prescription_cart;
+const TransactionPrescriptionDetailDB = db.transaction_prescription_detail;
 const Promotion = db.promotion;
 const StockHistoryDB = db.stock_history;
 const ClosedStock = db.closed_stock;
@@ -574,7 +575,7 @@ const cancelTransaction = async (req, res, next) => {
       const prescriptionDetail = await StockHistoryDB.findAll({
         where: {
           transaction_id: transaction.id,
-          stock_history_type_id: { [Op.or]: [3, 4] },
+          stock_history_type_id: { [Op.in]: [3, 4] },
         },
       });
 
@@ -745,6 +746,7 @@ const newCancel = async (req, res, next) => {
       throw { code: 400, message: 'Already Cancelled' };
 
     //cek transaction Promo
+    let promoUpdateData = [];
     if (transaction.promotion_id) {
       const promoTx = await Promotion.findByPk(transaction.promotion_id);
       if (promoTx)
@@ -765,6 +767,8 @@ const newCancel = async (req, res, next) => {
         else {
           if (value.promotion_id) {
             const promoProd = await Promotion.findByPk(value.promotion_id);
+            //dicount?
+            // bg
             promoUpdateData.push({
               ...promoProd.dataValues,
               limit: promoProd.limit + 1,
@@ -785,15 +789,17 @@ const newCancel = async (req, res, next) => {
       transaction: t,
     });
 
+    closeStockUpdateData = [];
     //prescription
-    const prescriptionDetail = await PrescriptionCartDB.findAll({
+    const prescriptionDetail = await TransactionPrescriptionDetailDB.findAll({
       where: {
-        id: { [Op.or]: pressCartId },
+        transaction_detail_id: { [Op.in]: pressCartId },
       },
     });
+    // throw { data: prescriptionDetail };
     await Promise.all(
       prescriptionDetail.map(async (value) => {
-        if (!value.unit) {
+        if (!value.unit_conversion) {
           closeStockUpdateData.push(
             await updateCloseStock(value.product_id, value.qty, true),
           );
@@ -802,7 +808,6 @@ const newCancel = async (req, res, next) => {
             where: { product_id: value.product_id },
           });
           const product = await Product.findByPk(value.product_id);
-
           let openQty = value.qty + openStockProduct.dataValues.qty;
 
           closeQty = Math.floor(openQty / product.net_content);
@@ -811,7 +816,7 @@ const newCancel = async (req, res, next) => {
 
           if (closeQty) {
             closeStockUpdateData.push(
-              await updateCloseStock(value.product_id, value.qty, true),
+              await updateCloseStock(value.product_id, closeQty, true),
             );
           }
           openStockUpdateData.push({
@@ -823,8 +828,13 @@ const newCancel = async (req, res, next) => {
     ).catch((error) => {
       throw error;
     });
-    // throw { data: prescriptionDetail };
 
+    // throw { data: promoUpdateData };
+
+    await ClosedStock.bulkCreate(closeStockUpdateData, {
+      updateOnDuplicate: ['total_stock'],
+      transaction: t,
+    });
     await OpenStock.bulkCreate(openStockUpdateData, {
       updateOnDuplicate: ['qty'],
       transaction: t,
@@ -867,126 +877,6 @@ const newCancel = async (req, res, next) => {
   }
 };
 
-const processTransaction = async (req, res, next) => {
-  const t = await sequelize.transaction();
-  try {
-    const { id } = req.params;
-    const user = await UserDB.findByPk(req.user.id);
-
-    const transaction = await getTransactionById(id, user.role_id === 1);
-
-    if (!transaction || (user.role_id !== 1 && user.id !== transaction.user_id))
-      throw { message: 'transaction not found', code: 400 };
-
-    const txStatus = await TransactionHistory.findOne({
-      where: { transaction_id: transaction.id, is_active: true },
-    });
-
-    // if (txStatus.status === 'Cancelled')
-    //   throw { code: 400, message: 'Already Cancelled' };
-
-    let //  closeStockUpdateData = [],
-      //   openStockUpdateData = [],
-      stockHistoryUpdateData = [];
-    await Promise.all(
-      transaction.transaction_details.map(async (value) => {
-        if (value.product_id === 1) pressCartId.push(value.id);
-        else {
-          let reserveStock = value.qty;
-          if (value.promotion_id) {
-            const prodPromotion = await Promotion.findByPk(value.promotion_id);
-            if (prodPromotion && prodPromotion.buy)
-              reserveStock = value.qty + value.product.promotions[0].get;
-          }
-          // closeStockUpdateData.push(
-          //   await updateCloseStock(value.product_id, reserveStock, false),
-          // );
-          stockHistoryUpdateData.push(
-            await updateHistoryCloseStock(
-              id,
-              value.product_id,
-              reserveStock,
-              false,
-            ),
-          );
-
-          // throw { data: closeStockUpdateData };
-        }
-      }),
-    ).catch((error) => {
-      throw error;
-    });
-
-    // await ClosedStock.bulkCreate(closeStockUpdateData, {
-    //   updateOnDuplicate: ['total_stock'],
-    //   transaction: t,
-    // });
-
-    //prescription
-    const prescriptionDetail = await PrescriptionCartDB.findAll({
-      where: {
-        id: { [Op.or]: pressCartId },
-      },
-    });
-
-    await Promise.all(
-      prescriptionDetail.map(async (value) => {
-        // if (!value.unit) {
-        // closeStockUpdateData.push(
-        //   await updateCloseStock(value.product_id, value.qty, false),
-        // );
-        // stockHistoryUpdateData.push(
-        //   await updateHistoryCloseStock(
-        //     id,
-        //     value.product_id,
-        //     value.qty,
-        //     false,
-        //   ),
-        // );
-        // } else {
-        // }\
-        //unit conversion
-        return await unitConversionProcess(
-          {
-            product_id: value.product_id,
-            qty: value.qty,
-            unit_conversion: value.unit_conversion,
-            transaction_id: transaction.id,
-          },
-          t,
-        );
-      }),
-    ).catch((error) => {
-      throw error;
-    });
-
-    // await ClosedStock.bulkCreate(closeStockUpdateData, {
-    //   updateOnDuplicate: ['total_stock'],
-    //   transaction: t,
-    // });
-    // await OpenStock.bulkCreate(openStockUpdateData, {
-    //   updateOnDuplicate: ['qty'],
-    //   transaction: t,
-    // });
-    await StockHistoryDB.bulkCreate(stockHistoryUpdateData, {
-      updateOnDuplicate: ['qty', 'total_stock'],
-      transaction: t,
-    });
-
-    await t.commit();
-
-    return res.status(200).send({
-      success: true,
-      message: 'Transaction Processed',
-      data: transaction,
-    });
-  } catch (error) {
-    console.log(error);
-    await t.rollback();
-    next(error);
-  }
-};
-
 const newCheckout = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
@@ -1017,7 +907,9 @@ const newCheckout = async (req, res, next) => {
       totalAllPriceDB = 0;
 
     let closedStockData = [],
-      promotionData = [];
+      txPresDetail = [],
+      promotionData = [],
+      deletePressId = [];
     if (promotionActive) {
       const updatedPromo = await updatePromoTx(promotionActive, 1, totalPrice);
       promotionData.push(updatedPromo.promoData);
@@ -1046,12 +938,15 @@ const newCheckout = async (req, res, next) => {
     );
 
     // throw { data: rows };
+    // let cartIdprescription = [];
     const txDetailData = await Promise.all(
       rows.map(async (value) => {
         totalAllPriceDB += value.qty * value.product.price;
         let pricePresc = 0;
         let promoSuccess = true;
 
+        txDetailsModel = await TransactionDetail.create({});
+        // throw { data: txDetailsModel };
         if (value.product_id !== 1) {
           //cekPromotion & promotionStock
           if (value.product.promotions.length !== 0) {
@@ -1118,6 +1013,15 @@ const newCheckout = async (req, res, next) => {
           await Promise.all(
             prescriptionCarts.map(async (prescCart) => {
               // if(prescCart.unit_conversion)
+              deletePressId.push(prescCart.id);
+              txPresDetail.push({
+                transaction_detail_id: txDetailsModel.id,
+                product_id: prescCart.product_id,
+                unit_conversion: prescCart.unit_conversion,
+                qty: prescCart.qty,
+                price: prescCart.price,
+                weight: prescCart.weight,
+              });
               return await checkoutUnitConversion(
                 {
                   product_id: prescCart.product_id,
@@ -1134,6 +1038,7 @@ const newCheckout = async (req, res, next) => {
         }
 
         return {
+          ...txDetailsModel.dataValues,
           product_id: value.product_id,
           promotion_id:
             value.product.promotions.length !== 0 && promoSuccess
@@ -1174,6 +1079,18 @@ const newCheckout = async (req, res, next) => {
       transaction: t,
     });
     const txDetails = await TransactionDetail.bulkCreate(txDetailData, {
+      updateOnDuplicate: [
+        'product_id',
+        'promotion_id',
+        'transaction_id',
+        'product_name',
+        'price',
+        'prescription_image',
+        'qty',
+      ],
+      transaction: t,
+    });
+    await TransactionPrescriptionDetailDB.bulkCreate(txPresDetail, {
       transaction: t,
     });
 
@@ -1182,6 +1099,11 @@ const newCheckout = async (req, res, next) => {
     });
 
     await Cart.destroy({ where: { id: [...cartIds] }, transaction: t });
+
+    await PrescriptionCartDB.destroy({
+      where: { id: [...deletePressId] },
+      transaction: t,
+    });
 
     await TransactionHistory.create(
       {
@@ -1239,6 +1161,5 @@ module.exports = {
   handleMidtransPayment,
   payment,
   newCancel,
-  processTransaction,
   newCheckout,
 };
