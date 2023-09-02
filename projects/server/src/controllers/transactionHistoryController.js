@@ -77,7 +77,6 @@ const getRevenue = async (req, res, next) => {
     const startDate = start_date ? new Date(start_date + '') : null;
     const endDate = end_date ? new Date(end_date + '') : null;
     const todayDate = today_date ? new Date(today_date + '') : null;
-    console.log('today =>> ' + todayDate);
     validateDate(startDate, endDate, todayDate);
     const data = await getRevenueQuery({
       startDate,
@@ -86,7 +85,6 @@ const getRevenue = async (req, res, next) => {
       sort_type,
       sort_order,
     });
-    console.log(`data ==> ${data}`);
     let newData;
     if (startDate && endDate) {
       const generatedDate = generateDate(startDate, endDate, sort_order);

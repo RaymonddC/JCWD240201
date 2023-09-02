@@ -3,7 +3,6 @@ import ProductCardAdmin from '../Components/Products/ProductCardAdmin';
 import { getProducts } from '../Features/Product/ProductSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import useDebounce from '../Hooks/useDebounce';
-import FilterBar from '../Components/Products/FilterBar';
 import Pagination from '../Components/Layout/Pagination';
 import DeleteModal from '../Components/Products/DeleteModal';
 import { useSearchParams } from 'react-router-dom';

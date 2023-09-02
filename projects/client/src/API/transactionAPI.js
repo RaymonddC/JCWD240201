@@ -30,7 +30,6 @@ export function getTransaction(token, id) {
   });
 }
 export function deleteTransaction(token, values) {
-  console.log(values);
   return axios.delete(`${URL}/transactions/${values.id}`, {
     data: { ...values },
     headers: {

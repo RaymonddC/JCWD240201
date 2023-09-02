@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-
 import { Analysis } from '../Components/Dashboard/Analysis/Analysis';
 import { OrderStatus } from '../Components/Dashboard/OrderStatus/OrderStatus';
-import { MedicStatus } from '../Components/Dashboard/MeidicineStatus/MedicStatus';
 import { getDashboardDataSlice } from '../Features/Dashboard/DashboardSlice';
 
 export const Dashboard = () => {
@@ -25,7 +22,6 @@ export const Dashboard = () => {
       <Analysis />
       <div className="medicine flex justify-between">
         <OrderStatus />
-        {/* <MedicStatus /> */}
       </div>
     </div>
   );

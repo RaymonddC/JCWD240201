@@ -277,7 +277,6 @@ const newCancel = async (req, res, next) => {
     ).catch((error) => {
       throw error;
     });
-    console.log(pressCartId);
 
     await ClosedStock.bulkCreate(closeStockUpdateData, {
       updateOnDuplicate: ['total_stock'],
@@ -364,7 +363,6 @@ const newCancel = async (req, res, next) => {
       data: transaction,
     });
   } catch (error) {
-    console.log(error);
     await t.rollback();
     next(error);
   }
@@ -634,7 +632,7 @@ const newCheckout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
-    console.log(error);
+
     await t.rollback();
     next(error);
   }

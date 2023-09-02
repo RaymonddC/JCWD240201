@@ -88,7 +88,6 @@ export default function Transaction() {
   }, []);
 
   if (!token) return <Navigate to={'/login'} />;
-  console.log(isProcessing);
 
   return (
     <div className="w-full max-w-[736px] lg:max-w-[776px] lg:p-4 rounded-lg">

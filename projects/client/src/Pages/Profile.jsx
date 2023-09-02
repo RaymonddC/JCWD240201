@@ -1,5 +1,5 @@
 import { MdPerson } from 'react-icons/md';
-import { Link, Navigate } from 'react-router-dom';
+import {  Navigate } from 'react-router-dom';
 import UserEditModal from '../Components/Profile/UserEditModal';
 import { useSelector } from 'react-redux';
 import { convertDate } from '../Helper/userHelper';

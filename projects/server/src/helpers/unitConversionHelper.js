@@ -230,10 +230,7 @@ const unitConversionProcess = async (data, t) => {
       let currentOpenedStock;
       if (checkOpenedStockHistory !== null) {
         currentOpenedStock = checkOpenedStockHistory.total_stock;
-        console.log(
-          '🚀🚀🚀 ~ file: unitConversionHelper.js:233 ~ unitConversionProcess ~ currentOpenedStock:',
-          currentOpenedStock,
-        );
+        
       } else {
         currentOpenedStock = 0;
       }

@@ -18,14 +18,9 @@ export default function PrescriptionAdmin() {
     searchParams.get('confirmation') || '',
   );
   const debouncedSearchValue = useDebounce(search, 1000);
-
   const { prescriptionCarts } = useSelector((state) => state.cart);
   const { detailprescriptionCart } = useSelector((state) => state.cart);
 
-  console.error(
-    '🚀🚀🚀 ~ file: PrescriptionAdmin.jsx:105 ~ prescriptionCarts:',
-    prescriptionCarts,
-  );
   useEffect(() => {
     setPage(1);
   }, [debouncedSearchValue, confirmation, sort]);

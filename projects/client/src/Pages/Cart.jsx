@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
 import {
- 
   getCartUserAsync,
   updateQtyAsync,
 } from '../Features/Cart/CartSlice';
