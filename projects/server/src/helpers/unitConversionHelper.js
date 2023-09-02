@@ -7,8 +7,8 @@ const productDB = db.product;
 const productTypeDB = db.product_type;
 const packagingDB = db.packaging_type;
 const { sequelize } = require('../models');
+const { getLastStockHistory1 } = require('./getlastStockhistoryhelper');
 const { updateCloseStock } = require('./transactionHelper');
-const { getLastStockHistory } = require('./stockHistoryHelper');
 
 const unitConversionHelper = async (data, t) => {
   try {
@@ -194,7 +194,7 @@ const unitConversionProcess = async (data, t) => {
       where: { type: 'sales' },
     });
     if (!unit_conversion) {
-      const checkClosedStockHistory = await getLastStockHistory({
+      const checkClosedStockHistory = await getLastStockHistory1({
         product_id,
         unit: false,
       });
@@ -223,7 +223,7 @@ const unitConversionProcess = async (data, t) => {
         data: updateStockHistory,
       };
     } else {
-      const checkOpenedStockHistory = await getLastStockHistory({
+      const checkOpenedStockHistory = await getLastStockHistory1({
         product_id,
         unit: true,
       });
@@ -238,7 +238,7 @@ const unitConversionProcess = async (data, t) => {
         currentOpenedStock = 0;
       }
 
-      const checkClosedStockHistory = await getLastStockHistory({
+      const checkClosedStockHistory = await getLastStockHistory1({
         product_id,
         unit: false,
       });

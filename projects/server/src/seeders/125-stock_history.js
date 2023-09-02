@@ -386,6 +386,18 @@ module.exports = {
         createdAt: new Date('2023-07-31' + ''),
         updatedAt: new Date('2023-07-31' + ''),
       },
+      {
+        product_id: 17,
+        transaction_id: 12,
+        unit: false,
+        stock_history_type_id: 1,
+        qty: 2,
+        action: 'IN',
+        total_stock: null,
+        notes: null,
+        createdAt: new Date('2023-07-31' + ''),
+        updatedAt: new Date('2023-07-31' + ''),
+      },
     ]);
   },
 

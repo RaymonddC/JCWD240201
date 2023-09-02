@@ -125,7 +125,7 @@ const processTransaction = async (id, userId, t) => {
         // } else {
         // }\
         //unit conversion
-        return await unitConversionProcess(
+        const response = await unitConversionProcess(
           {
             product_id: value.product_id,
             qty: value.qty,
@@ -134,20 +134,21 @@ const processTransaction = async (id, userId, t) => {
           },
           t,
         );
+        return response;
       }),
     ).catch((error) => {
       throw error;
     });
 
-    throw { data: stockHistoryUpdateData };
+    // throw { data: stockHistoryUpdateData };
 
-    await t.commit();
+    // await t.commit();
 
-    return res.status(200).send({
+    return {
       success: true,
       message: 'Transaction Processed',
       data: transaction,
-    });
+    };
   } catch (error) {
     throw error;
   }

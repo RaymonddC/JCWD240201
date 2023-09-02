@@ -21,11 +21,12 @@ const moment = require('moment');
 const { processTransaction } = require('../helpers/stockHistoryHelper');
 
 const updateTxHistory = async (req, res, next) => {
+  console.error("🚀🚀🚀 ~ file: transactionHistoryController.js:24 ~ req:")
   const t = await sequelize.transaction();
-  const template = fs.readFileSync(
-    './src/helpers/verifyEmailTemplate.html',
-    'utf-8',
-  );
+  // const template = fs.readFileSync(
+  //   './src/helpers/verifyEmailTemplate.html',
+  //   'utf-8',
+  // );
   try {
     const { transaction_id, transaction_status_id, notes, email } = req.body;
     let txCreate;
@@ -85,7 +86,7 @@ const updateTxHistory = async (req, res, next) => {
       data: txCreate,
     });
   } catch (error) {
-    console.log(error);
+    console.log("🚀🚀🚀", error);
     await t.rollback();
     next(error);
   }
