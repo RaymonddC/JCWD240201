@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 export const OrderStatus = (props) => {
   const { transactionStatusTotal } = useSelector((state) => state.dashboard);
 
-  console.log(transactionStatusTotal);
-
   return (
     <div className="penting">
       <p className="font-bold text-[20px] leading-6">Penting Hari Ini</p>

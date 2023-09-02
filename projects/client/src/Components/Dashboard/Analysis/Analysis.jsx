@@ -10,9 +10,6 @@ export const Analysis = (props) => {
     (state) => state.dashboard,
   );
 
-  console.log(revenue);
-  console.log(totalTransaction);
-  console.log(totalUser);
   return (
     <div>
       <p className="font-bold text-[20px] leading-6">Analisis Produk & Toko</p>

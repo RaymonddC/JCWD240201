@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getProductDetails } from '../Features/Product/ProductSlice';
@@ -9,7 +9,6 @@ import { MdOutlineWarningAmber } from 'react-icons/md';
 export default function ProductDetails() {
   const user = useSelector((state) => state?.user?.user);
   const role = user?.role_id;
-  const userId = user?.id;
   const productsStore = useSelector((state) => state?.products?.products);
   const productName = productsStore?.data?.name;
   const productDescription = productsStore?.data?.description;
@@ -31,10 +30,7 @@ export default function ProductDetails() {
   const promotions = productsStore?.data?.promotions
     ? productsStore.data.promotions
     : null;
-  console.log(
-    '🚀🚀🚀 ~ file: ProductDetails.jsx:36 ~ ProductDetails ~ promotions:',
-    productsStore
-  );
+ 
   if (promotions) {
     for (let i = 0; i < promotions.length; i++) {
       if (promotions[i].promotion_type_id === 1) {

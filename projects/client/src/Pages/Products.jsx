@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getLabels, getProducts } from '../Features/Product/ProductSlice';
 import ProductCard from '../Components/Products/ProductCard';
-import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
 import Pagination from '../Components/Layout/Pagination';
 import { getAllCategories } from '../Features/Category/CategorySlice';

@@ -8,7 +8,7 @@ const { uploadPayment } = require('../middleware/upload');
 router.post('/', verifyToken, transactionController.newCheckout);
 router.get('/', verifyToken, transactionController.getAllTransaction);
 router.get('/:id', verifyToken, transactionController.getTransaction);
-router.delete('/:id', verifyToken, transactionController.cancelTransaction);
+router.delete('/:id', verifyToken, transactionController.newCancel);
 router.post(
   '/upload',
   APIKey,
@@ -21,6 +21,5 @@ router.post(
   verifyToken,
   transactionController.handleMidtransPayment,
 );
-router.post('/pay', transactionController.payment);
 
 module.exports = router;

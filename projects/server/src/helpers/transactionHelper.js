@@ -159,7 +159,6 @@ const updateCloseStock = async (product_id, qty, isAdd) => {
 const updatePromoTx = async (promotion_id, qty, price) => {
   try {
     const promoTx = await Promotion.findByPk(promotion_id);
-    // throw { data: promoTx, message: 'promo' };
     let totalDiscount;
     if (!promoTx)
       throw {

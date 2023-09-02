@@ -3,7 +3,6 @@ import { getQuestionCategory, getQuestions } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCardAdmin from '../Components/QnA/QuestionCardAdmin';
 import Pagination from '../Components/Layout/Pagination';
-import FilterBar from '../Components/Products/FilterBar';
 import { useSearchParams } from 'react-router-dom';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
