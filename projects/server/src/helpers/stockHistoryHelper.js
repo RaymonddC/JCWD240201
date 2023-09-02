@@ -3,8 +3,6 @@ const db = require('../models');
 const { getTransactionById } = require('./transactionHelper');
 const { unitConversionProcess } = require('./unitConversionHelper');
 const StockHistoryDB = db.stock_history;
-const TransactionHistory = db.transaction_history;
-const PrescriptionCartDB = db.prescription_cart;
 const TransactionPrescriptionDetailDB = db.transaction_prescription_detail;
 const Promotion = db.promotion;
 const UserDB = db.user;
@@ -15,22 +13,6 @@ const getLastStockHistory = async (whereQuery) => {
       where: { ...whereQuery },
       order: [['id', 'DESC']],
     });
-  } catch (error) {
-    throw error;
-  }
-};
-
-const createStockHistory = async (whereQuery) => {
-  try {
-    return {
-      product_id: value.product_id,
-      transaction_id: transaction.id,
-      unit: 0,
-      stock_history_type_id: 4,
-      qty: reserveStock,
-      action: 'out',
-      total_stock: newStock,
-    };
   } catch (error) {
     throw error;
   }
@@ -60,7 +42,6 @@ const updateHistoryCloseStock = async (tx_id, product_id, qty, unit, type) => {
 const processTransaction = async (id, userId, t) => {
   try {
     const user = await UserDB.findByPk(userId);
-
     const transaction = await getTransactionById(id, user.role_id === 1);
 
     if (!transaction || user.role_id !== 1)
@@ -98,33 +79,15 @@ const processTransaction = async (id, userId, t) => {
       updateOnDuplicate: ['qty', 'total_stock'],
       transaction: t,
     });
-
     stockHistoryUpdateData = [];
-
     //prescription
     const prescriptionDetail = await TransactionPrescriptionDetailDB.findAll({
       where: {
         transaction_detail_id: { [Op.in]: [...prescTxId] },
       },
     });
-
     await Promise.all(
       prescriptionDetail.map(async (value) => {
-        // if (!value.unit) {
-        // closeStockUpdateData.push(
-        //   await updateCloseStock(value.product_id, value.qty, false),
-        // );
-        // stockHistoryUpdateData.push(
-        //   await updateHistoryCloseStock(
-        //     id,
-        //     value.product_id,
-        //     value.qty,
-        //     false,
-        //   ),
-        // );
-        // } else {
-        // }\
-        //unit conversion
         const response = await unitConversionProcess(
           {
             product_id: value.product_id,
@@ -139,10 +102,6 @@ const processTransaction = async (id, userId, t) => {
     ).catch((error) => {
       throw error;
     });
-
-    // throw { data: stockHistoryUpdateData };
-
-    // await t.commit();
 
     return {
       success: true,

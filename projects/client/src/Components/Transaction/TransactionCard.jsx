@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import Logo from '../../utils/images/Medicore.png';
 import { Link, useNavigate } from 'react-router-dom';
 import TransactionModal from './TransactionModal';
-import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
   cancelTransaction,

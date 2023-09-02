@@ -21,6 +21,5 @@ router.post(
   verifyToken,
   transactionController.handleMidtransPayment,
 );
-router.post('/pay', transactionController.payment);
 
 module.exports = router;

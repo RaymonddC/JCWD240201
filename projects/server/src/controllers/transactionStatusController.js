@@ -1,12 +1,5 @@
-const jwt = require('jsonwebtoken');
-const { Op } = require('sequelize');
-const bcrypt = require('bcrypt');
-const Handlebars = require('handlebars');
-const fs = require('fs');
 const db = require('../models');
 const TxStatus = db.transaction_status;
-const transporter = require('../helpers/transporter');
-const { sequelize } = require('../models');
 
 const getAllTxStatus = async (req, res, next) => {
   try {

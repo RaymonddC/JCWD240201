@@ -1,11 +1,7 @@
-const fs = require('fs');
-const transporter = require('../helpers/transporter');
 const db = require('../models');
 const txHistoryDB = db.transaction_history;
-const transactionDB = db.transaction;
 const userDB = db.user;
 const transactionStatusDB = db.transaction_status;
-const { QueryTypes } = require('sequelize');
 const {
   getRevenueQuery,
   validateDate,
@@ -15,22 +11,16 @@ const {
   getTopSaleProductQuery,
   validateIsValueExist,
 } = require('../helpers/transactionHistoryHelper');
-const txDB = db.transaction;
 const { sequelize } = require('../models');
 const moment = require('moment');
 const { processTransaction } = require('../helpers/stockHistoryHelper');
 
 const updateTxHistory = async (req, res, next) => {
-  console.error("🚀🚀🚀 ~ file: transactionHistoryController.js:24 ~ req:")
+ 
   const t = await sequelize.transaction();
-  // const template = fs.readFileSync(
-  //   './src/helpers/verifyEmailTemplate.html',
-  //   'utf-8',
-  // );
   try {
     const { transaction_id, transaction_status_id, notes, email } = req.body;
     let txCreate;
-
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },
     });
@@ -41,10 +31,8 @@ const updateTxHistory = async (req, res, next) => {
     )
       throw { code: 400, message: 'Unavailable Status' };
 
-    // const tempCompile = await Handlebars.compile(data);
     if (transaction_status_id === 3)
       await processTransaction(transaction_id, req.user.id, t);
-    // throw {};
 
     if (txFind !== null) {
       const txUpdate = await txHistoryDB.update(
@@ -69,16 +57,7 @@ const updateTxHistory = async (req, res, next) => {
       const emailFind = await userDB.findOne({ where: { email } });
       if (!emailFind) throw { message: 'email not found' };
     }
-    // if (notes) {
-    //   const txNotes = await txDB.update(
-    //     { notes: notes },
-    //     {
-    //       where: { id: transaction_id },
-    //       transaction: t,
-    //     },
-    //   );
-    // }
-
+   
     await t.commit();
     return res.status(200).send({
       success: true,
@@ -86,7 +65,6 @@ const updateTxHistory = async (req, res, next) => {
       data: txCreate,
     });
   } catch (error) {
-    console.log("🚀🚀🚀", error);
     await t.rollback();
     next(error);
   }

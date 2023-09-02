@@ -949,7 +949,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       // Obat sakit tenggorokan
-      {
+      {//57
         name: 'Cooling 5 Antiseptik Spray Cappuccino 15 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -965,7 +965,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
+      {//58
         name: 'Degirol 0,25 Mg 10 Tablet',
         packaging_type_id: 2,
         product_type_id: 1,
@@ -981,7 +981,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
+      {//59
         name: 'Larutan Penyegar Cap Badak Botol 200 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -997,7 +997,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
+      {//60
         name: 'Obat Sariawan Hau Fung San 1,2 gr',
         packaging_type_id: 1,
         product_type_id: 3,
@@ -1013,7 +1013,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
+      {//61
         name: 'Tantum Lozenges 6 Tablet',
         packaging_type_id: 2,
         product_type_id: 1,
