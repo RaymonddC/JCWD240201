@@ -58,6 +58,11 @@ const TransactionCard = (props) => {
     } catch (error) {}
   };
 
+  const cancelUpload = () => {
+    setPaymentProofFile(null)
+    setOpenConfModal(false)
+  }
+
   const confirm = async () => {
     try {
       await dispatch(
@@ -278,6 +283,7 @@ const TransactionCard = (props) => {
           styling="hidden"
           image={paymentProofFile}
           confirm={onSubmit}
+          cancel={cancelUpload}
         />
       ) : null}
     </div>
