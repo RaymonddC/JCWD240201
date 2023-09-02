@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
-import NavBar from '../Components/Layout/Navbar';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
 import { useEffect, useState } from 'react';
 import {

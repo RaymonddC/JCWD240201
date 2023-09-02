@@ -1,5 +1,3 @@
-import Footer from '../Components/Layout/Footer';
-import NavBar from '../Components/Layout/Navbar';
 import ProductCard from '../Components/Products/ProductCard';
 import jumbotronImage from '../utils/images/jumbotronImage.svg';
 import prescriptionImage from '../utils/images/prescription.svg';
@@ -11,8 +9,6 @@ import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
-import StoreLocation from '../Components/Landing/StoreLocation';
-import NavbarDrawer from '../Components/Layout/NavbarDrawer';
 import { getAllLabelsAPI } from '../API/productAPI';
 
 export default function Landing() {
@@ -64,8 +60,6 @@ export default function Landing() {
   };
   useEffect(() => {
     getVitamin();
-    // dispatch(getProducts({ page: 1, limit, search: '' }));
-
     dispatch(
       getLabels({
         page: 1,
@@ -76,7 +70,6 @@ export default function Landing() {
   }, []);
   return (
     <>
-      {/* <NavbarDrawer /> */}
       <div className="flex  justify-center">
         <article className="prose">
           <h2 className="mx-5 text-center lg:hidden">

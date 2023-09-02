@@ -5,7 +5,6 @@ import { getPromotionAPI, getPromotionTypeAPI } from '../API/promotionAPI';
 import { useEffect, useState } from 'react';
 import SelectSortOrder from '../Components/Report/StockHistory/SelectSortOrder';
 import ProductDiscTable from '../Components/Promotion/Table/ProductDiscTable';
-import { MdAdd } from 'react-icons/md';
 import { validateGetPromotion } from '../Helper/promotionHelper';
 import TransactionDiscTable from '../Components/Promotion/Table/TransactionDiscTable';
 import BuyGetTable from '../Components/Promotion/Table/BuyGetTable';

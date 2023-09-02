@@ -117,13 +117,6 @@ app.get('*', (req, res) => {
 
 app.use((err, req, res, next) => {
   const errStatus = err.code && !isNaN(Number(err.code)) ? err.code : 500;
-  // console.log(
-  //   err.code,
-  //   isNaN(err.code),
-  //   Number(err.code),
-  //   isNaN(Number(err.code)),
-  //   errStatus,
-  // );
   const errMessage = err.message || 'Something went wrong';
   return res.status(errStatus).json({
     success: false,

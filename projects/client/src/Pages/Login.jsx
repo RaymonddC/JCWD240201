@@ -4,13 +4,9 @@ import { Link, Navigate } from 'react-router-dom';
 import { AuthForm } from '../Components/AuthForm/AuthForm';
 import LoginImage from '../utils/images/Frame.svg';
 import Logo from '../utils/images/Medicore.png';
-import { loginWithGoogleSlice } from '../Features/User/UserSlice';
-import { FcGoogle } from 'react-icons/fc';
 
 export const Login = () => {
-  const dispatch = useDispatch();
   const { user } = useSelector((state) => state?.user);
-
   const [isRegis, setIsRegis] = useState(
     window.location.pathname === '/register',
   );
