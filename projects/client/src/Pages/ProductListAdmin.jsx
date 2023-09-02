@@ -9,6 +9,7 @@ import DeleteModal from '../Components/Products/DeleteModal';
 import { useSearchParams } from 'react-router-dom';
 import DetailProductAdmin from '../Components/DetailProductModal/DetailProductModal';
 import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
+import ProductCardAdminSkl from '../Components/Skeleton/ProductCardAdminSkl';
 
 export default function ProductListAdmin() {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ export default function ProductListAdmin() {
   const totalPages = ProductsStore?.totalPage;
   const productList = ProductsStore?.data?.rows;
   const debouncedSearchValue = useDebounce(search);
+  const limit = 9;
   const productMap = productList?.map((value, index) => {
     return (
       <div key={`product${index}`} className="py-1 flex w-full justify-center">
@@ -56,7 +58,7 @@ export default function ProductListAdmin() {
     dispatch(
       getProducts({
         page,
-        limit: 9,
+        limit,
         search: debouncedSearchValue,
         sortOrder,
         sortType,
@@ -79,7 +81,7 @@ export default function ProductListAdmin() {
       </article>
       <div className="relative">
         <div className="sticky flex w-full justify-center top-3 mb-3 ">
-          <div className=' w-full max-w-4xl'>
+          <div className=" w-full max-w-4xl">
             <FilterBarDrawer
               value={search}
               add={true}
@@ -104,10 +106,16 @@ export default function ProductListAdmin() {
             />
           </div>
         </div>
-        <div>{productMap}</div>
-        <div className="py-5">
-          <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+        <div>
+          {productMap ? productMap : <ProductCardAdminSkl limit={limit} />}
         </div>
+        {productMap ? (
+          <div className="py-5">
+            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+          </div>
+        ) : (
+          '--- No products found---'
+        )}
       </div>
       <DeleteModal productId={productId} isDeleted={setIsDeleted} />
       <DetailProductAdmin productId={productId} />

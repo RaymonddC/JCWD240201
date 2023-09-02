@@ -22,6 +22,10 @@ export default function PrescriptionAdmin() {
   const { prescriptionCarts } = useSelector((state) => state.cart);
   const { detailprescriptionCart } = useSelector((state) => state.cart);
 
+  console.error(
+    '🚀🚀🚀 ~ file: PrescriptionAdmin.jsx:105 ~ prescriptionCarts:',
+    prescriptionCarts,
+  );
   useEffect(() => {
     setPage(1);
   }, [debouncedSearchValue, confirmation, sort]);
@@ -101,15 +105,21 @@ export default function PrescriptionAdmin() {
         </div>
       </div>
       <div className="grid gap-4 place-items-center mb-4">
-        {prescriptionCarts?.rows?.map((value, index) => {
-          return <PrescriptionCard data={value} key={index} />;
-        })}
+        {prescriptionCarts?.count ? (
+          prescriptionCarts?.rows?.map((value, index) => {
+            return <PrescriptionCard data={value} key={index} />;
+          })
+        ) : (
+          <div className="pt-5">--- No prescription orders --- </div>
+        )}
       </div>
-      <Pagination
-        setPage={setPage}
-        page={page}
-        totalPages={prescriptionCarts?.totalPage}
-      />
+      {prescriptionCarts?.count ? (
+        <Pagination
+          setPage={setPage}
+          page={page}
+          totalPages={prescriptionCarts?.totalPage}
+        />
+      ) : null}
     </div>
   );
 }
