@@ -30,7 +30,7 @@ export default function EditProduct() {
   const category = useSelector((state) => state?.categories?.categories);
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
-
+  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
   const getCurrentData = async () => {
     try {
       const getToken = localStorage.getItem('token');
@@ -313,7 +313,7 @@ export default function EditProduct() {
             ) : (
               <img
                 className="w-6/12"
-                src={image ? `http://localhost:8000/${image}` : null}
+                src={image ? `${URL}/${image}` : null}
                 alt="product_image"
               />
             )}
