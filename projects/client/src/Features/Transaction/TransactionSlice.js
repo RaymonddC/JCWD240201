@@ -101,7 +101,7 @@ export const cancelTransaction = (values, closeFunc) => async (dispatch) => {
     let token = localStorage.getItem('token');
     await deleteTransaction(token, values);
     dispatch(getAllTransactionSlice({ selectedStatusId: 1 }));
-    // closeFunc();
+    closeFunc();
     toast.success('Transaction Cancelled');
   } catch (error) {
     return toast.error(error.message);
