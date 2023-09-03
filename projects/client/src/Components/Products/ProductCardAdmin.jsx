@@ -2,6 +2,7 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductCardAdmin(props) {
+  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
   const navigate = useNavigate();
   const productName = props?.data?.name;
   const price = props?.data?.price?.toLocaleString(['id']);
@@ -28,7 +29,7 @@ export default function ProductCardAdmin(props) {
         <div className="hidden md:block w-40 ">
           <img
             className="h-24 hidden md:block px-5"
-            src={image ? `http://localhost:8000/${image}` : null}
+            src={image ? `${URL}/${image}` : null}
             alt=""
           />
         </div>

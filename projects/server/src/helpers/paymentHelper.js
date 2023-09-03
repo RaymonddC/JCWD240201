@@ -9,6 +9,7 @@ let snap = new midtransClient.Snap({
 });
 
 const date = new Date();
+const URL = `${process.env.REACT_APP_API_BASE_URL}`;
 
 const getMidtransSnap = async (values) => {
   try {
@@ -78,7 +79,7 @@ const getMidtransSnap = async (values) => {
       //   url: 'http://toko/toko1?item=abc',
       // },
       callbacks: {
-        finish: 'http://localhost:3000/user/transaction',
+        finish: `${URL}/user/transaction`,
       },
       page_expiry: {
         duration: 3,

@@ -7,6 +7,7 @@ import { toast } from 'react-hot-toast';
 import { MdOutlineWarningAmber } from 'react-icons/md';
 
 export default function ProductDetails() {
+  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
   const user = useSelector((state) => state?.user?.user);
   const role = user?.role_id;
   const productsStore = useSelector((state) => state?.products?.products);
@@ -96,7 +97,7 @@ export default function ProductDetails() {
               <div>
                 <img
                   className="h-64 "
-                  src={image ? `http://localhost:8000/${image}` : null}
+                  src={image ? `${URL}/${image}` : null}
                   alt=""
                 />
               </div>
