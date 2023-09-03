@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom';
 export default function ProductCard(props) {
   const URL = `${process.env.REACT_APP_API_BASE_URL}`;
   const { user } = useSelector((state) => state.user);
-  console.log("🚀🚀🚀 ~ file: ProductCard.jsx:9 ~ user:", user)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const productName = props?.data?.name;
