@@ -90,7 +90,7 @@ export default function NavbarDrawer() {
             </div>
             <div className=" hidden relative  lg:block w-full">
               {/* Navbar menu content here */}
-              <div className="flex mr-44 justify-center">
+              <div className="flex mr-52 justify-center">
                 <div className="flex gap-3">
                   <Link to="/products">
                     <button className="btn btn-ghost font-bold w-36">
