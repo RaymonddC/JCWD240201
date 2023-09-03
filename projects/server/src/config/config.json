@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "jcwd2402",
-    "database": "pharmacy2",
-    "host": "127.0.0.1",
+    "password": "group01",
+    "database": "jcwd240201",
+    "host": "purwadhikabootcamp.com",
     "dialect": "mysql"
   },
   "test": {
