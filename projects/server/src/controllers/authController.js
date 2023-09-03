@@ -7,6 +7,7 @@ const fs = require('fs');
 const db = require('../models');
 const User = db.user;
 const transporter = require('../helpers/transporter');
+const domain = process.env.WHITELISTED_DOMAIN;
 
 const {
   getUser,
@@ -40,7 +41,7 @@ const sendVerifyEmail = async (req, res, next) => {
       'utf-8',
     );
     const tempCompile = await Handlebars.compile(data);
-    const tempResult = tempCompile({ token: token });
+    const tempResult = tempCompile({ token: token, domain: domain });
 
     const isEmailValid = await validateEmail(email);
     if (isEmailValid) throw isEmailValid;
@@ -276,7 +277,7 @@ const sendResetPasswordForm = async (req, res, next) => {
       'utf-8',
     );
     const tempCompile = await Handlebars.compile(data);
-    const tempResult = tempCompile({ token: token });
+    const tempResult = tempCompile({ token: token, domain: domain });
 
     if (isEmail.test(email)) {
       await transporter.sendMail({
