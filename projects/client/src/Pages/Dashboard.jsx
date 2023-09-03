@@ -9,8 +9,12 @@ import { getDashboardDataSlice } from '../Features/Dashboard/DashboardSlice';
 
 export const Dashboard = () => {
   const { user } = useSelector((state) => state?.user);
+  const { totalRevenue } = useSelector((state) => state.dashboard);
+
   const dispatch = useDispatch();
   const today = new Date();
+
+  console.log(totalRevenue);
 
   useEffect(() => {
     dispatch(
