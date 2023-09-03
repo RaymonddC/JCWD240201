@@ -65,7 +65,7 @@ export default function QuestionDetails() {
             <article className="prose">
               <h3>{title}</h3>
               <p
-                className="line-clamp-3"
+                className=""
                 dangerouslySetInnerHTML={createMarkup(question)}
               ></p>
             </article>

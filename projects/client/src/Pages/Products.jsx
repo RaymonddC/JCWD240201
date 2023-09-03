@@ -145,31 +145,6 @@ export default function Products() {
   ]);
   return (
     <>
-      {/* <FilterBar
-          value={search}
-          setSearch={setSearch}
-          setSortType={setSortType}
-          setSortOrder={setSortOrder}
-          setMinPrice={setMinPrice}
-          setMaxPrice={setMaxPrice}
-          sortBy={true}
-          priceRange={true}
-          option={[
-            { text: 'Name A to Z', sortType: 'name', sortOrder: 'ASC' },
-            { text: 'Name Z to A', sortType: 'name', sortOrder: 'DESC' },
-            {
-              text: 'Price low to high',
-              sortType: 'price',
-              sortOrder: 'ASC',
-            },
-            {
-              text: 'Price high to low',
-              sortType: 'price',
-              sortOrder: 'DESC',
-            },
-          ]}
-        /> */}
-
       <div className="flex ">
         <div className="hidden w-52 h-fit md:block px-1 card bg-base-100 shadow-xl pb-3">
           <article className="prose">
@@ -177,7 +152,7 @@ export default function Products() {
           </article>
           <div
             onClick={() => setCategory('')}
-            className="btn btn-ghost btn-sm flex justify-start w-full"
+            className="btn btn-ghost btn-sm flex justify-start min-w-[170px]"
           >
             <div>All</div>
           </div>
