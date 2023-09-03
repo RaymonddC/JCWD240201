@@ -47,7 +47,7 @@ export default function ProductCard(props) {
       return toast.error('Login first before adding product to cart');
       // return navigate('/login');
     }
-    if(user.verified === false){
+    if(user.verified !== true){
       return toast.error('Please check your email and verify your account');
     }
     dispatch(addToCartAsync({ productId: productId }));
