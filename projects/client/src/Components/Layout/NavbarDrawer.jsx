@@ -109,7 +109,7 @@ export default function NavbarDrawer() {
                   </Link>
                 </div>
               </div>
-              <div className="absolute top-1 right-3 w-40">
+              <div className="absolute top-1 right-4 w-40">
                 {user && Object.keys(user).length !== 0 ? (
                   <div className="flex gap-2">
                     <Link
@@ -125,7 +125,7 @@ export default function NavbarDrawer() {
                       ) : (
                         <MdPerson className="w-[40px] h-[40px]" />
                       )}
-                      <div className="font-bold w-24 truncate">
+                      <div className="font-bold w-28 truncate">
                         {user?.username}
                       </div>
                     </Link>
