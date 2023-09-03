@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../utils/images/Medicore.png';
 import Logo1 from '../../utils/images/medicore_icon.png';
-import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { logoutAsync } from '../../Features/User/UserSlice';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdPerson } from 'react-icons/md';
 import { SlBag } from 'react-icons/sl';
 import { getCartUserAsync } from '../../Features/Cart/CartSlice';
