@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 export default function ProductCard(props) {
   const { user } = useSelector((state) => state.user);
+  console.log("🚀🚀🚀 ~ file: ProductCard.jsx:9 ~ user:", user)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const productName = props?.data?.name;
@@ -45,6 +46,9 @@ export default function ProductCard(props) {
     if (Object.keys(user).length === 0) {
       return toast.error('Login first before adding product to cart');
       // return navigate('/login');
+    }
+    if(user.verified !== true){
+      return toast.error('Please check your email and verify your account');
     }
     dispatch(addToCartAsync({ productId: productId }));
   };

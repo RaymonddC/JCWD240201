@@ -1,13 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import Logo from '../../utils/images/Medicore.png';
-import Logo1 from '../../utils/images/medicore_icon.png';
-import { MdOutlineMenu } from 'react-icons/md';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { logoutAsync } from '../../Features/User/UserSlice';
-import { MdPerson } from 'react-icons/md';
-import { SlBag } from 'react-icons/sl';
-import { getCartUserAsync } from '../../Features/Cart/CartSlice';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MdArrowDropDown } from 'react-icons/md';
 import MultiRangeSlider from '../Layout/MultiRangeSlider/MultiRangeSlider.jsx';
 import { MdAdd } from 'react-icons/md';
@@ -23,7 +15,7 @@ export default function FilterBarDrawer(props) {
     <>
       <div className="drawer drawer-end">
         <input
-          readonly
+          readOnly
           checked={open}
           id="my-drawer-filter"
           type="checkbox"

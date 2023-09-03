@@ -73,7 +73,13 @@ const TransactionCard = (props) => {
       props.setTogle(!props.togle);
     } catch (error) {}
   };
-
+  const deleteHandler = async () => {
+    try {
+      await dispatch(cancelTransaction({ id: props?.tx?.id }, ()=>setOpenDeletemodal(false)));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="div border-b border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3 px-2">
@@ -112,7 +118,7 @@ const TransactionCard = (props) => {
           {props.tx.transaction_details.length <= 1 ? (
             ''
           ) : (
-            <p>+ {props.tx.transaction_details.length - 1} produk lainnya</p>
+            <p>+ {props.tx.transaction_details.length - 1} other products</p>
           )}
         </div>
         <div className="price w-[20%] text-center">
@@ -264,12 +270,20 @@ const TransactionCard = (props) => {
         />
       ) : null}
       {openDeleteModal ? (
-        <DeleteModal
-          open={openDeleteModal}
-          closeModal={() => setOpenDeletemodal(false)}
-          id={props?.tx?.id}
-          model={'Transaction'}
-          delFunc={cancelTransaction}
+        // <DeleteModal
+        //   open={openDeleteModal}
+        //   closeModal={() => setOpenDeletemodal(false)}
+        //   id={props?.tx?.id}
+        //   model={'Transaction'}
+        //   delFunc={cancelTransaction}
+        // />
+        <ConfirmationModal
+        open={openDeleteModal}
+        title="Cancel Transaction"
+        textLine1="Are you sure you want to cancel this transaction?"
+        labelStyle="btn-outline"
+        confirm={deleteHandler}
+        cancel={() => setOpenDeletemodal(false)}
         />
       ) : null}
       {openConfModal ? (
