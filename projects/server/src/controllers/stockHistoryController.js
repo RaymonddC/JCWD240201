@@ -5,7 +5,6 @@ const stockHistoryTypeDB = db.stock_history_type;
 const productDB = db.product;
 const productTypeDB = db.product_type;
 const packagingDB = db.packaging_type;
-const { sequelize } = require('../models');
 
 const stockHistoryList = async (req, res, next) => {
   try {

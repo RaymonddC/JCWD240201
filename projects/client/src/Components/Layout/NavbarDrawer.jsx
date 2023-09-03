@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Logo from '../../utils/images/Medicore.png';
 import Logo1 from '../../utils/images/medicore_icon.png';
-import { MdOutlineMenu } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { logoutAsync } from '../../Features/User/UserSlice';
+import { Link, useNavigate } from 'react-router-dom';
 import { MdPerson } from 'react-icons/md';
 import { SlBag } from 'react-icons/sl';
 import { getCartUserAsync } from '../../Features/Cart/CartSlice';
@@ -24,7 +22,7 @@ export default function NavbarDrawer() {
     <>
       <div className="drawer">
         <input
-          readonly
+          readOnly
           checked={open}
           id="my-drawer-3"
           type="checkbox"
@@ -92,7 +90,7 @@ export default function NavbarDrawer() {
             </div>
             <div className=" hidden relative  lg:block w-full">
               {/* Navbar menu content here */}
-              <div className="flex mr-44 justify-center">
+              <div className="flex mr-52 justify-center">
                 <div className="flex gap-3">
                   <Link to="/products">
                     <button className="btn btn-ghost font-bold w-36">
@@ -111,7 +109,7 @@ export default function NavbarDrawer() {
                   </Link>
                 </div>
               </div>
-              <div className="absolute top-1 right-3 w-40">
+              <div className="absolute top-1 right-4 w-40">
                 {user && Object.keys(user).length !== 0 ? (
                   <div className="flex gap-2">
                     <Link
@@ -127,7 +125,7 @@ export default function NavbarDrawer() {
                       ) : (
                         <MdPerson className="w-[40px] h-[40px]" />
                       )}
-                      <div className="font-bold w-24 truncate">
+                      <div className="font-bold w-28 truncate">
                         {user?.username}
                       </div>
                     </Link>

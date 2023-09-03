@@ -2,21 +2,18 @@ import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  checkoutAsync,
   getCartUserAsync,
   updateQtyAsync,
 } from '../Features/Cart/CartSlice';
-import { Navigate, useNavigate, Link } from 'react-router-dom';
+import {  useNavigate, Link } from 'react-router-dom';
 import {
   getProvinceAsync,
   getUserAddressAsync,
 } from '../Features/Address/AddressSlice';
 import AddressModal from '../Components/Address/addressModal';
-
 import ProductCard from '../Components/Products/ProductCard';
 import { getLabels } from '../Features/Product/ProductSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
-
 import toast from 'react-hot-toast';
 import CartSummary from '../Components/Cart/CartSummary';
 import CartCardSkl from '../Components/Skeleton/CartCardSkl';
@@ -24,11 +21,9 @@ import CartCardSkl from '../Components/Skeleton/CartCardSkl';
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const { user } = useSelector((state) => state?.user);
   const { address, loadAddress } = useSelector((state) => state.address);
   const [openAddressModal, setOpenAddressModal] = useState(false);
-
   const {
     carts,
     totalCart,

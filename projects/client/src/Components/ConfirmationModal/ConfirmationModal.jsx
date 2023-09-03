@@ -11,6 +11,10 @@ const ConfirmationModal = (props) => {
     props?.confirm();
     setOpen(false);
   };
+  const cancelHandler = () => {
+    props?.cancel()
+    setOpen(false);
+  }
 
   return (
     <>
@@ -31,9 +35,9 @@ const ConfirmationModal = (props) => {
               {props?.title}
             </h3>
             {props.image ? (
-              <div className='w-full'>
+              <div className='w-full flex justify-center'>
                 <img
-                  className="w-[100px] h-[100px] rounded-full"
+                  className="w-[100px] h-[100px]"
                   src={URL.createObjectURL(props.image)}
                   alt="profile"
                 />
@@ -57,7 +61,7 @@ const ConfirmationModal = (props) => {
           )}
           <div className="modal-action">
             <button
-              onClick={() => setOpen(false)}
+              onClick={cancelHandler}
               className="btn btn-outline border-primary hover:border-primary hover:bg-primary"
             >
               Cancel

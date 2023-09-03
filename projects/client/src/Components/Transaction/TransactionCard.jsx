@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import Logo from '../../utils/images/Medicore.png';
 import { Link, useNavigate } from 'react-router-dom';
 import TransactionModal from './TransactionModal';
-import InputUserFile from '../Profile/Input/InputUserFile';
 import { toast } from 'react-hot-toast';
 import {
   cancelTransaction,
@@ -58,6 +57,11 @@ const TransactionCard = (props) => {
     } catch (error) {}
   };
 
+  const cancelUpload = () => {
+    setPaymentProofFile(null)
+    setOpenConfModal(false)
+  }
+
   const confirm = async () => {
     try {
       await dispatch(
@@ -69,7 +73,13 @@ const TransactionCard = (props) => {
       props.setTogle(!props.togle);
     } catch (error) {}
   };
-
+  const deleteHandler = async () => {
+    try {
+      await dispatch(cancelTransaction({ id: props?.tx?.id }, ()=>setOpenDeletemodal(false)));
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div className="div border-b border-[#D5D7DD] text-[16px] p-2 card card-compact bg-base-100 shadow-md my-2 ">
       <div className="headerStatus flex justify-between py-3 px-2">
@@ -108,7 +118,7 @@ const TransactionCard = (props) => {
           {props.tx.transaction_details.length <= 1 ? (
             ''
           ) : (
-            <p>+ {props.tx.transaction_details.length - 1} produk lainnya</p>
+            <p>+ {props.tx.transaction_details.length - 1} other products</p>
           )}
         </div>
         <div className="price w-[20%] text-center">
@@ -152,15 +162,6 @@ const TransactionCard = (props) => {
                 <label htmlFor="paymentProof">Upload payment proof</label>
               </button>
             ) : (
-              // ) : (
-              //   <button
-              //     className="btn btn-sm btn-primary text-white "
-              //     // disabled={disabled}
-              //     onClick={() => onSubmit()}
-              //   >
-              //     Submit
-              //   </button>
-              // )
               <button
                 className="btn btn-sm btn-primary text-white "
                 disabled={!props.tx.payment_token}
@@ -269,12 +270,20 @@ const TransactionCard = (props) => {
         />
       ) : null}
       {openDeleteModal ? (
-        <DeleteModal
-          open={openDeleteModal}
-          closeModal={() => setOpenDeletemodal(false)}
-          id={props?.tx?.id}
-          model={'Transaction'}
-          delFunc={cancelTransaction}
+        // <DeleteModal
+        //   open={openDeleteModal}
+        //   closeModal={() => setOpenDeletemodal(false)}
+        //   id={props?.tx?.id}
+        //   model={'Transaction'}
+        //   delFunc={cancelTransaction}
+        // />
+        <ConfirmationModal
+        open={openDeleteModal}
+        title="Cancel Transaction"
+        textLine1="Are you sure you want to cancel this transaction?"
+        labelStyle="btn-outline"
+        confirm={deleteHandler}
+        cancel={() => setOpenDeletemodal(false)}
         />
       ) : null}
       {openConfModal ? (
@@ -287,6 +296,7 @@ const TransactionCard = (props) => {
           styling="hidden"
           image={paymentProofFile}
           confirm={onSubmit}
+          cancel={cancelUpload}
         />
       ) : null}
     </div>
