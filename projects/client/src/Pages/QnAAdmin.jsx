@@ -118,9 +118,19 @@ export default function QnAAdmin() {
                   {questionCategoriesMap}
                 </div>
               </div>
-              <div>{questionMap}</div>
+              <div>{questionList.length? questionMap:
+              <div className='flex w-full justify-center pt-5'>
+                --- No questions found ---
+              </div>
+              }</div>
             </div>
-            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+            {questionList.length ? (
+              <Pagination
+                setPage={setPage}
+                page={page}
+                totalPages={totalPages}
+              />
+            ) : null}
           </div>
         </div>
       </div>

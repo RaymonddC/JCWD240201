@@ -100,7 +100,11 @@ export default function StockPageAdmin() {
           {productMap ? productMap : <ProductCardAdminSkl limit={limit} />}
         </div>
         <div className="py-5">
+          {productList?.length?
           <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+          :
+          <div className='w-full flex justify-center'>--- No products found ---</div>
+          }
         </div>
       </div>
       <UpdateStockModal productId={productId} isUpdated={setIsUpdated} />

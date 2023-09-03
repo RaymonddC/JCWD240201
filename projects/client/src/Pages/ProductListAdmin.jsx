@@ -108,12 +108,14 @@ export default function ProductListAdmin() {
         <div>
           {productMap ? productMap : <ProductCardAdminSkl limit={limit} />}
         </div>
-        {productMap ? (
+        {productList?.length ? (
           <div className="py-5">
             <Pagination setPage={setPage} page={page} totalPages={totalPages} />
           </div>
         ) : (
-          '--- No products found---'
+          <div className="flex w-full justify-center py-5">
+            --- No products found ---
+          </div>
         )}
       </div>
       <DeleteModal productId={productId} isDeleted={setIsDeleted} />
