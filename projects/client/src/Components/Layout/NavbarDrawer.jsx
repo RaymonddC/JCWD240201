@@ -24,7 +24,7 @@ export default function NavbarDrawer() {
     <>
       <div className="drawer">
         <input
-          readonly
+          readOnly
           checked={open}
           id="my-drawer-3"
           type="checkbox"

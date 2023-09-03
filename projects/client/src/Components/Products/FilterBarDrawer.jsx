@@ -23,7 +23,7 @@ export default function FilterBarDrawer(props) {
     <>
       <div className="drawer drawer-end">
         <input
-          readonly
+          readOnly
           checked={open}
           id="my-drawer-filter"
           type="checkbox"
