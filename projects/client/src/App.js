@@ -9,8 +9,6 @@ import AdminRoute from './utils/routes/adminRoute';
 import PublicRoute from './utils/routes/publicRoutes';
 import Footer from './Components/Layout/Footer';
 import { useLocation } from 'react-router-dom';
-import getScrollbarWidth from './Helper/getScrollbarWidth';
-import useBodyScrollable from './Helper/useBodyScrollable';
 import { Sidebar } from './Components/Layout/Sidebar';
 import NavbarAdmin from './Components/Layout/NavbarAdmin';
 import NavbarDrawer from './Components/Layout/NavbarDrawer';
