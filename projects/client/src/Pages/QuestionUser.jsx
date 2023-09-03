@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
-import { getAnswers, getQuestionCategory } from '../Features/QnA/QnASlice';
+import { useEffect, useState } from 'react';
+import { getQuestionCategory } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCard from '../Components/QnA/QuestionCard';
 import { Navigate, useLocation, useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
-import QuestionModal from '../Components/QnA/QuestionModal';
-import FilterBar from '../Components/Products/FilterBar';
 import useDebounce from '../Hooks/useDebounce';
 import QnACardSkl from '../Components/Skeleton/QnACardSkl';
 import { getUserQuestionsAPI } from '../API/QnAAPI';
@@ -40,7 +38,7 @@ export default function QuestionUser() {
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
-        <div key={`cat${index}`} className='flex items-center'>
+        <div key={`cat${index}`} className="flex items-center">
           <div
             onClick={() => setQuestionCategory(value.id)}
             className="btn btn-outline btn-accent btn-xs mx-3"
@@ -182,13 +180,15 @@ export default function QuestionUser() {
                 </div>
               </div>
             </div>
-            <div className="my-5">
-              <Pagination
-                setPage={setPage}
-                page={page}
-                totalPages={totalPages}
-              />
-            </div>
+            {questionList?.length ? (
+              <div className="my-5">
+                <Pagination
+                  setPage={setPage}
+                  page={page}
+                  totalPages={totalPages}
+                />
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
