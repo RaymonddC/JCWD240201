@@ -15,6 +15,8 @@ const initialState = {
   totalUser: {},
   transactionStatusTotal: [],
   totalRevenue: [],
+  loadDashboard: true,
+  loadChart: true,
 };
 
 export const DashboardSlice = createSlice({
@@ -36,12 +38,19 @@ export const DashboardSlice = createSlice({
     setTotalRevenue: (initialState, action) => {
       initialState.totalRevenue = action.payload;
     },
+    setLoadDashboard: (initialState, action) => {
+      initialState.loadDashboard = action.payload;
+    },
+    setLoadChart: (initialState, action) => {
+      initialState.loadChart = action.payload;
+    },
   },
 });
 
 export const getDashboardDataSlice = (query) => async (dispatch) => {
   try {
     const { today_date } = query;
+    dispatch(setLoadDashboard(true));
     let token = localStorage.getItem('token');
     const revenue = await getTodayRevenueAPI(token, { today_date });
 
@@ -54,25 +63,11 @@ export const getDashboardDataSlice = (query) => async (dispatch) => {
       token,
     );
 
-    const currentDate = new Date();
-    const currentDateMonth = currentDate.getMonth();
-    const currentDateyear = currentDate.getFullYear();
-    const start_date = moment([currentDateyear, currentDateMonth]).format(
-      'YYYY-MM-DD',
-    );
-    const end_date = moment(start_date).endOf('month').format('YYYY-MM-DD');
-
-    const getTotalTransaction = await getRevenueAPI(token, {
-      start_date,
-      end_date,
-    });
-
     if (
       revenue.data.success &&
       totalTransaction.data.success &&
       totalUser.data.success &&
-      getAllTransactionStatusTotal.data.success &&
-      getTotalTransaction.data.success
+      getAllTransactionStatusTotal.data.success
     ) {
       dispatch(setTodayRevenue(revenue.data.data));
       dispatch(setTodayTransaction(totalTransaction.data.data));
@@ -80,11 +75,36 @@ export const getDashboardDataSlice = (query) => async (dispatch) => {
       dispatch(
         setTransactionStatusTotal(getAllTransactionStatusTotal.data.data),
       );
-      dispatch(setTotalRevenue(getTotalTransaction.data.data));
+      dispatch(setLoadDashboard(false));
     }
   } catch (error) {
     return toast.error(error?.response?.data?.message);
   }
+};
+
+export const getTotalRevenueSlice = () => async (dispatch) => {
+  try {
+    dispatch(setLoadChart(true));
+    const currentDate = new Date();
+    const currentDateMonth = currentDate.getMonth();
+    const currentDateyear = currentDate.getFullYear();
+    const start_date = moment([currentDateyear, currentDateMonth]).format(
+      'YYYY-MM-DD',
+    );
+    const end_date = moment(start_date).endOf('month').format('YYYY-MM-DD');
+    let token = localStorage.getItem('token');
+    const totalRevenue = await getRevenueAPI(token, {
+      start_date: start_date,
+      end_date: end_date,
+      sort_type: 'date',
+      sort_order: 'ASC',
+    });
+
+    if (totalRevenue.data.success && totalRevenue?.data?.data?.length) {
+      dispatch(setTotalRevenue(totalRevenue.data.data));
+      dispatch(setLoadChart(false));
+    }
+  } catch (error) {}
 };
 
 export const {
@@ -93,6 +113,8 @@ export const {
   setTodayUser,
   setTransactionStatusTotal,
   setTotalRevenue,
+  setLoadDashboard,
+  setLoadChart,
 } = DashboardSlice.actions;
 
 export default DashboardSlice.reducer;

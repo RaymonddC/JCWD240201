@@ -27,7 +27,7 @@ const initialState = {
   minimumPricePromo: 0,
   maximumPromo: null,
   promoDisc: 0,
-  loadCarts: false,
+  loadCarts: true,
   updatePrescriptionLoad: false,
 };
 
@@ -178,10 +178,12 @@ export const deleteCartAsync = (values, closeFunc) => async (dispatch) => {
 export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
   try {
     // const { search } = params;
+    dispatch(setLoadCarts(true));
     const token = localStorage.getItem('token');
     const response = await getAllPrescriptionsCartsAPI(token, params);
 
     if (response.data.success) {
+      dispatch(setLoadCarts(false));
       dispatch(setPrescriptionCarts(response.data.data));
     }
   } catch (error) {}

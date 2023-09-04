@@ -6,6 +6,9 @@ import { getAllPrescriptionsCartsSlice } from '../Features/Cart/CartSlice';
 import useDebounce from '../Hooks/useDebounce';
 import { useSearchParams } from 'react-router-dom';
 import Pagination from '../Components/Layout/Pagination';
+import PrescriptionCardSkl from '../Components/Skeleton/PrescriptionCardSkl';
+import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
+import FilterDrawerPrescription from '../Components/Prescription/FilterDrawerPrescription';
 
 export default function PrescriptionAdmin() {
   const dispatch = useDispatch();
@@ -18,7 +21,7 @@ export default function PrescriptionAdmin() {
     searchParams.get('confirmation') || '',
   );
   const debouncedSearchValue = useDebounce(search, 1000);
-  const { prescriptionCarts } = useSelector((state) => state.cart);
+  const { prescriptionCarts, loadCarts } = useSelector((state) => state.cart);
   const { detailprescriptionCart } = useSelector((state) => state.cart);
 
   useEffect(() => {
@@ -42,6 +45,8 @@ export default function PrescriptionAdmin() {
     );
   }, [debouncedSearchValue, confirmation, sort, page]);
 
+  console.log(loadCarts);
+
   return (
     <div>
       <article className="prose">
@@ -56,6 +61,7 @@ export default function PrescriptionAdmin() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+
           <div className="dropdown dropdown-end hidden md:block">
             <label tabIndex={0} className="btn btn-primary w-[130px]">
               <div className="flex items-center">
@@ -98,9 +104,15 @@ export default function PrescriptionAdmin() {
             </ul>
           </div>
         </div>
+        <FilterDrawerPrescription
+          setSort={setSort}
+          setConfirmation={setConfirmation}
+        />
       </div>
       <div className="grid gap-4 place-items-center mb-4">
-        {prescriptionCarts?.count ? (
+        {loadCarts ? (
+          <PrescriptionCardSkl limit={5} />
+        ) : prescriptionCarts?.count && !loadCarts ? (
           prescriptionCarts?.rows?.map((value, index) => {
             return <PrescriptionCard data={value} key={index} />;
           })

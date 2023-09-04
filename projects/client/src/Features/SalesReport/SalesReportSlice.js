@@ -12,6 +12,8 @@ const initialState = {
   totalTransaction: [],
   totalUser: [],
   topSale: [],
+  loadCharts: true,
+  loadTopSales: true,
 };
 
 export const SalesReportSlice = createSlice({
@@ -30,12 +32,19 @@ export const SalesReportSlice = createSlice({
     setTopSale: (initialState, action) => {
       initialState.topSale = action.payload;
     },
+    setLoadCharts: (initialState, action) => {
+      initialState.loadCharts = action.payload;
+    },
+    setLoadTopSales: (initialState, action) => {
+      initialState.loadTopSales = action.payload;
+    },
   },
 });
 
 export const getSalesReportSlice = (query) => async (dispatch) => {
   try {
     const { startDate, endDate, sortType, sortOrder, today_date } = query;
+    dispatch(setLoadCharts(true));
     let token = localStorage.getItem('token');
     const revenue = await getRevenueAPI(
       token,
@@ -80,6 +89,7 @@ export const getSalesReportSlice = (query) => async (dispatch) => {
       dispatch(setRevenue(revenue.data.data));
       dispatch(setTotalTransaction(totalTransaction.data.data));
       dispatch(setTotalUser(totalUser.data.data));
+      dispatch(setLoadCharts(false));
     }
   } catch (error) {
     return toast.error(error?.response?.data?.message);
@@ -89,6 +99,7 @@ export const getSalesReportSlice = (query) => async (dispatch) => {
 export const getTopSaleSlice = (query) => async (dispatch) => {
   try {
     const { startDate, endDate } = query;
+    dispatch(setLoadTopSales(true));
     let token = localStorage.getItem('token');
     const response = await getTopSaleAPI(token, {
       start_date: startDate,
@@ -97,13 +108,20 @@ export const getTopSaleSlice = (query) => async (dispatch) => {
 
     if (response.data.success) {
       dispatch(setTopSale(response.data.data));
+      dispatch(setLoadTopSales(false));
     }
   } catch (error) {
     toast.error(error.response.data.message);
   }
 };
 
-export const { setRevenue, setTotalTransaction, setTotalUser, setTopSale } =
-  SalesReportSlice.actions;
+export const {
+  setRevenue,
+  setTotalTransaction,
+  setTotalUser,
+  setTopSale,
+  setLoadCharts,
+  setLoadTopSales,
+} = SalesReportSlice.actions;
 
 export default SalesReportSlice.reducer;
