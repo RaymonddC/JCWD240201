@@ -45,8 +45,6 @@ export default function PrescriptionAdmin() {
     );
   }, [debouncedSearchValue, confirmation, sort, page]);
 
-  console.log(loadCarts);
-
   return (
     <div>
       <article className="prose">

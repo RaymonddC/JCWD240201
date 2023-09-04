@@ -51,9 +51,9 @@ export default function ModalSelectAddress(props) {
             <button
               onClick={() => props?.closeModal()}
               htmlFor="my_modal_6"
-              className="btn"
+              className="btn btn-outline btn-primary"
             >
-              Close!
+              Close
             </button>
           </div>
         </div>

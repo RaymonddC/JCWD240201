@@ -13,7 +13,10 @@ const ClosedStock = db.closed_stock;
 const OpenStock = db.opened_stock;
 const UserDB = db.user;
 const { sequelize } = require('../models');
-const { getOldIsSelected } = require('../helpers/addressHelper');
+const {
+  getOldIsSelected,
+  changeToMainSelect,
+} = require('../helpers/addressHelper');
 const {
   getUserTransactions,
   getTransactionById,
@@ -408,6 +411,12 @@ const newCheckout = async (req, res, next) => {
     }
 
     const address = await getOldIsSelected(userId);
+
+    console.log(address.dataValues);
+
+    if (address.dataValues.is_main === false) {
+      await changeToMainSelect(address.dataValues.id, userId, t);
+    }
     //helper buat balikin ke main
 
     //create transaction
@@ -632,7 +641,6 @@ const newCheckout = async (req, res, next) => {
       // pageCount: count,
     });
   } catch (error) {
-
     await t.rollback();
     next(error);
   }

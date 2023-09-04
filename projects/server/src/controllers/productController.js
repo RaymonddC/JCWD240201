@@ -114,9 +114,9 @@ const getProductDetails = async (req, res, next) => {
           model: promotionDB,
           where: {
             // [Op.and]: [
-              //  limit: { [Op.gt]: 0 } ,
-               date_start: { [Op.lte]: today } ,
-               date_end: { [Op.gte]: today } ,
+            //  limit: { [Op.gt]: 0 } ,
+            date_start: { [Op.lte]: today },
+            date_end: { [Op.gte]: today },
             // ],
           },
           required: false,
@@ -175,6 +175,11 @@ const createProduct = async (req, res, next) => {
       transaction: t,
       ignoreDuplicate: true,
     });
+
+    await closedStockDB.create(
+      { product_id: postProduct.id, total_stock: 0 },
+      { transaction: t },
+    );
 
     await t.commit();
 

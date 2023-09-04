@@ -103,7 +103,6 @@ export default function ReportPage() {
     );
   };
 
-  console.log(loadTopSales);
   return (
     <>
       <div className="flex flex-col gap-3">
