@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import Logo from '../../utils/images/Medicore.png';
+import Logo from '../../utils/images/medicore_icon.png';
 import { Link, useNavigate } from 'react-router-dom';
 import TransactionModal from './TransactionModal';
 import { toast } from 'react-hot-toast';
@@ -58,9 +58,9 @@ const TransactionCard = (props) => {
   };
 
   const cancelUpload = () => {
-    setPaymentProofFile(null)
-    setOpenConfModal(false)
-  }
+    setPaymentProofFile(null);
+    setOpenConfModal(false);
+  };
 
   const confirm = async () => {
     try {
@@ -75,7 +75,11 @@ const TransactionCard = (props) => {
   };
   const deleteHandler = async () => {
     try {
-      await dispatch(cancelTransaction({ id: props?.tx?.id }, ()=>setOpenDeletemodal(false)));
+      await dispatch(
+        cancelTransaction({ id: props?.tx?.id }, () =>
+          setOpenDeletemodal(false),
+        ),
+      );
     } catch (error) {
       toast.error(error.message);
     }
@@ -278,12 +282,12 @@ const TransactionCard = (props) => {
         //   delFunc={cancelTransaction}
         // />
         <ConfirmationModal
-        open={openDeleteModal}
-        title="Cancel Transaction"
-        textLine1="Are you sure you want to cancel this transaction?"
-        labelStyle="btn-outline"
-        confirm={deleteHandler}
-        cancel={() => setOpenDeletemodal(false)}
+          open={openDeleteModal}
+          title="Cancel Transaction"
+          textLine1="Are you sure you want to cancel this transaction?"
+          labelStyle="btn-outline"
+          confirm={deleteHandler}
+          cancel={() => setOpenDeletemodal(false)}
         />
       ) : null}
       {openConfModal ? (
