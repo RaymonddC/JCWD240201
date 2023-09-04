@@ -58,9 +58,6 @@ export default function AddressModal(props) {
     },
   });
 
-  console.log(formik.errors);
-  console.log(formik.values);
-
   const closeHandler = () => {
     if (props?.checkoutPage) props?.openSelectAddress();
     return props?.closeModal();

@@ -103,7 +103,6 @@ const getRevenue = async (req, res, next) => {
         : { date: moment(todayDate).format('LL'), today_revenue: 0 };
     }
 
-    console.log('newData ==>>' + newData);
     return res.status(200).send({
       success: true,
       message: 'Get revenue Successfully',

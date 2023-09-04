@@ -305,7 +305,6 @@ export default function EditProduct() {
               />
             </div>
             {formik?.values?.image?.product ? (
-              // console.log("🚀🚀🚀 ~ file: EditProduct.jsx:308 ~ ormik?.values?.image?.product:", formik?.values?.image?.product)
               <img
                 className="w-6/12"
                 src={URL.createObjectURL(formik?.values?.image?.product)}

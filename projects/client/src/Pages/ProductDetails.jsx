@@ -82,8 +82,6 @@ export default function ProductDetails() {
     dispatch(addToCartAsync({ productId: productId }));
   };
 
-  console.log(productPrice);
-
   useEffect(() => {
     dispatch(getProductDetails({ id: productId }));
   }, [dispatch, id, productId]);

@@ -1,5 +1,4 @@
 export const validationAddressModal = (values) => {
-  console.log(values);
   const errors = {};
   if (!values.receiver) {
     errors.receiver = 'receiver name is required';

@@ -14,7 +14,6 @@ const createDiscount = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { data } = req.body;
-    console.log('🚀🚀🚀 ~ file: promotionController.js:17 ~ data:', data);
     const productId = Number(data.product_id);
     const promotion_type_id = data.promotion_type_id || 0;
     const discount = data.discount || 0;

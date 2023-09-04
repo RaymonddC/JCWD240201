@@ -236,7 +236,6 @@ const deleteProduct = async (req, res, next) => {
       const newPath = `public/deleted_product_images/${
         fileName[fileName.length - 1]
       }`;
-      console.log(newPath);
       fs.rename(value, newPath, function (err) {
         if (err) throw err;
       });
