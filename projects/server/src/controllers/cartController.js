@@ -31,9 +31,7 @@ const getCarts = async (req, res, next) => {
     } = req.query;
 
     let whereQuery = { user_id: userId };
-
     const { count, rows } = await getUserCarts('', whereQuery);
-
     const newRows = await Promise.all(
       rows.map(async (row) => {
         if (row.product_id === 1 && row.confirmation === true) {
@@ -92,9 +90,12 @@ const addToCart = async (req, res, next) => {
     const stock = await ClosedStock.findOne({
       where: { product_id: productId },
     });
-    if (Number(productId) !== 1 && isCart && stock.total_stock <= isCart.qty)
+    if (
+      Number(productId) !== 1 &&
+      ((isCart && stock.total_stock <= isCart.qty) ||
+        (!isCart && stock.total_stock <= (qty || 1)))
+    )
       throw { message: 'Out Of Stock' };
-
     if (Number(productId) === 1 && !image)
       throw { message: 'Please upload image' };
 
@@ -137,11 +138,6 @@ const updateCart = async (req, res, next) => {
     const { id } = req.params;
     const { qty, confirmation = false, isCheck = true } = req.body;
     const userId = req.user.id;
-
-    // const product = await getProduct()
-    // if(product.stock < qty) throw({message:'kebanyakan bro belinya'})
-    // if(product. === true) throw({message:'butuh resep bro'})
-
     const isCart = await getCartByPk(id, '');
     if (!isCart) throw { code: 400, message: 'Cart Not Found' };
 

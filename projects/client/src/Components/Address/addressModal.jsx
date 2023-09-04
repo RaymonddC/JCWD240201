@@ -22,7 +22,7 @@ export default function AddressModal(props) {
 
   const formik = useFormik({
     initialValues: {
-      reciever: '',
+      receiver: '',
       phone_number: '',
       province_id: '0',
       city_id: '0',
@@ -68,8 +68,9 @@ export default function AddressModal(props) {
       formik.values.province_id !== '0' &&
       formik.values.province_id !== props?.data?.province_id
     ) {
-      dispatch(setCity([]));
       formik.setFieldValue('city_id', '0');
+      formik.setFieldValue('city_name', '');
+      dispatch(setCity([]));
       dispatch(getCityAsync(formik.values.province_id));
     }
     if (
@@ -84,7 +85,7 @@ export default function AddressModal(props) {
   useEffect(() => {
     if (props?.data) {
       formik.setValues({
-        reciever: props?.data?.reciever,
+        receiver: props?.data?.receiver,
         phone_number: props?.data?.phone_number,
         province_id: props?.data?.province_id,
         province_name: props?.data?.province_name,
@@ -119,15 +120,15 @@ export default function AddressModal(props) {
           </div>
           <form className="flex flex-col" onSubmit={formik.handleSubmit}>
             <InputUserText
-              id="reciever"
-              label="Reciever Name"
-              name="reciever"
+              id="receiver"
+              label="receiver Name"
+              name="receiver"
               placeholder="John Doe"
-              errors={formik?.errors?.reciever}
+              errors={formik?.errors?.receiver}
               handleChange={formik?.handleChange}
               onBlur={formik?.handleBlur}
-              touched={formik?.touched?.reciever}
-              values={formik?.values?.reciever}
+              touched={formik?.touched?.receiver}
+              values={formik?.values?.receiver}
             />
             <InputUserText
               id="phone_number"
@@ -180,12 +181,12 @@ export default function AddressModal(props) {
               <button
                 type="button"
                 onClick={closeHandler}
-                className="btn btn-outline border-primary text-primary"
+                className="btn btn-outline border-primary text-primary hover:btn-primary hover:!text-white"
               >
                 close
               </button>
               <button
-                disabled={!formik.isValid || formik.isSubmitting}
+                disabled={formik.isSubmitting}
                 type="submit"
                 className="btn btn-primary text-white"
               >

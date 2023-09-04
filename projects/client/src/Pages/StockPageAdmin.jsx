@@ -8,12 +8,14 @@ import Pagination from '../Components/Layout/Pagination';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import UpdateStockModal from '../Components/Stocks/UpdateStockModal';
 import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
+import ProductCardAdminSkl from '../Components/Skeleton/ProductCardAdminSkl';
 
 export default function StockPageAdmin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   let queryParams = {};
+  const limit = 9;
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
   const [search, setSearch] = useState(searchParams.get('search') || '');
   const [productId, setProductId] = useState(null);
@@ -56,7 +58,7 @@ export default function StockPageAdmin() {
     dispatch(
       getProducts({
         page,
-        limit: 9,
+        limit,
         search: debouncedSearchValue,
         sortOrder,
         sortType,
@@ -94,9 +96,15 @@ export default function StockPageAdmin() {
             />
           </div>
         </div>
-        <div>{productMap}</div>
+        <div>
+          {productMap ? productMap : <ProductCardAdminSkl limit={limit} />}
+        </div>
         <div className="py-5">
+          {productList?.length?
           <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+          :
+          <div className='w-full flex justify-center'>--- No products found ---</div>
+          }
         </div>
       </div>
       <UpdateStockModal productId={productId} isUpdated={setIsUpdated} />

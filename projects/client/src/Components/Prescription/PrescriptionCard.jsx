@@ -30,7 +30,7 @@ export default function PrescriptionCard(props) {
             ? 'bg-primary'
             : props?.data?.confirmation === true
             ? 'bg-secondary'
-            : 'bg-error'
+            : 'bg-warning'
         } rounded-t-lg flex justify-between p-2 text-white`}
       >
         <p>

@@ -30,7 +30,7 @@ const updateUserData = async (req, res, next) => {
           phone_number,
           gender,
           birthdate,
-          profile_image: image.path,
+          profile_image: image.path.replace(/\\/g, '/'),
         },
         { where: { id: auth.id } },
       );
@@ -134,6 +134,13 @@ const sendChangeEmailForm = async (req, res, next) => {
       to: email,
       subject: 'Change Email',
       html: tempResult,
+      attachments: [
+        {
+          filename: 'Medicore.png',
+          path: `../server/public/logo/Medicore.png`,
+          cid: 'logo1',
+        },
+      ],
     });
 
     return res.send({

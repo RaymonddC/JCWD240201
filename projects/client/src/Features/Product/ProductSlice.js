@@ -47,23 +47,21 @@ export const ProductSlice = createSlice({
 
 export const getProducts = (data) => async (dispatch) => {
   try {
+    dispatch(setIsLoad(true));
     let response = await getAllProductsAPI(data);
     if (response.data.success) {
       dispatch(products(response?.data));
       dispatch(setProductDropdown(response?.data));
       dispatch(setIsLoad(false));
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 export const getProductDetails = (data) => async (dispatch) => {
   try {
     let response = await getProductDetailsAPI({ id: data.id });
-    console.log("🚀🚀🚀 ~ file: ProductSlice.js:62 ~ getProductDetails ~ response:", response)
     dispatch(products(response?.data));
     dispatch(setProductDetail(response?.data));
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const getLabels = (data) => async (dispatch) => {
@@ -78,8 +76,7 @@ export const getLabels = (data) => async (dispatch) => {
     });
 
     dispatch(products(response?.data));
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const getproductLabel = (data) => async (dispatch) => {

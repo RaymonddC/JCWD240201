@@ -30,7 +30,7 @@ export default function EditProduct() {
   const category = useSelector((state) => state?.categories?.categories);
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
-
+  const urlENV = `${process.env.REACT_APP_API_BASE_URL}`;
   const getCurrentData = async () => {
     try {
       const getToken = localStorage.getItem('token');
@@ -307,13 +307,13 @@ export default function EditProduct() {
             {formik?.values?.image?.product ? (
               <img
                 className="w-6/12"
-                src={URL.createObjectURL(formik.values.image.product)}
+                src={URL.createObjectURL(formik?.values?.image?.product)}
                 alt="product_image"
               />
             ) : (
               <img
                 className="w-6/12"
-                src={image ? `http://localhost:8000/${image}` : null}
+                src={image ? `${urlENV}/${image}` : null}
                 alt="product_image"
               />
             )}

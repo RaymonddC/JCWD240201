@@ -7,6 +7,8 @@ const productDB = db.product;
 const productTypeDB = db.product_type;
 const packagingDB = db.packaging_type;
 const { sequelize } = require('../models');
+const { getLastStockHistory1 } = require('./getLastStockHistoryHelper');
+const { updateCloseStock } = require('./transactionHelper');
 
 const unitConversionHelper = async (data, t) => {
   try {
@@ -176,4 +178,208 @@ const unitConversionHelper = async (data, t) => {
   }
 };
 
-module.exports = { unitConversionHelper };
+const unitConversionProcess = async (data, t) => {
+  const { product_id, qty, unit_conversion, transaction_id } = data;
+  let newOpenedStock;
+  let openedStock;
+  let resOpenedStock1;
+  let newClosedStock;
+  try {
+    if (!product_id) throw { message: 'please provide a product', code: 400 };
+    if (!qty) throw { message: 'please provide quantity', code: 400 };
+    const unitConversionTypeId = await stockHistoryTypeDB.findOne({
+      where: { type: 'unit conversion' },
+    });
+    const salesTypeId = await stockHistoryTypeDB.findOne({
+      where: { type: 'sales' },
+    });
+    if (!unit_conversion) {
+      const checkClosedStockHistory = await getLastStockHistory1({
+        product_id,
+        unit: false,
+      });
+      const currentClosedStock = checkClosedStockHistory.total_stock;
+      let updateStockHistory;
+      if (currentClosedStock >= qty) {
+        const newClosedStock = currentClosedStock - qty;
+        updateStockHistory = await stockHistoryDB.create(
+          {
+            product_id,
+            unit: 0,
+            qty,
+            action: 'OUT',
+            transaction_id,
+            stock_history_type_id: salesTypeId.id,
+            total_stock: newClosedStock,
+          },
+          { transaction: t },
+        );
+      } else {
+        throw { message: 'Not enough stock', code: 400 };
+      }
+      return {
+        success: true,
+        message: 'Non unit conversion presciption sales completed successfully',
+        data: updateStockHistory,
+      };
+    } else {
+      const checkOpenedStockHistory = await getLastStockHistory1({
+        product_id,
+        unit: true,
+      });
+      let currentOpenedStock;
+      if (checkOpenedStockHistory !== null) {
+        currentOpenedStock = checkOpenedStockHistory.total_stock;
+      } else {
+        currentOpenedStock = 0;
+      }
+
+      const checkClosedStockHistory = await getLastStockHistory1({
+        product_id,
+        unit: false,
+      });
+      const currentClosedStock = checkClosedStockHistory.total_stock;
+      const prodDetail = await productDB.findOne({
+        include: [packagingDB, productTypeDB],
+        where: { id: product_id },
+      });
+      const netContent = prodDetail.net_content;
+
+      newClosedStock = currentClosedStock;
+      newOpenedStock = currentOpenedStock;
+      let openedFromStock = 0;
+      let updateClosedStockHistory;
+      if (currentOpenedStock < qty) {
+        while (newOpenedStock < qty) {
+          newClosedStock--;
+          openedFromStock++;
+          newOpenedStock = newOpenedStock + netContent;
+          if (currentClosedStock < openedFromStock) {
+            throw { message: 'Not enough stock', code: 400 };
+          }
+        }
+        const updateClosedStockHistoryOut = await stockHistoryDB.create(
+          {
+            product_id,
+            unit: 0,
+            qty: openedFromStock,
+            transaction_id,
+            action: 'OUT',
+            stock_history_type_id: unitConversionTypeId.id,
+            total_stock: newClosedStock,
+          },
+          { transaction: t },
+        );
+        const addOpenStock = openedFromStock * netContent;
+        const updateStockHystoryOpenIn = await stockHistoryDB.create(
+          {
+            product_id,
+            unit: 1,
+            qty: addOpenStock,
+            transaction_id,
+            action: 'IN',
+            stock_history_type_id: unitConversionTypeId.id,
+            total_stock: newOpenedStock,
+          },
+          { transaction: t },
+        );
+      }
+
+      const newUpdateStock = newOpenedStock - qty;
+      const updateOpenedStockHistoryOut = await stockHistoryDB.create(
+        {
+          product_id,
+          unit: 1,
+          qty,
+          action: 'OUT',
+          transaction_id,
+          stock_history_type_id: salesTypeId.id,
+          total_stock: newUpdateStock,
+        },
+        { transaction: t },
+      );
+
+      // throw { data: updateOpenedStockHistoryOut, message: 'áwdawda' };
+      return {
+        success: true,
+        message: 'unit conversion completed successfully',
+        data: updateOpenedStockHistoryOut,
+        net_content: netContent,
+        closed_stock: newClosedStock,
+        opened_stock: newUpdateStock,
+        netContent: netContent,
+      };
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const checkoutUnitConversion = async (data, t) => {
+  try {
+    const { product_id, qty, unit_conversion } = data;
+    if (!product_id) throw { message: 'please provide a product', code: 400 };
+    if (!qty) throw { message: 'please provide quantity', code: 400 };
+    const getClosedStock = await closedStockDB.findOne({
+      where: { product_id },
+    });
+
+    if (!unit_conversion) {
+      if (qty > getClosedStock.dataValues.total_stock)
+        throw { message: 'Product is out of stock' };
+
+      const updateClosedStock = await closedStockDB.update(
+        { total_stock: getClosedStock.dataValues.total_stock - qty },
+        { where: { product_id }, transaction: t },
+      );
+    } else {
+      let getOpenStock = await openedStockDB.findOne({
+        where: { product_id },
+      });
+      if (!getOpenStock) {
+        getOpenStock = await openedStockDB.create(
+          { product_id: product_id, qty: 0 },
+          { transaction: t },
+        );
+      }
+      if (getOpenStock && qty <= getOpenStock.dataValues.qty) {
+        const updateOpenStock = await openedStockDB.update(
+          { qty: qty - getOpenStock.dataValues.qty },
+          { where: { product_id }, transaction: t },
+        );
+      } else {
+        // throw { data: product_id };
+        const getProduct = await productDB.findOne({
+          where: { id: product_id },
+        });
+        const productNetContent = getProduct.dataValues.net_content;
+        const productNeedToBeOpen = Math.ceil(
+          (qty - getOpenStock.dataValues.qty) / productNetContent,
+        );
+        if (productNeedToBeOpen > getClosedStock.total_stock)
+          throw { message: 'Product is out of stock' };
+
+        const updateClosedStock = await closedStockDB.update(
+          { total_stock: getClosedStock.total_stock - productNeedToBeOpen },
+          { where: { product_id }, transaction: t },
+        );
+        const newOpenedStockQty =
+          getOpenStock.dataValues.qty +
+          productNeedToBeOpen * productNetContent -
+          qty;
+        const updateOpenStock = await openedStockDB.update(
+          { qty: newOpenedStockQty },
+          { where: { product_id }, transaction: t },
+        );
+      }
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports = {
+  unitConversionHelper,
+  unitConversionProcess,
+  checkoutUnitConversion,
+};

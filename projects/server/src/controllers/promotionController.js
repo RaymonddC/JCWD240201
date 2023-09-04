@@ -15,6 +15,14 @@ const createDiscount = async (req, res, next) => {
   try {
     const { data } = req.body;
     const productId = Number(data.product_id);
+    const promotion_type_id = data.promotion_type_id || 0;
+    const discount = data.discount || 0;
+    const buy = data.buy || 0;
+    const get = data.get || 0;
+    const minimum_transaction = data.minimum_transaction || 0;
+    const maximum_discount_amount = data.maximum_discount_amount || 0;
+    const limit = data.limit || 0;
+
     if (!data.promotion_type_id)
       throw { message: 'Please input promotion type', code: 400 };
 
@@ -31,7 +39,21 @@ const createDiscount = async (req, res, next) => {
           message: 'Promotion cannot be applied on prescription drug',
         };
     }
-    const result = await promotionDB.create(data, { transaction: t });
+    const result = await promotionDB.create(
+      {
+        product_id: productId,
+        promotion_type_id,
+        discount,
+        buy,
+        get,
+        minimum_transaction,
+        maximum_discount_amount,
+        date_start: data.date_start,
+        date_end: data.date_end,
+        limit,
+      },
+      { transaction: t },
+    );
 
     if (result) {
       await promotionExpired(result, t);
@@ -74,9 +96,9 @@ const getPromotionList = async (req, res, next) => {
           [
             sequelize.literal(
               `CASE
-              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS INT)
+              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS SIGNED)
               ELSE
-              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS INT)
+              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS SIGNED)
               END`,
             ),
             'totalDiscount',

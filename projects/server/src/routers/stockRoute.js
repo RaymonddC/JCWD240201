@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-
 const { stockController } = require('../controllers');
 const { APIKey } = require('../middleware/APIKey');
 const { verifyToken } = require('../middleware/auth');
@@ -11,7 +10,7 @@ router.post(
   APIKey,
   verifyToken,
   isAdmin,
-  stockController.createDataStock,
+  stockController.createDataStock2,
 );
 router.put('/unit-conversion',APIKey, stockController.unitConversion);
 router.get('/', APIKey, stockController.getStockHistoryType);

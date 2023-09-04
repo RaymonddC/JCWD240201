@@ -1,11 +1,7 @@
-const fs = require('fs');
-const transporter = require('../helpers/transporter');
 const db = require('../models');
 const txHistoryDB = db.transaction_history;
-const transactionDB = db.transaction;
 const userDB = db.user;
 const transactionStatusDB = db.transaction_status;
-const { QueryTypes } = require('sequelize');
 const {
   getRevenueQuery,
   validateDate,
@@ -15,27 +11,28 @@ const {
   getTopSaleProductQuery,
   validateIsValueExist,
 } = require('../helpers/transactionHistoryHelper');
-const txDB = db.transaction;
 const { sequelize } = require('../models');
 const moment = require('moment');
+const { processTransaction } = require('../helpers/stockHistoryHelper');
 
 const updateTxHistory = async (req, res, next) => {
   const t = await sequelize.transaction();
-  const template = fs.readFileSync(
-    './src/helpers/verifyEmailTemplate.html',
-    'utf-8',
-  );
   try {
     const { transaction_id, transaction_status_id, notes, email } = req.body;
     let txCreate;
-    // const tempCompile = await Handlebars.compile(data);
-    if (email) {
-      const emailFind = await userDB.findOne({ where: { email } });
-      if (!emailFind) throw { message: 'email not found' };
-    }
     const txFind = await txHistoryDB.findOne({
       where: { is_active: true, transaction_id },
     });
+
+    if (
+      Object.keys(txFind).length &&
+      txFind.transaction_status_id >= transaction_status_id
+    )
+      throw { code: 400, message: 'Unavailable Status' };
+
+    if (transaction_status_id === 3)
+      await processTransaction(transaction_id, req.user.id, t);
+
     if (txFind !== null) {
       const txUpdate = await txHistoryDB.update(
         { is_active: false },
@@ -54,15 +51,11 @@ const updateTxHistory = async (req, res, next) => {
       },
       { transacton: t },
     );
-    // if (notes) {
-    //   const txNotes = await txDB.update(
-    //     { notes: notes },
-    //     {
-    //       where: { id: transaction_id },
-    //       transaction: t,
-    //     },
-    //   );
-    // }
+
+    if (email) {
+      const emailFind = await userDB.findOne({ where: { email } });
+      if (!emailFind) throw { message: 'email not found' };
+    }
 
     await t.commit();
     return res.status(200).send({
@@ -71,6 +64,7 @@ const updateTxHistory = async (req, res, next) => {
       data: txCreate,
     });
   } catch (error) {
+    await t.rollback();
     next(error);
   }
 };
@@ -82,7 +76,6 @@ const getRevenue = async (req, res, next) => {
     const startDate = start_date ? new Date(start_date + '') : null;
     const endDate = end_date ? new Date(end_date + '') : null;
     const todayDate = today_date ? new Date(today_date + '') : null;
-    console.log('today =>> ' + todayDate);
     validateDate(startDate, endDate, todayDate);
     const data = await getRevenueQuery({
       startDate,
@@ -91,7 +84,6 @@ const getRevenue = async (req, res, next) => {
       sort_type,
       sort_order,
     });
-    console.log(`data ==> ${data}`);
     let newData;
     if (startDate && endDate) {
       const generatedDate = generateDate(startDate, endDate, sort_order);
@@ -110,6 +102,7 @@ const getRevenue = async (req, res, next) => {
           }
         : { date: moment(todayDate).format('LL'), today_revenue: 0 };
     }
+
     return res.status(200).send({
       success: true,
       message: 'Get revenue Successfully',
@@ -235,7 +228,7 @@ const getAllTransactionStatusTotal = async (req, res, next) => {
         try {
           const data = await db.sequelize.query(
             `SELECT COUNT(*) AS count_of_valid_transactions
-            FROM pharmacy.transaction_histories
+            FROM transaction_histories
             WHERE transaction_status_id = :transaction_status_id
             AND is_active = 1;`,
             {

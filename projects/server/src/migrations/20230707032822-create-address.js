@@ -33,7 +33,7 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING,
       },
-      reciever: {
+      receiver: {
         type: Sequelize.STRING,
       },
       is_main: {

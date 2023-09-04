@@ -65,7 +65,7 @@ export default function QuestionDetails() {
             <article className="prose">
               <h3>{title}</h3>
               <p
-                className="line-clamp-3"
+                className=""
                 dangerouslySetInnerHTML={createMarkup(question)}
               ></p>
             </article>
@@ -177,7 +177,7 @@ export default function QuestionDetails() {
           <div className="flex w-full max-w-3xl justify-start">
             <Link to="/discussions">
               <button className="btn btn-ghost">
-                <MdOutlineArrowBack size={25} /> back to dicussions
+                <MdOutlineArrowBack size={25} /> back to discussions
               </button>
             </Link>
           </div>

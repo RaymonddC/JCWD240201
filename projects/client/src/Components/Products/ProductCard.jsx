@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function ProductCard(props) {
+  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ export default function ProductCard(props) {
       return toast.error('Login first before adding product to cart');
       // return navigate('/login');
     }
+    if(user.verified !== true){
+      return toast.error('Please check your email and verify your account');
+    }
     dispatch(addToCartAsync({ productId: productId }));
   };
 
@@ -59,7 +63,7 @@ export default function ProductCard(props) {
           <div className="h-28 pt-2">
             <img
               className="h-28 object-scale-down"
-              src={image ? `http://localhost:8000/${image}` : null}
+              src={image ? `${URL}/${image}` : null}
               alt=""
             />
           </div>
@@ -67,7 +71,7 @@ export default function ProductCard(props) {
         <div className="card-body flex flex-col justify-between ">
           <div className="font-bold line-clamp-2">{productName}</div>
           <div className="">
-            <div className=" flex flex-col h-14 ">
+            <div className=" flex flex-col h-16 ">
               <p
                 className={`text-[#737A8D] text-[14px] line-through ${
                   promotionType?.promotion_type_id !== 1 ? 'hidden' : ''

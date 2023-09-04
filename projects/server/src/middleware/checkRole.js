@@ -1,5 +1,6 @@
 const db = require('../models');
 const Role = db.role;
+const userDB = db.user;
 
 const isAdmin = async (req, res, next) => {
   try {
@@ -21,8 +22,10 @@ const isUser = async (req, res, next) => {
   try {
     const roleId = req.user.role_id;
     const getRole = await Role.findOne({ where: { id: roleId } });
+    const user = await userDB.findOne({ where: { id: req.user.id } });
 
-    if (getRole.role_name !== 'user') throw { message: 'Access denied' };
+    if (getRole.role_name !== 'user' || user.verified !== true)
+      throw { message: 'Access denied' };
 
     next();
   } catch (error) {

@@ -3,6 +3,7 @@ import { getProductDetailsAPI } from '../../API/productAPI';
 import { GrClose } from 'react-icons/gr';
 
 export default function DetailProductAdmin(props) {
+  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
   const [image, setImage] = useState(null);
   const [product, setProduct] = useState(null);
   const [categories, setCategories] = useState(null);
@@ -40,7 +41,7 @@ export default function DetailProductAdmin(props) {
             <div className="flex justify-evenly gap-3">
               <img
                 className="w-6/12"
-                src={image ? `http://localhost:8000/${image}` : null}
+                src={image ? `${URL}/${image}` : null}
                 alt=""
               />
               <div className="flex flex-col gap-2">

@@ -3,7 +3,6 @@ import { getQuestionCategory, getQuestions } from '../Features/QnA/QnASlice';
 import { useDispatch, useSelector } from 'react-redux';
 import QuestionCardAdmin from '../Components/QnA/QuestionCardAdmin';
 import Pagination from '../Components/Layout/Pagination';
-import FilterBar from '../Components/Products/FilterBar';
 import { useSearchParams } from 'react-router-dom';
 import useDebounce from '../Hooks/useDebounce';
 import FilterBarDrawer from '../Components/Products/FilterBarDrawer';
@@ -34,13 +33,12 @@ export default function QnAAdmin() {
   const questionCategoriesMap = questionCategories?.data?.map(
     (value, index) => {
       return (
-        <div key={`cat${index}`}>
-          <div
-            onClick={() => setQuestionCategory(value.id)}
-            className="btn btn-outline btn-accent btn-xs mx-3"
-          >
-            {value.name}
-          </div>
+        <div
+          key={`cat${index}`}
+          onClick={() => setQuestionCategory(value.id)}
+          className="btn btn-outline btn-accent btn-xs mx-3"
+        >
+          {value.name}
         </div>
       );
     },
@@ -107,7 +105,7 @@ export default function QnAAdmin() {
                 <h2>Categories:</h2>
               </article>
               <div className="flex justify-center items-center">
-                <div className=" flex overflow-auto p-3">
+                <div className=" flex overflow-auto items-center p-3">
                   <div
                     onClick={() => {
                       setQuestionCategory('');
@@ -119,9 +117,23 @@ export default function QnAAdmin() {
                   {questionCategoriesMap}
                 </div>
               </div>
-              <div>{questionMap}</div>
+              <div>
+                {questionList?.length ? (
+                  questionMap
+                ) : (
+                  <div className="flex w-full justify-center pt-5">
+                    --- No questions found ---
+                  </div>
+                )}
+              </div>
             </div>
-            <Pagination setPage={setPage} page={page} totalPages={totalPages} />
+            {questionList?.length ? (
+              <Pagination
+                setPage={setPage}
+                page={page}
+                totalPages={totalPages}
+              />
+            ) : null}
           </div>
         </div>
       </div>

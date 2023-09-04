@@ -6,7 +6,6 @@ import { useRef, useState } from 'react';
 import { changePassword } from '../API/authAPI';
 import toast from 'react-hot-toast';
 import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
-import NavBar from '../Components/Layout/Navbar';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
 
 export default function ChangePassword() {

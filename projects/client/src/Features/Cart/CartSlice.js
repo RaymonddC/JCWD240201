@@ -27,7 +27,7 @@ const initialState = {
   minimumPricePromo: 0,
   maximumPromo: null,
   promoDisc: 0,
-  loadCarts: false,
+  loadCarts: true,
   updatePrescriptionLoad: false,
 };
 
@@ -40,7 +40,8 @@ export const CartSlice = createSlice({
         initialState.promotionActive = null;
         initialState.amountPromotion = 0;
         initialState.minimumPricePromo = 0;
-        toast.error('Promotion Updated! due to minimum transaction');
+        if (initialState.totalCart)
+          toast.error('Promotion Updated! due to minimum transaction');
       }
       initialState.carts = action.payload.carts;
       initialState.totalCart = action.payload.totalCart;
@@ -102,8 +103,7 @@ export const updateQtyAsync = (values) => async (dispatch) => {
     newCarts[idx].qty = cart.qty;
     newCarts[idx].is_check = cart.is_check;
     dispatch(onGetData(await processData(newCarts)));
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const getCartUserAsync = () => async (dispatch) => {
@@ -161,15 +161,15 @@ export const updateCartAsync = (values) => async (dispatch) => {
   }
 };
 
-export const deleteCartAsync = (values) => async (dispatch) => {
+export const deleteCartAsync = (values, closeFunc) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token');
     let { data } = await deleteCart(token, values.id);
     if (data.data) {
       await dispatch(getCartUserAsync());
-      // toast.success('Product removed from cart');
-      return { data: { message: 'Product removed from cart' }, success: true };
+      toast.success('Product removed from cart');
     }
+    closeFunc();
   } catch (error) {
     return toast.error('Failed to remove product');
     // toast.error(error.message);
@@ -179,14 +179,15 @@ export const deleteCartAsync = (values) => async (dispatch) => {
 export const getAllPrescriptionsCartsSlice = (params) => async (dispatch) => {
   try {
     // const { search } = params;
+    dispatch(setLoadCarts(true));
     const token = localStorage.getItem('token');
     const response = await getAllPrescriptionsCartsAPI(token, params);
 
     if (response.data.success) {
+      dispatch(setLoadCarts(false));
       dispatch(setPrescriptionCarts(response.data.data));
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const getPrescriptionCartSlice = (id) => async (dispatch) => {
@@ -197,8 +198,7 @@ export const getPrescriptionCartSlice = (id) => async (dispatch) => {
     if (response.data.success) {
       dispatch(setDetailprescriptionCart(response.data.data));
     }
-  } catch (error) {
-  }
+  } catch (error) {}
 };
 
 export const updateConfirmationPrescriptionCartSlice =
@@ -219,8 +219,7 @@ export const updateConfirmationPrescriptionCartSlice =
         setOpen(false);
         dispatch(setUpdatePrescriptionLoad(false));
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
 export const newActivePromo = (values, close) => async (dispatch) => {

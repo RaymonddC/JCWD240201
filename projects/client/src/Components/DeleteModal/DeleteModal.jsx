@@ -7,7 +7,7 @@ const DeleteModal = (props) => {
 
   const deleteHandler = async () => {
     try {
-      await dispatch(props.delFunc({ id: props.id }, () => props.closeModal()));
+      await dispatch(props.delFunc({ id: props.id }, props.closeModal));
     } catch (error) {
       toast.error(error.message);
     }

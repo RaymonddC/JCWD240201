@@ -79,13 +79,7 @@ const getUserTransactions = async (whereQuery, orderBy) => {
               ],
             },
           ],
-          attributes: {
-            include: [
-              // [sequelize.literal('COUNT(transaction_details.id)'), 'txDetail'],
-            ],
-          },
           where: whereQuery.transactionDetail,
-          // right: true,
         },
       ],
       where: {
@@ -137,12 +131,6 @@ const getTransactionById = async (id, admin) => {
               ],
             },
           ],
-          // attributes: {
-          //   include: [
-          //     // [sequelize.literal('COUNT(transaction_details.id)'), 'txDetail'],
-          //   ],
-          // },
-          // right: true,
         },
       ],
     });
@@ -151,7 +139,57 @@ const getTransactionById = async (id, admin) => {
   }
 };
 
+const updateCloseStock = async (product_id, qty, isAdd) => {
+  try {
+    const closeStockProduct = await ClosedStock.findOne({
+      where: { product_id: product_id },
+    });
+    const newStock = isAdd
+      ? closeStockProduct.total_stock + qty
+      : closeStockProduct.total_stock - qty;
+    return {
+      ...closeStockProduct.dataValues,
+      total_stock: newStock,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updatePromoTx = async (promotion_id, qty, price) => {
+  try {
+    const promoTx = await Promotion.findByPk(promotion_id);
+    let totalDiscount;
+    if (!promoTx)
+      throw {
+        message: 'Promotion quota exceed!',
+        code: 400,
+        data: promotionActive,
+      };
+    else if (promoTx && promoTx.minimum_transaction < price) {
+      if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
+      let disc = Math.round((price * promoTx.discount) / 100);
+      totalDiscount =
+        disc > (promoTx.maximum_discount_amount || disc + 1)
+          ? promoTx.maximum_discount_amount
+          : disc;
+    }
+
+    return {
+      totalDiscount,
+      promoData: {
+        ...promoTx.dataValues,
+        limit: promoTx.limit - qty,
+      },
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getUserTransactions,
   getTransactionById,
+  updateCloseStock,
+  updatePromoTx,
 };

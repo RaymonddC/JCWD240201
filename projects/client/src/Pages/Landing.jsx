@@ -1,5 +1,3 @@
-import Footer from '../Components/Layout/Footer';
-import NavBar from '../Components/Layout/Navbar';
 import ProductCard from '../Components/Products/ProductCard';
 import jumbotronImage from '../utils/images/jumbotronImage.svg';
 import prescriptionImage from '../utils/images/prescription.svg';
@@ -11,12 +9,12 @@ import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
-import StoreLocation from '../Components/Landing/StoreLocation';
-import NavbarDrawer from '../Components/Layout/NavbarDrawer';
 import { getAllLabelsAPI } from '../API/productAPI';
+import { toast } from 'react-hot-toast';
 
 export default function Landing() {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state?.user);
   const fileTypes = ['JPEG', 'PNG', 'JPG'];
   const limit = 9;
   const ProductsStore = useSelector((state) => state?.products?.products);
@@ -24,7 +22,7 @@ export default function Landing() {
   const handleChange = (file) => {
     setFile(file);
   };
-  let [vitaminMap, setVitaminMap]= useState(null);
+  let [vitaminMap, setVitaminMap] = useState(null);
   const getVitamin = async () => {
     try {
       const response = await getAllLabelsAPI({
@@ -32,7 +30,7 @@ export default function Landing() {
         limit,
         category: 'Vitamin',
       });
-      
+
       const vitaminMap1 = response?.data?.data?.rows?.map((value, index) => {
         return (
           <div key={`vitamin${index}`} className="carousel-item ">
@@ -40,7 +38,7 @@ export default function Landing() {
           </div>
         );
       });
-      setVitaminMap(vitaminMap1)
+      setVitaminMap(vitaminMap1);
     } catch (error) {}
   };
   const productMap = ProductsStore?.data?.rows?.map((value, index) => {
@@ -52,6 +50,9 @@ export default function Landing() {
   });
   const addToCart = async () => {
     try {
+      if (user.verified !== true) {
+        throw { message: 'Please check your email and verify your account' };
+      }
       dispatch(
         addToCartAsync({
           productId: 1,
@@ -60,12 +61,12 @@ export default function Landing() {
         }),
       );
       setFile(null);
-    } catch (error) {}
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   useEffect(() => {
     getVitamin();
-    // dispatch(getProducts({ page: 1, limit, search: '' }));
-
     dispatch(
       getLabels({
         page: 1,
@@ -76,7 +77,6 @@ export default function Landing() {
   }, []);
   return (
     <>
-      {/* <NavbarDrawer /> */}
       <div className="flex  justify-center">
         <article className="prose">
           <h2 className="mx-5 text-center lg:hidden">
@@ -86,7 +86,7 @@ export default function Landing() {
       </div>
       <div className="relative flex drop-shadow-md justify-end my-3 md:mx-9 border rounded-lg bg-[#f6f8fc]">
         <img className=" max-h-60" src={jumbotronImage} alt="" />
-        <div className="absolute left-6 top-3">
+        <div className="absolute left-6 top-1">
           <article className="prose">
             <h1 className="hidden lg:block">
               YOUR TRUSTED ONLINE PHARMACY STORE
@@ -96,10 +96,11 @@ export default function Landing() {
               <div>ONLINE PHARMACY STORE</div>
             </h3>
             <p className="hidden lg:block">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Excepturi maiores dolores doloribus obcaecati officia ea ratione
-              omnis id dolore nihil voluptatem eius, eaque explicabo facilis
-              ullam quis error culpa soluta?
+              At Medicore, your well-being is our top priority. We are a leading
+              name in the world of healthcare, dedicated to providing you with
+              superior pharmaceutical services and products. We have served the
+              community for over a decade, and have become synonymous with
+              trust, reliability, and exceptional care.
             </p>
           </article>
         </div>

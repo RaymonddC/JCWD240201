@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuBarDesktop from '../Components/Layout/MenuBarDesktop';
-import NavBar from '../Components/Layout/Navbar';
 import MenuBarMobile from '../Components/Layout/MenuBarMobile';
 import { useEffect, useState } from 'react';
 import {
@@ -65,8 +64,8 @@ export default function Address() {
                 <p>Please set your address by clicking Add Address</p>
               </div>
             ) : (
-              address.map((value) => {
-                return <CardAddress data={value} />;
+              address.map((value, index) => {
+                return <CardAddress key={index} data={value} />;
               })
             )}
           </div>
