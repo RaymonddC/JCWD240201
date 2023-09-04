@@ -9,7 +9,7 @@ let snap = new midtransClient.Snap({
 });
 
 const date = new Date();
-const URL = `${process.env.REACT_APP_API_BASE_URL}`;
+const URL = `https://jcwd240201.purwadhikabootcamp.com`;
 
 const getMidtransSnap = async (values) => {
   try {
@@ -17,7 +17,7 @@ const getMidtransSnap = async (values) => {
       (values.transaction.payment_id &&
         Number(values.transaction.payment_id.split('-')[2]) + 1) ||
       1;
-    const orderId = '101-' + values.transaction.id + '-' + count;
+    const orderId = '102-' + values.transaction.id + '-' + count;
     let parameter = {
       transaction_details: {
         order_id: orderId,
