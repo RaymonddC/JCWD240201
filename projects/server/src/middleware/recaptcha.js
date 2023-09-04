@@ -2,7 +2,7 @@ const { default: axios } = require('axios');
 
 const verify = async (req, res, next) => {
   try {
-    const secret = process.env.API_SECRET_KEY;
+    const secret = '6Lf3B_wnAAAAAN442SkdIDB1A4jYgQCiG33Zj34y';
     const { token } = req.body;
     const response = await axios.post(
       `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${token}`,
