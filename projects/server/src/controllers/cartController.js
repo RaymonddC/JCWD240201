@@ -67,7 +67,9 @@ const addToCart = async (req, res, next) => {
     const { productId, qty } = req.body;
     const userId = req.user.id;
     const image = req.file;
-    const imagePath = image ? image.path : undefined;
+    const imagePath = image
+      ? image.path.replace(/\\/g, '/').replace('src/public/', '')
+      : undefined;
 
     const product = await productDB.findOne({
       where: { id: productId },

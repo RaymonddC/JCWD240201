@@ -1,7 +1,7 @@
 const { default: axios } = require('axios');
 
-const RAJAONGKIRURL = `${process.env.API_RAJA_ONGKIR}`;
-const RAJAONGKIRURLKEY = `${process.env.API_RAJA_ONGKIR_KEY}`;
+const RAJAONGKIRURL = `https://api.rajaongkir.com/starter`;
+const RAJAONGKIRURLKEY = `5536a7b3e0879609c3d5693b088c13be`;
 
 const getProvinceRajaOngkir = async () => {
   return axios.get(`${RAJAONGKIRURL}/province`, {

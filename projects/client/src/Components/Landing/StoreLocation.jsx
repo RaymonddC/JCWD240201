@@ -16,7 +16,7 @@ export default function StoreLocation() {
           zoom: 14,
         }}
         style={{ width: '100%', height: '500px' }}
-        mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=${process.env.REACT_APP_API_MAPTILER}`}
+        mapStyle={`https://api.maptiler.com/maps/streets/style.json?key=Yxwk2vHweX5x5MiJhM3R`}
         tabIndex={-1}
       >
         <NavigationControl position="top-right" />

@@ -67,7 +67,7 @@ export default function Checkout() {
     let scriptTag = document.createElement('script');
     scriptTag.src = midtransScriptUrl;
 
-    const myMidtransClientKey = process.env.REACT_APP_MIDTRANS_CLIENT_KEY || '';
+    const myMidtransClientKey = 'SB-Mid-client-EUT6xeS-eJ6rCu' || '';
     scriptTag.setAttribute('data-client-key', myMidtransClientKey);
 
     document.body.appendChild(scriptTag);
