@@ -15,19 +15,31 @@ import { MdInventory } from 'react-icons/md';
 import { MdDiscount, MdHome } from 'react-icons/md';
 import { TbReportAnalytics } from 'react-icons/tb';
 import { PiNoteFill } from 'react-icons/pi';
+import { useState } from 'react';
 
 export default function NavbarAdmin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+  const [open, setOpen] = useState(false);
   return (
     <div className="drawer w-full lg:hidden ">
-      <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+      <input
+        readOnly
+        checked={open}
+        id="my-drawer-3"
+        type="checkbox"
+        className="drawer-toggle"
+      />
       <div className="drawer-content flex flex-col ">
         {/* Navbar */}
         <div className="w-full navbar bg-white">
           <div className="flex-none lg:hidden">
-            <label htmlFor="my-drawer-3" className="btn btn-square btn-ghost">
+            <label
+              onClick={() => setOpen(true)}
+              htmlFor="my-drawer-3"
+              className="btn btn-square btn-ghost"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -51,7 +63,11 @@ export default function NavbarAdmin() {
             <ul className="menu menu-horizontal">
               {/* Navbar menu content here */}
               <li>
-                <Link to={'/'} className="w-full">
+                <Link
+                  onClick={() => setOpen(false)}
+                  to={'/'}
+                  className="w-full"
+                >
                   <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start items-center">
                     <MdHome />
                     <p>Dashboard</p>
@@ -126,10 +142,14 @@ export default function NavbarAdmin() {
           </div>
         </div>
       </div>
-      <div className="drawer-side z-10">
-        <label htmlFor="my-drawer-3" className="drawer-overlay"></label>
+      <div className="drawer-side z-20">
+        <label
+          onClick={() => setOpen(false)}
+          htmlFor="my-drawer-3"
+          className="drawer-overlay"
+        ></label>
         <ul className="menu p-4 w-80 h-full bg-base-200 max-w-[250px]">
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start items-center">
                 <MdHome />
@@ -137,7 +157,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/categories'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start items-center">
                 <MdCategory />
@@ -145,7 +165,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/products'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start items-center">
                 <GiMedicines />
@@ -153,7 +173,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/stocks'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start items-center">
                 <MdInventory />
@@ -161,7 +181,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/promotions'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start items-center">
                 <MdDiscount />
@@ -169,7 +189,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/discussions'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start">
                 <MdQuestionAnswer />
@@ -177,7 +197,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/prescription'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start">
                 <FaPrescriptionBottleMedical />
@@ -185,7 +205,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/transactions'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start">
                 {/* <img className="" src={TransactionIcon} alt="" /> */}
@@ -194,7 +214,7 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li>
+          <li onClick={() => setOpen(false)}>
             <Link to={'/report'} className="w-full">
               <div className="cardSidebar flex rounded-[50px] gap-[20px] text-[18px] p-[13px] font-bold w-full justify-center lg:justify-start">
                 <BiSolidReport />
@@ -202,7 +222,10 @@ export default function NavbarAdmin() {
               </div>
             </Link>
           </li>
-          <li className="flex flex-col justify-end">
+          <li
+            onClick={() => setOpen(false)}
+            className="flex flex-col justify-end"
+          >
             <div className="profile min-w-[100%] p-[13px] rounded-[50px]  text-[15px]  w-full  flex-row gap-2 lg:gap-0 items-center lg:items-start sm:flex">
               <div className={`detail align-middle grow text-left  my-auto`}>
                 <p className="username">{user?.username || 'Please Login'}</p>

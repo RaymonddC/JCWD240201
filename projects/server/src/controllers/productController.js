@@ -114,9 +114,9 @@ const getProductDetails = async (req, res, next) => {
           model: promotionDB,
           where: {
             // [Op.and]: [
-              //  limit: { [Op.gt]: 0 } ,
-               date_start: { [Op.lte]: today } ,
-               date_end: { [Op.gte]: today } ,
+            //  limit: { [Op.gt]: 0 } ,
+            date_start: { [Op.lte]: today },
+            date_end: { [Op.gte]: today },
             // ],
           },
           required: false,
@@ -176,6 +176,11 @@ const createProduct = async (req, res, next) => {
       ignoreDuplicate: true,
     });
 
+    await closedStockDB.create(
+      { product_id: postProduct.id, total_stock: 0 },
+      { transaction: t },
+    );
+
     await t.commit();
 
     return res.send({
@@ -224,10 +229,11 @@ const deleteProduct = async (req, res, next) => {
     }
 
     oldPath.map((value) => {
-      const fileName = value.split('\\');
+      const fileName = value.split('/');
       const newPath = `public/deleted_product_images/${
         fileName[fileName.length - 1]
       }`;
+      console.log(newPath);
       fs.rename(value, newPath, function (err) {
         if (err) throw err;
       });
@@ -266,7 +272,7 @@ const updateProduct = async (req, res, next) => {
         });
 
         var oldPath = findImageData.image;
-        var fileName = oldPath.split('\\');
+        var fileName = oldPath.split('/');
         var newPath = `public/deleted_product_images/${
           fileName[fileName.length - 1]
         }`;
@@ -352,7 +358,7 @@ const updateProduct = async (req, res, next) => {
 //       });
 
 //       const oldPath = findImageData.image;
-//       const fileName = oldPath.split('\\');
+//       const fileName = oldPath.split('/');
 //       const newPath = `public/deleted_product_images/${
 //         fileName[fileName.length - 1]
 //       }`;

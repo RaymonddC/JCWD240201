@@ -459,17 +459,17 @@ module.exports = {
       },
       //28
       {
-        name: 'Biogesic 500 Mg 4 Tablet', //Done
-        packaging_type_id: 5,
-        product_type_id: 1,
-        net_content: 4,
+        name: 'Alphamol 600 Mg 10 Tablet', //Done
+        packaging_type_id: 2,
+        product_type_id: 4,
+        net_content: 10,
         description:
-          'Biogesic 500 Mg 4 Tablet bermanfaat untuk menurunkan demam dan meredakan nyeri, seperti sakit kepala dan sakit gigi.\nBiogesic 500 Mg 4 Tablet bekerja dengan cara mengurangi produksi zat penyebab peradangan, yaitu prostaglandin. Penurunan kadar prostaglandin di dalam tubuh akan membuat tanda peradangan seperti demam dan nyeri berkurang.',
+          'Alphamol bermanfaat untuk untuk meredakan demam dan nyeri, termasuk nyeri haid atau sakit gigi.\nAlphamol Kaplet mengandung 600 mg paracetamol. Paracetamol diketahui bekerja pada pusat pengaturan suhu yang ada di otak untuk menurunkan suhu tubuh saat seseorang sedang mengalami demam.',
         dosing:
-          '> 12 tahun : 3-4 x sehari 1-2 tablet, 6-12 tahun : 3-4 x sehari 1/2-1 tablet',
-        BPOM_id: 'DBL8814702510A3',
+          'Dewasa: 1 kaplet, 3-4 kali sehari.\nAnak-anak usia 6-12 tahun: ½ kaplet, 3-4 kali sehari.',
+        BPOM_id: 'DBL9230902704A1',
         require_prescription: false,
-        price: 2352,
+        price: 10000,
         weight: 100,
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -949,7 +949,8 @@ module.exports = {
         updatedAt: new Date(),
       },
       // Obat sakit tenggorokan
-      {//57
+      {
+        //57
         name: 'Cooling 5 Antiseptik Spray Cappuccino 15 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -965,7 +966,8 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {//58
+      {
+        //58
         name: 'Degirol 0,25 Mg 10 Tablet',
         packaging_type_id: 2,
         product_type_id: 1,
@@ -981,7 +983,8 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {//59
+      {
+        //59
         name: 'Larutan Penyegar Cap Badak Botol 200 Ml',
         packaging_type_id: 1,
         product_type_id: 2,
@@ -997,7 +1000,8 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {//60
+      {
+        //60
         name: 'Obat Sariawan Hau Fung San 1,2 gr',
         packaging_type_id: 1,
         product_type_id: 3,
@@ -1013,7 +1017,8 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {//61
+      {
+        //61
         name: 'Tantum Lozenges 6 Tablet',
         packaging_type_id: 2,
         product_type_id: 1,

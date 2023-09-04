@@ -134,6 +134,13 @@ const sendChangeEmailForm = async (req, res, next) => {
       to: email,
       subject: 'Change Email',
       html: tempResult,
+      attachments: [
+        {
+          filename: 'Medicore.png',
+          path: `../server/public/logo/Medicore.png`,
+          cid: 'logo1',
+        },
+      ],
     });
 
     return res.send({

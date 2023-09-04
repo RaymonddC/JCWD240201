@@ -69,8 +69,8 @@ const AttachmentModal = (props) => {
           <div className="head flex justify-between z-[1] pb-2 px-6 pt-6 border-b sticky top-0 bg-white">
             <p className="text-[15px] font-bold">
               {
-                transaction.image?.split('\\')[
-                  transaction.image?.split('\\').length - 1
+                transaction.image?.split('/')[
+                  transaction.image?.split('/').length - 1
                 ]
               }
             </p>

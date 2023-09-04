@@ -26,8 +26,14 @@ const DateRangePicker = (props) => {
   // };
 
   return (
-    <div className="hidden md:block min-w-[40%] ">
-      <div className="flex gap-2 relative justify-end">
+    <div
+      className={
+        props?.salesReport
+          ? 'w-full max-w-[300px]'
+          : 'hidden md:block min-w-[40%]'
+      }
+    >
+      <div className="flex gap-2 relative justify-end w-full">
         <div
           className={`bg-white rounded-lg p-3 cursor-pointer border w-full ${props.styleInput}`}
           onClick={() => setOpen((open) => !open)}

@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "jcwd2402",
-    "database": "pharmacy3",
+    "database": "pharmacyDB",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

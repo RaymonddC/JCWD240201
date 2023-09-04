@@ -6,6 +6,7 @@ import CategoryCard from '../Components/Category/CategoryCard';
 import CategoryModalForm from '../Components/Category/CategoryModalForm';
 import { useSearchParams } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
+import CategoryCardSkl from '../Components/Skeleton/CategoryCardSkl';
 
 export default function CategoryAdmin() {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export default function CategoryAdmin() {
   let queryParams = {};
   const [queryCategory, setQueryCategory] = useSearchParams();
   const [search, setSearch] = useState(queryCategory.get('search') || '');
-  const { categories } = useSelector((state) => state.categories);
+  const { categories, loadCategory } = useSelector((state) => state.categories);
   const debouncedSearchValue = useDebounce(search, 1000);
 
   useEffect(() => {
@@ -61,9 +62,13 @@ export default function CategoryAdmin() {
           </div>
         </div>
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:place-items-center place-items-start">
-          {categories?.map((value) => {
-            return <CategoryCard key={value.id} data={value} />;
-          })}
+          {loadCategory ? (
+            <CategoryCardSkl limit={12} />
+          ) : (
+            categories?.map((value) => {
+              return <CategoryCard key={value.id} data={value} />;
+            })
+          )}
         </div>
       </div>
     </div>

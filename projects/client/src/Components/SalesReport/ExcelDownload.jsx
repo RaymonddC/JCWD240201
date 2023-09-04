@@ -116,7 +116,10 @@ export default function ExcelDownload() {
     });
   };
   return (
-    <button className="btn btn-primary text-white" onClick={excelHandler}>
+    <button
+      className="btn btn-primary text-white hidden md:block"
+      onClick={excelHandler}
+    >
       Excel
     </button>
   );

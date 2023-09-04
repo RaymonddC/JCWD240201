@@ -16,7 +16,6 @@ const moment = require('moment');
 const { processTransaction } = require('../helpers/stockHistoryHelper');
 
 const updateTxHistory = async (req, res, next) => {
- 
   const t = await sequelize.transaction();
   try {
     const { transaction_id, transaction_status_id, notes, email } = req.body;
@@ -57,7 +56,7 @@ const updateTxHistory = async (req, res, next) => {
       const emailFind = await userDB.findOne({ where: { email } });
       if (!emailFind) throw { message: 'email not found' };
     }
-   
+
     await t.commit();
     return res.status(200).send({
       success: true,
@@ -103,6 +102,8 @@ const getRevenue = async (req, res, next) => {
           }
         : { date: moment(todayDate).format('LL'), today_revenue: 0 };
     }
+
+    console.log('newData ==>>' + newData);
     return res.status(200).send({
       success: true,
       message: 'Get revenue Successfully',
@@ -228,7 +229,7 @@ const getAllTransactionStatusTotal = async (req, res, next) => {
         try {
           const data = await db.sequelize.query(
             `SELECT COUNT(*) AS count_of_valid_transactions
-            FROM pharmacy.transaction_histories
+            FROM transaction_histories
             WHERE transaction_status_id = :transaction_status_id
             AND is_active = 1;`,
             {

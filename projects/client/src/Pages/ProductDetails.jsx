@@ -31,7 +31,7 @@ export default function ProductDetails() {
   const promotions = productsStore?.data?.promotions
     ? productsStore.data.promotions
     : null;
- 
+
   if (promotions) {
     for (let i = 0; i < promotions.length; i++) {
       if (promotions[i].promotion_type_id === 1) {
@@ -81,6 +81,8 @@ export default function ProductDetails() {
     }
     dispatch(addToCartAsync({ productId: productId }));
   };
+
+  console.log(productPrice);
 
   useEffect(() => {
     dispatch(getProductDetails({ id: productId }));

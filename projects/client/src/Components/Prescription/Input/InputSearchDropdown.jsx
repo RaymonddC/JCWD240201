@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 export default function InputSearchDropdown(props) {
-  const { productDropdown } = useSelector((state) => state?.products);
+  const { productDropdown, isLoad } = useSelector((state) => state?.products);
   const {
     setOpenDropdown,
     openDropdown,
@@ -59,7 +59,7 @@ export default function InputSearchDropdown(props) {
             );
           })}
         </div>
-        {debouncedSearchValue !== formik.values.search ? (
+        {isLoad ? (
           <div className="absolute left-[290px] top-[15px] bg-white">
             <span className="loading h-fit loading-spinner loading-xs"></span>
           </div>

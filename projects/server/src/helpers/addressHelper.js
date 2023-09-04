@@ -5,7 +5,7 @@ const validateForm = (data) => {
     !data.city_id ||
     !data.address ||
     !data.phone_number ||
-    !data.reciever ||
+    !data.receiver ||
     !data.province_id ||
     !data.province_name ||
     !data.city_name
@@ -123,6 +123,17 @@ const changeOldIsSelected = async (id) => {
   return updateOldIsMain;
 };
 
+const changeToMainSelect = async (id, user_id, t) => {
+  await address.update(
+    { is_selected: false },
+    { where: { id }, transaction: t },
+  );
+  await address.update(
+    { is_selected: true },
+    { where: { user_id, is_main: true }, transaction: t },
+  );
+};
+
 module.exports = {
   validateForm,
   isFirstAddress,
@@ -133,4 +144,5 @@ module.exports = {
   manipulateArray,
   getOldIsSelected,
   changeOldIsSelected,
+  changeToMainSelect,
 };
