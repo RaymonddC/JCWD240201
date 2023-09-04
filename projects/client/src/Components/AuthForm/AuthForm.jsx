@@ -18,7 +18,7 @@ export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const key = process.env.REACT_APP_API_SECRET_KEY;
+  const key = '6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7';
 
   useEffect(() => {
     const loadScriptByURL = (id, url, callback) => {
