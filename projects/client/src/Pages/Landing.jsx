@@ -10,9 +10,11 @@ import { FileUploader } from 'react-drag-drop-files';
 import { addToCartAsync } from '../Features/Cart/CartSlice';
 import ProductListSkl from '../Components/Skeleton/ProductListSkl';
 import { getAllLabelsAPI } from '../API/productAPI';
+import { toast } from 'react-hot-toast';
 
 export default function Landing() {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state?.user);
   const fileTypes = ['JPEG', 'PNG', 'JPG'];
   const limit = 9;
   const ProductsStore = useSelector((state) => state?.products?.products);
@@ -48,6 +50,9 @@ export default function Landing() {
   });
   const addToCart = async () => {
     try {
+      if (user.verified !== true) {
+        throw { message: 'Please check your email and verify your account' };
+      }
       dispatch(
         addToCartAsync({
           productId: 1,
@@ -56,7 +61,9 @@ export default function Landing() {
         }),
       );
       setFile(null);
-    } catch (error) {}
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   useEffect(() => {
     getVitamin();
@@ -89,10 +96,11 @@ export default function Landing() {
               <div>ONLINE PHARMACY STORE</div>
             </h3>
             <p className="hidden lg:block">
-              At Medicore, your well-being is our top priority. We are
-              a leading name in the world of healthcare, dedicated to providing
-              you with superior pharmaceutical services and products. We have
-              served the community for over a decade, and have become synonymous with trust, reliability, and exceptional care.
+              At Medicore, your well-being is our top priority. We are a leading
+              name in the world of healthcare, dedicated to providing you with
+              superior pharmaceutical services and products. We have served the
+              community for over a decade, and have become synonymous with
+              trust, reliability, and exceptional care.
             </p>
           </article>
         </div>

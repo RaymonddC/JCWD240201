@@ -22,7 +22,7 @@ const isUser = async (req, res, next) => {
     const roleId = req.user.role_id;
     const getRole = await Role.findOne({ where: { id: roleId } });
 
-    if (getRole.role_name !== 'user' )
+    if (getRole.role_name !== 'user' || getRole.verified !== true)
       throw { message: 'Access denied' };
 
     next();

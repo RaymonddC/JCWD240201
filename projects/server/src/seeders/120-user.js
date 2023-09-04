@@ -75,6 +75,23 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        full_name: 'Enzo',
+        username: 'enzoadmin',
+        email: 'enzoadmin@gmail.com',
+        password:
+          '$2b$10$u7R2vd6FdsZIClvjUQNkS.nDymAzTh4E6q7qMdkI0ddSTDMnPF57e',
+        phone_number: '08146515145',
+        role_id: 1,
+        profile_image: null,
+        birthdate: null,
+        gender: null,
+        verified: true,
+        deletedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+
     ]);
   },
 
