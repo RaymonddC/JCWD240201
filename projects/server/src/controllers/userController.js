@@ -30,7 +30,7 @@ const updateUserData = async (req, res, next) => {
           phone_number,
           gender,
           birthdate,
-          profile_image: image.path,
+          profile_image: image.path.replace(/\\/g, '/'),
         },
         { where: { id: auth.id } },
       );
