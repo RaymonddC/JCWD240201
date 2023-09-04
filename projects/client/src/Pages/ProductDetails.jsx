@@ -14,7 +14,7 @@ export default function ProductDetails() {
   const productName = productsStore?.data?.name;
   const productDescription = productsStore?.data?.description;
   const productDosing = productsStore?.data?.dosing;
-  const productPrice = productsStore?.data?.price?.toLocaleString(['id']);
+  const productPrice = productsStore?.data?.price;
   const productLabels = productsStore?.labels;
   const reqPrescription = productsStore?.data?.require_prescription;
   let image;

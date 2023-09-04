@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom';
 import { BiReceipt } from 'react-icons/bi';
 import TransactionModal from './TransactionModal';
 import DeleteModal from '../DeleteModal/DeleteModal';
-import { cancelTransaction } from '../../Features/Transaction/TransactionSlice';
+import { cancelTransaction, updateTransactionHistorySlice } from '../../Features/Transaction/TransactionSlice';
 import { MdOutlineAttachment } from 'react-icons/md';
 import AttachmentModal from './AttachmentModal';
 import { TbTruckDelivery } from 'react-icons/tb';
 import SendOrderModal from './SendOrderModal';
 import moment from 'moment';
 import CancelTransactionModal from './CancelTransactionModal';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 
 const TransactionCardAdmin = (props) => {
   const dispatch = useDispatch();
@@ -31,6 +32,15 @@ const TransactionCardAdmin = (props) => {
     }
   });
   const transactionStatus = activeStatus[0]?.transaction_status?.status;
+const delivered= async()=>{
+   await dispatch(
+      updateTransactionHistorySlice({
+        transaction_id: props.tx.id,
+        transaction_status_id: 5,
+      }),
+    );
+    props.setToggle();
+}
 
   return (
     <div className="div border border-[#D5D7DD] text-[16px]  card card-compact bg-base-100 shadow-md my-2 ">
@@ -148,6 +158,15 @@ const TransactionCardAdmin = (props) => {
                 Send Order
               </label>
             </button>
+          ) : transactionStatus === 'On the way' ? (
+            <ConfirmationModal
+              title="Confirmation"
+              textLine1="Are you sure you want to change this transaction status to 'delivered'?"
+              label="accept"
+              labelStyle="text-white"
+              styling="btn btn-primary"
+              confirm={delivered}
+            />
           ) : (
             ''
           )}
