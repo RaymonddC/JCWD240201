@@ -5,7 +5,7 @@ const multer = require('multer');
 const fs = require('fs');
 
 // 1. Setup Disk Storage & Filename
-let defaultPath = 'public';
+let defaultPath = 'src/public';
 var storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     // Check Directory (Exist or Not)
