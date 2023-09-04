@@ -6,7 +6,7 @@ const RAJAONGKIRURLKEY = `5536a7b3e0879609c3d5693b088c13be`;
 const getProvinceRajaOngkir = async () => {
   return axios.get(`${RAJAONGKIRURL}/province`, {
     headers: {
-      key: `${RAJAONGKIRURLKEY}`,
+      key: RAJAONGKIRURLKEY,
     },
   });
 };
@@ -23,7 +23,7 @@ const getCityRajaOngkir = async (province_id, city_id) => {
 
   return axios.get(url, {
     headers: {
-      key: `${RAJAONGKIRURLKEY}`,
+      key: RAJAONGKIRURLKEY,
     },
   });
 };
@@ -34,7 +34,7 @@ const shippmentMethodRajaOngkir = async (data) => {
     { ...data },
     {
       headers: {
-        key: `${RAJAONGKIRURLKEY}`,
+        key: RAJAONGKIRURLKEY,
       },
     },
   );
