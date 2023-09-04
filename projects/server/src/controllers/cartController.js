@@ -93,7 +93,7 @@ const addToCart = async (req, res, next) => {
     if (
       Number(productId) !== 1 &&
       ((isCart && stock.total_stock <= isCart.qty) ||
-        (!isCart && stock.total_stock <= qty))
+        (!isCart && stock.total_stock <= (qty || 1)))
     )
       throw { message: 'Out Of Stock' };
     if (Number(productId) === 1 && !image)

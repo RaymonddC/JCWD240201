@@ -229,10 +229,11 @@ const deleteProduct = async (req, res, next) => {
     }
 
     oldPath.map((value) => {
-      const fileName = value.split('\\');
+      const fileName = value.split('/');
       const newPath = `public/deleted_product_images/${
         fileName[fileName.length - 1]
       }`;
+      console.log(newPath);
       fs.rename(value, newPath, function (err) {
         if (err) throw err;
       });
@@ -271,7 +272,7 @@ const updateProduct = async (req, res, next) => {
         });
 
         var oldPath = findImageData.image;
-        var fileName = oldPath.split('\\');
+        var fileName = oldPath.split('/');
         var newPath = `public/deleted_product_images/${
           fileName[fileName.length - 1]
         }`;
@@ -357,7 +358,7 @@ const updateProduct = async (req, res, next) => {
 //       });
 
 //       const oldPath = findImageData.image;
-//       const fileName = oldPath.split('\\');
+//       const fileName = oldPath.split('/');
 //       const newPath = `public/deleted_product_images/${
 //         fileName[fileName.length - 1]
 //       }`;
