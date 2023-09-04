@@ -159,7 +159,10 @@ const createProduct = async (req, res, next) => {
     let postProduct = await productDB.create({ ...data }, { transaction: t });
 
     const dataToCreate = req.files.product_images.map((value) => {
-      return { product_id: postProduct.id, image: value.path };
+      return {
+        product_id: postProduct.id,
+        image: value.path.replace(/\\/g, '/'),
+      };
     });
 
     await productImageDB.bulkCreate(dataToCreate, {
@@ -311,7 +314,7 @@ const updateProduct = async (req, res, next) => {
 
     if (req.files.product_images) {
       var productImage = req.files.product_images.map((value) => {
-        return { product_id: productId, image: value.path };
+        return { product_id: productId, image: value.path.replace(/\\/g, '/') };
       });
 
       await productImageDB.bulkCreate(productImage, {
@@ -341,57 +344,6 @@ const updateProduct = async (req, res, next) => {
     next(error);
   }
 };
-
-// const updateProductImage = async (req, res, next) => {
-//   try {
-//     const { imageId, productId } = req.query;
-
-//     //search product image
-//     const getImage = await productImageDB.findOne({
-//       where: { product_id: productId },
-//     });
-
-//     if (getImage) {
-//       //find image old path and new path
-//       const findImageData = await productImageDB.findOne({
-//         where: { id: imageId },
-//       });
-
-//       const oldPath = findImageData.image;
-//       const fileName = oldPath.split('/');
-//       const newPath = `public/deleted_product_images/${
-//         fileName[fileName.length - 1]
-//       }`;
-
-//       //update product image
-//       const updateProductImage = await productImageDB.update(
-//         { image: req.files.product_images[0].path },
-//         { where: { id: imageId } },
-//       );
-
-//       //move old image to deleted folder
-//       if (updateProductImage) {
-//         fs.rename(oldPath, newPath, function (err) {
-//           if (err) throw err;
-//         });
-//       }
-//     } else {
-//       await productImageDB.create({
-//         image: req.files.product_images[0].path,
-//         product_id: productId,
-//       });
-//     }
-
-//     return res.send({
-//       success: true,
-//       status: 200,
-//       message: 'update product image success',
-//       data: updateProductImage,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 const getPackaging = async (req, res, next) => {
   try {
@@ -429,7 +381,6 @@ module.exports = {
   createProduct,
   deleteProduct,
   updateProduct,
-  // updateProductImage,
   getPackaging,
   getProductType,
 };

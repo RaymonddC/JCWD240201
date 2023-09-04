@@ -34,10 +34,10 @@ export default function Footer() {
         </div>
         <div className="hidden md:block">
           <div className="flex flex-col gap-3">
-            <div className="flex items-center">About Us</div>
-            <div className="flex items-center">FAQ</div>
-            <div className="flex items-center">Career</div>
-            <div className="flex items-center">Privacy</div>
+            <div className="flex items-center">Media</div>
+            <div className="flex items-center">Corporate Partnership</div>
+            <div className="flex items-center">Security</div>
+            <div className="flex items-center">Blog</div>
           </div>
         </div>
         <div className="flex w-fit flex-col gap-3">

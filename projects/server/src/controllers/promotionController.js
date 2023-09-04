@@ -14,6 +14,7 @@ const createDiscount = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { data } = req.body;
+    console.log("🚀🚀🚀 ~ file: promotionController.js:17 ~ data:", data)
     const productId = Number(data.product_id);
     if (!data.promotion_type_id)
       throw { message: 'Please input promotion type', code: 400 };
@@ -74,9 +75,9 @@ const getPromotionList = async (req, res, next) => {
           [
             sequelize.literal(
               `CASE
-              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS INT)
+              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS SIGNED)
               ELSE
-              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS INT)
+              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS SIGNED)
               END`,
             ),
             'totalDiscount',

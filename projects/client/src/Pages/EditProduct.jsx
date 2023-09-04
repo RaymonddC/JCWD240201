@@ -30,7 +30,7 @@ export default function EditProduct() {
   const category = useSelector((state) => state?.categories?.categories);
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
-  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
+  const urlENV = `${process.env.REACT_APP_API_BASE_URL}`;
   const getCurrentData = async () => {
     try {
       const getToken = localStorage.getItem('token');
@@ -305,15 +305,16 @@ export default function EditProduct() {
               />
             </div>
             {formik?.values?.image?.product ? (
+              // console.log("🚀🚀🚀 ~ file: EditProduct.jsx:308 ~ ormik?.values?.image?.product:", formik?.values?.image?.product)
               <img
                 className="w-6/12"
-                src={URL.createObjectURL(formik.values.image.product)}
+                src={URL.createObjectURL(formik?.values?.image?.product)}
                 alt="product_image"
               />
             ) : (
               <img
                 className="w-6/12"
-                src={image ? `${URL}/${image}` : null}
+                src={image ? `${urlENV}/${image}` : null}
                 alt="product_image"
               />
             )}
