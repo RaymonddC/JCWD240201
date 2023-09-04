@@ -66,6 +66,8 @@ export default function Landing() {
     }
   };
   useEffect(() => {
+    console.log('>>>')
+    console.log(process.env.REACT_APP_API_BASE_URL)
     getVitamin();
     dispatch(
       getLabels({
