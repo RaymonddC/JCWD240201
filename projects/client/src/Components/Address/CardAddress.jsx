@@ -52,7 +52,7 @@ export default function CardAddress(props) {
     >
       <div>
         <h4 className="font-bold text-[18px] line-clamp-1">
-          {props?.data?.reciever}
+          {props?.data?.receiver}
           {props?.data?.is_main ? (
             <span className="text-primary font-bold ml-2">Main</span>
           ) : null}

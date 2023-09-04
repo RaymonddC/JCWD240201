@@ -13,12 +13,7 @@ export const AnalyzeCard = (props) => {
               ? `Rp. ${props?.data?.[props.name]?.toLocaleString('id-ID')}`
               : props?.data?.[props.name]}
           </p>
-          {/* <div className="summary flex gap-1 leading-6 items-center">
-            <img className="h-[10px]" src={ArrowDown} alt="" />
-            <p className={`text-[#FF6B6B] text-[10px]`}>-5.700.000</p>
-          </div> */}
         </div>
-        <div className="right">a</div>
       </div>
     </div>
   );

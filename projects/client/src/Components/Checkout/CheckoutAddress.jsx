@@ -33,7 +33,7 @@ export default function CheckoutAddress() {
       </h2>
       <div className="py-2 border-b-2 border-[#D5D7DD]">
         <p>
-          {selectedAddress?.reciever}
+          {selectedAddress?.receiver}
           {selectedAddress?.is_main ? (
             <span className="text-primary font-bold ml-2">Main</span>
           ) : null}

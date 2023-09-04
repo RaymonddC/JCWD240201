@@ -64,8 +64,8 @@ export default function Address() {
                 <p>Please set your address by clicking Add Address</p>
               </div>
             ) : (
-              address.map((value) => {
-                return <CardAddress data={value} />;
+              address.map((value, index) => {
+                return <CardAddress key={index} data={value} />;
               })
             )}
           </div>

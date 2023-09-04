@@ -5,6 +5,7 @@ const initialState = {
   categories: null,
   isSubmitting: false,
   search: '',
+  loadCategory: true,
 };
 
 export const CategorySlice = createSlice({
@@ -17,6 +18,9 @@ export const CategorySlice = createSlice({
     setSearch: (initialState, action) => {
       initialState.search = action.payload;
     },
+    setLoadCategory: (initialState, action) => {
+      initialState.loadCategory = action.payload;
+    },
   },
 });
 
@@ -24,11 +28,14 @@ export const getAllCategories =
   (search_category = '') =>
   async (dispatch) => {
     try {
+      dispatch(setLoadCategory(true));
       let response = await getAllCategoriesAPI(search_category);
-      dispatch(categories(response?.data?.data));
-    } catch (error) {
-    }
+      if (response.data.success) {
+        dispatch(categories(response?.data?.data));
+        dispatch(setLoadCategory(false));
+      }
+    } catch (error) {}
   };
 
-export const { categories, setSearch } = CategorySlice.actions;
+export const { categories, setSearch, setLoadCategory } = CategorySlice.actions;
 export default CategorySlice.reducer;

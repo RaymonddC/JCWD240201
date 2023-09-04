@@ -132,11 +132,17 @@ export default function NavbarDrawer() {
                   </div>
                 ) : (
                   <div className="flex mt-1  gap-3">
-                    <button className="btn btn-sm btn-primary text-white">
-                      <Link to="/login">Login</Link>
+                    <button
+                      onClick={() => navigate('/login')}
+                      className="btn btn-sm btn-primary text-white"
+                    >
+                      Login
                     </button>
-                    <button className="btn btn-sm btn-outline btn-primary">
-                      <Link to="/register">Register</Link>
+                    <button
+                      onClick={() => navigate('/register')}
+                      className="btn btn-sm btn-outline btn-primary"
+                    >
+                      Register
                     </button>
                   </div>
                 )}

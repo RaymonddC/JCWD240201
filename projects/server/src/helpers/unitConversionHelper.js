@@ -7,7 +7,7 @@ const productDB = db.product;
 const productTypeDB = db.product_type;
 const packagingDB = db.packaging_type;
 const { sequelize } = require('../models');
-const { getLastStockHistory1 } = require('./getlastStockhistoryhelper');
+const { getLastStockHistory1 } = require('./getLastStockHistoryHelper');
 const { updateCloseStock } = require('./transactionHelper');
 
 const unitConversionHelper = async (data, t) => {
@@ -230,7 +230,6 @@ const unitConversionProcess = async (data, t) => {
       let currentOpenedStock;
       if (checkOpenedStockHistory !== null) {
         currentOpenedStock = checkOpenedStockHistory.total_stock;
-        
       } else {
         currentOpenedStock = 0;
       }

@@ -90,9 +90,12 @@ const addToCart = async (req, res, next) => {
     const stock = await ClosedStock.findOne({
       where: { product_id: productId },
     });
-    if (Number(productId) !== 1 && isCart && stock.total_stock <= isCart.qty)
+    if (
+      Number(productId) !== 1 &&
+      ((isCart && stock.total_stock <= isCart.qty) ||
+        (!isCart && stock.total_stock <= (qty || 1)))
+    )
       throw { message: 'Out Of Stock' };
-
     if (Number(productId) === 1 && !image)
       throw { message: 'Please upload image' };
 
