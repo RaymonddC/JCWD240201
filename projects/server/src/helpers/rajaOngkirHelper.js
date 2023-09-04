@@ -1,4 +1,4 @@
-const { default: axios } = require('axios');
+const axios = require('axios');
 
 const RAJAONGKIRURL = `https://api.rajaongkir.com/starter`;
 const RAJAONGKIRURLKEY = `5536a7b3e0879609c3d5693b088c13be`;
