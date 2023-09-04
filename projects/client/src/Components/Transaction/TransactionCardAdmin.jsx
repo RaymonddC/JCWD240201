@@ -162,9 +162,9 @@ const delivered= async()=>{
             <ConfirmationModal
               title="Confirmation"
               textLine1="Are you sure you want to change this transaction status to 'delivered'?"
-              label="accept"
+              label="confirm delivery"
               labelStyle="text-white"
-              styling="btn btn-primary"
+              styling="btn btn-primary btn-sm "
               confirm={delivered}
             />
           ) : (
