@@ -18,7 +18,7 @@ export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const key = '6LeYE7cnAAAAAMZmO1PjFBSbFQ64Xp7l0nBDVIK7';
+  const key = '6Lf3B_wnAAAAAEv99aDN1wZ8IAQJqEx-wsXSXCp4';
 
   useEffect(() => {
     const loadScriptByURL = (id, url, callback) => {
