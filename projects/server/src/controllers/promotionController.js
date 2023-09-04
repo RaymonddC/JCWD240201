@@ -14,8 +14,16 @@ const createDiscount = async (req, res, next) => {
   const t = await sequelize.transaction();
   try {
     const { data } = req.body;
-    console.log("🚀🚀🚀 ~ file: promotionController.js:17 ~ data:", data)
+    console.log('🚀🚀🚀 ~ file: promotionController.js:17 ~ data:', data);
     const productId = Number(data.product_id);
+    const promotion_type_id = data.promotion_type_id || 0;
+    const discount = data.discount || 0;
+    const buy = data.buy || 0;
+    const get = data.get || 0;
+    const minimum_transaction = data.minimum_transaction || 0;
+    const maximum_discount_amount = data.maximum_discount_amount || 0;
+    const limit = data.limit || 0;
+
     if (!data.promotion_type_id)
       throw { message: 'Please input promotion type', code: 400 };
 
@@ -32,7 +40,21 @@ const createDiscount = async (req, res, next) => {
           message: 'Promotion cannot be applied on prescription drug',
         };
     }
-    const result = await promotionDB.create(data, { transaction: t });
+    const result = await promotionDB.create(
+      {
+        product_id: productId,
+        promotion_type_id,
+        discount,
+        buy,
+        get,
+        minimum_transaction,
+        maximum_discount_amount,
+        date_start: data.date_start,
+        date_end: data.date_end,
+        limit,
+      },
+      { transaction: t },
+    );
 
     if (result) {
       await promotionExpired(result, t);
