@@ -105,7 +105,9 @@ const uploadPayment = async (req, res, next) => {
   try {
     const { transaction_id, transaction_status_id } = req.body;
     const image = req.file;
-    const imagePath = image ? image.path : undefined;
+    const imagePath = image
+      ? image.path.replace(/\\/g, '/').replace('src/public/', '')
+      : undefined;
     if (!image) throw { message: 'Please upload image' };
     const updateTransaction = await Transaction.update(
       { image: imagePath, payment_method: 'Manual Payment' },

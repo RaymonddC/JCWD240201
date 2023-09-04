@@ -5,7 +5,7 @@ const axios = require('axios');
 let snap = new midtransClient.Snap({
   // Set to true if you want Production Environment (accept real transaction).
   isProduction: false,
-  serverKey: process.env.MIDTRANS_SERVER_KEY,
+  serverKey: 'SB-Mid-server-yTcu0iiiKfmovw9ydb3dzGEU',
 });
 
 const date = new Date();
@@ -105,7 +105,7 @@ const getPaymentStatusMidtrans = async (values) => {
           'Content-Type': 'application/json',
         },
         auth: {
-          username: process.env.MIDTRANS_SERVER_KEY + ':',
+          username: 'SB-Mid-server-yTcu0iiiKfmovw9ydb3dzGEU' + ':',
         },
       },
     );

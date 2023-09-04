@@ -18,8 +18,9 @@ app.use(
 
 app.use(express.json());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'src')));
-app.use('/public', express.static('public'));
+// app.use('/public', express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static('public'));
 
 //#region API ROUTES
 
@@ -78,8 +79,8 @@ app.use('/promo-types', promoTypeRoute);
 
 // not found
 app.use((req, res, next) => {
-  if (req.path.includes("/api/")) {
-    res.status(404).send("Not found !");
+  if (req.path.includes('/')) {
+    res.status(404).send('Not found !');
   } else {
     next();
   }

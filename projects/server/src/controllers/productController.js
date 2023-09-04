@@ -161,7 +161,7 @@ const createProduct = async (req, res, next) => {
     const dataToCreate = req.files.product_images.map((value) => {
       return {
         product_id: postProduct.id,
-        image: value.path.replace(/\\/g, '/'),
+        image: value.path.replace(/\\/g, '/').replace('src/public/', ''),
       };
     });
 
@@ -223,20 +223,20 @@ const deleteProduct = async (req, res, next) => {
     );
 
     await t.commit();
-    let isDirectoryExist = fs.existsSync('public/deleted_product_images');
+    let isDirectoryExist = fs.existsSync('src/public/deleted_product_images');
 
     if (!isDirectoryExist) {
-      await fs.promises.mkdir('public/deleted_product_images', {
+      await fs.promises.mkdir('src/public/deleted_product_images', {
         recursive: true,
       });
     }
 
     oldPath.map((value) => {
       const fileName = value.split('/');
-      const newPath = `public/deleted_product_images/${
+      const newPath = `src/public/deleted_product_images/${
         fileName[fileName.length - 1]
       }`;
-      fs.rename(value, newPath, function (err) {
+      fs.rename(`src/public/${value}`, newPath, function (err) {
         if (err) throw err;
       });
     });
@@ -273,9 +273,9 @@ const updateProduct = async (req, res, next) => {
           where: { product_id: productId },
         });
 
-        var oldPath = findImageData.image;
+        var oldPath = `src/public/${findImageData.image}`;
         var fileName = oldPath.split('/');
-        var newPath = `public/deleted_product_images/${
+        var newPath = `src/public/deleted_product_images/${
           fileName[fileName.length - 1]
         }`;
 
@@ -313,7 +313,10 @@ const updateProduct = async (req, res, next) => {
 
     if (req.files.product_images) {
       var productImage = req.files.product_images.map((value) => {
-        return { product_id: productId, image: value.path.replace(/\\/g, '/') };
+        return {
+          product_id: productId,
+          image: value.path.replace(/\\/g, '/').replace('src/public/', ''),
+        };
       });
 
       await productImageDB.bulkCreate(productImage, {
@@ -323,6 +326,14 @@ const updateProduct = async (req, res, next) => {
     }
 
     await t.commit();
+
+    let isDirectoryExist = fs.existsSync('src/public/deleted_product_images');
+
+    if (!isDirectoryExist) {
+      await fs.promises.mkdir('src/public/deleted_product_images', {
+        recursive: true,
+      });
+    }
 
     //move old image to deleted folder
     if (oldPath && newPath) {

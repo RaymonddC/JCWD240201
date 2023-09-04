@@ -14,6 +14,8 @@ const updateUserData = async (req, res, next) => {
   try {
     const auth = req.user;
     const image = req.file;
+
+    console.log(image);
     const { full_name, phone_number, gender, birthdate } = req.body;
     validate({ full_name, phone_number, gender, birthdate });
     if (image) {
@@ -30,24 +32,26 @@ const updateUserData = async (req, res, next) => {
           phone_number,
           gender,
           birthdate,
-          profile_image: image.path.replace(/\\/g, '/'),
+          profile_image: image.path
+            .replace(/\\/g, '/')
+            .replace('src/public/', ''),
         },
         { where: { id: auth.id } },
       );
 
       if (previousImage.dataValues.profile_image) {
         let isDirectoryExist = fs.existsSync(
-          `public/deleted_user_profile_images`,
+          `src/public/deleted_user_profile_images`,
         );
 
         if (!isDirectoryExist) {
-          await fs.promises.mkdir(`public/deleted_user_profile_images`, {
+          await fs.promises.mkdir(`src/public/deleted_user_profile_images`, {
             recursive: true,
           });
         }
-        const oldPath = previousImage.dataValues.profile_image;
+        const oldPath = `src/public/${previousImage.dataValues.profile_image}`;
         const fileName = previousImage.dataValues.profile_image.split('/');
-        const newPath = `public/deleted_user_profile_images/${
+        const newPath = `src/public/deleted_user_profile_images/${
           fileName[fileName.length - 1]
         }`;
 

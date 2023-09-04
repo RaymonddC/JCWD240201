@@ -1,8 +1,8 @@
 {
   "development": {
-    "username": "jcwd240201",
-    "password": "group01",
-    "database": "jcwd240201",
+    "username": "root",
+    "password": "jcwd2402",
+    "database": "pharmacyDB",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

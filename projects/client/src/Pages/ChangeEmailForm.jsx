@@ -58,7 +58,7 @@ export default function ChangeEmailForm() {
   return (
     <>
       <div className="flex gap-4 border-b-2 h-14 p-3">
-        <div onClick={() => navigate('/')} className="flex items-center">
+        <div className="flex items-center">
           <MdKeyboardBackspace size={25} />
         </div>
         <div className="flex items-center font-semibold">
