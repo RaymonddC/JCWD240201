@@ -40,7 +40,8 @@ export const CartSlice = createSlice({
         initialState.promotionActive = null;
         initialState.amountPromotion = 0;
         initialState.minimumPricePromo = 0;
-        toast.error('Promotion Updated! due to minimum transaction');
+        if (initialState.totalCart)
+          toast.error('Promotion Updated! due to minimum transaction');
       }
       initialState.carts = action.payload.carts;
       initialState.totalCart = action.payload.totalCart;
