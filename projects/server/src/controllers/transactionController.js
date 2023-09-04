@@ -412,8 +412,6 @@ const newCheckout = async (req, res, next) => {
 
     const address = await getOldIsSelected(userId);
 
-    console.log(address.dataValues);
-
     if (address.dataValues.is_main === false) {
       await changeToMainSelect(address.dataValues.id, userId, t);
     }
