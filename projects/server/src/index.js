@@ -2,6 +2,7 @@ require('dotenv/config');
 const express = require('express');
 const cors = require('cors');
 const { join } = require('path');
+const path = require('path');
 
 const PORT = process.env.PORT || 8000;
 const app = express();
@@ -17,7 +18,8 @@ app.use(
 
 app.use(express.json());
 app.use(cors());
-app.use('/public', express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use('/public', express.static('public'));
 
 //#region API ROUTES
 
