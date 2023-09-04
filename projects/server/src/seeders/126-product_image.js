@@ -266,7 +266,7 @@ module.exports = {
       },
       {
         product_id: 28,
-        image: 'public\\product_images\\biogesic.jpeg',
+        image: 'public\\product_images\\alphamol.jpeg',
         createdAt: new Date(),
         updatedAt: new Date(),
       },

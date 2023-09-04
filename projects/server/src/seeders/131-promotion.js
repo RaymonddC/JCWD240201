@@ -58,7 +58,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        product_id: 52,
+        product_id: 54,
         promotion_type_id: 1,
         discount: 10,
         maximum_discount_amount: 20000,
@@ -69,7 +69,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        product_id: 51,
+        product_id: 53,
         promotion_type_id: 1,
         discount: 15,
         maximum_discount_amount: 30000,
@@ -212,7 +212,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        product_id: 1,
+        product_id: 17,
         promotion_type_id: 3,
         buy: 1,
         get: 1,
@@ -256,7 +256,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        product_id: 15,
+        product_id: 19,
         promotion_type_id: 3,
         buy: 1,
         get: 1,
@@ -289,7 +289,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        product_id: 8,
+        product_id: 12,
         promotion_type_id: 3,
         buy: 1,
         get: 1,

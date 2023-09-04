@@ -129,8 +129,8 @@ export default function Products() {
     if (debouncedSearchValue) {
       getProductsAsync();
       setCategory('');
-      } else if (category) {
-        getLabelsAsync();
+    } else if (category) {
+      getLabelsAsync();
     } else {
       getProductsAsync();
     }
@@ -159,7 +159,7 @@ export default function Products() {
           {categoriesMap}
         </div>
         <div className="flex justify-center w-full">
-          <div className="flex flex-col w-full justify-start ">
+          <div className="flex max-w-6xl flex-col w-full justify-start ">
             <div className="flex sticky top-3 w-full px-5 mb-3 z-10 justify-center">
               <FilterBarDrawer
                 value={search}
