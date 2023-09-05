@@ -36,10 +36,15 @@ const updateUserData = async (req, res, next) => {
         },
         { where: { id: auth.id } },
       );
+      // Get the current script's directory
+    const currentDir = __dirname;
+
+// Go up two levels to get the desired directory
+    const oneLevelsUpDir = path.join(currentDir, '..');
 
       if (previousImage.dataValues.profile_image) {
         let isDirectoryExist = fs.existsSync(
-          `src/public/deleted_user_profile_images`,
+          `${oneLevelUpDir}/public/deleted_user_profile_images`,
         );
 
         if (!isDirectoryExist) {
@@ -47,6 +52,7 @@ const updateUserData = async (req, res, next) => {
             recursive: true,
           });
         }
+        
         const oldPath = `src/public/${previousImage.dataValues.profile_image}`;
         const fileName = previousImage.dataValues.profile_image.split('/');
         const newPath = `src/public/deleted_user_profile_images/${
