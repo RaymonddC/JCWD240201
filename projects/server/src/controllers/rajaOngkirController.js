@@ -14,6 +14,7 @@ const getProvince = async (req, res, next) => {
       data: result.data.rajaongkir.results,
     });
   } catch (error) {
+    console.log('rajaOngkir get province',error)
     next(error);
   }
 };
@@ -29,6 +30,7 @@ const getCity = async (req, res, next) => {
       data: result.data.rajaongkir.results,
     });
   } catch (error) {
+    console.log('rajaOngkir get city',error)
     next(error);
   }
 };
