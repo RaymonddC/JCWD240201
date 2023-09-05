@@ -18,9 +18,7 @@ app.use(
 
 app.use(express.json());
 app.use(cors());
-// app.use(express.static('public'));
-// app.use('/public', express.static('public'));
-app.use("/", express.static(__dirname + "/public"));
+app.use("/public", express.static(join(__dirname, "public")));
 
 //#region API ROUTES
 
