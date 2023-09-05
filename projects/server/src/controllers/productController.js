@@ -16,6 +16,7 @@ const closedStockDB = db.closed_stock;
 const promotionDB = db.promotion;
 const { sequelize } = require('../models');
 const deleteFiles = require('../helpers/deleteFiles');
+const path = require('path');
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -223,20 +224,26 @@ const deleteProduct = async (req, res, next) => {
     );
 
     await t.commit();
-    let isDirectoryExist = fs.existsSync('src/public/deleted_product_images');
+    // Get the current script's directory
+    const currentDir = __dirname;
+
+    // Go up one levels to get the desired directory
+    const oneLevelsUpDir = path.join(currentDir, '..');
+    
+    let isDirectoryExist = fs.existsSync(`${oneLevelsUpDir}/public/deleted_product_images`);
 
     if (!isDirectoryExist) {
-      await fs.promises.mkdir('src/public/deleted_product_images', {
+      await fs.promises.mkdir(`${oneLevelsUpDir}/public/deleted_product_images`, {
         recursive: true,
       });
     }
 
     oldPath.map((value) => {
       const fileName = value.split('/');
-      const newPath = `src/public/deleted_product_images/${
+      const newPath = `${oneLevelsUpDir}/public/deleted_product_images/${
         fileName[fileName.length - 1]
       }`;
-      fs.rename(`src/public/${value}`, newPath, function (err) {
+      fs.rename(`${oneLevelsUpDir}/public/${value}`, newPath, function (err) {
         if (err) throw err;
       });
     });
@@ -272,10 +279,15 @@ const updateProduct = async (req, res, next) => {
         const findImageData = await productImageDB.findOne({
           where: { product_id: productId },
         });
+        // Get the current script's directory
+        const currentDir = __dirname;
 
-        var oldPath = `src/public/${findImageData.image}`;
+        // Go up one levels to get the desired directory
+        const oneLevelsUpDir = path.join(currentDir, '..');
+        
+        var oldPath = `${oneLevelsUpDir}/public/${findImageData.image}`;
         var fileName = oldPath.split('/');
-        var newPath = `src/public/deleted_product_images/${
+        var newPath = `${oneLevelsUpDir}/public/deleted_product_images/${
           fileName[fileName.length - 1]
         }`;
 
@@ -327,10 +339,10 @@ const updateProduct = async (req, res, next) => {
 
     await t.commit();
 
-    let isDirectoryExist = fs.existsSync('src/public/deleted_product_images');
+    let isDirectoryExist = fs.existsSync(`${oneLevelsUpDir}/public/deleted_product_images`);
 
     if (!isDirectoryExist) {
-      await fs.promises.mkdir('src/public/deleted_product_images', {
+      await fs.promises.mkdir(`${oneLevelsUpDir}/public/deleted_product_images`, {
         recursive: true,
       });
     }
