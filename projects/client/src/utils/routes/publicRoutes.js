@@ -135,16 +135,7 @@ const routerSource = (props) => [
     ),
   },
 
-  { index: true, path: '/*', element: <>
-    <div className="flex justify-center">
-      <article className="prose">
-        <h1>Page not found</h1>
-      </article>
-      <div>
-        <img className="py-10 h-40" src={Logo} alt="" />
-      </div>
-    </div>
-  </> },
+  { index: true, path: '/*', element:<> ERROR </>   },
 ];
 
 const PublicRoute = (props) => {
