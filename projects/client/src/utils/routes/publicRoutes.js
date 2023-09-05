@@ -136,7 +136,7 @@ const routerSource = (props) => [
   },
 
   { index: true, path: '/*', element: <>
-    <div className="flex justify-center>
+    <div className="flex justify-center">
       <article className="prose">
         <h1>Page not found</h1>
       </article>
