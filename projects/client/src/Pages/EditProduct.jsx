@@ -30,7 +30,7 @@ export default function EditProduct() {
   const category = useSelector((state) => state?.categories?.categories);
   const packaging = useSelector((state) => state?.products?.packagingType);
   const productType = useSelector((state) => state?.products?.productType);
-  const urlENV = `${process.env.REACT_APP_API_BASE_URL}`;
+  const urlENV = `${process.env.REACT_APP_API_IMAGE_URL}`;
   const getCurrentData = async () => {
     try {
       const getToken = localStorage.getItem('token');

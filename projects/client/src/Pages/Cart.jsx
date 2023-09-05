@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import CartCard from '../Components/Cart/CartCard';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getCartUserAsync,
-  updateQtyAsync,
-} from '../Features/Cart/CartSlice';
-import {  useNavigate, Link } from 'react-router-dom';
+import { getCartUserAsync, updateQtyAsync } from '../Features/Cart/CartSlice';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import {
   getProvinceAsync,
   getUserAddressAsync,
@@ -34,7 +31,8 @@ const Cart = () => {
   } = useSelector((state) => state?.cart);
   const [isCheck, setIsCheck] = useState(false);
   const [isForceCheck, setIsForceCheck] = useState(null);
-
+  let token = localStorage.getItem('token');
+  
   const handleQty = (e, calc, idx, checked) => {
     dispatch(
       updateQtyAsync({
@@ -46,7 +44,7 @@ const Cart = () => {
       }),
     );
   };
-
+  
   const ProductsStore = useSelector((state) => state?.products?.products);
   let productMap;
   if (totalCart === 0) {
@@ -58,26 +56,29 @@ const Cart = () => {
       );
     });
   }
-
+  
   useEffect(() => {
     dispatch(getCartUserAsync());
     dispatch(getUserAddressAsync());
     dispatch(getProvinceAsync());
     if (totalCart === 0)
-      dispatch(
-        getLabels({
-          page: 1,
-          limit: 9,
-          category: 'Jamu',
+    dispatch(
+    getLabels({
+      page: 1,
+      limit: 9,
+      category: 'Jamu',
         }),
-      );
+        );
   }, []);
 
   useEffect(() => {
     if (activeCart === totalCart && totalCart !== 0) setIsCheck(true);
     else setIsCheck(false);
   }, [carts, isCheck]);
-
+  
+  if (!token) {
+    return <Navigate to={'/login'} />;
+  }
   if (carts && totalCart === 0) {
     return (
       <>

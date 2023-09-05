@@ -52,7 +52,7 @@ export default function Profile() {
                 {user?.profile_image ? (
                   <img
                     className="w-[125px] h-[125px] rounded-full"
-                    src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                    src={`${process.env.REACT_APP_API_IMAGE_URL}/${user?.profile_image}`}
                     alt="profile"
                   />
                 ) : (

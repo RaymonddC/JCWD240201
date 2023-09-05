@@ -41,7 +41,7 @@ const TxProductCard = (props) => {
               props.txDet.prescription_image ||
               props.txDet.product?.product_images[0]?.image
                 ? `
-              ${process.env.REACT_APP_API_BASE_URL}/${
+              ${process.env.REACT_APP_API_IMAGE_URL}/${
                 props.txDet.prescription_image ||
                 props.txDet.product?.product_images[0]?.image
               }`

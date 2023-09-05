@@ -112,7 +112,7 @@ export default function UserEditModal({ data }) {
               ) : data?.profile_image ? (
                 <img
                   className="w-[100px] h-[100px] rounded-full"
-                  src={`${process.env.REACT_APP_API_BASE_URL}/${data?.profile_image}`}
+                  src={`${process.env.REACT_APP_API_IMAGE_URL}/${data?.profile_image}`}
                   alt="profile"
                 />
               ) : (
