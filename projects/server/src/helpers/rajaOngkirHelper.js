@@ -1,7 +1,7 @@
 const axios = require('axios');
 
-const RAJAONGKIRURL = https://api.rajaongkir.com/starter;
-const RAJAONGKIRURLKEY = 5536a7b3e0879609c3d5693b088c13be;
+// const RAJAONGKIRURL = https://api.rajaongkir.com/starter;
+// const RAJAONGKIRURLKEY = 5536a7b3e0879609c3d5693b088c13be;
 
 const getProvinceRajaOngkir = async () => {
   try {
@@ -22,7 +22,7 @@ const getProvinceRajaOngkir = async () => {
 const getCityRajaOngkir = async (province_id) => {
   try {
     const response = await axios.get(
-      https://api.rajaongkir.com/starter/city?province=${province_id},
+      `https://api.rajaongkir.com/starter/city?province=${province_id}`,
       {
         headers: {
           key: '5536a7b3e0879609c3d5693b088c13be',
