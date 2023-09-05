@@ -9,6 +9,7 @@ const { validateEmail } = require('../helpers/authHelper');
 const jwt = require('jsonwebtoken');
 const Handlebars = require('handlebars');
 const transporter = require('../helpers/transporter');
+const path = require('path');
 
 const updateUserData = async (req, res, next) => {
   try {
