@@ -2,7 +2,7 @@ import { MdDeleteOutline } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
 export default function ProductCardAdmin(props) {
-  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
+  const URL = `${process.env.REACT_APP_API_IMAGE_URL}`;
   const navigate = useNavigate();
   const productName = props?.data?.name;
   const price = props?.data?.price?.toLocaleString(['id']);

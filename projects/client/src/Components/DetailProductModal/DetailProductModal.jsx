@@ -3,7 +3,7 @@ import { getProductDetailsAPI } from '../../API/productAPI';
 import { GrClose } from 'react-icons/gr';
 
 export default function DetailProductAdmin(props) {
-  const URL = `${process.env.REACT_APP_API_BASE_URL}`;
+  const URL = `${process.env.REACT_APP_API_IMAGE_URL}`;
   const [image, setImage] = useState(null);
   const [product, setProduct] = useState(null);
   const [categories, setCategories] = useState(null);

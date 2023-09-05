@@ -47,7 +47,7 @@ export default function PrescriptionCard(props) {
       <div className="flex gap-4 p-4">
         <img
           className="w-[80px] aspect-square"
-          src={`${process.env.REACT_APP_API_BASE_URL}/${props?.data?.prescription_image}`}
+          src={`${process.env.REACT_APP_API_IMAGE_URL}/${props?.data?.prescription_image}`}
           alt="prescription_image"
         />
         <div className="w-full">

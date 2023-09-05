@@ -119,7 +119,7 @@ export default function NavbarDrawer() {
                       {user?.profile_image ? (
                         <img
                           className="w-[40px] h-[40px] rounded-full"
-                          src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                          src={`${process.env.REACT_APP_API_IMAGE_URL}/${user?.profile_image}`}
                           alt="profile"
                         />
                       ) : (
@@ -168,7 +168,7 @@ export default function NavbarDrawer() {
                     {user?.profile_image ? (
                       <img
                         className="w-[40px] h-[40px] rounded-full"
-                        src={`${process.env.REACT_APP_API_BASE_URL}/${user?.profile_image}`}
+                        src={`${process.env.REACT_APP_API_IMAGE_URL}/${user?.profile_image}`}
                         alt="profile"
                       />
                     ) : (
