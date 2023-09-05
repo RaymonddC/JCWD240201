@@ -20,6 +20,7 @@ import Checkout from '../../Pages/Checkout';
 import MapsPharmacy from '../../Pages/MapsPharmacy';
 import ChangeEmailForm from '../../Pages/ChangeEmailForm';
 import QuestionUser from '../../Pages/QuestionUser';
+import Logo1 from '../../utils/images/medicore_icon.png';
 
 const routerSource = (props) => [
   {
@@ -134,7 +135,16 @@ const routerSource = (props) => [
     ),
   },
 
-  { index: true, path: '/*', element: <>ERROR</> },
+  { index: true, path: '/*', element: <>
+    <div className="flex justify-center>
+      <article className="prose">
+        <h1>Page not found</h1>
+      </article>
+      <div>
+        <img className="py-10 h-40" src={Logo} alt="" />
+      </div>
+    </div>
+  </> },
 ];
 
 const PublicRoute = (props) => {
