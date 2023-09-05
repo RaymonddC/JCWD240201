@@ -12,7 +12,7 @@ const ConfirmationModal = (props) => {
     setOpen(false);
   };
   const cancelHandler = () => {
-    props?.cancel()
+    // props?.cancel();
     setOpen(false);
   }
 
