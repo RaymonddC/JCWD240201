@@ -161,7 +161,7 @@ const createProduct = async (req, res, next) => {
     const dataToCreate = req.files.product_images.map((value) => {
       return {
         product_id: postProduct.id,
-        image: value.path.replace(/\\/g, '/').replace('src/public/', ''),
+        image: `${value.fieldname}/${value.filename}`,
       };
     });
 
@@ -315,7 +315,7 @@ const updateProduct = async (req, res, next) => {
       var productImage = req.files.product_images.map((value) => {
         return {
           product_id: productId,
-          image: value.path.replace(/\\/g, '/').replace('src/public/', ''),
+          image: `${value.fieldname}/${value.filename}`,
         };
       });
 
