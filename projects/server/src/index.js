@@ -7,21 +7,11 @@ const path = require('path');
 const PORT = process.env.PORT || 8000;
 const app = express();
 
-// app.use(
-//   cors({
-//     origin: [
-//       process.env.WHITELISTED_DOMAIN &&
-//         process.env.WHITELISTED_DOMAIN.split(','),
-//     ],
-//   }),
-// );
- app.use(cors())
-
+app.use(cors())
 app.use(express.json());
 app.use(cors());
 // app.use('/public', express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
-console.log("🚀🚀🚀 ~ file: index.js:23 ~ __dirname:", __dirname)
 // app.use(express.static('public'));
 
 //#region API ROUTES
