@@ -286,7 +286,7 @@ const updateProduct = async (req, res, next) => {
         const oneLevelsUpDir = path.join(currentDir, '..');
         
         var oldPath = `${oneLevelsUpDir}/public/${findImageData.image}`;
-        var fileName = oldPath.split('/');
+        var fileName = findImageData.image.split('/');
         var newPath = `${oneLevelsUpDir}/public/deleted_product_images/${
           fileName[fileName.length - 1]
         }`;
