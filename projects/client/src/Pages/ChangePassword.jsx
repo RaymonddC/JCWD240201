@@ -62,7 +62,7 @@ export default function ChangePassword() {
       _confirmNewPassword.current.value = '';
       setIsDisable(false)
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message || error.message);
       setIsDisable(false)
     }
   };
