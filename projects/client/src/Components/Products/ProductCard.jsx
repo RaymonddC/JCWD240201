@@ -3,10 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 export default function ProductCard(props) {
   const URL = `${process.env.REACT_APP_API_IMAGE_URL}`;
-  console.log('imageURL',URL)
   const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,7 +37,7 @@ export default function ProductCard(props) {
   const image = props?.data?.product_images
     ? props?.data?.product_images[0]?.image
     : '';
-console.log('image',image)
+
   const handleAddToCart = () => {
     if (reqPrescripton) {
       return toast.error('This product requires prescription');
