@@ -90,7 +90,7 @@ const CartCard = (props) => {
                 props.cart.prescription_image ||
                 props.cart.product.product_images[0]?.image
                   ? `
-              ${process.env.REACT_APP_API_BASE_URL}/${
+              ${process.env.REACT_APP_API_IMAGE_URL}/${
                 props.cart.prescription_image ||
                 props.cart.product.product_images[0]?.image
               }`

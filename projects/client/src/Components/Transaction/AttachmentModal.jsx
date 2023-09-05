@@ -94,7 +94,7 @@ const AttachmentModal = (props) => {
                     <TransformComponent style={{ width: '100%' }}>
                       <img
                         className="w-full"
-                        src={`${process.env.REACT_APP_API_BASE_URL}/${image}`}
+                        src={`${process.env.REACT_APP_API_IMAGE_URL}/${image}`}
                         alt="test"
                       />
                     </TransformComponent>
