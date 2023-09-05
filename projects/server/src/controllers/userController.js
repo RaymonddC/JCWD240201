@@ -37,26 +37,26 @@ const updateUserData = async (req, res, next) => {
         },
         { where: { id: auth.id } },
       );
-      // Get the current script's directory
-    const currentDir = __dirname;
+       // Get the current script's directory
+      const currentDir = __dirname;
 
-// Go up two levels to get the desired directory
-    const oneLevelsUpDir = path.join(currentDir, '..');
+      // Go up two levels to get the desired directory
+      const oneLevelsUpDir = path.join(currentDir, '..');
 
       if (previousImage.dataValues.profile_image) {
         let isDirectoryExist = fs.existsSync(
-          `${oneLevelUpDir}/public/deleted_user_profile_images`,
+          `${oneLevelsUpDir}/public/deleted_user_profile_images`,
         );
 
         if (!isDirectoryExist) {
-          await fs.promises.mkdir(`src/public/deleted_user_profile_images`, {
+          await fs.promises.mkdir(`${oneLevelsUpDir}/public/deleted_user_profile_images`, {
             recursive: true,
           });
         }
         
-        const oldPath = `src/public/${previousImage.dataValues.profile_image}`;
+        const oldPath = `${oneLevelsUpDir}/public/${previousImage.dataValues.profile_image}`;
         const fileName = previousImage.dataValues.profile_image.split('/');
-        const newPath = `src/public/deleted_user_profile_images/${
+        const newPath = `${oneLevelsUpDir}/public/deleted_user_profile_images/${
           fileName[fileName.length - 1]
         }`;
 
