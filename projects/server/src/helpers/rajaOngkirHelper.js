@@ -1,43 +1,57 @@
-const { default: axios } = require('axios');
+const axios = require('axios');
 
-const RAJAONGKIRURL = `https://api.rajaongkir.com/starter`;
-const RAJAONGKIRURLKEY = `5536a7b3e0879609c3d5693b088c13be`;
+// const RAJAONGKIRURL = https://api.rajaongkir.com/starter;
+// const RAJAONGKIRURLKEY = 5536a7b3e0879609c3d5693b088c13be;
 
 const getProvinceRajaOngkir = async () => {
-  return axios.get(`${RAJAONGKIRURL}/province`, {
-    headers: {
-      key: `${RAJAONGKIRURLKEY}`,
-    },
-  });
+  try {
+    const response = await axios.get(
+      'https://api.rajaongkir.com/starter/province',
+      {
+        headers: {
+          key: '5536a7b3e0879609c3d5693b088c13be',
+        },
+      },
+    );
+    return response;
+  } catch (error) {
+    console.log('>>>')
+    console.log(error)
+    throw { message: error.response.data.rajaongkir.status.description };
+  }
 };
 
-const getCityRajaOngkir = async (province_id, city_id) => {
-  let url = `${RAJAONGKIRURL}/city`;
-
-  if (province_id) {
-    url += `?province=${province_id}`;
+const getCityRajaOngkir = async (province_id) => {
+  try {
+    const response = await axios.get(
+      `https://api.rajaongkir.com/starter/city?province=${province_id}`,
+      {
+        headers: {
+          key: '5536a7b3e0879609c3d5693b088c13be',
+        },
+      },
+    );
+    return response;
+  } catch (error) {
+    throw { message: error.response.data.rajaongkir.status.description };
   }
-  if (city_id) {
-    url += `?id=${city_id}`;
-  }
-
-  return axios.get(url, {
-    headers: {
-      key: `${RAJAONGKIRURLKEY}`,
-    },
-  });
 };
 
 const shippmentMethodRajaOngkir = async (data) => {
-  return axios.post(
-    `${RAJAONGKIRURL}/cost`,
-    { ...data },
-    {
-      headers: {
-        key: `${RAJAONGKIRURLKEY}`,
+  try {
+    const response = await axios.post(
+      'https://api.rajaongkir.com/starter/cost',
+      { ...data },
+      {
+        headers: {
+          key: '5536a7b3e0879609c3d5693b088c13be',
+        },
       },
-    },
-  );
+    );
+    return response;
+  } catch (error) {
+    throw { message: error.response.data.rajaongkir.status.description };
+  }
 };
 
 module.exports = {
