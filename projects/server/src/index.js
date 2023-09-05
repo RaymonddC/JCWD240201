@@ -21,6 +21,12 @@ app.use(cors());
 // app.use(express.static('public'));
 // app.use('/public', express.static('public'));
 app.use('/product_images', express.static(path.join(__dirname, 'public/product_images')));
+app.use('/product_images', express.static(path.join(__dirname, 'public/profile_image')));
+app.use('/product_images', express.static(path.join(__dirname, 'public/prescription_images')));
+app.use('/product_images', express.static(path.join(__dirname, 'public/payment_images')));
+app.use('/product_images', express.static(path.join(__dirname, 'public/logo')));
+app.use('/product_images', express.static(path.join(__dirname, 'public/deleted_user_profile_images')));
+app.use('/product_images', express.static(path.join(__dirname, 'public/deleted_product_images')));
 
 //#region API ROUTES
 
