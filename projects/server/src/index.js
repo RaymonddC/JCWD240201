@@ -119,6 +119,8 @@ app.get('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log('index err',err)
+  console.log('index err.essage', err.message)
   const errStatus = err.code && !isNaN(Number(err.code)) ? err.code : 500;
   const errMessage = err.message || 'Something went wrong';
   return res.status(errStatus).json({
