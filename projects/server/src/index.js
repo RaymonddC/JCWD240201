@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 // app.use('/public', express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
+console.log("🚀🚀🚀 ~ file: index.js:23 ~ __dirname:", __dirname)
 // app.use(express.static('public'));
 
 //#region API ROUTES
@@ -47,23 +48,23 @@ const {
   promoTypeRoute,
 } = require('./routers');
 
-app.use('/auth', authRoute);
-app.use('/discussions', QnARoute);
-app.use('/users', userRoute);
-app.use('/addresses', addressRoute);
-app.use('/carts', cartRoute);
-app.use('/products', productRoute);
-app.use('/categories', categoryRoute);
-app.use('/labels', labelRoute);
-app.use('/transactions', transactionRoute);
-app.use('/tx-status', txStatusRoute);
-app.use('/rajaongkir', rajaOngkirRoute);
-app.use('/stocks', stockRoute);
-app.use('/promotions', promotionRoute);
-app.use('/tx-histories', txHistoryRoute);
-app.use('/prescriptioncarts', prescriptionCartRoute);
-app.use('/stock-histories', stockHistoryRoute);
-app.use('/promo-types', promoTypeRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/discussions', QnARoute);
+app.use('/api/users', userRoute);
+app.use('/api/addresses', addressRoute);
+app.use('/api/carts', cartRoute);
+app.use('/api/products', productRoute);
+app.use('/api/categories', categoryRoute);
+app.use('/api/labels', labelRoute);
+app.use('/api/transactions', transactionRoute);
+app.use('/api/tx-status', txStatusRoute);
+app.use('/api/rajaongkir', rajaOngkirRoute);
+app.use('/api/stocks', stockRoute);
+app.use('/api/promotions', promotionRoute);
+app.use('/api/tx-histories', txHistoryRoute);
+app.use('/api/prescriptioncarts', prescriptionCartRoute);
+app.use('/api/stock-histories', stockHistoryRoute);
+app.use('/api/promo-types', promoTypeRoute);
 
 // app.get('/api', (req, res) => {
 //   res.send(`Hello, this is my API`);
