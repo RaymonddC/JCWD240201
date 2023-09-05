@@ -68,7 +68,7 @@ const addToCart = async (req, res, next) => {
     const userId = req.user.id;
     const image = req.file;
     const imagePath = image
-      ? ${image.fieldname}/${image.filename}
+      ? `${image.fieldname}/${image.filename}`
       : undefined;
 
     const product = await productDB.findOne({
