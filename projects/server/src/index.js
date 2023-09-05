@@ -18,9 +18,9 @@ app.use(
 
 app.use(express.json());
 app.use(cors());
-// app.use(express.static('public'));
 // app.use('/public', express.static('public'));
-app.use("/public", express.static(join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static('public'));
 
 //#region API ROUTES
 
@@ -119,8 +119,6 @@ app.get('*', (req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log('index err',err)
-  console.log('index err.essage', err.message)
   const errStatus = err.code && !isNaN(Number(err.code)) ? err.code : 500;
   const errMessage = err.message || 'Something went wrong';
   return res.status(errStatus).json({
