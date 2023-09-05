@@ -51,9 +51,9 @@ export default function ChangePassword() {
       if (newPassword !== confirmNewPassword) throw passwordNotMatch;
 
       const result = await changePassword(user.id, oldPassword, newPassword);
-      const errorMessage = { message: result.data?.message };
-      if (result.data?.success) {
-        toast.success(result.data?.message);
+      const errorMessage = { message: result?.data?.message };
+      if (result?.data?.success) {
+        toast.success(result?.data?.message);
       } else {
         throw errorMessage;
       }
@@ -62,7 +62,7 @@ export default function ChangePassword() {
       _confirmNewPassword.current.value = '';
       setIsDisable(false)
     } catch (error) {
-      toast.error(error.response.data.message || error.message);
+      toast.error(error?.response?.data?.message || error?.message);
       setIsDisable(false)
     }
   };
