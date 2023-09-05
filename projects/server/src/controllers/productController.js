@@ -17,6 +17,10 @@ const promotionDB = db.promotion;
 const { sequelize } = require('../models');
 const deleteFiles = require('../helpers/deleteFiles');
 const path = require('path');
+// Get the current script's directory
+const currentDir = __dirname;
+// Go up one levels to get the desired directory
+const oneLevelsUpDir = path.join(currentDir, '..');
 
 const getAllProducts = async (req, res, next) => {
   try {
@@ -213,22 +217,15 @@ const deleteProduct = async (req, res, next) => {
     });
 
     //delete data
-    await productDB.destroy({ where: { id: productId } }, { transaction: t });
+    await productDB.destroy({ where: { id: productId } , transaction: t });
     await productImageDB.destroy(
-      { where: { product_id: productId } },
-      { transaction: t },
+      { where: { product_id: productId }, transaction: t  },
     );
     await labelDB.destroy(
-      { where: { product_id: productId } },
-      { transaction: t },
+      { where: { product_id: productId } , transaction: t },
     );
 
     await t.commit();
-    // Get the current script's directory
-    const currentDir = __dirname;
-
-    // Go up one levels to get the desired directory
-    const oneLevelsUpDir = path.join(currentDir, '..');
     
     let isDirectoryExist = fs.existsSync(`${oneLevelsUpDir}/public/deleted_product_images`);
 
@@ -279,12 +276,7 @@ const updateProduct = async (req, res, next) => {
         const findImageData = await productImageDB.findOne({
           where: { product_id: productId },
         });
-        // Get the current script's directory
-        const currentDir = __dirname;
-
-        // Go up one levels to get the desired directory
-        const oneLevelsUpDir = path.join(currentDir, '..');
-        
+      
         var oldPath = `${oneLevelsUpDir}/public/${findImageData.image}`;
         var fileName = findImageData.image.split('/');
         var newPath = `${oneLevelsUpDir}/public/deleted_product_images/${
@@ -293,25 +285,23 @@ const updateProduct = async (req, res, next) => {
 
         //delete old image
         await productImageDB.destroy(
-          { where: { product_id: productId } },
-          { transaction: t },
+          { where: { product_id: productId }, transaction: t },
         );
       }
     }
 
     //delete old label
     await labelDB.destroy(
-      { where: { product_id: productId } },
-      { transaction: t },
+      { where: { product_id: productId }, transaction: t  },
+      
     );
 
     //update product data
     const updateProduct = await productDB.update(
       data,
       {
-        where: { id: productId },
+        where: { id: productId },transaction: t
       },
-      { transaction: t },
     );
 
     const labelData = categoryId.map((value) => {
