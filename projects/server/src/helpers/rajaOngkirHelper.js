@@ -15,6 +15,8 @@ const getProvinceRajaOngkir = async () => {
     );
     return response;
   } catch (error) {
+    console.log('>>>')
+    console.log(error)
     throw { message: error.response.data.rajaongkir.status.description };
   }
 };
