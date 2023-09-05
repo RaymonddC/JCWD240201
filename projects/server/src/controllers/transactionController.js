@@ -106,7 +106,7 @@ const uploadPayment = async (req, res, next) => {
     const { transaction_id, transaction_status_id } = req.body;
     const image = req.file;
     const imagePath = image
-      ? image.path.replace(/\\/g, '/').replace('src/public/', '')
+      ? `${image.fieldname}/${image.filename}`
       : undefined;
     if (!image) throw { message: 'Please upload image' };
     const updateTransaction = await Transaction.update(
@@ -215,7 +215,7 @@ const handleMidtransPayment = async (req, res, next) => {
         { where: { id: transaction.id }, transaction: t },
       );
     }
-    await processTransaction(transactionId, req.user.id, t);
+    await processTransaction(transaction_id, req.user.id, t);
     await t.commit();
     return res.status(200).send({
       success: true,
