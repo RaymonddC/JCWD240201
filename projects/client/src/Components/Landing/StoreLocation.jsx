@@ -5,6 +5,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import jumbotronImage from '../../utils/images/pharmacy-store.jpg';
 
 export default function StoreLocation() {
+  var g = window.g || {};
   const [showPopup, setShowPopup] = useState(true);
   return (
     <div>
