@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const RAJAONGKIRURL = `https://api.rajaongkir.com/starter`;
-const RAJAONGKIRURLKEY = `5536a7b3e0879609c3d5693b088c13be`;
+const RAJAONGKIRURLKEY = `c5a276b04ff81ac5bb2bd4ad3ed2d3fe`;
 
 const getProvinceRajaOngkir = async () => {
   return axios.get(`${RAJAONGKIRURL}/province`, {
