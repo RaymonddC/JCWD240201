@@ -7,7 +7,7 @@ const fs = require('fs');
 const db = require('../models');
 const User = db.user;
 const transporter = require('../helpers/transporter');
-const domain = process.env.WHITELISTED_DOMAIN;
+const domain = 'https://jcwd240201.purwadhikabootcamp.com';
 const path = require('path');
 // Get the current script's directory
 const currentDir = __dirname;
