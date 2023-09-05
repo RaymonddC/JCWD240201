@@ -10,6 +10,7 @@ const getProvinceRajaOngkir = async () => {
       {
         headers: {
           key: '5536a7b3e0879609c3d5693b088c13be',
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
       },
     );
@@ -28,6 +29,7 @@ const getCityRajaOngkir = async (province_id) => {
       {
         headers: {
           key: '5536a7b3e0879609c3d5693b088c13be',
+          'Content-Type': 'application/x-www-form-urlencoded'
         },
       },
     );
