@@ -32,9 +32,7 @@ const updateUserData = async (req, res, next) => {
           phone_number,
           gender,
           birthdate,
-          profile_image: image.path
-            .replace(/\\/g, '/')
-            .replace('src/public/', ''),
+          profile_image: `${image.fieldname}/${image.filename}`,
         },
         { where: { id: auth.id } },
       );
