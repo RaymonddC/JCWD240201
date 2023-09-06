@@ -31,13 +31,13 @@ module.exports = {
   },
 
   verifyTokenEmail: async (req, res, next) => {
-    let token = req.headers.token_email;
+    let token = req.body.token_email;
 
     if (!token) {
       return res.status(401).send({
         success: false,
         message: 'Unauthorized4',
-        data: req.headers,
+        data: req.body,
       });
     }
 
