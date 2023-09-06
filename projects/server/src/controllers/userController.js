@@ -145,7 +145,7 @@ const sendChangeEmailForm = async (req, res, next) => {
       attachments: [
         {
           filename: 'Medicore.png',
-          path: `${oneLevelsUpDir}/public/logo/Medicore.png`,
+          path: `${oneLevelsUpDir}/public/Medicore.png`,
           cid: 'logo1',
         },
       ],
