@@ -10,6 +10,10 @@ const jwt = require('jsonwebtoken');
 const Handlebars = require('handlebars');
 const transporter = require('../helpers/transporter');
 const path = require('path');
+// Get the current script's directory
+const currentDir = __dirname;
+// Go up two levels to get the desired directory
+const oneLevelsUpDir = path.join(currentDir, '..');
 
 const updateUserData = async (req, res, next) => {
   try {
@@ -37,11 +41,6 @@ const updateUserData = async (req, res, next) => {
         },
         { where: { id: auth.id } },
       );
-       // Get the current script's directory
-      const currentDir = __dirname;
-
-      // Go up two levels to get the desired directory
-      const oneLevelsUpDir = path.join(currentDir, '..');
 
       if (previousImage.dataValues.profile_image) {
         let isDirectoryExist = fs.existsSync(
@@ -134,7 +133,7 @@ const sendChangeEmailForm = async (req, res, next) => {
       { change_email_token: token },
       { where: { email: email } },
     );
-    const data = fs.readFileSync('./src/helpers/changeEmailForm.html', 'utf-8');
+    const data = fs.readFileSync(`${oneLevelsUpDir}/helpers/changeEmailForm.html`, 'utf-8');
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 
@@ -146,7 +145,7 @@ const sendChangeEmailForm = async (req, res, next) => {
       attachments: [
         {
           filename: 'Medicore.png',
-          path: `../server/public/logo/Medicore.png`,
+          path: `${oneLevelsUpDir}/public/logo/Medicore.png`,
           cid: 'logo1',
         },
       ],
