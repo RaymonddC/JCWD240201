@@ -36,7 +36,7 @@ module.exports = {
     if (!token) {
       return res.status(401).send({
         success: false,
-        message: 'Unauthorized',
+        message: 'Unauthorized4',
         data: null,
       });
     }
@@ -44,7 +44,7 @@ module.exports = {
     try {
       token = token.split(' ')[1];
       if (token === null || !token)
-        throw { message: 'Unauthorized', code: 401 };
+        throw { message: 'Unauthorized5', code: 401 };
 
       let verifyUser = jwt.verify(token, 'change-email');
 
@@ -53,7 +53,7 @@ module.exports = {
       });
       if (getChangeEmailToken.change_email_token !== token)
         throw { message: 'Link expired', code: 401 };
-      if (!verifyUser) throw { message: 'Unauthorized', code: 401 };
+      if (!verifyUser) throw { message: 'Unauthorized6', code: 401 };
 
       req.user = verifyUser;
       next();
