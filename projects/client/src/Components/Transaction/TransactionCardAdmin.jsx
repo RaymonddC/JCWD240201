@@ -174,7 +174,9 @@ const delivered= async()=>{
           {props?.tx?.transaction_histories[0]?.transaction_status?.status !==
             'Cancelled' &&
           props?.tx?.transaction_histories[0]?.transaction_status?.status !==
-            'Complete' ? (
+            'Complete' ? &&
+          props?.tx?.transaction_histories[0]?.transaction_status?.status !==
+            'Arrived' ? (
             // <CancelTransactionModal />
             <button
               className="btn btn-primary btn-outline btn-sm text-white "
