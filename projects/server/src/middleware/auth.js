@@ -37,7 +37,7 @@ module.exports = {
       return res.status(401).send({
         success: false,
         message: 'Unauthorized4',
-        data: req.headers.token_email,
+        data: req.headers,
       });
     }
 
