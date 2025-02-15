@@ -96,9 +96,9 @@ const getPromotionList = async (req, res, next) => {
           [
             sequelize.literal(
               `CASE
-              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS SIGNED)
+              WHEN maximum_discount_amount IS NULL OR maximum_discount_amount = 0 THEN CAST(${totalPrice} * discount/100 AS INTEGER)
               ELSE
-              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS SIGNED)
+              CAST(LEAST(${totalPrice} * discount/100, maximum_discount_amount) AS INTEGER)
               END`,
             ),
             'totalDiscount',

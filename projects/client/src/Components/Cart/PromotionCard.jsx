@@ -5,11 +5,12 @@ import { toast } from 'react-hot-toast';
 import moment from 'moment';
 
 const PromotionCard = (props) => {
-  const dateTime = new Date(props.promotion.date_end);
+  const currentDate = new Date();
+  const expiredDate = new Date(props.promotion.date_end);
   const endPromo = moment([
-    dateTime.getFullYear(),
-    dateTime.getMonth(),
-    dateTime.getDate(),
+    expiredDate.getFullYear(),
+    expiredDate.getMonth(),
+    expiredDate.getDate(),
   ]).fromNow();
 
   useEffect(() => {
@@ -30,7 +31,8 @@ const PromotionCard = (props) => {
     <button
       className={`promo border  rounded-lg p-3 flex flex-col
       ${
-        props.totalPrice < props.promotion.minimum_transaction
+        props.totalPrice < props.promotion.minimum_transaction ||
+        expiredDate < currentDate
           ? 'bg-gray-300 text-gray-500 cursor-default'
           : ''
       }

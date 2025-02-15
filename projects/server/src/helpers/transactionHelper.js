@@ -167,6 +167,20 @@ const updatePromoTx = async (promotion_id, qty, price) => {
         data: promotionActive,
       };
     else if (promoTx && promoTx.minimum_transaction < price) {
+      const today = new Date();
+      const startDate = new Date(promoTx.date_start);
+      const endDate = new Date(promoTx.date_end);
+      if (today > endDate) {
+        throw {
+          message: 'Promotion has expired!',
+          code: 400,
+        };
+      } else if (today < startDate) {
+        throw {
+          message: 'Promotion Not Started!',
+          code: 400,
+        };
+      }
       if (promoTx.limit <= 0) throw { message: 'Promotion quota exceed' };
       let disc = Math.round((price * promoTx.discount) / 100);
       totalDiscount =
