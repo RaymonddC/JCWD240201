@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToCartAsync } from '../../Features/Cart/CartSlice';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 export default function ProductCard(props) {
   const URL = `${process.env.REACT_APP_API_IMAGE_URL}`;
   const { user } = useSelector((state) => state.user);
@@ -47,7 +46,7 @@ export default function ProductCard(props) {
       return toast.error('Login first before adding product to cart');
       // return navigate('/login');
     }
-    if(user.verified !== true){
+    if (user.verified !== true) {
       return toast.error('Please check your email and verify your account');
     }
     dispatch(addToCartAsync({ productId: productId }));

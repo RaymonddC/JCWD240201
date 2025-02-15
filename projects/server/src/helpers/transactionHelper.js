@@ -17,24 +17,38 @@ const { sequelize } = require('../models');
 const getUserTransactions = async (whereQuery, orderBy) => {
   try {
     if (whereQuery.dates.startDate) {
-      let startDate = new Date(whereQuery.dates.startDate + '');
-      let endDate = new Date(whereQuery.dates.endDate + '');
+      let startDate = new Date(whereQuery.dates.startDate);
+      let endDate = new Date(whereQuery.dates.endDate);
 
       whereQuery.transaction = {
         ...whereQuery.transaction,
         [Op.and]: [
           sequelize.where(
-            sequelize.fn('date', sequelize.col('transaction.createdAt')),
+            sequelize.cast(sequelize.col('transaction.createdAt'), 'DATE'),
             '>=',
-            new Date(startDate.setHours(startDate.getHours() + 7)),
+            sequelize.cast(startDate, 'DATE'),
           ),
           sequelize.where(
-            sequelize.fn('date', sequelize.col('transaction.createdAt')),
+            sequelize.cast(sequelize.col('transaction.createdAt'), 'DATE'),
             '<=',
-            new Date(endDate.setHours(endDate.getHours() + 24 + 7)),
+            sequelize.cast(endDate, 'DATE'),
           ),
         ],
       };
+    }
+
+    // Convert transaction status ID to string for LIKE operation
+    if (whereQuery.transactionHistory.transaction_status_id) {
+      whereQuery.transactionHistory.transaction_status_id = sequelize.where(
+        sequelize.cast(
+          sequelize.col('transaction_histories.transaction_status_id'),
+          'TEXT',
+        ),
+        'LIKE',
+        `%${whereQuery.transactionHistory.transaction_status_id[
+          Op.like
+        ].replace(/%/g, '')}%`,
+      );
     }
 
     let includes = [];
@@ -82,14 +96,13 @@ const getUserTransactions = async (whereQuery, orderBy) => {
           where: whereQuery.transactionDetail,
         },
       ],
-      where: {
-        ...whereQuery.transaction,
-      },
+      where: whereQuery.transaction,
       order: order,
       ...whereQuery.pagination,
       distinct: true,
     });
   } catch (error) {
+    console.error(error);
     throw error;
   }
 };

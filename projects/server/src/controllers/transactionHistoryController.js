@@ -222,39 +222,48 @@ const getTopSaleProduct = async (req, res, next) => {
 const getAllTransactionStatusTotal = async (req, res, next) => {
   try {
     const getTransactionStatuses = await transactionStatusDB.findAll();
+    console.log('Transaction Statuses:', getTransactionStatuses);
 
     let result = await Promise.all(
       getTransactionStatuses.map(async (row) => {
         try {
           const data = await db.sequelize.query(
             `SELECT COUNT(*) AS count_of_valid_transactions
-            FROM transaction_histories
-            WHERE transaction_status_id = :transaction_status_id
-            AND is_active = 1;`,
+            FROM "transaction_histories"
+            WHERE "transaction_status_id" = :transaction_status_id
+            AND "is_active" = true`,
             {
               replacements: {
                 transaction_status_id: row.dataValues.id,
               },
               type: db.sequelize.QueryTypes.SELECT,
+              logging: console.log, // Debug query
             },
           );
+
           return {
+            id: row.dataValues.id,
             status: row.dataValues.status,
-            total: data.length ? data[0].count_of_valid_transactions : 0,
+            total: parseInt(data[0].count_of_valid_transactions),
           };
         } catch (error) {
-          throw { error };
+          console.error('Query Error:', error);
+          throw error;
         }
       }),
     );
 
-    return res.status(200).send({
+    return res.status(200).json({
       success: true,
-      message: 'Get all transaction status total successfully',
       data: result,
     });
   } catch (error) {
-    next(error);
+    console.error('Controller Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      stack: error.stack,
+    });
   }
 };
 
