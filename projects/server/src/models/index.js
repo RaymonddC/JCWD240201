@@ -13,13 +13,24 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config,
-  );
+  sequelize = new Sequelize({
+    ...config,
+    logging: true,
+    dialectModule: require('pg'),
+  });
 }
+
+// Test connection
+const testConnection = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Connected to PostgreSQL');
+  } catch (err) {
+    console.error('Connection error:', err);
+  }
+};
+
+testConnection();
 
 fs.readdirSync(__dirname)
   .filter((file) => {
