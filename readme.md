@@ -1,45 +1,162 @@
-# Purwadhika Final Project Repository
+# 🏥 Medicore - Online Pharmacy Platform
 
-This is monorepo contain frontend project using ReactJS and backend project using ExpressJS.
+An end-to-end e-commerce solution for pharmacies featuring prescription management, secure payments, and real-time inventory tracking. Built with React, Node.js, and PostgreSQL.
 
-## Available Scripts
+![Medicore Dashboard](screenshots/dashboard.png)
 
-In the project directory, you can run:
+## 🌟 Features
 
-### `npm start`
+### User Features
 
-Runs the app in the development mode.
+- 🔒 Authentication with JWT & Google Sign In
+- 📱 Responsive design for all devices
+- 🛒 Shopping cart management
+- 💊 Prescription upload and tracking
+- 📍 Multiple address management
+- 💳 Secure payment integration (Midtrans)
+- 🚚 Order tracking
+- ❓ Q&A discussion forum
 
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Admin Features
 
-For API, you can access it in [http://localhost:8000/api](http://localhost:8000/api).
+- 📊 Sales & inventory dashboard
+- 🏷️ Product management
+- 👨‍⚕️ Prescription verification
+- 📦 Order management
+- 📝 Transaction reports
 
-The page will reload if you make edits.
+## 🛠️ Technical Stack
 
-### `npm run clean`
+### Frontend
 
-Remove `node_modules` folder from all project.
+- React 18 with Redux Toolkit for state management
+- TailwindCSS & DaisyUI for responsive UI
+- Formik & Yup for form validation
+- Chart.js for analytics visualization
 
-### `npm run build`
+### Backend
 
-Builds the app for production to the `build` folder.
+- Node.js/Express REST API
+- PostgreSQL with Sequelize ORM
+- JWT & Firebase authentication
+- PM2 process manager
 
-### `npm run serve`
+### DevOps
 
-Runs the app in the production mode.
+- GitHub Actions CI/CD
+- Vercel (Frontend hosting)
+- Render (Backend hosting)
+- Supabase (Database)
 
-### `npm run client`
+### Third Party Services
 
-Run command on client project.
+- Google reCAPTCHA v3
+- Midtrans Payment Gateway
+- Firebase Authentication
+- RajaOngkir Shipping API
+- Nodemailer
 
-### `npm run install:client`
+## 🚀 Getting Started
 
-Install dependency in client project. Use `npm install:client:dev` for dev dependencies.
+### Prerequisites
 
-### `npm run server`
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/medicore.git
 
-Run command on server project.
+# Install dependencies
+npm install
 
-### `npm run install:server`
+# Setup environment variables
+# Frontend (.env)
+REACT_APP_API_BASE_URL=your_api_url
+REACT_APP_FIREBASE_API_KEY=your_firebase_key
+REACT_APP_MIDTRANS_CLIENT_KEY=your_midtrans_key
+REACT_APP_RECAPTCHA_SITE_KEY=your_recaptcha_key
 
-Install dependency in server project. Use `npm install:server:dev` for dev dependencies.
+# Backend (.env)
+DATABASE_URL=your_supabase_url
+MIDTRANS_SERVER_KEY=your_midtrans_server_key
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret
+```
+
+### Migration
+
+```bash
+cd projects/server
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+```
+
+## ⚡ Quick Start
+
+```bash
+# Clone repository
+git clone https://github.com/RaymonddC/JCWD240201
+
+# Install dependencies (root, client, server)
+npm run install
+
+# Set up environment variables
+cp .env.example .env
+
+# Start development servers
+npm run start
+```
+
+## 📦 Project Structure
+
+```markdown
+medicore/
+├── projects/
+│ ├── client/ # React frontend
+│ │ ├── src/
+│ │ └── public/
+│ └── server/ # Express backend
+│ ├── src/
+│ └── migrations/
+├── package.json
+└── README.md
+```
+
+## 📦 Deployment
+
+- Frontend: Deployed on Vercel
+- Backend: Deployed on Render
+- Database: Hosted on Supabase
+
+## 🔐 Security Features
+
+Google reCAPTCHA v3
+
+- Protects forms from spam and abuse
+- Invisible to users
+- Score-based verification
+
+Google Sign In
+
+- Secure OAuth2 authentication
+- One-click login/signup
+- Profile information syncing
+
+Midtrans Payment Gateway
+
+- Multiple payment methods
+- Secure transaction handling
+- Real-time payment status
+- Sandbox testing environment
+
+## 🌐 Live Demo
+
+- Frontend: https://medicore-client.vercel.app
+- Backend: https://medicore-0klv.onrender.com
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Contact
+
+Raymond - raymondchrisandy@gmail.com
+
+Project Link: https://github.com/RaymonddC/JCWD240201
