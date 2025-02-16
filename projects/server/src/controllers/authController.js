@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-
+const path = require('path');
 const { Op } = require('sequelize');
 const bcrypt = require('bcrypt');
 const Handlebars = require('handlebars');
@@ -59,7 +59,7 @@ const sendVerifyEmail = async (req, res, next) => {
       attachments: [
         {
           filename: 'Medicore.png',
-          path: `${oneLevelsUpDir}/public/Medicore.png`,
+          path: path.join(__dirname, '../public/logo/Medicore.png'), // Updated path
           cid: 'logo1',
         },
       ],

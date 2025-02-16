@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: medicore-api
+    env: node
+    region: singapore
+    buildCommand: |
+      cd projects/server
+      npm install
+      npm rebuild bcrypt --build-from-source
+    startCommand: cd projects/server && node src/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8000
+      - key: DATABASE_URL
+        value: postgres://postgres:N89v2egCkJyOx3Zw@db.ggwbnsbkuzvnhvquygau.supabase.co:5432/postgres
+      - key: BCRYPT_SALT
+        value: 10

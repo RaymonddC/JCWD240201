@@ -112,46 +112,29 @@ const validateIsValueExist = (parameter) => {
 
 const getRevenueQuery = (query) => {
   const { startDate, endDate, todayDate, sort_type, sort_order } = query;
+  let replacements = startDate && endDate ? { startDate, endDate } : { startDate: todayDate, endDate: todayDate };
 
-  let replacements;
-
-  if (startDate && endDate) {
-    replacements = {
-      startDate: startDate,
-      endDate: endDate,
-    };
-  } else {
-    replacements = {
-      startDate: todayDate,
-      endDate: todayDate,
-    };
-  }
   return db.sequelize.query(
-    `SELECT DATE(transaction_histories.createdAt) AS 'date', SUM(transactions.total_price - transactions.total_discount) as 'today_revenue' FROM transaction_histories 
-    JOIN transactions ON transactions.id = transaction_histories.transaction_id 
-    WHERE transaction_histories.is_active = true 
-    AND transaction_histories.transaction_status_id = 6 
-    AND transaction_histories.is_active = true
-    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN DATE(:startDate) AND DATE(:endDate))
-    GROUP BY DATE(transaction_histories.createdAt)
-    ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'};`,
+    `SELECT 
+      DATE(th."createdAt") as date,
+      SUM(t.total_price - t.total_discount) as today_revenue
+    FROM "transaction_histories" th
+    JOIN "transactions" t ON t.id = th.transaction_id
+    WHERE th.is_active = true 
+    AND th.transaction_status_id = 6
+    AND DATE(th."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta') 
+      BETWEEN DATE(:startDate) AND DATE(:endDate)
+    GROUP BY DATE(th."createdAt")
+    ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'}`,
     {
       replacements,
-      // replacements: [startDate, endDate, sort_type, sort_order],
-      type: db.sequelize.QueryTypes.SELECT,
-    },
-    /**
-     * tangaal 1: data
-     * tanggal 2: data
-     * tanggal 3: ?
-     * tanggal 4: data
-     */
+      type: db.sequelize.QueryTypes.SELECT
+    }
   );
 };
 
 const getTotalTransactionQuery = (query) => {
   const { startDate, endDate, todayDate, sort_type, sort_order } = query;
-
   let replacements;
 
   if (startDate && endDate) {
@@ -167,13 +150,15 @@ const getTotalTransactionQuery = (query) => {
   }
 
   return db.sequelize.query(
-    `SELECT DATE(transaction_histories.createdAt) AS 'date', COUNT(*) as 'total_transaction' FROM transaction_histories 
-    WHERE transaction_histories.is_active = true 
-    AND transaction_histories.transaction_status_id = 6 
-    AND transaction_histories.is_active = true
-    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN DATE(:startDate) AND DATE(:endDate))
-    GROUP BY DATE(transaction_histories.createdAt)
-    ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'};`,
+    `SELECT 
+      DATE(th."createdAt") as date, 
+      COUNT(*) as total_transaction 
+    FROM "transaction_histories" th
+    WHERE th.is_active = true 
+    AND th.transaction_status_id = 6 
+    AND DATE(th."createdAt") BETWEEN DATE(:startDate) AND DATE(:endDate)
+    GROUP BY DATE(th."createdAt")
+    ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'}`,
     {
       replacements,
       type: db.sequelize.QueryTypes.SELECT,
@@ -183,33 +168,24 @@ const getTotalTransactionQuery = (query) => {
 
 const getUserTransactionQuery = (query) => {
   const { startDate, endDate, todayDate, sort_type, sort_order } = query;
+  let replacements = startDate && endDate ? { startDate, endDate } : { startDate: todayDate, endDate: todayDate };
 
-  let replacements;
-
-  if (startDate && endDate) {
-    replacements = {
-      startDate: startDate,
-      endDate: endDate,
-    };
-  } else {
-    replacements = {
-      startDate: todayDate,
-      endDate: todayDate,
-    };
-  }
   return db.sequelize.query(
-    `SELECT DATE(transaction_histories.createdAt) AS 'date', COUNT(transactions.user_id) as 'total_user' FROM transaction_histories 
-    JOIN transactions ON transactions.id = transaction_histories.transaction_id 
-    WHERE transaction_histories.is_active = true 
-    AND transaction_histories.transaction_status_id = 6 
-    AND transaction_histories.is_active = true
-    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN DATE(:startDate) AND DATE(:endDate))
-    GROUP BY DATE(transaction_histories.createdAt)
-    ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'};`,
+    `SELECT 
+      DATE(th."createdAt") as date,
+      COUNT(DISTINCT t.user_id) as total_user 
+    FROM "transaction_histories" th
+    JOIN "transactions" t ON t.id = th.transaction_id 
+    WHERE th.is_active = true 
+    AND th.transaction_status_id = 6
+    AND DATE(th."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta') 
+      BETWEEN DATE(:startDate) AND DATE(:endDate)
+    GROUP BY DATE(th."createdAt")
+    ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'}`,
     {
       replacements,
-      type: db.sequelize.QueryTypes.SELECT,
-    },
+      type: db.sequelize.QueryTypes.SELECT
+    }
   );
 };
 

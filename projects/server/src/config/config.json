@@ -3,8 +3,9 @@
     "username": "root",
     "password": "jcwd2402",
     "database": "pharmacy",
+    "port": 5432,
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "test": {
     "username": "root",
@@ -14,10 +15,17 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "jcwd240201",
-    "password": "group01",
-    "database": "jcwd240201",
-    "host": "127.0.0.1",
-    "dialect": "mysql"
+    "username": "postgres",
+    "password": "N89v2egCkJyOx3Zw",
+    "database": "postgres",
+    "host": "db.ggwbnsbkuzvnhvquygau.supabase.co",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }

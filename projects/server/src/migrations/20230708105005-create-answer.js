@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       answer: {
-        type: Sequelize.TEXT('medium'),
+        type: Sequelize.TEXT,
       },
       question_id: {
         type: Sequelize.INTEGER,
