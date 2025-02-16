@@ -8,7 +8,7 @@ const db = require('../models');
 const User = db.user;
 const transporter = require('../helpers/transporter');
 const domain = 'https://jcwd240201.purwadhikabootcamp.com';
-const path = require('path');
+
 // Get the current script's directory
 const currentDir = __dirname;
 // Go up one levels to get the desired directory

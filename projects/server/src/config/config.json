@@ -15,10 +15,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "username": "postgres",
+    "username": "postgres.ggwbnsbkuzvnhvquygau",
     "password": "N89v2egCkJyOx3Zw",
     "database": "postgres",
-    "host": "db.ggwbnsbkuzvnhvquygau.supabase.co",
+    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
     "port": 5432,
     "dialect": "postgres",
     "dialectOptions": {

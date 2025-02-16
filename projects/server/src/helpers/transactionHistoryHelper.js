@@ -29,7 +29,7 @@ const validateDate = (startDate, endDate, todayDate) => {
   if (daySpacing < 1 && startDate && endDate)
     throw { message: 'Please set date range correctly', code: 400 };
 
-  if (daySpacing > 30 && startDate && endDate)
+  if (daySpacing > 31 && startDate && endDate)
     throw {
       message: 'Date range should not be more than 31 days',
       code: 400,
@@ -112,7 +112,10 @@ const validateIsValueExist = (parameter) => {
 
 const getRevenueQuery = (query) => {
   const { startDate, endDate, todayDate, sort_type, sort_order } = query;
-  let replacements = startDate && endDate ? { startDate, endDate } : { startDate: todayDate, endDate: todayDate };
+  let replacements =
+    startDate && endDate
+      ? { startDate, endDate }
+      : { startDate: todayDate, endDate: todayDate };
 
   return db.sequelize.query(
     `SELECT 
@@ -128,34 +131,25 @@ const getRevenueQuery = (query) => {
     ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'}`,
     {
       replacements,
-      type: db.sequelize.QueryTypes.SELECT
-    }
+      type: db.sequelize.QueryTypes.SELECT,
+    },
   );
 };
 
 const getTotalTransactionQuery = (query) => {
   const { startDate, endDate, todayDate, sort_type, sort_order } = query;
-  let replacements;
-
-  if (startDate && endDate) {
-    replacements = {
-      startDate: startDate,
-      endDate: endDate,
-    };
-  } else {
-    replacements = {
-      startDate: todayDate,
-      endDate: todayDate,
-    };
-  }
+  let replacements =
+    startDate && endDate
+      ? { startDate, endDate }
+      : { startDate: todayDate, endDate: todayDate };
 
   return db.sequelize.query(
     `SELECT 
-      DATE(th."createdAt") as date, 
-      COUNT(*) as total_transaction 
+      DATE(th."createdAt") as date,
+      COUNT(*) as total_transaction
     FROM "transaction_histories" th
     WHERE th.is_active = true 
-    AND th.transaction_status_id = 6 
+    AND th.transaction_status_id = 6
     AND DATE(th."createdAt") BETWEEN DATE(:startDate) AND DATE(:endDate)
     GROUP BY DATE(th."createdAt")
     ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'}`,
@@ -168,14 +162,17 @@ const getTotalTransactionQuery = (query) => {
 
 const getUserTransactionQuery = (query) => {
   const { startDate, endDate, todayDate, sort_type, sort_order } = query;
-  let replacements = startDate && endDate ? { startDate, endDate } : { startDate: todayDate, endDate: todayDate };
+  let replacements =
+    startDate && endDate
+      ? { startDate, endDate }
+      : { startDate: todayDate, endDate: todayDate };
 
   return db.sequelize.query(
     `SELECT 
       DATE(th."createdAt") as date,
-      COUNT(DISTINCT t.user_id) as total_user 
+      COUNT(DISTINCT t.user_id) as total_user
     FROM "transaction_histories" th
-    JOIN "transactions" t ON t.id = th.transaction_id 
+    JOIN "transactions" t ON t.id = th.transaction_id
     WHERE th.is_active = true 
     AND th.transaction_status_id = 6
     AND DATE(th."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta') 
@@ -184,29 +181,31 @@ const getUserTransactionQuery = (query) => {
     ORDER BY ${sort_type || 'date'} ${sort_order || 'ASC'}`,
     {
       replacements,
-      type: db.sequelize.QueryTypes.SELECT
-    }
+      type: db.sequelize.QueryTypes.SELECT,
+    },
   );
 };
 
 const getTopSaleProductQuery = (start_date, end_date) => {
   return db.sequelize.query(
-    `SELECT products.name, SUM(CASE WHEN stock_histories.unit = 0 THEN stock_histories.qty ELSE 0 END) AS 'quantity_closed', SUM(CASE WHEN stock_histories.unit = 1 THEN stock_histories.qty ELSE 0 END) AS 'quantity_opened' FROM transaction_histories 
-    JOIN transactions ON transaction_histories.transaction_id = transactions.id
-    JOIN stock_histories ON transactions.id = stock_histories.transaction_id
-    JOIN products ON stock_histories.product_id = products.id
-    WHERE transaction_histories.is_active = true
-    AND transaction_histories.transaction_status_id = 6 
-    AND stock_histories.stock_history_type_id = 4
-    AND (DATE(CONVERT_TZ(transaction_histories.createdAt,'+00:00','+07:00')) BETWEEN :start_date AND :end_date) 
-    GROUP BY stock_histories.product_id
+    `SELECT 
+      p.name,
+      SUM(CASE WHEN sh.unit = false THEN sh.qty ELSE 0 END) as quantity_closed,
+      SUM(CASE WHEN sh.unit = true THEN sh.qty ELSE 0 END) as quantity_opened
+    FROM "transaction_histories" th
+    JOIN "transactions" t ON th.transaction_id = t.id
+    JOIN "stock_histories" sh ON t.id = sh.transaction_id
+    JOIN "products" p ON sh.product_id = p.id
+    WHERE th.is_active = true
+    AND th.transaction_status_id = 6
+    AND sh.stock_history_type_id = 4
+    AND DATE(th."createdAt" AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Jakarta') 
+      BETWEEN DATE(:startDate) AND DATE(:endDate)
+    GROUP BY p.name
     ORDER BY quantity_closed DESC
-    LIMIT 5;`,
+    LIMIT 5`,
     {
-      replacements: {
-        start_date: start_date,
-        end_date: end_date,
-      },
+      replacements: { start_date, end_date },
       type: db.sequelize.QueryTypes.SELECT,
     },
   );
