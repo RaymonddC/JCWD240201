@@ -6,12 +6,12 @@ import { getAuth } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyADvhN_O4ZaMStI122fFaN0KGcpFnAwy28',
-  authDomain: 'jcwd2024.firebaseapp.com',
-  projectId: 'jcwd2024',
-  storageBucket: 'jcwd2024.appspot.com',
-  messagingSenderId: '795409810908',
-  appId: '1:795409810908:web:86dcca8e25f8cc483dfb19',
+  apiKey: 'AIzaSyD1bqhxvpTi8hl8SAdCvHSsL_WIENGwGuE',
+  authDomain: 'ecommercepwd.firebaseapp.com',
+  projectId: 'ecommercepwd',
+  storageBucket: 'ecommercepwd.firebasestorage.app',
+  messagingSenderId: '305248116354',
+  appId: '1:305248116354:web:ec338cae028383e04ede9b',
 };
 
 // Initialize Firebase
