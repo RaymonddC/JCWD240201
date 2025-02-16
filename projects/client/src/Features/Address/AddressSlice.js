@@ -75,6 +75,7 @@ export const getProvinceAsync = () => async (dispatch) => {
 
     dispatch(setProvince(response.data.data));
   } catch (error) {
+    toast.error(error.response.data.message);
   }
 };
 
@@ -88,7 +89,7 @@ export const getCityAsync = (province_id) => async (dispatch) => {
       dispatch(setLoadCity(false));
     }
   } catch (error) {
-    toast.error(error.message);
+   toast.error(error.response.data.message);
   }
 };
 

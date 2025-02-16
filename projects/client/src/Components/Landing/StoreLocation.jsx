@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import Map, { NavigationControl, Marker, Popup } from 'react-map-gl/maplibre';
-import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import jumbotronImage from '../../utils/images/pharmacy-store.jpg';
 
 export default function StoreLocation() {
+  var g = window.g || {};
   const [showPopup, setShowPopup] = useState(true);
   return (
     <div>
       <Map
-        mapLib={maplibregl}
         initialViewState={{
           longitude: 106.65222475480341,
           latitude: -6.302263455530211,

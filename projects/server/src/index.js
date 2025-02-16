@@ -25,6 +25,7 @@ app.use(express.json());
 app.use(cors());
 // app.use('/public', express.static('public'));
 app.use(express.static(path.join(__dirname, 'public')));
+
 console.log('🚀🚀🚀 ~ file: index.js:23 ~ __dirname:', __dirname);
 // app.use(express.static('public'));
 

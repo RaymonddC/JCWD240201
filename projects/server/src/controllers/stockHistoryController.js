@@ -18,7 +18,7 @@ const stockHistoryList = async (req, res, next) => {
     let order = [];
 
     if (product_id) {
-      where.product_id = product_id;
+      where.product_id = Number(product_id);
     }
 
     if (!date_start || !date_end) throw { message: 'Complete the date' };

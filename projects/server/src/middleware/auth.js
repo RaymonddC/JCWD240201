@@ -9,7 +9,7 @@ module.exports = {
     if (!token) {
       return res.status(401).send({
         success: false,
-        message: 'Unauthorized',
+        message: 'Unauthorized1',
         data: null,
       });
     }
@@ -17,10 +17,10 @@ module.exports = {
     try {
       token = token.split(' ')[1];
       if (token === null || !token)
-        throw { message: 'Unauthorized', code: 401 };
+        throw { message: 'Unauthorized2', code: 401 };
       let verifyUser = jwt.verify(token, 'pharmacy');
 
-      if (!verifyUser) throw { message: 'Unauthorized', code: 401 };
+      if (!verifyUser) throw { message: 'Unauthorized3', code: 401 };
 
       req.user = verifyUser;
       next();
@@ -31,20 +31,20 @@ module.exports = {
   },
 
   verifyTokenEmail: async (req, res, next) => {
-    let token = req.headers.token_email;
+    let token = req.body.token_email;
 
     if (!token) {
       return res.status(401).send({
         success: false,
-        message: 'Unauthorized',
-        data: null,
+        message: 'Unauthorized4',
+        data: req.body,
       });
     }
 
     try {
       token = token.split(' ')[1];
       if (token === null || !token)
-        throw { message: 'Unauthorized', code: 401 };
+        throw { message: 'Unauthorized5', code: 401 };
 
       let verifyUser = jwt.verify(token, 'change-email');
 
@@ -53,7 +53,7 @@ module.exports = {
       });
       if (getChangeEmailToken.change_email_token !== token)
         throw { message: 'Link expired', code: 401 };
-      if (!verifyUser) throw { message: 'Unauthorized', code: 401 };
+      if (!verifyUser) throw { message: 'Unauthorized6', code: 401 };
 
       req.user = verifyUser;
       next();

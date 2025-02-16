@@ -55,7 +55,7 @@ export default function PrescriptionCopyAdmin() {
                       className="w-full"
                       src={
                         detailprescriptionCart?.prescription_image
-                          ? `${process.env.REACT_APP_API_BASE_URL}/${detailprescriptionCart?.prescription_image}`
+                          ? `${process.env.REACT_APP_API_IMAGE_URL}/${detailprescriptionCart?.prescription_image}`
                           : null
                       }
                       alt="test"

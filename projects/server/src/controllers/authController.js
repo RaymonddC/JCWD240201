@@ -7,7 +7,12 @@ const fs = require('fs');
 const db = require('../models');
 const User = db.user;
 const transporter = require('../helpers/transporter');
-const domain = process.env.WHITELISTED_DOMAIN;
+const domain = 'https://jcwd240201.purwadhikabootcamp.com';
+const path = require('path');
+// Get the current script's directory
+const currentDir = __dirname;
+// Go up one levels to get the desired directory
+const oneLevelsUpDir = path.join(currentDir, '..');
 
 const {
   getUser,
@@ -37,7 +42,7 @@ const sendVerifyEmail = async (req, res, next) => {
     );
 
     const data = fs.readFileSync(
-      './src/helpers/verifyEmailTemplate.html',
+      `${oneLevelsUpDir}/helpers/verifyEmailTemplate.html`,
       'utf-8',
     );
     const tempCompile = await Handlebars.compile(data);
@@ -179,10 +184,6 @@ const userLogin = async (req, res, next) => {
       throw { message: 'Fill all data', code: 400 };
 
     let result = await getUser(usernameOrEmail, usernameOrEmail);
-    // (
-    //   '🚀 ~ file: authController.js:157 ~ userLogin ~ result:',
-    //   result,
-    // );
 
     if (!result) throw { message: 'Invalid Credentials', code: 400 };
     // if (!result.verified) {
@@ -273,7 +274,7 @@ const sendResetPasswordForm = async (req, res, next) => {
 
     //send reset password form
     const data = fs.readFileSync(
-      './src/helpers/resetPasswordForm.html',
+      `${oneLevelsUpDir}/helpers/resetPasswordForm.html`,
       'utf-8',
     );
     const tempCompile = await Handlebars.compile(data);
@@ -288,7 +289,7 @@ const sendResetPasswordForm = async (req, res, next) => {
         attachments: [
           {
             filename: 'Medicore.png',
-            path: `../server/public/logo/Medicore.png`,
+            path: `${oneLevelsUpDir}/public/Medicore.png`,
             cid: 'logo1',
           },
         ],

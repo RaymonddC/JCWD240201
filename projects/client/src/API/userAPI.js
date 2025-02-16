@@ -20,12 +20,11 @@ export const updateProfile = (data, token) => {
 export const updateEmailAPI = (email, token, token_email) => {
   return axios.patch(
     `${URL}/users/email`,
-    { email },
+    { token_email: `Bearer ${token_email}`,  email },
     {
       headers: {
         apikey: apikey,
         authorization: `Bearer ${token}`,
-        token_email: `Bearer ${token_email}`,
       },
     },
   );

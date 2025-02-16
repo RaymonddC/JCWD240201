@@ -29,7 +29,7 @@ const validateDate = (startDate, endDate, todayDate) => {
   if (daySpacing < 1 && startDate && endDate)
     throw { message: 'Please set date range correctly', code: 400 };
 
-  if (daySpacing > 31 && startDate && endDate)
+  if (daySpacing > 30 && startDate && endDate)
     throw {
       message: 'Date range should not be more than 31 days',
       code: 400,

@@ -44,7 +44,7 @@ const processTransaction = async (id, userId, t) => {
     const user = await UserDB.findByPk(userId);
     const transaction = await getTransactionById(id, user.role_id === 1);
 
-    if (!transaction || user.role_id !== 1)
+    if (!transaction || (user.role_id !== 1 && user.id !== transaction.user_id))
       throw { message: 'transaction not found', code: 400 };
 
     let stockHistoryUpdateData = [],

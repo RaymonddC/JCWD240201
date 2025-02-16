@@ -92,6 +92,7 @@ export const getSalesReportSlice = (query) => async (dispatch) => {
       dispatch(setLoadCharts(false));
     }
   } catch (error) {
+    dispatch(setLoadCharts(false));
     return toast.error(error?.response?.data?.message);
   }
 };
@@ -111,7 +112,7 @@ export const getTopSaleSlice = (query) => async (dispatch) => {
       dispatch(setLoadTopSales(false));
     }
   } catch (error) {
-    toast.error(error.response.data.message);
+    dispatch(setLoadTopSales(false));
   }
 };
 

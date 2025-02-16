@@ -9,6 +9,11 @@ const { validateEmail } = require('../helpers/authHelper');
 const jwt = require('jsonwebtoken');
 const Handlebars = require('handlebars');
 const transporter = require('../helpers/transporter');
+const path = require('path');
+// Get the current script's directory
+const currentDir = __dirname;
+// Go up two levels to get the desired directory
+const oneLevelsUpDir = path.join(currentDir, '..');
 
 const updateUserData = async (req, res, next) => {
   try {
@@ -32,26 +37,25 @@ const updateUserData = async (req, res, next) => {
           phone_number,
           gender,
           birthdate,
-          profile_image: image.path
-            .replace(/\\/g, '/')
-            .replace('src/public/', ''),
+          profile_image: `${image.fieldname}/${image.filename}`,
         },
         { where: { id: auth.id } },
       );
 
       if (previousImage.dataValues.profile_image) {
         let isDirectoryExist = fs.existsSync(
-          `src/public/deleted_user_profile_images`,
+          `${oneLevelsUpDir}/public/deleted_user_profile_images`,
         );
 
         if (!isDirectoryExist) {
-          await fs.promises.mkdir(`src/public/deleted_user_profile_images`, {
+          await fs.promises.mkdir(`${oneLevelsUpDir}/public/deleted_user_profile_images`, {
             recursive: true,
           });
         }
-        const oldPath = `src/public/${previousImage.dataValues.profile_image}`;
+        
+        const oldPath = `${oneLevelsUpDir}/public/${previousImage.dataValues.profile_image}`;
         const fileName = previousImage.dataValues.profile_image.split('/');
-        const newPath = `src/public/deleted_user_profile_images/${
+        const newPath = `${oneLevelsUpDir}/public/deleted_user_profile_images/${
           fileName[fileName.length - 1]
         }`;
 
@@ -129,7 +133,7 @@ const sendChangeEmailForm = async (req, res, next) => {
       { change_email_token: token },
       { where: { email: email } },
     );
-    const data = fs.readFileSync('./src/helpers/changeEmailForm.html', 'utf-8');
+    const data = fs.readFileSync(`${oneLevelsUpDir}/helpers/changeEmailForm.html`, 'utf-8');
     const tempCompile = await Handlebars.compile(data);
     const tempResult = tempCompile({ token: token });
 
@@ -141,7 +145,7 @@ const sendChangeEmailForm = async (req, res, next) => {
       attachments: [
         {
           filename: 'Medicore.png',
-          path: `../server/public/logo/Medicore.png`,
+          path: `${oneLevelsUpDir}/public/Medicore.png`,
           cid: 'logo1',
         },
       ],

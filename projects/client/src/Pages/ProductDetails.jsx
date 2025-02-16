@@ -104,11 +104,14 @@ export default function ProductDetails() {
             </div>
             <div className="px-5 py-5 max-w-lg">
               <article className="prose">
-                <h3>{productName}</h3>
-                {/* <h2>Rp {productPrice}</h2> */}
-                <h2 className={``}>
-                  Rp {(productPrice - discount())?.toLocaleString(['id'])}
-                </h2>
+                {productPrice ?
+                (<>
+                  <h3>{productName}</h3>
+                  {/* <h2>Rp {productPrice}</h2> */}
+                  <h2 className={``}>
+                    Rp {(productPrice - discount())?.toLocaleString(['id'])}
+                  </h2>
+                </>) : null}
                 {promotionType?.promotion_type_id === 1 ? (
                   <div className="flex items-center">
                     <div className=" badge badge-primary badge-xs flex items-center font-bold md:badge-lg">
