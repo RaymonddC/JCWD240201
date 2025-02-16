@@ -32,22 +32,8 @@
     "projects/*"
   ],
   "dependencies": {
-    "axios": "^1.4.0",
-    "bcrypt": "^5.1.0",
-    "chart.js": "^4.3.3",
-    "dayjs": "^1.11.9",
-    "exceljs": "^4.3.0",
     "firebase": "^10.2.0",
     "formik": "^2.4.2",
-    "maplibre-gl": "^3.3.0",
-    "moment": "^2.29.4",
-    "pg": "^8.13.3",
-    "pg-hstore": "^2.3.4",
-    "react-chartjs-2": "^5.2.0",
-    "react-draft-wysiwyg": "^1.15.0",
-    "react-icons": "^4.10.1",
-    "react-map-gl": "^7.1.4",
-    "react-to-print": "^2.14.13",
-    "react-zoom-pan-pinch": "^3.1.0"
+    "moment": "^2.29.4"
   }
 }
