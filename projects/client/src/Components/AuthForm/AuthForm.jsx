@@ -18,7 +18,7 @@ export const AuthForm = (propss) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const key = '6Lf3B_wnAAAAAEv99aDN1wZ8IAQJqEx-wsXSXCp4';
+  const key = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
 
   useEffect(() => {
     const loadScriptByURL = (id, url, callback) => {
@@ -179,7 +179,7 @@ export const AuthForm = (propss) => {
           </button>
           <div className="btnOther w-full text-[13px] font-bold ">
             <button
-             disabled={isSubmitting}
+              disabled={isSubmitting}
               type="button"
               onClick={() => {
                 dispatch(loginWithGoogleSlice());
